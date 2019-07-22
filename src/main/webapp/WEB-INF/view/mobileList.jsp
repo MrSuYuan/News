@@ -85,14 +85,18 @@
         signList[0].style.color = "red";
     })
 
+    /**
+     * 点击分类标签
+     */
     function changeSign(sign) {
-        alert(sign.innerText);
+        //改变标签颜色
         var signList = $('.sign');
         for(var i = 0; i < signList.length; i++){
             signList[i].style.color = "black";
         }
         sign.style.color = "red";
 
+        //加载新数据
     }
 
 </script>
