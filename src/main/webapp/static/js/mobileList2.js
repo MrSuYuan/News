@@ -59,7 +59,7 @@ function getNewsList(){
     $('.beforeload').hide();
     $('.loading').show();
     $.ajax({
-        url: path + "/indexMore",
+        url: path + "/pcListMore",
         type: "post",
         data: {
             "page" : page,

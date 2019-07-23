@@ -41,42 +41,6 @@ $('.nav-ul-li-more').hover(function (){
     $(".more-wrap").hide();
 });
 
-/*$(function() {
-    //获取热门新闻
-    getHotNewsList();
-    nid=$('body').attr('nid');
-    if(nid){
-        getNewsList2();
-        getServer();
-        cate=$('body').attr('cate');
-    }else{
-        if(request('cate')){
-            cate=request('cate');
-
-        }
-        getNewsList();
-    }
-    if(cate) {
-        $('.nav-ul-li').removeClass('active');
-        $('.nav-ul-li').each(function () {
-            if ($(this).attr('cate') == cate) {
-                $(this).addClass('active');
-                $('.more-li').removeClass('active');
-                $('#typespan').text($(this).text());
-                return false;
-            }
-        });
-        $('.more-li').each(function () {
-            if ($(this).attr('cate') == cate) {
-                $(this).addClass('active');
-                var temp = '更多·' + $(this).text();
-                $('.nav-ul-li-more .lispan').text(temp);
-                $('.nav-ul-li-more').addClass('active');
-                return false;
-            }
-        });
-    }
-});*/
 
 function getTypeNews(){
     if(nid){
@@ -94,7 +58,7 @@ function getNewsList(){
     $('.beforeload').hide();
     $('.loading').show();
     $.ajax({
-        url: path + "/indexMore",
+        url: path + "/pcListMore",
         type: "post",
         data: {
             "page" : page,
@@ -118,30 +82,7 @@ function getNewsList(){
         }
     });
 }
-/*function getNewsList2(){
-    $('.beforeload').hide();
-    $('.loading').show();
-    $.ajax({
-        type: "get",
-        // url : '/index/api/more',
-        url : '../static/phonelist.json',
-        data:{"page":page,"limit":10,"nid":nid},
-        success: function(result){
-			// var result=JSON.parse(data);
 
-            if(result.res == 1){
-                setNewsList(result);
-            }else{
-
-                $('.loading').hide();
-            }
-        },
-        error:function(){
-            alert('网络错误,请您稍后重试');
-            $('.loading').hide();
-        }
-    });
-}*/
 function setNewsList(temp){
     finish=true;
     $('.loading').hide();
@@ -165,7 +106,7 @@ function setNewsList(temp){
                 imgstr+='<div class="imgdiv"><img class="img list-li-img" src="'+news.pictureUrl[j]+'"/></div>';
             }
             str+='<li class="content-li content-li01">\n' +
-                '                        <a class="" href='+path+'/detail?newsId='+news.newsId+' target="_blank">\n' +
+                '                        <a class="" href='+path+'/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
                 '                            <p class="title">'+news.title+'</p>\n' +
                 '                            <div class="img-wrap clearfix">'+imgstr+'</div>\n' +
                 '                            <div class="footer-source">'+news.author+'</span></div>\n' +
@@ -175,7 +116,7 @@ function setNewsList(temp){
         //单图
         }else if(news.type == 1){
             str+='<li class="content-li content-li02">\n' +
-                '            <a class="" href='+path+'/detail?newsId='+news.newsId+' target="_blank">\n' +
+                '            <a class="" href='+path+'/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
                 '                <div class="img-wrap clearfix"><div class="imgdiv">\n' +
                 '                    <img class="img list-li-img" src="'+news.pictureUrl[0]+'"/>\n' +
                 '                </div></div>\n' +
@@ -217,47 +158,7 @@ $(window).scroll(function() {
         }
     }
 });
-//获取热门新闻
-/*function getHotNewsList(){
-    $.ajax({
-        type: "get",
-        url : '../static/phonelist.json',
-        data:{"page":1,"limit":10,"cate":"hot"},
-        success: function(data){
-            //  var result=JSON.parse(data);
 
-            if (data.res == 1){
-                console.log(data);
-                setHotNewsList(data);
-            }else{
-                alert(dta.msg);
-                $('.loading').hide();
-            }
-        },
-        error:function(){
-            alert('网络错误,请您稍后重试');
-            $('.loading').hide();
-        }
-    });
-}*/
-/*function setHotNewsList(temp){
-    var tempdata=temp.data;
-    var str='',imgstr='',imgArr=[];
-    for(i=0;i<tempdata.length;i++){
-        imgArr=tempdata[i].imgs;
-        if(imgArr.length >= 1){
-            str+='<li class="clearfix">\n' +
-                '                        <a href="'+tempdata[i].href+'" target="_blank">\n' +
-                '                            <div class="img-div">\n' +
-                '                                <img src="'+tempdata[i].imgs[0]+'"/>\n' +
-                '                            </div>\n' +
-                '                            <div class="title-div">'+tempdata[i].title+'</div>\n' +
-                '                        </a>\n' +
-                '                    </li>'
-        }
-    }
-    $('.hot-news-ul').html(str);
-}*/
 
 function request(paras) {
     var url = location.href;

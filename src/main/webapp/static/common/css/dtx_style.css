@@ -1,0 +1,72 @@
+/*身份信息*/
+.dtx_real_emergency_no{
+	background-image: url("../statics/images/DTX_EmergencyContact@2x.png");
+}
+.dtx_real_emergency_yes{
+	background-image: url("../statics/images/DTX_EmergencyContact_Select@2x.png");
+}
+/*工作信息*/
+.dtx_real_operator_no{
+	background-image: url("../statics/images/DTX_Operator_Select@2x.png");
+}
+.dtx_real_operator_yes{
+	background-image: url("../statics/images/DTX_Operator@2x.png");
+}
+/*工作信息*/
+.dtx_real_personInfo_no{
+	background-image: url("../statics/images/DTX_PersonInfo_Select@2x.png");
+}
+.dtx_real_personInfo_yes{
+	background-image: url("../statics/images/DTX_PersonInfo@2x.png");
+}
+/*账户信息*/
+.dtx_real_receiptInfo_no{
+	background-image: url("../statics/images/DTX_ReceiptInfo_Select@2x.png");
+}
+.dtx_real_receiptInfo_yes{
+	background-image: url("../statics/images/DTX_ReceiptInfo@2x.png");
+}
+/*工作信息*/
+.dtx_real_work_no{
+	background-image: url("../statics/images/DTX_Work_Select@2x.png");
+}
+.dtx_real_work_yes{
+	background-image: url("../statics/images/DTX_WorkInformation@2x.png");
+}
+
+.dtx_tag:link{
+	padding-right: 5px;
+}
+.dtx_tag:hover i{
+	visibility:visible;
+}
+.dtx_tag:link button{
+	visibility:hidden;
+}
+.dtx_tag:hover button{
+	visibility:visible;
+}
+/*日期控件选择器--用于日期控件定位*/
+.dtx_datepicker{}
+/*日期控件选择器--用于日期控件定位 ' yyyy-mm-dd'*/
+.dtx_ymdPicker{}
+.dtx_fh{
+	float: right;
+	margin-right: 10px;
+	margin-top: -5px;
+}
+.error {
+        color: red;
+        display: none;
+    }
+.wanICon {
+	background: #eee;
+	height: 100%;
+	padding-top: 9px;
+	border: 1px solid #d5d5d5;
+	border-left: none;
+	padding-bottom: 10px;
+}
+.mar_top30{
+	margin-top:30px;
+}
