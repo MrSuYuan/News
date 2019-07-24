@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 新闻模块
+ */
 @Repository("indexDao")
 public interface NewsDao {
 

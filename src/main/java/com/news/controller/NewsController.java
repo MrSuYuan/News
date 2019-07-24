@@ -24,7 +24,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("")
-@Api(value = "/news", tags = "跳转路径接口")
+@Api(value = "/news", tags = "新闻模块")
 public class NewsController extends BaseController {
 
     private final Logger logger = LoggerFactory.getLogger(NewsController.class);

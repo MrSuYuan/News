@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 新闻模块
+ */
 @Service("indexService")
 public class NewsServiceImpl implements NewsService {
 

@@ -5,6 +5,9 @@ import com.utils.response.ReqResponse;
 
 import java.util.List;
 
+/**
+ * 新闻模块
+ */
 public interface NewsService {
 
     /**

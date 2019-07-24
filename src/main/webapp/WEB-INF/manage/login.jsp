@@ -12,19 +12,19 @@
     <meta name="description" content="User login page" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="${ctx}/static/common/assets/font-awesome/4.5.0/css/font-awesome.min.css" />
     <!-- text fonts -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/fonts.googleapis.com.css" />
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/fonts.googleapis.com.css" />
     <!-- ace styles -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/ace.min.css" />
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/ace-rtl.min.css" />
-    <link rel="stylesheet" href="${ctx}/statics/common/js/main.js" />
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/ace.min.css" />
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/ace-rtl.min.css" />
+    <link rel="stylesheet" href="${ctx}/static/common/js/main.js" />
     <link id="ICon" rel="Shortcut Icon" href="" type="image/x-icon" />
-    <script type="text/javascript" src="${ctx }/statics/common/js/advertising/login.js"></script>
-    <script type="text/javascript" src="${ctx }/statics/common/js/validator/validator.js"></script>
-    <script type="text/javascript" src="${ctx }/statics/common/js/validator/utils.js"></script>
-    <script type="text/javascript" src="${ctx }/statics/common/js/advertising/common.js"></script>
+    <script type="text/javascript" src="${ctx }/static/common/js/manage/login.js"></script>
+    <script type="text/javascript" src="${ctx }/static/common/js/validator/validator.js"></script>
+    <script type="text/javascript" src="${ctx }/static/common/js/validator/utils.js"></script>
+    <script type="text/javascript" src="${ctx }/static/common/js/manage/common.js"></script>
 </head>
 
 <body class="login-layout blur-login">
@@ -57,7 +57,7 @@
                                         <fieldset>
                                             <label class="block clearfix">
                                                 <span class="block input-icon input-icon-right">
-                                                    <input required email loginvalidation type="text" class="form-control" id="email" name="email" placeholder="用户账号" />
+                                                    <input required email loginvalidation type="text" class="form-control" id="loginName" name="loginName" placeholder="用户账号" />
                                                     <i class="ace-icon fa fa-user"></i>
 												</span>
                                             </label>
@@ -65,11 +65,10 @@
                                                 <span class="block input-icon input-icon-right" style="display: none">
 												</span>
                                                 <span class="block input-icon input-icon-right">
-                                                    <input type="password" class="form-control" id="password" name="password" autocomplete="off" placeholder="用户密码" />
+                                                    <input type="password" class="form-control" id="passWord" name="passWord" autocomplete="off" placeholder="用户密码" />
 														<i class="ace-icon fa fa-lock"></i>
 												</span>
-
-                                        </label>
+                                            </label>
                                             <li style="list-style-type: none;">
                                                 <span> <input required loginvalidation type="text" id="captcha"
                                                               name="captcha" placeholder="验证码" class="text-style" style="width: 50%;" maxlength="4" />
@@ -115,8 +114,8 @@
 </div>
 
 
-<script src="${ctx}/statics/common/js/jquery-3.3.1.min.js"></script>
-<script src="${ctx}/statics/common/js/jquery.cookie.js"></script>
+<script src="${ctx}/static/common/js/jquery-3.3.1.min.js"></script>
+<script src="${ctx}/static/common/js/jquery.cookie.js"></script>
 
 </body>
 </html>

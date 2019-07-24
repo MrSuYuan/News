@@ -7,69 +7,51 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta charset="utf-8"/>
     <title id="titleText"></title>
-
     <meta name="description" content="overview &amp; stats"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-
     <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap.min.css"/>
-
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap-datepicker3.min.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap-timepicker.min.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/daterangepicker.min.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap-datetimepicker.min.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap-colorpicker.min.css"/>
-
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap-timepicker.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/daterangepicker.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap-datetimepicker.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap-colorpicker.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/font-awesome/4.5.0/css/font-awesome.min.css"/>
     <!--icon 图标-->
     <link id="ICon_index" rel="Shortcut Icon" href="" type="image/x-icon"/>
     <!-- page specific plugin styles -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/bootstrap-duallistbox.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/bootstrap-duallistbox.min.css"/>
     <!-- text fonts -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/fonts.googleapis.com.css"/>
-
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/fonts.googleapis.com.css"/>
     <!-- ace styles -->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/ace.min.css" class="ace-main-stylesheet"
-          id="main-ace-style"/>
-
-
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style"/>
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="${ctx}/statics/assets/css/ace-part2.min.css" class="ace-main-stylesheet"/>
+    <link rel="stylesheet" href="../../static/common/assets/css/ace-part2.min.css" class="ace-main-stylesheet"/>
     <![endif]-->
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/ace-skins.min.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/ace-rtl.min.css"/>
-
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/ace-skins.min.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/ace-rtl.min.css"/>
     <%-- <link rel="stylesheet" href="${ctx}/statics/common/css/bootstrap-datetimepicker.css" /> --%>
-
-    <link rel="stylesheet" href="${ctx}/statics/common/assets/css/chosen.min.css"/>
-
-    <script src="${ctx}/statics/common/assets/js/jquery-2.1.4.min.js"></script>
-
-    <script src="${ctx}/statics/common/assets/js/moment.min.js"></script>
-    <script src="${ctx}/statics/common/assets/js/bootstrap-datetimepicker.min.js"></script>
-    <script src="${ctx}/statics/common/assets/js/bootstrap-datepicker.min.js"></script>
-    <script src="${ctx}/statics/common/assets/js/bootstrap-timepicker.min.js"></script>
-    <script src="${ctx}/statics/common/assets/js/daterangepicker.min.js"></script>
-    <script src="${ctx}/statics/common/assets/js/bootstrap-colorpicker.min.js"></script>
-
-
-    <link rel="stylesheet" href="${ctx}/statics/common/css/jquery.treegrid.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/css/dtx_style.css"/>
-    <link rel="stylesheet" href="${ctx}/statics/common/css/button.css"/>
-    <script src="${ctx}/statics/common/js/jquery.validate.min.js"></script>
-
+    <link rel="stylesheet" href="${ctx}/static/common/assets/css/chosen.min.css"/>
+    <script src="${ctx}/static/common/assets/js/jquery-2.1.4.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/moment.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/bootstrap-timepicker.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/daterangepicker.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/bootstrap-colorpicker.min.js"></script>
+    <link rel="stylesheet" href="${ctx}/static/common/css/jquery.treegrid.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/css/dtx_style.css"/>
+    <link rel="stylesheet" href="${ctx}/static/common/css/button.css"/>
+    <script src="${ctx}/static/common/js/jquery.validate.min.js"></script>
     <!--[if lte IE 9]>
-    <link rel="stylesheet" href="${ctx}/statics/assets/css/ace-ie.min.css"/>
+    <link rel="stylesheet" href="../../static/common/assets/css/ace-ie.min.css"/>
     <![endif]-->
-
-
     <!-- ace settings handler -->
-    <script src="${ctx}/statics/common/assets/js/ace-extra.min.js"></script>
+    <script src="${ctx}/static/common/assets/js/ace-extra.min.js"></script>
     <!-- HTML5shiv and Respond.js for IE8 to support HTML5 elements and media queries -->
-
     <!--[if lte IE 8]>
-    <script src="${ctx}/statics/assets/js/html5shiv.min.js"></script>
-    <script src="${ctx}/statics/assets/js/respond.min.js"></script>
+    <script src="../../static/common/assets/js/html5shiv.min.js"></script>
+    <script src="../../static/common/assets/js/respond.min.js"></script>
     <![endif]-->
     <style type="text/css">
         .logo {
@@ -86,10 +68,6 @@
     </style>
     <script type="text/javascript">
         var path = "${ctx}";
-        /*这里的值，在下面代码有体现（重新赋值了）。*/
-        var pathChannel = "http://www.paipailai.com/dtxWebApp/index?channel=";
-        var pathczouxi = "http://www.czouxi.cn/dtxWebApp/index?channel=";
-        var pathFile = "http://www.daiyupingzheng.com:8099";
     </script>
 </head>
 
@@ -110,9 +88,9 @@
 
             <%--<img  src="${ctx }/picture/CNAACLogo.png" class="logo">--%>
 
-            <a href="index.html" class="navbar-brand">
+            <a href="/index" class="navbar-brand">
                 <small id="headline">
-                    人工审核后台管理系统
+                    中关互动后台管理系统
                 </small>
             </a>
         </div>
@@ -131,12 +109,12 @@
             <ul class="nav ace-nav">
                 <li class="light-blue dropdown-modal">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
-                        <img class="nav-user-photo" src="${ctx}/statics/common/assets/images/avatars/user.jpg"
+                        <img class="nav-user-photo" src="${ctx}/static/common/assets/images/avatars/user.jpg"
                              alt="Jason's Photo"/>
                         <span class="user-info">
 									<small>WELCOME</small>
-									${sessionScope.userName}
-                            <input type="hidden" id="userRole" value="${sessionScope.roleId}"/>
+									${sessionScope.nickName}
+                            <input type="hidden" id="userRole" value="${sessionScope.userLevel}"/>
 						</span>
 
                         <i class="ace-icon fa fa-caret-down"></i>
@@ -152,10 +130,10 @@
                         </li>
 
                         <%--<li>--%>
-                            <%--<a href="javascrip:void(0)" onclick="index_changePwd_updatePwd();">--%>
-                                <%--<i class="ace-icon fa fa-key"></i>--%>
-                                <%--修改密码--%>
-                            <%--</a>--%>
+                        <%--<a href="javascrip:void(0)" onclick="index_changePwd_updatePwd();">--%>
+                        <%--<i class="ace-icon fa fa-key"></i>--%>
+                        <%--修改密码--%>
+                        <%--</a>--%>
                         <%--</li>--%>
 
                         <li>
@@ -168,36 +146,25 @@
                 </li>
             </ul>
         </div>
-    </div><!-- /.navbar-container -->
+    </div>
 </div>
 
 <div class="main-container ace-save-state" id="main-container">
 
     <div id="sidebar" class="sidebar responsive ace-save-state">
         <ul class="nav nav-list" id="menu_ul">
-            <!-- 第一版(旧版本) -->
-            <!--
-            <li class="" id="appAuditList">
-                <a href="#" url="${ctx}/appAuditList">
+            <li class="" id="userList">
+                <a href="#" url="${ctx}/userList">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 应用审核(旧) </span>
+                    <span class="menu-text"> 用户管理 </span>
                 </a>
 
                 <b class="arrow"></b>
             </li>
-            <li class="" id="appErrorAuditList">
-                <a href="#" url="${ctx}/appErrorAuditList">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 异常审核(旧) </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-            -->
             <li class="" id="reviewNormalList">
                 <a href="#" url="${ctx}/reviewNormalList">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 应用审核 </span>
+                    <span class="menu-text"> 未完待续 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -205,15 +172,7 @@
             <li class="" id="reviewErrorList">
                 <a href="#" url="${ctx}/reviewErrorList">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 异常审核 </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-            <li class="" id="createUser">
-                <a href="#" url="${ctx}/createUser">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 新增用户 </span>
+                    <span class="menu-text"> 未完待续 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -221,7 +180,7 @@
             <li class="" id="userAuditList">
                 <a href="#" url="${ctx}/userAuditList">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 用户审核 </span>
+                    <span class="menu-text"> 未完待续 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -229,7 +188,7 @@
             <li class="" id="userManagementList">
                 <a href="#" url="${ctx}/userManagementList">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 用户管理 </span>
+                    <span class="menu-text"> 未完待续 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -237,7 +196,7 @@
             <li class="" id="upload">
                 <a href="#" url="${ctx}/upload">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 上传图片 </span>
+                    <span class="menu-text"> 未完待续 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -363,34 +322,34 @@
 
 <!--[if !IE]> -->
 
-<script src="${ctx}/statics/common/assets/js/bootstrap.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/ace.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/ace-elements.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.bootstrap-duallistbox.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/bootstrap-datepicker.min.js"></script>
+<script src="${ctx}/static/common/assets/js/bootstrap.min.js"></script>
+<script src="${ctx}/static/common/assets/js/ace.min.js"></script>
+<script src="${ctx}/static/common/assets/js/ace-elements.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.bootstrap-duallistbox.min.js"></script>
+<script src="${ctx}/static/common/assets/js/bootstrap-datepicker.min.js"></script>
 
 
-<script src="${ctx}/statics/common/assets/js/jquery-ui.custom.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.ui.touch-punch.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.easypiechart.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.sparkline.index.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.flot.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.flot.pie.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/jquery.flot.resize.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery-ui.custom.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.easypiechart.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.sparkline.index.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.flot.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.flot.pie.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.flot.resize.min.js"></script>
 
-<script src="${ctx}/statics/common/assets/js/jquery.maskedinput.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/bootstrap-editable.min.js"></script>
-<script src="${ctx}/statics/common/assets/js/ace-editable.min.js"></script>
+<script src="${ctx}/static/common/assets/js/jquery.maskedinput.min.js"></script>
+<script src="${ctx}/static/common/assets/js/bootstrap-editable.min.js"></script>
+<script src="${ctx}/static/common/assets/js/ace-editable.min.js"></script>
 
 
-<script src="${ctx}/statics/common/js/jquery.treegrid.js"></script>
-<script src="${ctx}/statics/common/js/jquery.treegrid.extension.js"></script>
+<script src="${ctx}/static/common/js/jquery.treegrid.js"></script>
+<script src="${ctx}/static/common/js/jquery.treegrid.extension.js"></script>
 <%-- 		<script src="${ctx}/statics/common/js/bootstrap-datetimepicker.js"></script>
 		<script src="${ctx}/statics/common/js/locales/bootstrap-datetimepicker.zh-CN.js"></script> --%>
-<script src="${ctx}/statics/common/js/jquery.pagination-beta.js"></script>
+<script src="${ctx}/static/common/js/jquery.pagination-beta.js"></script>
 
 
-<script src="${ctx}/statics/common/js/main.js"></script>
+<script src="${ctx}/static/common/js/main.js"></script>
 <script type="text/javascript">
     $(function ($) {
         // ajaxCon();//返回当前项目名称
@@ -436,27 +395,27 @@
 
     //进入页面直接请求数据,根据身份展示标签
     $(document).ready(function(){
-        var roleId = $('#userRole').val();
-        if(roleId == 1){
+        var userLevel = $('#userLevel').val();
+        if(userLevel == 1){
             $('#reviewNormalList').show();
             $('#reviewErrorList').show();
-            $('#createUser').show();
+            $('#userList').show();
             $('#userAuditList').show();
             $('#userManagementList').show();
             $('#upload').show();
             $('#test').show();
-        }else if(roleId == 2){
+        }else if(userLevel == 2){
             $('#reviewNormalList').show();
             $('#reviewErrorList').hide();
-            $('#createUser').hide();
+            $('#userList').hide();
             $('#userAuditList').hide();
             $('#userManagementList').hide();
             $('#upload').hide();
             $('#test').hide();
-        }else if(roleId == 3){
+        }else if(userLevel == 3){
             $('#reviewNormalList').hide();
             $('#reviewErrorList').show();
-            $('#createUser').hide();
+            $('#userList').hide();
             $('#userAuditList').hide();
             $('#userManagementList').hide();
             $('#upload').hide();
