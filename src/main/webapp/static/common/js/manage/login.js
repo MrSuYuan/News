@@ -49,7 +49,6 @@ function login(){
     var request = {url:url, data:user,type:"POST",async:true,dataType:"json"};
 
     return ajaxCall( request ).done(function(data){
-        console.log(data);
     	if (data.code == "200" ){
     		window.location = getContextPath() + data.result;
     	}else{

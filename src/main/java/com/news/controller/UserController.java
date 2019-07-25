@@ -2,6 +2,7 @@ package com.news.controller;
 
 import com.news.service.UserService;
 import com.utils.base.BaseController;
+import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("user")
 @Api(value = "/user", tags = "用户模块")
 public class UserController extends BaseController {
 
@@ -27,16 +28,90 @@ public class UserController extends BaseController {
     @Autowired
     UserService userService;
 
+    @RequestMapping(value = "/updatePassWord",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "修改密码", notes = "修改密码", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="oldPassWord" , value="原密码" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="passWord" , value="新密码" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="confirmPassWord" , value="确认密码" ,required = true , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse updatePassWord(String oldPassWord, String passWord, String confirmPassWord) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = userService.updatePassWord((Long)userId, oldPassWord, passWord, confirmPassWord);
+        }
+        return req;
+    }
+
     @RequestMapping(value = "/createUser",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="contentType" , value="1推荐 2热点 3娱乐 4科技 5探索 6趣闻 7历史" ,required = false , paramType = "query" ,dataType = "Integer")
+            @ApiImplicitParam(name="loginName" , value="登录账号" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="passWord" , value="登录密码" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="confirmPassWord" , value="确认密码" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="nickName" , value="昵称设置" ,required = true , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse getNews(HttpServletRequest request) {
-        int contentType = Integer.valueOf(request.getParameter("contentType"));
-        ReqResponse req = null;
+    public ReqResponse createUser(String loginName, String passWord, String confirmPassWord, String nickName) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = userService.createUser((Long)userId, loginName, passWord, confirmPassWord, nickName);
+        }
+        return req;
+    }
+
+    @RequestMapping(value = "/userList",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "用户列表", notes = "用户列表", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="loginName" , value="登录账号" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="nickName" , value="用户昵称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="userLevel" , value="用户权限 0全部 2管理 3普通用户" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="userStatus" , value="用户状态2全部 0禁用 1正常" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse userList(String loginName, String nickName, Integer userLevel, Integer userStatus, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = userService.userList((Long) userId, loginName, nickName, userLevel, userStatus, currentPage, pageSize);
+        }
+        return req;
+    }
+
+    @RequestMapping(value = "/userStatus",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "启用/禁用账号", notes = "启用/禁用账号", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="userId" , value="被操作用户id" ,required = false , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="userStatus" , value="1启用 2禁用" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse userStatus(Long userId, Integer userStatus) {
+        ReqResponse req = new ReqResponse();
+        Object currentUserId = request.getSession().getAttribute("userId");
+        if(null == currentUserId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = userService.userStatus((Long) currentUserId, userId, userStatus);
+        }
         return req;
     }
 

@@ -1,8 +1,10 @@
-package com.news.entity;
+package com.news.vo;
 
-import java.util.Date;
+/**
+ * 用户列表
+ */
+public class UserListVo {
 
-public class User {
     /**
      * id
      */
@@ -12,17 +14,13 @@ public class User {
      */
     private String loginName;
     /**
-     * 密码
-     */
-    private String passWord;
-    /**
      * 昵称
      */
     private String nickName;
     /**
      * 上级id
      */
-    private Long parentId;
+    private String parentName;
     /**
      * 用户等级(1超管 2管理员 3普通用户)
      */
@@ -30,19 +28,11 @@ public class User {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
     /**
      * 用户状态 0正常 1禁用
      */
     private int userStatus;
-    /**
-     * 用户头像
-     */
-    private String userUrl;
-    /**
-     * 管理员Logo
-     */
-    private String logo;
 
     public Long getUserId() {
         return userId;
@@ -60,14 +50,6 @@ public class User {
         this.loginName = loginName;
     }
 
-    public String getPassWord() {
-        return passWord;
-    }
-
-    public void setPassWord(String passWord) {
-        this.passWord = passWord;
-    }
-
     public String getNickName() {
         return nickName;
     }
@@ -76,12 +58,12 @@ public class User {
         this.nickName = nickName;
     }
 
-    public Long getParentId() {
-        return parentId;
+    public String getParentName() {
+        return parentName;
     }
 
-    public void setParentId(Long parentId) {
-        this.parentId = parentId;
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public int getUserLevel() {
@@ -92,11 +74,11 @@ public class User {
         this.userLevel = userLevel;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -106,21 +88,5 @@ public class User {
 
     public void setUserStatus(int userStatus) {
         this.userStatus = userStatus;
-    }
-
-    public String getUserUrl() {
-        return userUrl;
-    }
-
-    public void setUserUrl(String userUrl) {
-        this.userUrl = userUrl;
-    }
-
-    public String getLogo() {
-        return logo;
-    }
-
-    public void setLogo(String logo) {
-        this.logo = logo;
     }
 }

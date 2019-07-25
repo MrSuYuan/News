@@ -949,7 +949,7 @@ function observe (value, asRootData) {
     shouldObserve &&
     !isServerRendering() &&
     (Array.isArray(value) || isPlainObject(value)) &&
-    Object.isExtensible(value) &&
+    Object.itensible(value) &&
     !value._isVue
   ) {
     ob = new Observer(value);

@@ -41,7 +41,7 @@
     <script src="${ctx}/static/common/assets/js/bootstrap-colorpicker.min.js"></script>
     <link rel="stylesheet" href="${ctx}/static/common/css/jquery.treegrid.css"/>
     <link rel="stylesheet" href="${ctx}/static/common/css/dtx_style.css"/>
-    <link rel="stylesheet" href="${ctx}/static/common/css/button.css"/>
+
     <script src="${ctx}/static/common/js/jquery.validate.min.js"></script>
     <!--[if lte IE 9]>
     <link rel="stylesheet" href="../../static/common/assets/css/ace-ie.min.css"/>
@@ -114,7 +114,7 @@
                         <span class="user-info">
 									<small>WELCOME</small>
 									${sessionScope.nickName}
-                            <input type="hidden" id="userRole" value="${sessionScope.userLevel}"/>
+                            <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
 						</span>
 
                         <i class="ace-icon fa fa-caret-down"></i>
@@ -123,18 +123,11 @@
                     <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
 
                         <li>
-                            <a href="${ctx}/updatePassWord">
-                                <i class="ace-icon fa fa-key"></i>
-                                修改密码
-                            </a>
+                        <a href="javascrip:void(0)" onclick="index_changePwd_updatePwd();">
+                        <i class="ace-icon fa fa-key"></i>
+                            修改密码
+                        </a>
                         </li>
-
-                        <%--<li>--%>
-                        <%--<a href="javascrip:void(0)" onclick="index_changePwd_updatePwd();">--%>
-                        <%--<i class="ace-icon fa fa-key"></i>--%>
-                        <%--修改密码--%>
-                        <%--</a>--%>
-                        <%--</li>--%>
 
                         <li>
                             <a href="${ctx }/logout">
@@ -142,6 +135,7 @@
                                 退出
                             </a>
                         </li>
+
                     </ul>
                 </li>
             </ul>
@@ -162,9 +156,9 @@
                 <b class="arrow"></b>
             </li>
             <li class="" id="reviewNormalList">
-                <a href="#" url="${ctx}/reviewNormalList">
+                <a href="#" url="${ctx}/appList">
                     <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 未完待续 </span>
+                    <span class="menu-text"> APP管理 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -312,7 +306,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button class="btn btn-primary" onclick="confirm()">确定</button>
+                    <button type="button" class="btn btn-primary" onclick="confirm()">确定</button>
                 </div>
             </div>
         </form>
@@ -348,7 +342,8 @@
 		<script src="${ctx}/statics/common/js/locales/bootstrap-datetimepicker.zh-CN.js"></script> --%>
 <script src="${ctx}/static/common/js/jquery.pagination-beta.js"></script>
 
-
+<!-- 这个和模态框冲突了 -->
+<%--<link rel="stylesheet" href="${ctx}/static/common/css/button.css"/>--%>
 <script src="${ctx}/static/common/js/main.js"></script>
 <script type="text/javascript">
     $(function ($) {
@@ -441,54 +436,35 @@
         var oldPassWord = $('#oldPassWord').val();
         var passWord = $('#passWord').val();
         var confirmPassWord = $('#confirmPassWord').val();
-        if(oldPassWord == ""){
-            alert("原密码不能为空");
+        if(oldPassWord == "" || passWord == "" || confirmPassWord == ""){
+            alert("请完善信息后再提交");
             $("#index_changePwd_Modal").modal("show");
-            return false;
-        }
-        if(passWord == ""){
-            alert("新密码不能为空");
-            $("#index_changePwd_Modal").modal("show");
-            return false;
-        }
-        if(confirmPassWord == ""){
-            alert("确认密码不能为空");
-            $("#index_changePwd_Modal").modal("show");
-            return false;
-        }
-        $.ajax({
-            url: path + "/user/updatePassWord",
-            type: "post",
-            data: {
-                "oldPassWord" : oldPassWord,
-                "passWord" : passWord,
-                "confirmPassWord" : confirmPassWord
-            },
-            dataType: 'json',
-            async: false,
-            success: function (obj) {
-                if(obj.errorCode == 200){
-                    alert(obj.message);
-                }else{
-                    alert(obj.message);
-                    $("#index_changePwd_Modal").modal("show");
+        }else{
+            $.ajax({
+                url: path + "/user/updatePassWord",
+                type: "post",
+                data: {
+                    "oldPassWord" : oldPassWord,
+                    "passWord" : passWord,
+                    "confirmPassWord" : confirmPassWord
+                },
+                dataType: 'json',
+                async: false,
+                success: function (obj) {
+                    if(obj.code == 200){
+                        alert(obj.message);
+                        $("#index_changePwd_Modal").modal("hide");
+                    }else{
+                        alert(obj.message);
+                        $("#index_changePwd_Modal").modal("show");
+                    }
+
+                },
+                error: function () {
+                    $.alertModel("网络超时!获取失败!");
                 }
-                /*if (data.flag == "1") {
-                    $("#index_changePwd_Modal").modal("hide");
-                    $("#index_changePwd_oldPassword").val('');
-                    $("#index_changePwd_newPassword").val('');
-                    $.alertModel("密码修改成功");
-                } else {
-                    $("#index_changePwd_Modal").modal("hide");
-                    $("#index_changePwd_oldPassword").val('');
-                    $("#index_changePwd_newPassword").val('');
-                    $.alertModel(data.msg);
-                }*/
-            },
-            error: function () {
-                $.alertModel("网络超时!获取失败!");
-            }
-        });
+            });
+        }
     }
 
 

@@ -4,33 +4,32 @@
 <html>
 
 <head>
-    <title>用户列表</title>
+    <title>APP列表</title>
 </head>
 
 <body>
-<font size="4"><STRONG>用户列表</STRONG></font>
+<font size="4"><STRONG>APP列表</STRONG></font>
 <hr>
 
 <form action="#" method="post">
     <div align="center">
-        用户名：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        用户昵称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        <span id="userLevelSpan">
-        用户权限：
+        APPID：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        APP名称：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        审核状态：
         <select id="userLevel" style="width:100px;height:30px">
             <option value="0">全部</option>
-            <option value="2">管理员</option>
-            <option value="3">普通用户</option>
+            <option value="1">未审核</option>
+            <option value="2">审核通过</option>
+            <option value="3">审核驳回</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        </span>
-        用户状态：
+        APP状态：
         <select id="userStatus" style="width:100px;height:30px">
             <option value="0">全部</option>
             <option value="1">正常</option>
             <option value="2">禁用</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectUserList($('#currentPage').val())">&nbsp;&nbsp;
-        <input type="button" style="width:80px;height:30px" value="创建用户" onclick="createUser()">
+        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectAppList($('#currentPage').val())">&nbsp;&nbsp;
+        <input type="button" style="width:80px;height:30px" value="添加APP" onclick="appDetail()">
 
     </div>
     <br><span></span><br>
@@ -42,14 +41,14 @@
                        class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr style="height: 50px">
-                        <th>用户id</th>
-                        <th>登陆账号</th>
-                        <th>用户昵称</th>
-                        <th id="parentId">上级管理员</th>
-                        <th>用户等级</th>
+                        <th>APPID</th>
+                        <th>名称</th>
+                        <th id="parentId">所属用户</th>
+                        <th>接入方式</th>
+                        <th>适用平台</th>
                         <th>创建时间</th>
-                        <th>用户状态</th>
-                        <th>权限操作</th>
+                        <th>审核状态</th>
+                        <th>APP状态</th>
                     </tr>
                     </thead>
                     <tbody id="coll_list_begin_body">
@@ -71,120 +70,13 @@
 
 </form>
 
-<!-- 新增用户-模态框 -->
-<div class="modal" id="createUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog">
-        <form class="form-horizontal" role="form" id="index_changePwd_agreeFrom">
-            <input type="hidden" id="index_changePwd_userId" name="index_changePwd_userId" value="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="index_changePwd_myModalLabel">创建新用户</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right " for="newLoginName">
-                                登录账号: </label>
-                            <div class="col-sm-8">
-                                <input type="text" id="newLoginName" placeholder="请输入账号信息"
-                                       class="col-xs-10 col-sm-7" name="newLoginName">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right " for="newPassWord">
-                                登录密码: </label>
-                            <div class="col-sm-8">
-                                <input type="password" id="newPassWord" placeholder="请输入密码"
-                                       class="col-xs-10 col-sm-7" name="newPassWord">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right "
-                                   for="confirmPassWord"> 确认密码: </label>
-                            <div class="col-sm-8">
-                                <input type="password" id="confirmPassWord" placeholder="请再次输入新密码"
-                                       class="col-xs-10 col-sm-7" name="confirmPassWord">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label no-padding-right " for="newNickName">
-                                昵称设置: </label>
-                            <div class="col-sm-8">
-                                <input type="text" id="newNickName" placeholder="起一个好听的名字吧"
-                                       class="col-xs-10 col-sm-7" name="newNickName">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" onclick="createNewUser()">确定</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
 </body>
 
 <script type="text/javascript">
 
-    //新增用户模态框
-    function createUser() {
-        $("#createUser").modal("show");
-    }
-
-    //新增用户信息
-    function createNewUser() {
-        var newLoginName = $("#newLoginName").val();
-        var newPassWord = $("#newPassWord").val();
-        var confirmPassWord = $("#confirmPassWord").val();
-        var newNickName = $("#newNickName").val();
-
-        if(newLoginName == "" || newPassWord == "" || confirmPassWord == "" || newNickName == ""){
-            alert("请完善信息再提交");
-        }else{
-            var user = {
-                loginName  : newLoginName,
-                passWord : newPassWord,
-                confirmPassWord : confirmPassWord,
-                nickName : newNickName
-            };
-            $.ajax({
-                url: path + "/user/createUser",
-                type: "post",
-                data: user,
-                dataType: 'json',
-                async: false,
-                success: function (obj) {
-                    if(obj.code == 200){
-                        alert(obj.message);
-                        $("#createUser").modal("hide");
-                        gotoURL(path + "/userList");
-                    }else if(obj.code == 300){
-                        alert(obj.message);
-                        window.location = path + "/login";
-                    }else{
-                        alert(obj.message);
-                        $("#createUser").modal("hide");
-                    }
-
-                },
-                error: function () {
-                    $.alertModel("网络超时!获取失败!");
-                }
-            });
-
-        }
+    //新增用户
+    function appDetail() {
+        gotoURL(path+"/appDetail")
     }
 
     //进入页面直接请求数据
@@ -195,11 +87,11 @@
             $('#userLevelSpan').hide();
             $('#parentId').hide();
         }
-        selectUserList(1);
+        selectAppList(1);
     });
 
     //点击搜索数据展示
-    function selectUserList(currentPage) {
+    function selectAppList(currentPage) {
 
         var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
@@ -284,7 +176,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            selectUserList(page);
+            selectAppList(page);
         }
     }
 
@@ -296,7 +188,7 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            selectUserList(page);
+            selectAppList(page);
         }
     }
 

@@ -47,7 +47,7 @@ public class PageController extends BaseController {
      * PC端
      * 动态生成验证码
      */
-    @RequestMapping(value="image")
+    @RequestMapping(value="image",method=RequestMethod.GET)
     public void image(HttpServletRequest request,HttpServletResponse response)throws Exception{
         response.setHeader("Pragma", "No-cache");//No-cache不走缓存
         response.setHeader("Cache-Control", "No-cache");
@@ -126,100 +126,18 @@ public class PageController extends BaseController {
     public String userList(){ return "manage/userList";}
 
     /**
-     * 新增用户
+     * app列表页
      */
-    @RequestMapping(value = "createUser" , method= RequestMethod.GET)
-    @ApiOperation(value = "新增用户页面", notes = "新增用户页面", httpMethod = "GET")
-    public String createUser(){ return "manage/createUser";}
+    @RequestMapping(value = "appList" , method= RequestMethod.GET)
+    @ApiOperation(value = "app列表页", notes = "app列表页", httpMethod = "GET")
+    public String appList(){ return "manage/appList";}
 
     /**
-     * 模板实例
+     * app详情页
      */
-    @RequestMapping(value = "exampleList" , method= RequestMethod.GET)
-    @ApiOperation(value = "模板实例页面", notes = "模板实例页面", httpMethod = "GET")
-    public String exampleList(){
-        return "example/exampleList";
-    }
-
-    /**
-     * 用户审核列表
-     */
-    @RequestMapping(value = "userAuditList" , method= RequestMethod.GET)
-    @ApiOperation(value = "用户审核列表页面", notes = "用户审核列表页面", httpMethod = "GET")
-    public String userAuditList(){ return "example/userAuditList";}
-
-    /**
-     * 用户管理列表
-     */
-    @RequestMapping(value = "userManagementList" , method= RequestMethod.GET)
-    @ApiOperation(value = "用户管理列表页面", notes = "用户管理列表页面", httpMethod = "GET")
-    public String userManagementList(){ return "example/userManagementList";}
-
-    /**
-     * 用户审核详情
-     */
-    @RequestMapping(value = "userAudit" , method= RequestMethod.GET)
-    @ApiOperation(value = "用户审核详情", notes = "用户审核详情", httpMethod = "GET")
-    public String userAudit(){ return "example/userAudit";}
-
-    /**
-     * 用户管理详情
-     */
-    @RequestMapping(value = "userManagement" , method= RequestMethod.GET)
-    @ApiOperation(value = "用户管理详情", notes = "用户管理详情", httpMethod = "GET")
-    public String userManagement(){ return "example/userManagement";}
-
-    /**
-     * 跳转到图片上传页面
-     */
-    @RequestMapping(value = "upload" , method= RequestMethod.GET)
-    @ApiOperation(value = "跳转到图片上传页面", notes = "跳转到图片上传页面", httpMethod = "GET")
-    public String upload(){ return "example/uploadPicture";}
-
-    /**
-     * 应用审核列表页
-     */
-    @RequestMapping(value = "reviewNormalList" , method= RequestMethod.GET)
-    @ApiOperation(value = "应用审核列表页面", notes = "应用审核列表页面", httpMethod = "GET")
-    public String reviewNormalList(){ return "example/reviewNormalList";}
-
-    /**
-     * 应用审核详情页
-     */
-    @RequestMapping(value = "reviewNormalDetails" , method= RequestMethod.GET)
-    @ApiOperation(value = "应用审核详情页面", notes = "应用审核详情页面", httpMethod = "GET")
-    public String reviewNormalDetails(){ return "example/reviewNormalDetails";}
-
-    /**
-     * 应用审核历史页
-     */
-    @RequestMapping(value = "reviewNormalHistory" , method= RequestMethod.GET)
-    @ApiOperation(value = "应用审核历史页", notes = "应用审核历史页", httpMethod = "GET")
-    public String reviewNormalHistory(){ return "example/reviewNormalHistory";}
-
-    /**
-     * 异常审核列表
-     */
-    @RequestMapping(value = "reviewErrorList" , method= RequestMethod.GET)
-    @ApiOperation(value = "异常审核列表页面", notes = "异常审核列表页面", httpMethod = "GET")
-    public String reviewErrorList(){ return "example/reviewErrorList";}
-
-    /**
-     * 异常审核详情页
-     */
-    @RequestMapping(value = "reviewErrorDetails" , method= RequestMethod.GET)
-    @ApiOperation(value = "异常审核详情页面", notes = "异常审核详情页面", httpMethod = "GET")
-    public String reviewErrorDetails(){ return "example/reviewErrorDetails";}
-
-    /**
-     * 修改密码
-     */
-    @RequestMapping(value = "updatePassWord" , method= RequestMethod.GET)
-    @ApiOperation(value = "修改密码页面", notes = "修改密码页面", httpMethod = "GET")
-    public String updatePassWord(){
-        return "example/updatePass";
-    }
-
+    @RequestMapping(value = "appDetail" , method= RequestMethod.GET)
+    @ApiOperation(value = "app详情页", notes = "app详情页", httpMethod = "GET")
+    public String appDetail(){ return "manage/appDetail";}
 
 
 }
