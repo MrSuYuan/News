@@ -26,6 +26,10 @@ public interface AppService {
     /**
      * APP列表
      */
-    ReqResponse appList(Long userId, String appId, String appName, Integer auditStatus, Integer appStatus, Integer currentPage, Integer pageSize);
+    ReqResponse appList(Long userId, Long appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize);
 
+    /**
+     * 修改app状态
+     */
+    ReqResponse appStatus(Long userId, Long appId, Integer appStatus);
 }

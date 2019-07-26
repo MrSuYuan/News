@@ -3,6 +3,7 @@ package com.news.dao;
 import com.news.entity.App;
 import com.news.entity.Industy;
 import com.news.entity.User;
+import com.news.vo.AppListVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -42,6 +43,21 @@ public interface AppDao {
     /**
      * app列表
      */
-    List<App> appList(Map<String,Object> map);
+    List<AppListVo> appList(Map<String,Object> map);
+
+    /**
+     * app列表数量
+     */
+    int appListNum(Map<String,Object> map);
+
+    /**
+     * 查看当前app的上级id
+     */
+    Long appParent(Long appId);
+
+    /**
+     * 修改app状态
+     */
+    void updateAppStatus(Map<String,Object> map);
 
 }

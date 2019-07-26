@@ -15,18 +15,13 @@
     <div align="center">
         APPID：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
         APP名称：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        审核状态：
-        <select id="userLevel" style="width:100px;height:30px">
+        APP状态：
+        <select id="appStatus" style="width:100px;height:30px">
             <option value="0">全部</option>
             <option value="1">未审核</option>
-            <option value="2">审核通过</option>
-            <option value="3">审核驳回</option>
-        </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        APP状态：
-        <select id="userStatus" style="width:100px;height:30px">
-            <option value="0">全部</option>
-            <option value="1">正常</option>
-            <option value="2">禁用</option>
+            <option value="2">驳回</option>
+            <option value="3">正常</option>
+            <option value="4">禁用</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectAppList($('#currentPage').val())">&nbsp;&nbsp;
         <input id="addApp" type="button" style="width:80px;height:30px" value="添加APP" onclick="appDetail()">
@@ -43,12 +38,13 @@
                     <tr style="height: 50px">
                         <th>APPID</th>
                         <th>名称</th>
-                        <th id="parentId">所属用户</th>
-                        <th>接入方式</th>
-                        <th>适用平台</th>
+                        <th>所属用户</th>
+                        <th>适用系统</th>
+                        <th>适用终端</th>
                         <th>创建时间</th>
-                        <th>审核状态</th>
+                        <th>下载地址</th>
                         <th>APP状态</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody id="coll_list_begin_body">
@@ -92,7 +88,7 @@
     //点击搜索数据展示
     function selectAppList(currentPage) {
 
-        var currentUserLevel = $('#currentUserLevel').val();
+        //var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -104,6 +100,9 @@
             url: path + "/app/appList",
             type: "post",
             data: {
+                "appId" : $('#appId').val(),
+                "appName" : $('#appName').val(),
+                "appStatus" :  $('#appStatus option:selected').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
             },
@@ -118,17 +117,47 @@
                         html+='<tr style="height: 40px">';
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.appName+'</td>';
-                        html+='<td> '+data.userId+'</td>';
-                        html+='<td> '+data.accessMethod+'</td>';
-                        html+='<td> '+data.terminal+'</td>';
+                        html+='<td> '+data.nickName+'</td>';
+                        var platform = data.platform;
+                        if (platform == 1) {
+                            html+='<td> Android </td>';
+                        }else if(platform == 2){
+                            html+='<td> IOS </td>';
+                        }else if(platform == 3){
+                            html+='<td> Windows </td>';
+                        }
+                        var terminal = data.terminal;
+                        if (terminal == 1) {
+                            html+='<td> 手机 </td>';
+                        }else if(terminal == 2){
+                            html+='<td> 平板 </td>';
+                        }else if(terminal == 3){
+                            html+='<td> 电脑 </td>';
+                        }
                         html+='<td> '+data.createTime+'</td>';
+                        html+='<td> '+data.downloadlink+'</td>';
                         var appStatus = data.appStatus;
-                        if(appStatus == 2){
-                            html+='<td id="appStatus'+data.userId+'">禁用</td>';
-                            html+='<td id="operating'+data.userId+'"><input type=button style="background:green" value="启用" onclick="startUserStatus('+data.userId+')"/></td>';
-                        }else if(appStatus == 1){
-                            html+='<td id="appStatus'+data.userId+'">正常</td>';
-                            html+='<td id="operating'+data.userId+'"><input type=button style="background:red" value="禁用" onclick="stopUserStatus('+data.userId+')"/></td>';
+                        if(appStatus == 1){
+                            html+='<td id="appStatus'+data.appId+'">未审核</td>';
+                            html+='<td id="operating'+data.appId+'">' +
+                                '<input type=button style="background:green" value="通过" onclick="changeAppStatus('+data.appId+','+4+')"/>' +
+                                '<input type=button style="background:red" value="驳回" onclick="changeAppStatus('+data.appId+','+2+')"/>' +
+                                '</td>';
+                        }else if(appStatus == 2){
+                            html+='<td id="appStatus'+data.appId+'">驳回</td>';
+                            html+='<td id="operating'+data.appId+'">' +
+                                'APP未通过审核' +
+                                '</td>';
+                        }else if(appStatus == 3){
+                            html+='<td id="appStatus'+data.appId+'">正常</td>';
+                            html+='<td id="operating'+data.appId+'">' +
+                                '<input type=button style="background:red" value="禁用" onclick="changeAppStatus('+data.appId+','+4+')"/>' +
+                                '</td>';
+                        }else if(appStatus == 4){
+                            html+='<td id="appStatus'+data.appId+'">禁用</td>';
+                            html+='<td id="operating'+data.appId+'">' +
+                                '<input type=button style="background:green" value="启用" onclick="changeAppStatus('+data.appId+','+3+')"/>' +
+                                '</td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
@@ -179,66 +208,52 @@
         }
     }
 
-    //启用
-    function startUserStatus(userId){
-
+    //appStatus 1未审核 2驳回 3正常 4禁用
+    function changeAppStatus(appId, appStatus){
         $.ajax({
-            url: path + "/user/userStatus",
+            url: path + "/app/appStatus",
             type: "post",
             data: {
-                "userId" : userId,
-                "userStatus" : 1
+                "appId" : appId,
+                "appStatus" : appStatus
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
 
                 if(obj.code == 200){
-                    $('#userStatus'+userId).empty();
-                    $('#operating'+userId).empty();
-                    $('#userStatus'+userId).html("正常");
-                    var html='<td id="operating'+userId+'"><input type=button style="background:red" value="禁用" onclick="stopUserStatus('+userId+')"/></td>';
-                    $('#operating'+userId).html(html);
+                    $('#appStatus'+appId).empty();
+                    $('#operating'+appId).empty();
+
+                    if(appStatus == 2){
+                        $('#appStatus'+appId).html("驳回");
+                        var html='<td id="operating'+appId+'">APP未通过审核</td>';
+                        $('#operating'+appId).html(html);
+
+                    }else if(appStatus == 3){
+                        $('#appStatus'+appId).html("正常");
+                        var html='<td id="operating'+appId+'">'+
+                            '<input type=button style="background:red" value="禁用" onclick="changeAppStatus('+appId+','+4+')"/>'+
+                            '</td>';
+                        $('#operating'+appId).html(html);
+
+                    }else if(appStatus == 4){
+                        $('#appStatus'+appId).html("禁用");
+                        var html='<td id="operating'+appId+'">'+
+                            '<input type=button style="background:green" value="启用" onclick="changeAppStatus('+appId+','+3+')"/>'+
+                            '</td>';
+                        $('#operating'+appId).html(html);
+
+                    }else{
+                        $('#appStatus'+appId).html("状态错误");
+                        $('#operating'+appId).html("状态错误");
+                    }
+
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.open(path+"/login");
                 }else{
-                    alert("数据加载错误");
-                }
-            },
-            error: function () {
-                alert("请求异常");
-            }
-        });
-
-
-    }
-
-    //禁用
-    function stopUserStatus(userId){
-
-        $.ajax({
-            url: path + "/user/userStatus",
-            type: "post",
-            data: {
-                "userId" : userId,
-                "userStatus" : 2
-            },
-            dataType: 'json',
-            async: false,
-            success: function (obj) {
-
-                if(obj.code == 200){
-                    $('#userStatus'+userId).empty();
-                    $('#operating'+userId).empty();
-                    $('#userStatus'+userId).html("禁用");
-                    var html='<td id="operating'+userId+'"><input type=button style="background:green" value="启用" onclick="startUserStatus('+userId+')"/></td>';
-                    $('#operating'+userId).html(html);
-                }else if(obj.code == "300"){
                     alert(obj.message);
-                    window.open(path+"/login");
-                }else{
-                    alert("数据加载错误");
                 }
             },
             error: function () {
@@ -246,8 +261,6 @@
             }
         });
     }
-
-
 
 </script>
 

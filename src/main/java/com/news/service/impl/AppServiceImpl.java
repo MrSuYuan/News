@@ -6,6 +6,8 @@ import com.news.entity.App;
 import com.news.entity.Industy;
 import com.news.entity.User;
 import com.news.service.AppService;
+import com.news.vo.AppListVo;
+import com.news.vo.UserListVo;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
 import org.springframework.stereotype.Service;
@@ -72,8 +74,6 @@ public class AppServiceImpl implements AppService {
             return req;
         }
         //封装剩余信息
-        SimpleDateFormat sdf = new SimpleDateFormat("MMddHHmm");
-        app.setAppId(sdf.format(new Date()) +""+ app.getUserId());
         app.setAccessMethod(1);
         //个人填写app信息
         if(currentUserLevel == 3){
@@ -103,13 +103,67 @@ public class AppServiceImpl implements AppService {
      * APP列表
      */
     @Override
-    public ReqResponse appList(Long userId, String appId, String appName, Integer auditStatus, Integer appStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(Long userId, Long appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
-        List<App> appList = appDao.appList(map);
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("appId",appId);
+        map.put("appName",appName);
+        map.put("appStatus",appStatus);
+        //查看当前用户身份
+        int userLevel = userDao.userLevel(userId);
+        map.put("userLevel",userLevel);
+        //app列表
+        List<AppListVo> appList = appDao.appList(map);
+        //app数量
+        int sumData = appDao.appListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("appList",appList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
         req.setCode(ErrorMessage.SUCCESS.getCode());
-        map.put("appList",appList);
-        req.setResult(map);
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 修改app状态
+     */
+    @Override
+    public ReqResponse appStatus(Long userId, Long appId, Integer appStatus) {
+        ReqResponse req = new ReqResponse();
+        //查看当前app的上级id
+        Long appParentId = appDao.appParent(appId);
+        if(null != appParentId && userId.longValue() == appParentId.longValue()){
+            //修改状态
+            Map<String,Object> map = new HashMap<>();
+            map.put("appId",appId);
+            map.put("appStatus",appStatus);
+            appDao.updateAppStatus(map);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("修改成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("您没有操作权限");
+        }
         return req;
     }
 }

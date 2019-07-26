@@ -10,7 +10,7 @@ public class App {
     /**
      * appId
      */
-    private String appId;
+    private Long appId;
     /**
      * app名称
      */
@@ -67,17 +67,12 @@ public class App {
      * 关键字
      */
     private String keyWords;
-    /**
-     * 审核状态
-     */
-    private int auditStatus;
 
-
-    public String getAppId() {
+    public Long getAppId() {
         return appId;
     }
 
-    public void setAppId(String appId) {
+    public void setAppId(Long appId) {
         this.appId = appId;
     }
 
@@ -193,11 +188,4 @@ public class App {
         this.keyWords = keyWords;
     }
 
-    public int getAuditStatus() {
-        return auditStatus;
-    }
-
-    public void setAuditStatus(int auditStatus) {
-        this.auditStatus = auditStatus;
-    }
 }

@@ -104,20 +104,41 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "app列表", notes = "app列表", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "Long"),
             @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="auditStatus" , value="审核状态" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="appStatus" , value="app状态" ,required = false , paramType = "query" ,dataType = "Integer")
+            @ApiImplicitParam(name="appStatus" , value="app状态" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appList(String appId, String appName, Integer auditStatus, Integer appStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(Long appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appList((Long) userId, appId, appName, auditStatus, appStatus, currentPage, pageSize);
+            req = appService.appList((Long) userId, appId, appName, appStatus, currentPage, pageSize);
+        }
+        return req;
+    }
+
+    @RequestMapping(value = "/appStatus",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "修改app状态", notes = "修改app状态", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="appStatus" , value="app状态" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appStatus(Long appId, Integer appStatus) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appStatus((Long) userId, appId, appStatus);
         }
         return req;
     }

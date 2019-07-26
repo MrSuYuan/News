@@ -38,7 +38,6 @@ public class Test {
                     String author = d.getElementsByClass("xg1").text();
                     //内容图片需要拼接url路径
                     Elements imgs = content.getElementsByTag("img");
-                    System.out.println("图片数量"+imgs.size());
                     for(Element img : imgs){
                         String src = img.attr("src");
                         if(src.indexOf("/")==0){

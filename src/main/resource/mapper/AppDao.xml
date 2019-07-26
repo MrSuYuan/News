@@ -22,11 +22,11 @@
     <!-- 添加APP信息 -->
     <insert id="createApp" parameterType="com.news.entity.App">
         insert into app
-        (appId, appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
-          platform,terminal,packageName,version,description,keyWords,auditStatus)
+        (appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
+          platform,terminal,packageName,version,description,keyWords)
         values
-        (#{appId},#{appName},#{downloadlink},now(),#{userId},#{accessMethod},1,#{rootType},#{subType},
-          #{platform},#{terminal},#{packageName},#{version},#{description},#{keyWords},2)
+        (#{appName},#{downloadlink},now(),#{userId},#{accessMethod},1,#{rootType},#{subType},
+          #{platform},#{terminal},#{packageName},#{version},#{description},#{keyWords})
     </insert>
 
     <!-- app名称验重 -->
@@ -35,8 +35,27 @@
     </select>
 
     <!-- app列表 -->
-    <select id="appList" parameterType="java.util.Map" resultType="com.news.entity.App">
-        select * from app
+    <select id="appList" parameterType="java.util.Map" resultType="com.news.vo.AppListVo">
+        SELECT a.appId,a.appName,u.nickName,a.downloadlink,a.appStatus,a.platform,a.terminal,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")as createTime
+        from app a,user u
+        where a.userId = u.userId
     </select>
+
+    <!-- app列表数量 -->
+    <select id="appListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from app
+    </select>
+
+    <!-- 查看当前app的上级id -->
+    <select id="appParent" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select u.parentId
+        from app a,user u
+        where a.appId = #{appId} and a.userId = u.userId
+    </select>
+
+    <!-- 修改app状态 -->
+    <update id="updateAppStatus" parameterType="java.util.Map">
+        update app set appStatus = #{appStatus} where appId = #{appId}
+    </update>
 
 </mapper>
