@@ -115,6 +115,7 @@
 									<small>WELCOME</small>
 									${sessionScope.nickName}
                             <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
+                            <input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
 						</span>
 
                         <i class="ace-icon fa fa-caret-down"></i>
@@ -155,7 +156,7 @@
 
                 <b class="arrow"></b>
             </li>
-            <li class="" id="reviewNormalList">
+            <li class="" id="appList">
                 <a href="#" url="${ctx}/appList">
                     <i class="menu-icon fa fa-list-alt"></i>
                     <span class="menu-text"> APP管理 </span>
@@ -163,7 +164,7 @@
 
                 <b class="arrow"></b>
             </li>
-            <li class="" id="reviewErrorList">
+            <li class="" id="other">
                 <a href="#" url="${ctx}/reviewErrorList">
                     <i class="menu-icon fa fa-list-alt"></i>
                     <span class="menu-text"> 未完待续 </span>
@@ -171,31 +172,7 @@
 
                 <b class="arrow"></b>
             </li>
-            <li class="" id="userAuditList">
-                <a href="#" url="${ctx}/userAuditList">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 未完待续 </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-            <li class="" id="userManagementList">
-                <a href="#" url="${ctx}/userManagementList">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 未完待续 </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-            <li class="" id="upload">
-                <a href="#" url="${ctx}/upload">
-                    <i class="menu-icon fa fa-list-alt"></i>
-                    <span class="menu-text"> 未完待续 </span>
-                </a>
-
-                <b class="arrow"></b>
-            </li>
-            <li class="" name="level1" id="test">
+            <li class="" name="level1" id="more">
                 <a href="###" class="dropdown-toggle">
                     <i class="menu-icon fa fa-bars"></i>
                     <span class="menu-text"> 折叠菜单 </span>
@@ -390,31 +367,25 @@
 
     //进入页面直接请求数据,根据身份展示标签
     $(document).ready(function(){
-        var userLevel = $('#userLevel').val();
-        if(userLevel == 1){
-            $('#reviewNormalList').show();
-            $('#reviewErrorList').show();
+        var currentUserLevel = $('#currentUserLevel').val();
+        if(currentUserLevel == 1){
             $('#userList').show();
-            $('#userAuditList').show();
-            $('#userManagementList').show();
-            $('#upload').show();
-            $('#test').show();
-        }else if(userLevel == 2){
-            $('#reviewNormalList').show();
-            $('#reviewErrorList').hide();
+            $('#appList').show();
+            $('#other').show();
+            $('#more').show();
+
+        }else if(currentUserLevel == 2){
+            $('#userList').show();
+            $('#appList').show();
+            $('#other').show();
+            $('#more').show();
+
+        }else if(currentUserLevel == 3){
             $('#userList').hide();
-            $('#userAuditList').hide();
-            $('#userManagementList').hide();
-            $('#upload').hide();
-            $('#test').hide();
-        }else if(userLevel == 3){
-            $('#reviewNormalList').hide();
-            $('#reviewErrorList').show();
-            $('#userList').hide();
-            $('#userAuditList').hide();
-            $('#userManagementList').hide();
-            $('#upload').hide();
-            $('#test').hide();
+            $('#appList').show();
+            $('#other').show();
+            $('#more').show();
+
         }else{
 
         }

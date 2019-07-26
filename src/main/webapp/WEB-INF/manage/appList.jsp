@@ -29,7 +29,7 @@
             <option value="2">禁用</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectAppList($('#currentPage').val())">&nbsp;&nbsp;
-        <input type="button" style="width:80px;height:30px" value="添加APP" onclick="appDetail()">
+        <input id="addApp" type="button" style="width:80px;height:30px" value="添加APP" onclick="appDetail()">
 
     </div>
     <br><span></span><br>
@@ -83,9 +83,8 @@
     $(document).ready(function(){
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
-        if(currentUserLevel == 2 || currentUserLevel ==3){
-            $('#userLevelSpan').hide();
-            $('#parentId').hide();
+        if(currentUserLevel == 1){
+            $('#addApp').hide();
         }
         selectAppList(1);
     });
@@ -102,45 +101,33 @@
             return false;
         }
         $.ajax({
-            url: path + "/user/userList",
+            url: path + "/app/appList",
             type: "post",
             data: {
                 "currentPage" : currentPage,
-                "pageSize" : pageSize,
-                "loginName" : $('#loginName').val(),
-                "nickName" : $('#nickName').val(),
-                "userStatus" :  $('#userStatus option:selected').val(),
-                "userLevel" :  $('#userLevel option:selected').val()
+                "pageSize" : pageSize
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result.userList;
+                    var list = obj.result.appList;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
+                        html+='<td> '+data.appId+'</td>';
+                        html+='<td> '+data.appName+'</td>';
                         html+='<td> '+data.userId+'</td>';
-                        html+='<td> '+data.loginName+'</td>';
-                        html+='<td> '+data.nickName+'</td>';
-                        if(currentUserLevel == 1){
-                            html+='<td> '+data.parentName+'</td>';
-                        }
-                        if(data.userLevel == 1){
-                            html+='<td>超级管理员</td>';
-                        }else if(data.userLevel == 2){
-                            html+='<td>管理员</td>';
-                        }else{
-                            html+='<td>普通用户</td>';
-                        }
+                        html+='<td> '+data.accessMethod+'</td>';
+                        html+='<td> '+data.terminal+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        var userStatus = data.userStatus;
-                        if(userStatus == 2){
-                            html+='<td id="userStatus'+data.userId+'">禁用</td>';
+                        var appStatus = data.appStatus;
+                        if(appStatus == 2){
+                            html+='<td id="appStatus'+data.userId+'">禁用</td>';
                             html+='<td id="operating'+data.userId+'"><input type=button style="background:green" value="启用" onclick="startUserStatus('+data.userId+')"/></td>';
-                        }else if(userStatus == 1){
-                            html+='<td id="userStatus'+data.userId+'">正常</td>';
+                        }else if(appStatus == 1){
+                            html+='<td id="appStatus'+data.userId+'">正常</td>';
                             html+='<td id="operating'+data.userId+'"><input type=button style="background:red" value="禁用" onclick="stopUserStatus('+data.userId+')"/></td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';

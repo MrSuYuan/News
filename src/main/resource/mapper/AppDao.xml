@@ -4,5 +4,39 @@
 <!-- APP模块 -->
 <mapper namespace="com.news.dao.AppDao">
 
+    <!-- 查看行业分类大类 -->
+    <select id="rootType" resultType="com.news.entity.Industy">
+        select * from industy where parentId = 0 order by id asc
+    </select>
+
+    <!-- 查看行业分类小类 -->
+    <select id="subType" resultType="com.news.entity.Industy">
+        select * from industy where parentId != 0 order by id asc
+    </select>
+
+    <!-- 查询此管理下的用户 -->
+    <select id="beLongUser" parameterType="java.lang.Long" resultType="com.news.entity.User">
+        select userId,nickName from user where parentId = #{parentId}
+    </select>
+
+    <!-- 添加APP信息 -->
+    <insert id="createApp" parameterType="com.news.entity.App">
+        insert into app
+        (appId, appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
+          platform,terminal,packageName,version,description,keyWords,auditStatus)
+        values
+        (#{appId},#{appName},#{downloadlink},now(),#{userId},#{accessMethod},1,#{rootType},#{subType},
+          #{platform},#{terminal},#{packageName},#{version},#{description},#{keyWords},2)
+    </insert>
+
+    <!-- app名称验重 -->
+    <select id="appName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from app where appName = #{appName}
+    </select>
+
+    <!-- app列表 -->
+    <select id="appList" parameterType="java.util.Map" resultType="com.news.entity.App">
+        select * from app
+    </select>
 
 </mapper>

@@ -139,5 +139,12 @@ public class PageController extends BaseController {
     @ApiOperation(value = "app详情页", notes = "app详情页", httpMethod = "GET")
     public String appDetail(){ return "manage/appDetail";}
 
+    /**
+     * 添加报告
+     */
+    @RequestMapping(value = "addReport" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加报告", notes = "添加报告", httpMethod = "GET")
+    public String addReport(){ return "manage/addReport";}
+
 
 }

@@ -72,6 +72,7 @@ public class App {
      */
     private int auditStatus;
 
+
     public String getAppId() {
         return appId;
     }

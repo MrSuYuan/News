@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-@RequestMapping("")
+@RequestMapping("news")
 @Api(value = "/news", tags = "新闻模块")
 public class NewsController extends BaseController {
 
