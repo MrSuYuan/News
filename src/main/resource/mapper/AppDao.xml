@@ -6,22 +6,22 @@
 
     <!-- 查看行业分类大类 -->
     <select id="rootType" resultType="com.news.entity.Industy">
-        select * from industy where parentId = 0 order by id asc
+        select * from i_industy where parentId = 0 order by id asc
     </select>
 
     <!-- 查看行业分类小类 -->
     <select id="subType" resultType="com.news.entity.Industy">
-        select * from industy where parentId != 0 order by id asc
+        select * from i_industy where parentId != 0 order by id asc
     </select>
 
     <!-- 查询此管理下的用户 -->
     <select id="beLongUser" parameterType="java.lang.Long" resultType="com.news.entity.User">
-        select userId,nickName from user where parentId = #{parentId}
+        select userId,nickName from u_user where parentId = #{parentId}
     </select>
 
     <!-- 添加APP信息 -->
     <insert id="createApp" parameterType="com.news.entity.App">
-        insert into app
+        insert into a_app
         (appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
           platform,terminal,packageName,version,description,keyWords)
         values
@@ -31,31 +31,65 @@
 
     <!-- app名称验重 -->
     <select id="appName" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(0) from app where appName = #{appName}
+        select count(0) from a_app where appName = #{appName}
     </select>
 
     <!-- app列表 -->
     <select id="appList" parameterType="java.util.Map" resultType="com.news.vo.AppListVo">
         SELECT a.appId,a.appName,u.nickName,a.downloadlink,a.appStatus,a.platform,a.terminal,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")as createTime
-        from app a,user u
+        from a_app a,u_user u
         where a.userId = u.userId
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
+        </if>
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="appStatus != 0">
+            and a.appStatus = #{appStatus}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+        order by a.appId asc
+        limit #{num},#{pageSize}
     </select>
 
     <!-- app列表数量 -->
     <select id="appListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
-        select count(0) from app
+        select count(0)
+        from a_app a,u_user u
+        where a.userId = u.userId
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
+        </if>
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="appStatus != 0">
+            and a.appStatus = #{appStatus}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
     </select>
 
     <!-- 查看当前app的上级id -->
     <select id="appParent" parameterType="java.lang.Long" resultType="java.lang.Long">
         select u.parentId
-        from app a,user u
+        from a_app a,u_user u
         where a.appId = #{appId} and a.userId = u.userId
     </select>
 
     <!-- 修改app状态 -->
     <update id="updateAppStatus" parameterType="java.util.Map">
-        update app set appStatus = #{appStatus} where appId = #{appId}
+        update a_app set appStatus = #{appStatus} where appId = #{appId}
     </update>
 
 </mapper>

@@ -25,7 +25,7 @@
             <div class="left-nav-wrap">
                 <div class="left-nav-main ">
                     <ul class="nav-ul">
-                        <a href="${ctx}/pcList" target="_self">
+                        <a href="${ctx}/news/pcList" target="_self">
                             <img src="${ctx}/static/img/logo.png" height="50" width="140">
                         </a>
                         <li class="nav-ul-li active" cate="1">
@@ -120,7 +120,7 @@
                     <ul class="hot-news-ul">
                         <c:forEach items="${hotNews}" var="i">
                             <li class="clearfix">
-                                <a href="${ctx}/newsDetail?newsId=${i.newsId}" target="_blank">
+                                <a href="${ctx}/news/newsDetail?newsId=${i.newsId}" target="_blank">
                                     <div class="img-div">
                                         <img src="${i.url}">
                                     </div>

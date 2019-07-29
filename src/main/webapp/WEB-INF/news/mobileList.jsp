@@ -41,7 +41,7 @@
     <!--中间新闻列表-->
     <div class="content">
         <c:forEach items="${index}" var="i">
-            <a href="${ctx}/mobileDetail?newsId=${i.newsId}" target="_blank" style="color:black">
+            <a href="${ctx}/news/mobileDetail?newsId=${i.newsId}" target="_blank" style="color:black">
             <c:if test="${i.type == 2}">
                 <div style="width: 100%;height: 400px;margin-bottom:10px;">
                     <div style="width: 100%;height: 70px;margin-bottom:10px;"><font size="8"><strong>${i.title}</strong></font></div>

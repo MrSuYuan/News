@@ -59,7 +59,7 @@ function getNewsList(){
     $('.beforeload').hide();
     $('.loading').show();
     $.ajax({
-        url: path + "/pcListMore",
+        url: path + "/news/pcListMore",
         type: "post",
         data: {
             "page" : page,
@@ -105,7 +105,7 @@ function setNewsList(temp){
                 imgstr+='<img class="img list-li-img" style="width: 33%;height: 220px" src="'+news.pictureUrl[j]+'">';
             }
 
-            str+='<a href='+path+'/mobileDetail?newsId='+news.newsId+' target="_blank" style="color:black">'
+            str+='<a href='+path+'/news/mobileDetail?newsId='+news.newsId+' target="_blank" style="color:black">'
                 +'<div style="width: 100%;height: 400px;margin-bottom:10px;">'
                 +'<div style="width: 100%;height: 70px;margin-bottom:10px;"><font size="8"><strong>'+news.title+'</strong></font></div>'
                 +'<div style="width: 100%;height: 260px;margin-bottom:10px;">'
@@ -119,7 +119,7 @@ function setNewsList(temp){
 
         }else if(news.type == 1){
             imgstr='<img class="img list-li-img" style="width: 100%;height: 350px;margin-top: 20px" src="'+news.pictureUrl[0]+'">';
-            str+='<a href='+path+'/mobileDetail?newsId='+news.newsId+' target="_blank" style="color:black">'
+            str+='<a href='+path+'/news/mobileDetail?newsId='+news.newsId+' target="_blank" style="color:black">'
                 +'<div style="width: 100%;height: 400px;margin-bottom:10px;">'
                 +'<div style="width: 33%;height: 400px;display:inline;float:left">'
                 +imgstr

@@ -121,6 +121,8 @@ public class AppServiceImpl implements AppService {
         //查看当前用户身份
         int userLevel = userDao.userLevel(userId);
         map.put("userLevel",userLevel);
+        map.put("userId",userId);
+        //最高权限能看到所有的app信息,管理只能看到自己下级,普通用户只能看到自己的
         //app列表
         List<AppListVo> appList = appDao.appList(map);
         //app数量

@@ -39,7 +39,7 @@ public class PageController extends BaseController {
      */
     @RequestMapping(value = "/login",method=RequestMethod.GET)
     public ModelAndView loginPage(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("/manage/login");
+        ModelAndView mv = new ModelAndView("/index/login");
         return mv;
     }
 
@@ -115,7 +115,7 @@ public class PageController extends BaseController {
     @RequestMapping(value = "index" , method= RequestMethod.GET)
     @ApiOperation(value = "模板主页面", notes = "模板主页面", httpMethod = "GET")
     public String index(){
-        return "manage/index";
+        return "/index/index";
     }
 
     /**
@@ -123,28 +123,42 @@ public class PageController extends BaseController {
      */
     @RequestMapping(value = "userList" , method= RequestMethod.GET)
     @ApiOperation(value = "用户列表", notes = "用户列表", httpMethod = "GET")
-    public String userList(){ return "manage/userList";}
+    public String userList(){ return "user/userList";}
 
     /**
      * app列表页
      */
     @RequestMapping(value = "appList" , method= RequestMethod.GET)
     @ApiOperation(value = "app列表页", notes = "app列表页", httpMethod = "GET")
-    public String appList(){ return "manage/appList";}
+    public String appList(){ return "app/appList";}
 
     /**
      * app详情页
      */
     @RequestMapping(value = "appDetail" , method= RequestMethod.GET)
     @ApiOperation(value = "app详情页", notes = "app详情页", httpMethod = "GET")
-    public String appDetail(){ return "manage/appDetail";}
+    public String appDetail(){ return "app/appDetail";}
 
     /**
-     * 添加报告
+     * 添加APP代码位信息
      */
-    @RequestMapping(value = "addReport" , method= RequestMethod.GET)
-    @ApiOperation(value = "添加报告", notes = "添加报告", httpMethod = "GET")
-    public String addReport(){ return "manage/addReport";}
+    @RequestMapping(value = "addAppAdspace" , method= RequestMethod.GET)
+    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    public String addAppAdspace(){ return "app/addAdspace";}
+
+    /**
+     * 数据统计列表
+     */
+    @RequestMapping(value = "appStatisticsList" , method= RequestMethod.GET)
+    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    public String reportList(){ return "app/appStatisticsList";}
+
+    /**
+     * 添加APP数据统计
+     */
+    @RequestMapping(value = "addAppStatistics" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加APP数据统计", notes = "添加APP数据统计", httpMethod = "GET")
+    public String addReport(){ return "app/addAppStatistics";}
 
 
 }

@@ -38,7 +38,7 @@
             <!-- 这里是页面内容区 -->
             <div class="page-index">
 
-                    <a href="${ctx}/mobileDetail?newsId=1" target="_blank" style="color:black">
+                    <a href="${ctx}/news/mobileDetail?newsId=1" target="_blank" style="color:black">
                         <div class="card">
                             <div style="width: 100%;height: 70px;margin-bottom:10px;"><font size="8"><strong>标题</strong></font></div>
                             <div style="width: 100%;height: 260px;margin-bottom:10px;">

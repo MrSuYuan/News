@@ -13,8 +13,8 @@
 
 <form action="#" method="post">
     <div align="center">
-        APPID：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        APP名称：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
         APP状态：
         <select id="appStatus" style="width:100px;height:30px">
             <option value="0">全部</option>
@@ -45,6 +45,7 @@
                         <th>下载地址</th>
                         <th>APP状态</th>
                         <th>操作</th>
+                        <th id="adspace">代码位</th>
                     </tr>
                     </thead>
                     <tbody id="coll_list_begin_body">
@@ -82,13 +83,18 @@
         if(currentUserLevel == 1){
             $('#addApp').hide();
         }
+        if(currentUserLevel == 2){
+            $('#adspace').show();
+        }else{
+            $('#adspace').hide();
+        }
         selectAppList(1);
     });
 
     //点击搜索数据展示
     function selectAppList(currentPage) {
+        var currentUserLevel = $('#currentUserLevel').val();
 
-        //var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -161,6 +167,9 @@
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
+                        }
+                        if(currentUserLevel == 2){
+                            html+='<td><button type="button" onclick="addAdspace('+data.appId+')">添加广告位</button></td>';
                         }
                         html+='</tr>';
                     }
@@ -260,6 +269,11 @@
                 alert("请求异常");
             }
         });
+    }
+
+    function addAdspace(appId){
+        sessionStorage.setItem("appId",appId);
+        gotoURL(path + "/addAppAdspace");
     }
 
 </script>

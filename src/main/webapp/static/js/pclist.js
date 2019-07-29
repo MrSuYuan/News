@@ -58,7 +58,7 @@ function getNewsList(){
     $('.beforeload').hide();
     $('.loading').show();
     $.ajax({
-        url: path + "/pcListMore",
+        url: path + "/news/pcListMore",
         type: "post",
         data: {
             "page" : page,
@@ -106,7 +106,7 @@ function setNewsList(temp){
                 imgstr+='<div class="imgdiv"><img class="img list-li-img" src="'+news.pictureUrl[j]+'"/></div>';
             }
             str+='<li class="content-li content-li01">\n' +
-                '                        <a class="" href='+path+'/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
+                '                        <a class="" href='+path+'/news/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
                 '                            <p class="title">'+news.title+'</p>\n' +
                 '                            <div class="img-wrap clearfix">'+imgstr+'</div>\n' +
                 '                            <div class="footer-source">'+news.author+'</span></div>\n' +
@@ -116,7 +116,7 @@ function setNewsList(temp){
         //单图
         }else if(news.type == 1){
             str+='<li class="content-li content-li02">\n' +
-                '            <a class="" href='+path+'/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
+                '            <a class="" href='+path+'/news/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
                 '                <div class="img-wrap clearfix"><div class="imgdiv">\n' +
                 '                    <img class="img list-li-img" src="'+news.pictureUrl[0]+'"/>\n' +
                 '                </div></div>\n' +

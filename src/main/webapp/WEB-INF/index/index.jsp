@@ -148,7 +148,106 @@
 
     <div id="sidebar" class="sidebar responsive ace-save-state">
         <ul class="nav nav-list" id="menu_ul">
-            <li class="" id="userList">
+
+            <li class="" name="user" id="user">
+                <a href="###" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-bars"></i>
+                    <span class="menu-text"> 用户管理 </span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="" id="userList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            用户列表
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="" name="app" id="app">
+                <a href="###" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-bars"></i>
+                    <span class="menu-text"> APP管理 </span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="" id="appList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/appList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            APP列表
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="" id="appAdspaceList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            APP代码位
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="" id="appStatisticsList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/appStatisticsList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            APP统计
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="" name="web" id="web">
+                <a href="###" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-bars"></i>
+                    <span class="menu-text"> WEB管理 </span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            WEB列表
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            WEB代码位
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            WEB统计
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+
+
+<%--            <li class="" id="userList">
                 <a href="#" url="${ctx}/userList">
                     <i class="menu-icon fa fa-list-alt"></i>
                     <span class="menu-text"> 用户管理 </span>
@@ -160,6 +259,14 @@
                 <a href="#" url="${ctx}/appList">
                     <i class="menu-icon fa fa-list-alt"></i>
                     <span class="menu-text"> APP管理 </span>
+                </a>
+
+                <b class="arrow"></b>
+            </li>
+            <li class="" id="reportList">
+                <a href="#" url="${ctx}/reportList">
+                    <i class="menu-icon fa fa-list-alt"></i>
+                    <span class="menu-text"> 统计管理 </span>
                 </a>
 
                 <b class="arrow"></b>
@@ -185,7 +292,7 @@
                         <a href="#" class="dropdown-toggle" url="${ctx}/exampleList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             自定义一
-                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            &lt;%&ndash;<b class="arrow fa fa-angle-down"></b>&ndash;%&gt;
                             <b class="active"></b>
                         </a>
                         <b class="arrow"></b>
@@ -194,12 +301,12 @@
                         <a href="#" class="dropdown-toggle" url="${ctx}/exampleList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             自定义二
-                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            &lt;%&ndash;<b class="arrow fa fa-angle-down"></b>&ndash;%&gt;
                         </a>
                         <b class="arrow"></b>
                     </li>
                 </ul>
-            </li>
+            </li>--%>
         </ul><!-- /.nav-list -->
 
         <div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
@@ -381,7 +488,7 @@
             $('#more').show();
 
         }else if(currentUserLevel == 3){
-            $('#userList').hide();
+            $('#user').hide();
             $('#appList').show();
             $('#other').show();
             $('#more').show();

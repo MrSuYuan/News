@@ -16,7 +16,7 @@
 <div class="pc-detail-wrap">
     <!---->
     <div class="header-wrap" style="width: 100%;height: 80px">
-        <a href="${ctx}/mobileList">
+        <a href="${ctx}/news/mobileList">
             <div class="nav-main">
                 <img src="${ctx}/static/img/logo.png" height="80" width="140">
             </div>
