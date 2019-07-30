@@ -258,6 +258,14 @@ public class AppServiceImpl implements AppService {
             //查看广告位所属app的上级id
             Long parentId = appDao.adParentId(spaceId);
             if(userId.longValue() == parentId.longValue()){
+                //计算点击率和ecmp
+                //点击率=点击数/展现pv（以百分数形式呈现）
+                //ecpm=收益*1000/展现pv
+                for(int i = 0; i < list.size(); i++){
+                    AppStatistics as = list.get(i);
+                    as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
+                    as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                }
                 appDao.addAppStatistics(list);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("添加成功");

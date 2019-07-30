@@ -27,9 +27,7 @@
                     <th>日期</th>
                     <th>展现pv</th>
                     <th>点击数</th>
-                    <th>点击率</th>
                     <th>收益</th>
-                    <th>ecpm</th>
                 </tr>
 
                 </thead>
@@ -90,19 +88,13 @@
         td2.innerHTML="<input type='text' name='lookPV'/>";
         var td3=document.createElement("td");
         td3.innerHTML="<input type='text' name='clickNum'/>";
-        var td4=document.createElement("td");
-        td4.innerHTML="<input type='text' name='clickProbability'/>";
         var td5=document.createElement("td");
         td5.innerHTML="<input type='text' name='income'/>";
-        var td6=document.createElement("td");
-        td6.innerHTML="<input type='text' name='ecmp'/>";
         tr.appendChild(td0);
         tr.appendChild(td1);
         tr.appendChild(td2);
         tr.appendChild(td3);
-        tr.appendChild(td4);
         tr.appendChild(td5);
-        tr.appendChild(td6);
         editTable.appendChild(tr);
     }
 
@@ -133,9 +125,9 @@
                 createTime : $(val).find('input[name=createTime]').eq(0).val(),
                 lookPV : $(val).find('input[name=lookPV]').eq(0).val(),
                 clickNum : $(val).find('input[name=clickNum]').eq(0).val(),
-                clickProbability : $(val).find('input[name=clickProbability]').eq(0).val(),
                 income : $(val).find('input[name=income]').eq(0).val(),
-                ecmp : $(val).find('input[name=ecmp]').eq(0).val(),
+                clickProbability : 0,
+                ecmp : 0,
             }
             objs.push(obj)
         })

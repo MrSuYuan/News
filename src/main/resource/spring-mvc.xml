@@ -93,6 +93,11 @@
                      allow-credentials="true" />
     </mvc:cors>
 
+    <!-- 定时器 -->
+    <!--<task:scheduled-tasks>
+        <task:scheduled ref="taskController" method="getNews" cron="0 18 16 * * ?"/>
+    </task:scheduled-tasks>-->
+
     <!--静态资源直接访问-->
     <mvc:resources location="/WEB-INF/picture/" mapping="/picture/**"/>
 

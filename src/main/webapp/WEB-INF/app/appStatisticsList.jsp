@@ -101,7 +101,7 @@
                         html+='<td> '+data.createTime+'</td>';
                         html+='<td> '+data.lookPV+'</td>';
                         html+='<td> '+data.clickNum+'</td>';
-                        html+='<td> '+data.clickProbability+'</td>';
+                        html+='<td> '+data.clickProbability+'%</td>';
                         html+='<td> '+data.income+'</td>';
                         html+='<td> '+data.ecmp+'</td>';
                         html+='</tr>';
