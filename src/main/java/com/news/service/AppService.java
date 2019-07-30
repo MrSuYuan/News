@@ -32,4 +32,25 @@ public interface AppService {
      * 修改app状态
      */
     ReqResponse appStatus(Long userId, Long appId, Integer appStatus);
+
+    /**
+     * 创建代码位信息
+     */
+    ReqResponse createAdspace(Long userId, Long appId, int spaceType, String spaceName, int width, int height);
+
+    /**
+     * 广告位列表
+     */
+    ReqResponse appAdspaceList(Long userId, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize);
+
+    /**
+     * 上传统计信息
+     */
+    ReqResponse addAppStatistics(Long userId, String reportList)throws Exception;
+
+    /**
+     * 查看APP统计列表
+     */
+    ReqResponse appStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+
 }

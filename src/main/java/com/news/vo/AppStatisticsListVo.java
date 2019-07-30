@@ -1,40 +1,49 @@
 package com.news.vo;
 
-import java.util.Date;
-
+/**
+ * 广告位统计列表返回信息
+ */
 public class AppStatisticsListVo {
 
-    private Long reportId;
-    private Long appId;
-    private Date createTime;
+    private Long spaceId;
+    private String spaceName;
+    private String appName;
+    private String createTime;
     private int lookPV;
     private int clickNum;
     private double clickProbability;
     private double income;
     private double ecmp;
-    private String appName;
 
-    public Long getReportId() {
-        return reportId;
+    public Long getSpaceId() {
+        return spaceId;
     }
 
-    public void setReportId(Long reportId) {
-        this.reportId = reportId;
+    public void setSpaceId(Long spaceId) {
+        this.spaceId = spaceId;
     }
 
-    public Long getAppId() {
-        return appId;
+    public String getSpaceName() {
+        return spaceName;
     }
 
-    public void setAppId(Long appId) {
-        this.appId = appId;
+    public void setSpaceName(String spaceName) {
+        this.spaceName = spaceName;
     }
 
-    public Date getCreateTime() {
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
+
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
@@ -76,13 +85,5 @@ public class AppStatisticsListVo {
 
     public void setEcmp(double ecmp) {
         this.ecmp = ecmp;
-    }
-
-    public String getAppName() {
-        return appName;
-    }
-
-    public void setAppName(String appName) {
-        this.appName = appName;
     }
 }

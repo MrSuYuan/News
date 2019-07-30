@@ -140,4 +140,91 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value = "/createAdspace",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "创建广告位信息", notes = "创建广告位信息", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="appId" , value="appId" ,required = true , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = true , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="width" , value="宽度" ,required = true , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="height" , value="高度" ,required = true , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse createAdspace(Long appId, int spaceType, String spaceName, int width, int height) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.createAdspace((Long)userId, appId, spaceType, spaceName, width, height);
+        }
+        return req;
+    }
+
+    @RequestMapping(value = "/appAdspaceList",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位列表", notes = "广告位列表", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appAdspaceList(String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appAdspaceList((Long) userId, appName, spaceName, spaceType, currentPage, pageSize);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="addAppStatistics", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上传统计信息", notes = "上传统计信息", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="statisticsList" , value="参数集合" ,required = true , paramType = "query" ,dataType = "List")
+    })
+    @CrossOrigin
+    public ReqResponse addAppStatistics(@RequestParam("statisticsList")String statisticsList)throws Exception{
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.addAppStatistics((Long)userId, statisticsList);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="appStatisticsList", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "统计列表", notes = "统计列表", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appStatisticsList(String spaceName, String appName, Integer currentPage, Integer pageSize){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appStatisticsList((Long)userId, spaceName, appName, currentPage, pageSize);
+        }
+        return req;
+    }
+
 }

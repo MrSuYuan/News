@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
             return req;
         }else{
             if(user.getPassWord().equals(MD5Util.hexSALT(login.getPassWord(),"zghd"))){
-                if(user.getUserStatus() == 0){
+                if(user.getUserStatus() == 2){
                     req.setCode(ErrorMessage.FAIL.getCode());
                     req.setMessage("当前帐号被禁用,请联系管理员");
                     return req;

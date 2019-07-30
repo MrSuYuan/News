@@ -4,15 +4,15 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title> 添加报告 </title>
+    <title> 添加数据统计 </title>
 </head>
 
 <body>
 
-<font size="4"><STRONG>添加报告</STRONG></font>
+<font size="4"><STRONG>添加数据统计</STRONG></font>
 <hr>
 
-<input type = "hidden" id="appId">
+<input type = "hidden" id="spaceId">
 
 <div class="row">
     <div class="col-xs-12">
@@ -61,12 +61,12 @@
 <script type="text/javascript">
 
     /**
-     * 页面加载完毕,取出session的appId
+     * 页面加载完毕,取出session的spaceId
      */
     $(document).ready(function(){
-        var appId =  sessionStorage.getItem("appId");
-        $('#appId').val(appId);
-        sessionStorage.removeItem("appId");
+        var spaceId =  sessionStorage.getItem("spaceId");
+        $('#spaceId').val(spaceId);
+        sessionStorage.removeItem("spaceId");
     })
 
     /**
@@ -125,11 +125,11 @@
      * 提交
      */
     function submit() {
-        var appId = $('#appId').val();
+        var spaceId = $('#spaceId').val();
         var objs = [];
         $('.trClass').each(function(index,val){
             var obj = {
-                appId : appId,
+                spaceId : spaceId,
                 createTime : $(val).find('input[name=createTime]').eq(0).val(),
                 lookPV : $(val).find('input[name=lookPV]').eq(0).val(),
                 clickNum : $(val).find('input[name=clickNum]').eq(0).val(),
@@ -143,18 +143,20 @@
 
         //提交数据
         $.ajax({
-            url: path + "/report/addReport",
+            url: path + "/app/addAppStatistics",
             type: "post",
             data: {
-                "appId" : appId,
-                "reportList" : JSON.stringify(objs)
+                "statisticsList" : JSON.stringify(objs)
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    gotoURL(path+"/appList");
+                    gotoURL(path+"/appAdspaceList");
+                }else if(obj.code == 300){
+                    alert(obj.message);
+                    gotoURL(path+"/login");
                 }else{
                     alert(obj.message);
                 }

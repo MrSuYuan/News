@@ -84,6 +84,9 @@ public class PageController extends BaseController {
                     session.setAttribute("userLevel", user.getUserLevel());
                     session.setAttribute("nickName", user.getNickName());
                     req.setResult("/index");
+                }else{
+                    req.setCode(req.getCode());
+                    req.setMessage(req.getMessage());
                 }
 
             }else{
@@ -143,8 +146,22 @@ public class PageController extends BaseController {
      * 添加APP代码位信息
      */
     @RequestMapping(value = "addAppAdspace" , method= RequestMethod.GET)
-    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    @ApiOperation(value = "添加APP代码位信息", notes = "添加APP代码位信息", httpMethod = "GET")
     public String addAppAdspace(){ return "app/addAdspace";}
+
+    /**
+     * APP广告位列表
+     */
+    @RequestMapping(value = "appAdspaceList" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP广告位列表", notes = "APP广告位列表", httpMethod = "GET")
+    public String appAdspaceList(){ return "app/adspaceList";}
+
+    /**
+     * 添加APP数据统计
+     */
+    @RequestMapping(value = "addAppStatistics" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加APP数据统计", notes = "添加APP数据统计", httpMethod = "GET")
+    public String addReport(){ return "app/addAppStatistics";}
 
     /**
      * 数据统计列表
@@ -153,12 +170,7 @@ public class PageController extends BaseController {
     @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
     public String reportList(){ return "app/appStatisticsList";}
 
-    /**
-     * 添加APP数据统计
-     */
-    @RequestMapping(value = "addAppStatistics" , method= RequestMethod.GET)
-    @ApiOperation(value = "添加APP数据统计", notes = "添加APP数据统计", httpMethod = "GET")
-    public String addReport(){ return "app/addAppStatistics";}
+
 
 
 }

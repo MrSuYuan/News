@@ -1,9 +1,9 @@
 package com.news.dao;
 
-import com.news.entity.App;
-import com.news.entity.Industy;
-import com.news.entity.User;
+import com.news.entity.*;
+import com.news.vo.AppAdspaceListVo;
 import com.news.vo.AppListVo;
+import com.news.vo.AppStatisticsListVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -59,5 +59,40 @@ public interface AppDao {
      * 修改app状态
      */
     void updateAppStatus(Map<String,Object> map);
+
+    /**
+     * 创建广告位信息
+     */
+    void createAdspace(AppAdspace ad);
+
+    /**
+     * 广告位列表
+     */
+    List<AppAdspaceListVo> appAdspaceList(Map<String,Object> map);
+
+    /**
+     * 广告位列表数量
+     */
+    int appAdspaceListNum(Map<String,Object> map);
+
+    /**
+     * 查看广告位所属app的上级id
+     */
+    Long adParentId(Long spaceId);
+
+    /**
+     * 批量添加广告位数据统计信息
+     */
+    void addAppStatistics(List<AppStatistics> list);
+
+    /**
+     * 查看数据统计信息列表
+     */
+    List<AppStatisticsListVo> appStatisticsList(Map<String,Object> map);
+
+    /**
+     * 查看数据统计信息列表数量
+     */
+    int appStatisticsListNum(Map<String,Object> map);
 
 }

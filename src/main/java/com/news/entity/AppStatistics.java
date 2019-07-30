@@ -5,7 +5,7 @@ import java.util.Date;
 public class AppStatistics {
 
     private Long statisticsId;
-    private Long appId;
+    private Long spaceId;
     private Date createTime;
     private int lookPV;
     private int clickNum;
@@ -21,12 +21,12 @@ public class AppStatistics {
         this.statisticsId = statisticsId;
     }
 
-    public Long getAppId() {
-        return appId;
+    public Long getSpaceId() {
+        return spaceId;
     }
 
-    public void setAppId(Long appId) {
-        this.appId = appId;
+    public void setSpaceId(Long spaceId) {
+        this.spaceId = spaceId;
     }
 
     public Date getCreateTime() {

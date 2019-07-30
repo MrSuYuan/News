@@ -187,9 +187,9 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="" id="appAdspaceList">
-                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/appAdspaceList">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            APP代码位
+                            APP广告位
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
                             <b class="active"></b>
                         </a>
@@ -198,7 +198,7 @@
                     <li class="" id="appStatisticsList">
                         <a href="#" class="dropdown-toggle" url="${ctx}/appStatisticsList">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            APP统计
+                            APP数据统计
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
                             <b class="active"></b>
                         </a>
@@ -227,7 +227,7 @@
                     <li class="">
                         <a href="#" class="dropdown-toggle" url="${ctx}/userList">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            WEB代码位
+                            WEB广告位
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
                             <b class="active"></b>
                         </a>
@@ -236,7 +236,7 @@
                     <li class="">
                         <a href="#" class="dropdown-toggle" url="${ctx}/userList">
                             <i class="menu-icon fa fa-caret-right"></i>
-                            WEB统计
+                            WEB数据统计
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
                             <b class="active"></b>
                         </a>
@@ -478,20 +478,17 @@
         if(currentUserLevel == 1){
             $('#userList').show();
             $('#appList').show();
-            $('#other').show();
-            $('#more').show();
+            $('#web').hide();
 
         }else if(currentUserLevel == 2){
             $('#userList').show();
             $('#appList').show();
-            $('#other').show();
-            $('#more').show();
+            $('#web').hide();
 
         }else if(currentUserLevel == 3){
             $('#user').hide();
             $('#appList').show();
-            $('#other').show();
-            $('#more').show();
+            $('#web').hide();
 
         }else{
 

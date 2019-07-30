@@ -1,12 +1,14 @@
 package com.news.service.impl;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.news.dao.AppDao;
 import com.news.dao.UserDao;
-import com.news.entity.App;
-import com.news.entity.Industy;
-import com.news.entity.User;
+import com.news.entity.*;
 import com.news.service.AppService;
+import com.news.vo.AppAdspaceListVo;
 import com.news.vo.AppListVo;
+import com.news.vo.AppStatisticsListVo;
 import com.news.vo.UserListVo;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -166,6 +168,154 @@ public class AppServiceImpl implements AppService {
             req.setCode(ErrorMessage.FAIL.getCode());
             req.setMessage("您没有操作权限");
         }
+        return req;
+    }
+
+    /**
+     * 创建代码位信息
+     */
+    @Override
+    public ReqResponse createAdspace(Long userId, Long appId, int spaceType, String spaceName, int width, int height) {
+        ReqResponse req = new ReqResponse();
+        Long appParentId = appDao.appParent(appId);
+        if(null != appParentId && userId.longValue() == appParentId.longValue()){
+            AppAdspace ad = new AppAdspace();
+            ad.setAppId(appId);
+            ad.setSpaceType(spaceType);
+            ad.setSpaceName(spaceName);
+            ad.setWidth(width);
+            ad.setHeight(height);
+            appDao.createAdspace(ad);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("创建成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("您没有操作权限");
+        }
+        return req;
+    }
+
+    /**
+     * 广告位列表
+     */
+    @Override
+    public ReqResponse appAdspaceList(Long userId, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("appName",appName);
+        map.put("spaceName",spaceName);
+        map.put("spaceType",spaceType);
+        //查看当前用户身份
+        int userLevel = userDao.userLevel(userId);
+        map.put("userLevel",userLevel);
+        map.put("userId",userId);
+        //最高权限能看到所有的app信息,管理只能看到自己下级,普通用户只能看到自己的
+        //app列表
+        List<AppAdspaceListVo> adspaceList = appDao.appAdspaceList(map);
+        //app数量
+        int sumData = appDao.appAdspaceListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("adspaceList",adspaceList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 上传统计信息
+     */
+    @Override
+    public ReqResponse addAppStatistics(Long userId, String reportList) throws Exception {
+        ReqResponse req = new ReqResponse();
+        if(null != reportList && !"".equals(reportList)){
+            //解析前端传过来的集合数据
+            ObjectMapper mapper = new ObjectMapper();
+            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
+            List<AppStatistics> list =  mapper.readValue(reportList, jt);
+            Long spaceId = list.get(0).getSpaceId();
+
+            //查看广告位所属app的上级id
+            Long parentId = appDao.adParentId(spaceId);
+            if(userId.longValue() == parentId.longValue()){
+                appDao.addAppStatistics(list);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("添加成功");
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您无权操作此APP");
+            }
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("参数错误");
+        }
+        return req;
+    }
+
+    /**
+     * 查看APP统计列表
+     */
+    @Override
+    public ReqResponse appStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("spaceName",spaceName);
+        map.put("appName",appName);
+        map.put("parentId",userId);
+        //先查询当前用户身份
+        int currentUserLevel = userDao.userLevel(userId);
+        map.put("currentUserLevel",currentUserLevel);
+
+        //查询集合列表
+        List<AppStatisticsListVo> statisticsList = appDao.appStatisticsList(map);
+        //总数量
+        int sumData = appDao.appStatisticsListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("statisticsList",statisticsList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
         return req;
     }
 }

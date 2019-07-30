@@ -13,11 +13,9 @@
 
 <form action="#" method="post">
     <div align="center">
-        APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
         APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectReportList
-
-        ($('#currentPage').val())">&nbsp;&nbsp;
+        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectStatisticsList($('#currentPage').val())">&nbsp;&nbsp;
 
     </div>
     <br><span></span><br>
@@ -29,7 +27,8 @@
                        class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr style="height: 50px">
-                        <th>APPID</th>
+                        <th>广告位ID</th>
+                        <th>广告位名称</th>
                         <th>APP名称</th>
                         <th>创建时间</th>
                         <th>展现pv</th>
@@ -64,11 +63,11 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        selectAppStatisticsList(1);
+        selectStatisticsList(1);
     });
 
     //点击搜索数据展示
-    function selectAppStatisticsList(currentPage) {
+    function selectStatisticsList(currentPage) {
 
         //var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
@@ -79,10 +78,10 @@
             return false;
         }
         $.ajax({
-            url: path + "/appStatistics/appStatisticsList",
+            url: path + "/app/appStatisticsList",
             type: "post",
             data: {
-                "appId" : $('#appId').val(),
+                "spaceName" : $('#spaceName').val(),
                 "appName" : $('#appName').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
@@ -91,12 +90,13 @@
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result.reportList;
+                    var list = obj.result.statisticsList;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.appId+'</td>';
+                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appName+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         html+='<td> '+data.lookPV+'</td>';
