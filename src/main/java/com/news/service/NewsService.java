@@ -29,4 +29,9 @@ public interface NewsService {
      * 新闻详情
      */
     News newDetails(Long newsId);
+
+    /**
+     * app端新闻数据加载
+     */
+    ReqResponse loadData(Integer currentPage, Integer sign);
 }

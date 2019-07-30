@@ -117,10 +117,42 @@ public class NewsController extends BaseController {
      * 移动端主页面跳转
      */
     @RequestMapping(value = "/appList",method=RequestMethod.GET)
-    public ModelAndView t2(HttpServletRequest request) {
+    public ModelAndView appList(HttpServletRequest request) {
         ModelAndView mv = new ModelAndView("news/appList");
-        List<News> indexNews = newsService.indexNews("1","1");
-        mv.addObject("index",indexNews);
         return mv;
     }
+
+
+    @RequestMapping(value = "/loadData",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "移动端数据加载", notes = "移动端数据加载", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="sign" , value="分类标记" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse loadData(Integer currentPage, Integer sign) {
+        ReqResponse req = newsService.loadData(currentPage, sign);
+        return req;
+    }
+
+
+    /**
+     * 模板
+     */
+    @RequestMapping(value = "/moban",method=RequestMethod.GET)
+    public ModelAndView moban(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView("news/moban");
+        return mv;
+    }
+
+    /**
+     * 模板
+     */
+    @RequestMapping(value = "/newsList",method=RequestMethod.GET)
+    public ModelAndView newsList(HttpServletRequest request) {
+        ModelAndView mv = new ModelAndView("news/newsList");
+        return mv;
+    }
+
 }

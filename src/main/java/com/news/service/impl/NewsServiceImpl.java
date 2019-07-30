@@ -165,4 +165,26 @@ public class NewsServiceImpl implements NewsService {
     public News newDetails(Long newsId) {
         return newsDao.newsDetails(newsId);
     }
+
+    /**
+     * app端新闻数据加载
+     */
+    @Override
+    public ReqResponse loadData(Integer currentPage, Integer sign) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("currentPage",currentPage);
+        map.put("sign",sign);
+        List<News> newsList = newsDao.loadData(map);
+
+        for(News n : newsList){
+            String url = n.getUrl().split(";")[0];
+            n.setUrl(url);
+        }
+
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setResult(newsList);
+        req.setMessage("数据加载完成");
+        return req;
+    }
 }

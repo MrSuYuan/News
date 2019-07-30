@@ -31,4 +31,9 @@ public interface NewsDao {
      * 查看详情
      */
     News newsDetails(Long newsId);
+
+    /**
+     * app端新闻数据加载
+     */
+    List<News> loadData(Map<String,Object> map);
 }

@@ -30,4 +30,9 @@
         select * from news where newsId = #{newsId}
     </select>
 
+    <!-- app端新闻数据加载 -->
+    <select id="loadData" parameterType="java.util.Map" resultType="com.news.entity.News">
+        select * from news limit 0,10
+    </select>
+
 </mapper>

@@ -34,36 +34,23 @@
             </h1>
         </header>
 
-        <div class="content">
-            <!-- 这里是页面内容区 -->
-            <div class="page-index">
-
-                    <a href="${ctx}/news/mobileDetail?newsId=1" target="_blank" style="color:black">
-                        <div class="card">
-                            <div style="width: 100%;height: 70px;margin-bottom:10px;"><font size="8"><strong>标题</strong></font></div>
-                            <div style="width: 100%;height: 260px;margin-bottom:10px;">
-                                    <img class="img list-li-img" style="width: 33%;height: 220px" src="http://img.cashslide.cn/app/hippo/20190722/1775961e5a8727f7be7f653cfce613c86506596e.jpeg">
-                                    <img class="img list-li-img" style="width: 33%;height: 220px" src="http://img.cashslide.cn/app/hippo/20190722/1775961e5a8727f7be7f653cfce613c86506596e.jpeg">
-                                    <img class="img list-li-img" style="width: 33%;height: 220px" src="http://img.cashslide.cn/app/hippo/20190722/1775961e5a8727f7be7f653cfce613c86506596e.jpeg">
+        <div>
+            <div class="list-block media-list">
+                <ul>
+                    <span id="newsList"></span>
+                    <%--<li>
+                        <a href="#" class="item-link item-content">
+                            <div class="item-media"><img src="http://gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg" style='width: 4rem;'></div>
+                            <div class="item-inner">
+                                <div class="item-title-row">
+                                    <div class="item-title">标题</div>
+                                </div>
+                                <div class="item-subtitle">标题</div>
+                                <div class="item-text">此处是文本内容...</div>
                             </div>
-                            <div style="width: 100%;height: 50px"><font size="5">2018</font></div>
-                        </div>
-                    </a>
-
-                <div class="card">
-                    <div style="background-image:url(//gqianniu.alicdn.com/bao/uploaded/i4//tfscom/i3/TB10LfcHFXXXXXKXpXXXXXXXXXX_!!0-item_pic.jpg_250x250q60.jpg)" valign="bottom" class="card-header color-white no-border">旅途的山</div>
-                    <div class="card-content">
-                        <div class="card-content-inner">
-                            <p class="color-gray">发表于 2015/01/15</p>
-                            <p>此处是内容...</p>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <a href="#" class="link">赞</a>
-                        <a href="#" class="link">更多</a>
-                    </div>
-                </div>
-
+                        </a>
+                    </li>--%>
+                </ul>
             </div>
         </div>
     </div>
@@ -73,6 +60,9 @@
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
 <script src="${ctx}/static/js/jquery.js"></script>
+<script type="text/javascript">
+    var path = "${ctx}";
+</script>
 <script type='text/javascript'>
 
     /**
@@ -83,6 +73,7 @@
     $(document).ready(function(){
         var signList = $('.sign');
         signList[0].style.color = "red";
+        loadData(1,1);
     })
 
     /**
@@ -97,6 +88,51 @@
         sign.style.color = "red";
 
         //加载新数据
+        loadData(sign,1);
+    }
+
+    function loadData(sign,currentPage) {
+        //加载新数据
+        $.ajax({
+            url: path + "/news/loadData",
+            data:{
+                "sign" : sign,
+                "currentPage" : currentPage
+            },
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if(data.code == 200){
+
+                    var list = data.result;
+                    var html = "";
+                    for(var i=0;i<list.length;i++){
+                        var news = list[i];
+                        html += '<li>';
+                        html += '<a href="#" class="item-link item-content">';
+                        html += '<div class="item-media"><img src="'+news.url+'" style="width: 4rem;"></div>';
+                        html += '<div class="item-inner">';
+                        html += '<div class="item-title-row">';
+                        html += '<div class="item-title">'+news.title+'</div>';
+                        html += '</div>';
+                        html += '<div class="item-subtitle">标题</div>';
+                        html += '<div class="item-text">此处是文本内容...</div>';
+                        html += '</div>';
+                        html += '</a>';
+                        html += '</li>';
+                    }
+                    $('#newsList').html(html);
+
+                }else{
+                    alert(data.message);
+                }
+
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
     }
 
 </script>
