@@ -32,7 +32,10 @@
 
     <!-- app端新闻数据加载 -->
     <select id="loadData" parameterType="java.util.Map" resultType="com.news.entity.News">
-        select * from news limit 0,10
+        select * from news
+        where contentType = #{contentType}
+        order by newsId desc
+        limit #{num},10
     </select>
 
 </mapper>

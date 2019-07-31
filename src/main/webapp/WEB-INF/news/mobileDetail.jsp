@@ -14,13 +14,18 @@
 </head>
 <body nid="1" total="5" cate="7">
 <div class="pc-detail-wrap">
-    <!---->
-    <div class="header-wrap" style="width: 100%;height: 80px">
-        <a href="${ctx}/news/mobileList">
-            <div class="nav-main">
-                <img src="${ctx}/static/img/logo.png" height="80" width="140">
-            </div>
-        </a>
+    <div id="main">
+        <div data-reactroot="" id="indexContainer" class="indexContainer withHeader ">
+            <header id="indexHeader">
+                <div class="top_bar" style="background:#1e90ff">
+                    <div class="abs_m">
+                        <a href="${ctx}/news/newsList">
+                            <img src="${ctx}/static/img/zol.png" style="width: 285px;height: 86px" >
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
     </div>
     <!---->
     <div style="width: 90%;margin-left: 5%">
@@ -29,18 +34,18 @@
         <div>
             <div>
                 <div>
-                    <div style="font-size: 50px">头条新闻 > 正文</div>
+                    <div style="font-size: 50px">新闻 > 正文</div>
                     <div style="font-size: 80px"><strong>${news.title}</strong></div>
                     <div style="font-size: 50px">${news.author}</div>
                     <div style="font-size: 50px">
                         ${news.content}
                     </div>
                     <div style="font-size: 50px"><strong>相关推荐</strong></div>
-                    <div style="font-size: 50px">
+                    <%--<div style="font-size: 50px">
                         <script zmua="d=m&s=b&u=u4213752&h=20:8" src="http://js.bjzghd.com/x.js"></script>
                         <script zmua="d=m&s=b&u=u4213752&h=20:8" src="http://js.bjzghd.com/x.js"></script>
                         <script zmua="d=m&s=b&u=u4213752&h=20:8" src="http://js.bjzghd.com/x.js"></script>
-                    </div>
+                    </div>--%>
                 </div>
             </div>
         </div>

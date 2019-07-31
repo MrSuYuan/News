@@ -170,16 +170,22 @@ public class NewsServiceImpl implements NewsService {
      * app端新闻数据加载
      */
     @Override
-    public ReqResponse loadData(Integer currentPage, Integer sign) {
+    public ReqResponse loadData(Integer currentPage, Integer contentType) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
-        map.put("currentPage",currentPage);
-        map.put("sign",sign);
+        map.put("contentType",contentType);
+        map.put("num",(currentPage-1)*10);
         List<News> newsList = newsDao.loadData(map);
 
         for(News n : newsList){
-            String url = n.getUrl().split(";")[0];
-            n.setUrl(url);
+            String [] pictureUrl = n.getUrl().split(";");
+            List picture = new ArrayList();
+            for(int j=0;j<pictureUrl.length;j++){
+                picture.add(pictureUrl[j]);
+            }
+            n.setPictureUrl(picture);
+            String author = n.getAuthor().substring(0,20);
+            n.setAuthor(author);
         }
 
         req.setCode(ErrorMessage.SUCCESS.getCode());

@@ -10,7 +10,7 @@
     <meta name="description" content="新闻">
     <meta name="pathname" content="usergrowth_mobile_list">
     <link href="${ctx}/static/css/newsList.css" rel="stylesheet">
-    <meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">
     <style type="text/css">
         .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container{position:fixed;top:50%;display:inline-block;right:15px;z-index:1400}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container{right:30px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container{right:45px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .qzHOK{width:75px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .qzHOK{width:150px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .qzHOK{width:225px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{position:absolute;top:-8px;right:0;width:20px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{top:-16px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{top:-24px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{width:40px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{width:60px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{width:40px;height:32px;background:url(${ctx}/static/img/popup_banner_close.png) no-repeat 50%;background-size:17px;position:absolute;left:0;top:0;opacity:.7}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{width:80px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{width:120px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{height:64px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{height:96px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{background-size:34px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{background-size:51px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .xkpjpgEPnSSMngdYsNOnofza,.FFNxqpFxUxiDdymXEjtDDWVHAgR .aOFygqEbuytNXZfEgrB{position:fixed;width:8.65625rem;height:11.5625rem;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1400}.FFNxqpFxUxiDdymXEjtDDWVHAgR .aOFygqEbuytNXZfEgrB{background:url(${ctx}/static/img/wap_bonus.png) no-repeat 50%;background-size:cover}.FFNxqpFxUxiDdymXEjtDDWVHAgR .xkpjpgEPnSSMngdYsNOnofza{background:url(${ctx}/static/img/wap_bonus.png) no-repeat 50%;background-size:cover}.FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus{display:block}.FFNxqpFxUxiDdymXEjtDDWVHAgR .mask{display:block;position:absolute;width:100%;height:100%;z-index:1000;left:0;top:0;background:rgba(0,0,0,.3)}
     </style>
@@ -25,25 +25,35 @@
 
 <div style="display:none">
     <input type="hidden" name="csrfmiddlewaretoken" value="c6c767ed7687c2979e16561e09709c3a">
+    <input type="hidden" id="page">
+    <input type="hidden" id="contentType">
 </div>
 <div id="main">
     <div data-reactroot="" id="indexContainer" class="indexContainer withHeader ">
         <header id="indexHeader">
-            <div class="top_bar">
+            <div class="top_bar" style="background:#1e90ff">
                 <div class="abs_m">
-                    <a href="https://m.toutiao.com/#" class="refresh_title btn"></a><a href="https://m.toutiao.com/#" class="refresh_btn btn"></a>
+                    <img src="${ctx}/static/img/zol.png" style="width: 285px;height: 86px" >
                 </div>
             </div>
             <div class="top_menu_bar">
                 <div id="top_menu" class="top_menu_list">
-
-                    <span class="btn cur" onclick="changeSign(this)" value="1">推荐</span>&nbsp;&nbsp;
+                    <ul>
+                        <li class="btn cur" value="1" style="margin-top: 15px" onclick="changeSign(this)"><span>推荐</span></li>
+                        <li class="btn" value="2" style="margin-top: 15px" onclick="changeSign(this)"><span>热点</span></li>
+                        <li class="btn" value="3" style="margin-top: 15px" onclick="changeSign(this)"><span>娱乐</span></li>
+                        <li class="btn" value="4" style="margin-top: 15px" onclick="changeSign(this)"><span>科技</span></li>
+                        <li class="btn" value="5" style="margin-top: 15px" onclick="changeSign(this)"><span>探索</span></li>
+                        <li class="btn" value="6" style="margin-top: 15px" onclick="changeSign(this)"><span>趣闻</span></li>
+                        <li class="btn" value="7" style="margin-top: 15px" onclick="changeSign(this)"><span>历史</span></li>
+                    </ul>
+                    <%--<span class="btn cur" onclick="changeSign(this)" value="1">推荐</span>&nbsp;&nbsp;
                     <span class="btn" onclick="changeSign(this)" value="2">热点</span>&nbsp;&nbsp;
                     <span class="btn" onclick="changeSign(this)" value="3">娱乐</span>&nbsp;&nbsp;
                     <span class="btn" onclick="changeSign(this)" value="4">科技</span>&nbsp;&nbsp;
                     <span class="btn" onclick="changeSign(this)" value="5">探索</span>&nbsp;&nbsp;
                     <span class="btn" onclick="changeSign(this)" value="6">趣闻</span>&nbsp;&nbsp;
-                    <span class="btn" onclick="changeSign(this)" value="7">历史</span>
+                    <span class="btn" onclick="changeSign(this)" value="7">历史</span>--%>
 
                 </div>
             </div>
@@ -77,7 +87,9 @@
      */
     $(document).ready(function(){
         var btnList = $('.btn');
-        btnList[0].style.color = "red";
+        btnList[0].style.color = "blue";
+        $('#page').val(1);
+        $('#contentType').val(1);
         loadData(1,1);
     })
 
@@ -90,18 +102,22 @@
         for(var i = 0; i < btnList.length; i++){
             btnList[i].style.color = "black";
         }
-        btn.style.color = "red";
-
+        btn.style.color = "blue";
+        //先清空内容区数据
+        $('.list_content').empty();
+        $('#contentType').val(btn.value);
+        $('#page').val(1);
+        document.documentElement.scrollTop = 0;
         //加载新数据
-        loadData(btn,1);
+        loadData(btn.value,1);
     }
 
-    function loadData(btn,currentPage) {
+    function loadData(contentType,currentPage) {
         //加载新数据
         $.ajax({
             url: path + "/news/loadData",
             data:{
-                "sign" : btn,
+                "contentType" : contentType,
                 "currentPage" : currentPage
             },
             type: "post",
@@ -116,39 +132,38 @@
                         //0无图新闻 1单图 2三图
                         if (news.type == 1){
                             html += '<section class="middle_mode has_action" data-hot-time="1493815884" data-group-id="6415726313801695490" data-item-id="6415732492795380225" data-format="0">';
-                            html += '<a href="article.html" data-action-label="click_headline" data-tag="news_society" class="article_link clearfix ">';
+                            html += '<a href='+path+'/news/mobileDetail?newsId='+news.newsId+' data-action-label="click_headline" target="_self" data-tag="news_society" class="article_link clearfix ">';
                             html += '<div class="item_detail desc">';
                             html += '<h3 class="dotdot line3 image-margin-right">'+news.title+'</h3>';
                             html += '<div class="item_info">';
                             html += '<div>';
-                            html += '<span class="src space">中国青年网</span>';
+                            html += '<span class="src space">'+news.author+'</span>';
                             html += '<span class="cmt space"></span>';
                             html += '<span data-id="6415726313801695490" class="dislike-news fr mid-space"></span>';
                             html += '</div>';
                             html += '</div>';
                             html += '</div>';
                             html += '<div class="list_img_holder">';
-                            html += '<img src="'+news.url+'">';
+                            html += '<img src="'+news.pictureUrl[0]+'">';
                             html += '</div>';
                             html += '</a>';
                             html += '</section>';
 
                         } else if(news.type == 2){
                             html += '<section class="has_action" data-hot-time="1493815434" data-group-id="6415696164972134658" data-item-id="6415816425910305282" data-format="0">';
-                            html += '<a href="article.html" data-action-label="click_headline" data-tag="news_entertainment" class="article_link clearfix ">';
+                            html += '<a href='+path+'/news/mobileDetail?newsId='+news.newsId+' data-action-label="click_headline" target="_self" data-tag="news_society" class="article_link clearfix ">';
                             html += '<div class="item_detail">';
                             html += '<h3 class="dotdot line3">'+news.title+'</h3>';
                             html += '<div class="list_image">';
                             html += '<ul class="clearfix">';
-                            html += '<li class="list_img_holder"><img src="'+news.url+'"></li>';
-                            html += '<li class="list_img_holder"><img src="'+news.url+'"></li>';
-                            html += '<li class="list_img_holder"><img src="'+news.url+'"></li>';
+                            for(var j=0;j<3;j++){
+                                html += '<li class="list_img_holder"><img src="'+news.pictureUrl[j]+'"></li>';
+                            }
                             html += '</ul>';
                             html += '</div>';
                             html += '<div class="item_info">';
                             html += '<div>';
-                            html += '<span class="src space">果酱音乐</span><span class="cmt space"></span>';
-                            html += '<span class="time" title="2017-05-03 20:43">18分钟前</span>';
+                            html += '<span class="src space">'+news.author+'</span><span class="cmt space"></span>';
                             html += '<span data-id="6415696164972134658" class="dislike-news fr"></span>';
                             html += '</div>';
                             html += '</div>';
@@ -161,7 +176,7 @@
                         }
 
                     }
-                    $('#newsList').html(html);
+                    $('.list_content').append(html);
 
                 }else{
                     alert(data.message);
@@ -173,6 +188,28 @@
             }
         });
     }
+
+    //获取当前浏览器中的滚动事件
+    $(window).off("scroll").on("scroll", function () {
+        //1，得到滚动条到顶部的距离
+        var scrollTop = document.body.scrollTop;
+        //2，得到 滚动条的高度（等于浏览器窗口的高度）
+        var clientHeight =document.body.clientHeight;
+        //3，得到页面的高度
+        var pageHeight=document.body.scrollHeight;
+        //+150 是因为因也有导航栏
+        if( scrollTop + clientHeight + 150 >= pageHeight){
+
+            var page = $('#page').val();
+            var contentType = $('#contentType').val();
+            loadData(contentType,page);
+            page ++ ;
+            $('#page').val(page);
+
+        }
+
+    });
+
 </script>
 
 </html>

@@ -78,7 +78,7 @@
 </body>
     <script src="${ctx}/static/js/jquery.js"></script>
     <script src="${ctx}/static/js/scrollLoading.js"></script>
-    <script src="${ctx}/static/js/mobileList2.js"></script>
+    <script src="${ctx}/static/js/mobileList.js"></script>
     <script>
 
         var path = "${ctx}";

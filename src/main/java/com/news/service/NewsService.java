@@ -33,5 +33,5 @@ public interface NewsService {
     /**
      * app端新闻数据加载
      */
-    ReqResponse loadData(Integer currentPage, Integer sign);
+    ReqResponse loadData(Integer currentPage, Integer contentType);
 }
