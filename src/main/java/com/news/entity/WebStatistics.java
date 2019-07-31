@@ -3,9 +3,9 @@ package com.news.entity;
 import java.util.Date;
 
 /**
- * APP数据统计信息
+ * web端数据统计
  */
-public class AppStatistics {
+public class WebStatistics {
 
     /**
      * 统计id

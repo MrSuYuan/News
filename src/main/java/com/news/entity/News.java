@@ -6,15 +6,35 @@ import java.util.List;
  * 新闻数据载体
  */
 public class News {
+
     private long newsId;
+    /**
+     * 新闻标题
+     */
     private String title;
+    /**
+     * 时间作者出处
+     */
     private String author;
+    /**
+     * 内容,html代码
+     */
     private String content;
+    /**
+     * 图片路径,多张分号拼接
+     */
     private String url;
-    //图片类型  0无图新闻 1单图 2三图
+    /**
+     * 图片类型  0无图新闻 1单图 2三图
+     */
     private int type;
-    //内容类型  1推荐 2热点 3娱乐 4科技 5探索 6趣闻 7历史
+    /**
+     * 内容类型  1推荐 2热点 3娱乐 4科技 5探索 6趣闻 7历史
+     */
     private int contentType;
+    /**
+     * 图片拆分
+     */
     private List<String> pictureUrl;
 
     public int getContentType() {

@@ -143,7 +143,7 @@ public class PageController extends BaseController {
     public String appDetail(){ return "app/appDetail";}
 
     /**
-     * 添加APP代码位信息
+     * APP添加代码位信息
      */
     @RequestMapping(value = "addAppAdspace" , method= RequestMethod.GET)
     @ApiOperation(value = "添加APP代码位信息", notes = "添加APP代码位信息", httpMethod = "GET")
@@ -157,18 +157,60 @@ public class PageController extends BaseController {
     public String appAdspaceList(){ return "app/adspaceList";}
 
     /**
-     * 添加APP数据统计
+     * APP添加数据统计
      */
     @RequestMapping(value = "addAppStatistics" , method= RequestMethod.GET)
     @ApiOperation(value = "添加APP数据统计", notes = "添加APP数据统计", httpMethod = "GET")
-    public String addReport(){ return "app/addAppStatistics";}
+    public String addAppStatistics(){ return "app/addAppStatistics";}
 
     /**
-     * 数据统计列表
+     * APP数据统计列表
      */
     @RequestMapping(value = "appStatisticsList" , method= RequestMethod.GET)
     @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
-    public String reportList(){ return "app/appStatisticsList";}
+    public String appStatisticsList(){ return "app/appStatisticsList";}
+
+    /**
+     * WEB列表页
+     */
+    @RequestMapping(value = "webList" , method= RequestMethod.GET)
+    @ApiOperation(value = "web列表页", notes = "web列表页", httpMethod = "GET")
+    public String webList(){ return "web/webList";}
+
+    /**
+     * WEB详情页
+     */
+    @RequestMapping(value = "webDetail" , method= RequestMethod.GET)
+    @ApiOperation(value = "web详情页", notes = "web详情页", httpMethod = "GET")
+    public String webDetail(){ return "web/webDetail";}
+
+    /**
+     * WEB添加代码位信息
+     */
+    @RequestMapping(value = "addWebAdspace" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加WEB代码位信息", notes = "添加WEB代码位信息", httpMethod = "GET")
+    public String addWebAdspace(){ return "web/addAdspace";}
+
+    /**
+     * WEB广告位列表
+     */
+    @RequestMapping(value = "webAdspaceList" , method= RequestMethod.GET)
+    @ApiOperation(value = "WEB广告位列表", notes = "WEB广告位列表", httpMethod = "GET")
+    public String webAdspaceList(){ return "web/adspaceList";}
+
+    /**
+     * WEB添加数据统计
+     */
+    @RequestMapping(value = "addWebStatistics" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加WEB数据统计", notes = "添加WEB数据统计", httpMethod = "GET")
+    public String addWebStatistics(){ return "web/addWebStatistics";}
+
+    /**
+     * WEB数据统计列表
+     */
+    @RequestMapping(value = "webStatisticsList" , method= RequestMethod.GET)
+    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    public String webStatisticsList(){ return "web/webStatisticsList";}
 
 
 

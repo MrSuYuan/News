@@ -216,7 +216,7 @@
                 <b class="arrow"></b>
                 <ul class="submenu">
                     <li class="">
-                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/webList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB列表
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
@@ -225,7 +225,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/webAdspaceList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB广告位
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
@@ -234,7 +234,7 @@
                         <b class="arrow"></b>
                     </li>
                     <li class="">
-                        <a href="#" class="dropdown-toggle" url="${ctx}/userList">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/webStatisticsList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB数据统计
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
@@ -478,17 +478,17 @@
         if(currentUserLevel == 1){
             $('#userList').show();
             $('#appList').show();
-            $('#web').hide();
+            $('#web').show();
 
         }else if(currentUserLevel == 2){
             $('#userList').show();
             $('#appList').show();
-            $('#web').hide();
+            $('#web').show();
 
         }else if(currentUserLevel == 3){
             $('#user').hide();
             $('#appList').show();
-            $('#web').hide();
+            $('#web').show();
 
         }else{
 
