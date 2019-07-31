@@ -4,27 +4,27 @@
 <html>
 
 <head>
-    <title>APP列表</title>
+    <title>WEB列表</title>
 </head>
 
 <body>
-<font size="4"><STRONG>APP列表</STRONG></font>
+<font size="4"><STRONG>WEB列表</STRONG></font>
 <hr>
 
 <form action="#" method="post">
     <div align="center">
-        APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        APP状态：
-        <select id="appStatus" style="width:100px;height:30px">
+        WEBID：<input type="text" id="webId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        WEB名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        WEB状态：
+        <select id="webStatus" style="width:100px;height:30px">
             <option value="0">全部</option>
             <option value="1">未审核</option>
             <option value="2">驳回</option>
             <option value="3">正常</option>
             <option value="4">禁用</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectAppList($('#currentPage').val())">&nbsp;&nbsp;
-        <input id="addApp" type="button" style="width:80px;height:30px" value="添加APP" onclick="appDetail()">
+        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectWebList($('#currentPage').val())">&nbsp;&nbsp;
+        <input id="addWeb" type="button" style="width:100px;height:30px" value="添加WEB网站" onclick="webDetail()">
 
     </div>
     <br><span></span><br>
@@ -71,9 +71,9 @@
 
 <script type="text/javascript">
 
-    //新增用户
-    function appDetail() {
-        gotoURL(path+"/appDetail")
+    //新增WEB网站
+    function webDetail() {
+        gotoURL(path+"/webDetail")
     }
 
     //进入页面直接请求数据
@@ -81,18 +81,18 @@
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
         if(currentUserLevel == 1){
-            $('#addApp').hide();
+            $('#addWeb').hide();
         }
         if(currentUserLevel == 2){
             $('#adspace').show();
         }else{
             $('#adspace').hide();
         }
-        selectAppList(1);
+        selectWebList(1);
     });
 
     //点击搜索数据展示
-    function selectAppList(currentPage) {
+    function selectWebList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
 
         var pageSize = $('#pageSize').val();

@@ -4,19 +4,19 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<font size="4"><STRONG>编辑应用</STRONG></font>
+<font size="4"><STRONG>编辑WEB网站</STRONG></font>
 <hr>
 
 <form action="#" method="post">
     <div>
         <table style="font-size: 14px">
-            <tr height = "50" id="appIdT">
-                <td align = "right">应用ID:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="appId" name="userName" placeholder="应用ID"></td>
+            <tr height = "50" id="webIdT">
+                <td align = "right">WEBID:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="webId" name="webId" placeholder="WEBID"></td>
             </tr>
             <tr height = "50">
-                <td align = "right">应用名称:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="appName" name="loginEmail" placeholder="请输入应用名称"></td>
+                <td align = "right">WEB名称:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="webName" name="webName" placeholder="请输入应用名称"></td>
             </tr>
             <tr height = "50" id="nickNameT">
                 <td align = "right">归属用户:&nbsp;&nbsp;</td>
@@ -31,51 +31,38 @@
                 </td>
             </tr>
             <tr height = "50">
-                <td align = "right">适用系统:&nbsp;&nbsp;</td>
+                <td align = "right">访问量级:&nbsp;&nbsp;</td>
                 <td width="250">
-                    <select style="width: 276px;height: 34px" id="platform">
+                    <select style="width: 276px;height: 34px" id="accessLevel">
                         <option value="0">请选择</option>
-                        <option value="1">Android</option>
-                        <option value="2">IOS</option>
-                        <option value="3">Windows</option>
+                        <option value="1">0--1万</option>
+                        <option value="2">1万--10万</option>
+                        <option value="3">10万--100万</option>
+                        <option value="4">100万-1000万</option>
+                        <option value="5">1000万以上</option>
                     </select>
                 </td>
             </tr>
             <tr height = "50">
-                <td align = "right">适应终端:&nbsp;&nbsp;</td>
-                <td width="250">
-                    <select style="width: 276px;height: 34px" id="terminal">
-                        <option value="0">请选择</option>
-                        <option value="1">手机</option>
-                        <option value="2">平板</option>
-                        <option value="3">电脑</option>
-                    </select>
-                </td>
+                <td align = "right">网站地址:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="webUrl" placeholder="请输访问地址"></td>
             </tr>
             <tr height = "50">
-                <td align = "right">下载地址:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="downloadlink" placeholder="请输下载地址"></td>
+                <td align = "right">备案信息:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="recordInfo" placeholder="请输入备案信息"></td>
             </tr>
             <tr height = "50">
-                <td align = "right">程序主包名:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="packageName" placeholder="请输入程序主包名"></td>
+                <td align = "right">网站描述:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="webDescription" placeholder="请输入网站描述"></td>
             </tr>
             <tr height = "50">
-                <td align = "right">应用版本:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="version" placeholder="请输入应用版本"></td>
-            </tr>
-            <tr height = "50">
-                <td align = "right">关键词:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="keyWords" placeholder="请输入关键词"></td>
-            </tr>
-            <tr height = "50">
-                <td align = "right">应用简介:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="description" placeholder="请输入应用简介"></td>
+                <td align = "right">备注信息:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="remark" placeholder="请输入备注信息"></td>
             </tr>
             <tr height = "50">
                 <td></td>
                 <td>
-                    <input type="button" id="send" value="确定" onclick="createApp()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="button" id="send" value="确定" onclick="createWeb()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     <input type="button" id="back" value="重置" onclick="reset()">
                 </td>
             </tr>
@@ -104,11 +91,11 @@
             beLongUser();
         }
 
-        var appId =  sessionStorage.getItem("appId");
-        //session里没有appId的时候是添加app信息
-        if(null == appId){
+        var webId =  sessionStorage.getItem("webId");
+        //session里没有webId的时候是添加web信息
+        if(null == webId){
             //隐藏id
-            $('#appIdT').hide();
+            $('#webIdT').hide();
             //session里有appId时,是修改app信息
         }else{
             $('#appUuid').val(appUuid);
@@ -117,7 +104,7 @@
         }
     });
 
-    //查看app分类
+    //查看分类
     function industy(){
         $.ajax({
             url: path + "/app/industy",
@@ -199,45 +186,42 @@
         });
     }
 
-    //创建app信息
-    function createApp(){
+    //创建web信息
+    function createWeb(){
         //收集参数
         var currentUserLevel = $('#currentUserLevel').val();
         var currentUserId = $('#currentUserId').val();
-        var appName = $('#appName').val();
-        var downloadlink = $('#downloadlink').val();
+        var webName = $('#webName').val();
+        var webUrl = $('#webUrl').val();
         var rootType = $('#rootType').val();
         var subType = $('#subType').val().split("?")[0];
-        var platform = $('#platform').val();
-        var terminal = $('#terminal').val();
-        var packageName = $('#packageName').val();
-        var version = $('#version').val();
-        var description = $('#description').val();
-        var keyWords = $('#keyWords').val();
+        var recordInfo = $('#recordInfo').val();
+        var accessLevel = $('#accessLevel').val();
+        var webDescription = $('#webDescription').val();
+        var remark = $('#remark').val();
         var userId;
         if(currentUserLevel == 3){
             userId = currentUserId;
         }else{
             userId = $('#beLongUserId').val();
         }
-        if(null==appName || null==downloadlink || 0==rootType || 0==subType || 0==platform || 0==terminal ||
-            ""==packageName || ""==version || ""==description || ""==keyWords || null==userId){
+        if(""==webName || ""==webUrl || 0==rootType || 0==subType || 0==accessLevel ||
+            ""==recordInfo || ""==recordInfo || ""==webDescription || ""==remark || 0==userId){
             alert("请将信息填写完毕再提交");
         }else{
+            alert("可以提交");
             //保存app信息
             $.ajax({
-                url: path + "/app/createApp",
+                url: path + "/web/createWeb",
                 data:{
-                    "appName" : appName,
-                    "downloadlink" : downloadlink,
+                    "webName" : webName,
+                    "webUrl" : webUrl,
                     "rootType" : rootType,
                     "subType" : subType,
-                    "platform" : platform,
-                    "terminal" : terminal,
-                    "packageName" : packageName,
-                    "version" : version,
-                    "description" : description,
-                    "keyWords" : keyWords,
+                    "recordInfo" : recordInfo,
+                    "accessLevel" : accessLevel,
+                    "webDescription" : webDescription,
+                    "remark" : remark,
                     "userId" : userId,
                     "currentUserLevel" : currentUserLevel
                 },
@@ -247,7 +231,7 @@
                 success: function (data) {
                     if(data.code == 200){
                         alert(data.message);
-                        gotoURL(path + "/appList");
+                        gotoURL(path + "/webList");
                     }else if(data.code == 300){
                         alert(data.message);
                         window.location = path + "/login";

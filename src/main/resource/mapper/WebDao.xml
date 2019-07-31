@@ -4,6 +4,24 @@
 <!-- WEB模块 -->
 <mapper namespace="com.news.dao.WebDao">
 
+    <!-- 查看web网站名是否可用 -->
+    <select id="webName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from w_web where webName = #{webName}
+    </select>
 
+    <!-- 查看webUrl是否可用 -->
+    <select id="webUrl" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from w_web where webUrl = #{webUrl}
+    </select>
+
+    <!-- 保存web网站信息 -->
+    <insert id="insertWeb" parameterType="com.news.entity.Web">
+        insert into w_web
+        (webUrl, webName, userId, rootType, subType, recordInfo,
+        accessLevel, webDescription, remark, createTime, webStatus)
+        values
+        (#{webUrl},#{webName},#{userId},#{rootType},#{subType},#{recordInfo},
+        #{accessLevel},#{webDescription},#{remark},now(),1)
+    </insert>
 
 </mapper>
