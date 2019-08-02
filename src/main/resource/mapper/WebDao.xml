@@ -24,4 +24,138 @@
         #{accessLevel},#{webDescription},#{remark},now(),1)
     </insert>
 
+    <!-- web列表 -->
+    <select id="webList" parameterType="java.util.Map" resultType="com.news.vo.WebListVo">
+        SELECT w.webId,w.webName,u.nickName,w.webUrl,DATE_FORMAT(w.createTime,"%Y-%m-%d %H:%i:%s")as createTime,w.webStatus
+        from w_web w,u_user u
+        where w.userId = u.userId
+        <if test="webId != null and webId !=''">
+            and w.webId = #{webId}
+        </if>
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="webStatus != 0">
+            and w.webStatus = #{webStatus}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and w.userId = #{userId}
+        </if>
+        order by w.webId asc
+        limit #{num},#{pageSize}
+    </select>
+    
+    <!-- web列表数量 -->
+    <select id="webListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from w_web w,u_user u
+        where w.userId = u.userId
+        <if test="webId != null and webId !=''">
+            and w.webId = #{webId}
+        </if>
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="webStatus != 0">
+            and w.webStatus = #{webStatus}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and w.userId = #{userId}
+        </if>
+    </select>
+
+    <!-- 查看当前web的上级id -->
+    <select id="webParent" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select u.parentId
+        from w_web w,u_user u
+        where w.webId = #{webId} and w.userId = u.userId
+    </select>
+
+    <!-- 修改web状态 -->
+    <update id="updateWebStatus" parameterType="java.util.Map">
+        update w_web set webStatus = #{webStatus} where webId = #{webId}
+    </update>
+
+    <!-- 创建广告位信息 -->
+    <insert id="createAdspace" parameterType="com.news.entity.WebAdspace">
+        insert into w_adspace
+        (webId, terminal, spaceType, createTime, spaceName, width, height, remark)
+        values
+        (#{webId},#{terminal},#{spaceType},now(),#{spaceName},#{width},#{height},#{remark})
+    </insert>
+
+    <!-- 广告位列表 -->
+    <select id="webAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.WebAdSpaceListVo">
+        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal
+        from w_adspace s,w_web w,u_user u
+        where s.webId = w.webId and w.userId = u.userId
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and s.spaceName = #{spaceName}
+        </if>
+        <if test="terminal != 0">
+            and s.terminal = #{terminal}
+        </if>
+        <if test="spaceType != 0">
+            and s.spaceType = #{spaceType}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+        order by s.spaceId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 广告位列表数量 -->
+    <select id="webAdspaceListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from w_adspace s,w_web w,u_user u
+        where s.webId = w.webId and w.userId = u.userId
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and s.spaceName = #{spaceName}
+        </if>
+        <if test="terminal != 0">
+            and s.terminal = #{terminal}
+        </if>
+        <if test="spaceType != 0">
+            and s.spaceType = #{spaceType}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+    </select>
+
+    <!-- 查看广告位所属app的上级id -->
+    <select id="adParentId" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select u.parentId
+        from w_adspace d,w_web w,u_user u
+        where d.spaceId = #{spaceId} and d.webId = w.webId and w.userId = u.userId
+    </select>
+
+    <!-- 添加广告位数据统计信息 -->
+    <insert id="addWebStatistics">
+        insert into w_statistics
+        (spaceId, createTime, lookPV, clickNum, clickProbability, income, ecmp) values
+        <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+            (#{item.spaceId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+        </foreach>
+    </insert>
+
 </mapper>

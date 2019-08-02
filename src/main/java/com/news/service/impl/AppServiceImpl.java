@@ -246,13 +246,13 @@ public class AppServiceImpl implements AppService {
      * 上传统计信息
      */
     @Override
-    public ReqResponse addAppStatistics(Long userId, String reportList) throws Exception {
+    public ReqResponse addAppStatistics(Long userId, String statisticsList) throws Exception {
         ReqResponse req = new ReqResponse();
-        if(null != reportList && !"".equals(reportList)){
+        if(null != statisticsList && !"".equals(statisticsList)){
             //解析前端传过来的集合数据
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
-            List<AppStatistics> list =  mapper.readValue(reportList, jt);
+            List<AppStatistics> list =  mapper.readValue(statisticsList, jt);
             Long spaceId = list.get(0).getSpaceId();
 
             //查看广告位所属app的上级id

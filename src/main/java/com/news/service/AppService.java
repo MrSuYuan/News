@@ -46,7 +46,7 @@ public interface AppService {
     /**
      * 上传统计信息
      */
-    ReqResponse addAppStatistics(Long userId, String reportList)throws Exception;
+    ReqResponse addAppStatistics(Long userId, String statisticsList)throws Exception;
 
     /**
      * 查看APP统计列表

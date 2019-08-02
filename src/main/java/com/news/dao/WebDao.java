@@ -1,7 +1,16 @@
 package com.news.dao;
 
+import com.news.entity.AppStatistics;
 import com.news.entity.Web;
+import com.news.entity.WebAdspace;
+import com.news.entity.WebStatistics;
+import com.news.vo.AppListVo;
+import com.news.vo.WebAdSpaceListVo;
+import com.news.vo.WebListVo;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * WEB模块数据层接口
@@ -23,5 +32,50 @@ public interface WebDao {
      * 保存web网站信息
      */
     void insertWeb(Web web);
+
+    /**
+     * web列表
+     */
+    List<WebListVo> webList(Map<String,Object> map);
+
+    /**
+     * web列表数量
+     */
+    int webListNum(Map<String,Object> map);
+
+    /**
+     * 查看当前web的上级id
+     */
+    Long webParent(Long webId);
+
+    /**
+     * 修改web状态
+     */
+    void updateWebStatus(Map<String,Object> map);
+
+    /**
+     * 创建广告位信息
+     */
+    void createAdspace(WebAdspace ad);
+
+    /**
+     * 广告位列表
+     */
+    List<WebAdSpaceListVo> webAdspaceList(Map<String,Object> map);
+
+    /**
+     * 广告位列表数量
+     */
+    int webAdspaceListNum(Map<String,Object> map);
+
+    /**
+     * 查看广告位所属app的上级id
+     */
+    Long adParentId(Long spaceId);
+
+    /**
+     * 批量添加广告位数据统计信息
+     */
+    void addWebStatistics(List<WebStatistics> list);
 
 }

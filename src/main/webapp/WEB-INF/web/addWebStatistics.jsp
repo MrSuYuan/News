@@ -135,7 +135,7 @@
 
         //提交数据
         $.ajax({
-            url: path + "/app/addAppStatistics",
+            url: path + "/web/addWebStatistics",
             type: "post",
             data: {
                 "statisticsList" : JSON.stringify(objs)
@@ -145,7 +145,7 @@
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    gotoURL(path+"/appAdspaceList");
+                    gotoURL(path+"/webAdspaceList");
                 }else if(obj.code == 300){
                     alert(obj.message);
                     gotoURL(path+"/login");

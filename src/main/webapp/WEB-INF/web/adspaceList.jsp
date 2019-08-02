@@ -13,18 +13,22 @@
 
 <form action="#" method="post">
     <div align="center">
-        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        WEB名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
         广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        终端：
+        <select id="terminal" style="width:100px;height:30px">
+            <option value="0">请选择</option>
+            <option value="1">PC</option>
+            <option value="2">WAP</option>
+        </select>&nbsp;&nbsp;&nbsp;&nbsp;
         广告位类型：
         <select id="spaceType" style="width:100px;height:30px">
             <option value="0">请选择</option>
-            <option value="1">横幅</option>
-            <option value="2">开屏</option>
-            <option value="3">插屏</option>
-            <option value="4">信息流</option>
-            <option value="5">激励视频</option>
+            <option value="1">固定块</option>
+            <option value="2">右下浮</option>
+            <option value="3">对联</option>
         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" style="width:50px;height:30px" value="搜索" onclick="appAdspaceList($('#currentPage').val())">&nbsp;&nbsp;
+        <input type="button" style="width:50px;height:30px" value="搜索" onclick="webAdspaceList($('#currentPage').val())">&nbsp;&nbsp;
 
     </div>
     <br><span></span><br>
@@ -38,7 +42,8 @@
                     <tr style="height: 50px">
                         <th>广告位ID</th>
                         <th>广告位名称</th>
-                        <th>APP名称</th>
+                        <th>WEB名称</th>
+                        <th>终端</th>
                         <th>类型</th>
                         <th>宽度</th>
                         <th>高度</th>
@@ -80,11 +85,11 @@
         }else{
             $('#statistics').hide();
         }
-        appAdspaceList(1);
+        webAdspaceList(1);
     });
 
     //点击搜索数据展示
-    function appAdspaceList(currentPage) {
+    function webAdspaceList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
@@ -94,13 +99,14 @@
             return false;
         }
         $.ajax({
-            url: path + "/app/appAdspaceList",
+            url: path + "/web/webAdspaceList",
             type: "post",
             data: {
                 "currentPage" : currentPage,
                 "pageSize" : pageSize,
-                "appName" : $('#appName').val(),
+                "webName" : $('#webName').val(),
                 "spaceName" : $('#spaceName').val(),
+                "terminal" : $('#terminal').val(),
                 "spaceType" :  $('#spaceType option:selected').val()
             },
             dataType: 'json',
@@ -114,18 +120,22 @@
                         html+='<tr style="height: 40px">';
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
-                        html+='<td> '+data.appName+'</td>';
+                        html+='<td> '+data.webName+'</td>';
+                        var terminal = data.terminal;
+                        if(terminal == 1){
+                            html+='<td> PC </td>';
+                        }else if(terminal == 2){
+                            html+='<td> WAP </td>';
+                        }else{
+                            html+='<td> <font color="red">信息错误</font> </td>';
+                        }
                         var spaceType = data.spaceType;
                         if(spaceType == 1){
-                            html+='<td> 横幅 </td>';
+                            html+='<td> 固定块 </td>';
                         }else if(spaceType == 2){
-                            html+='<td> 开屏 </td>';
+                            html+='<td> 右下浮 </td>';
                         }else if(spaceType == 3){
-                            html+='<td> 插屏 </td>';
-                        }else if(spaceType == 4){
-                            html+='<td> 信息流 </td>';
-                        }else if(spaceType == 5){
-                            html+='<td> 激励视频 </td>';
+                            html+='<td> 对联 </td>';
                         }else{
                             html+='<td> <font color="red">信息错误</font> </td>';
                         }
@@ -133,7 +143,7 @@
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2){
-                            html+='<td><button type="button" onclick="addAppStatistice('+data.spaceId+')">添加数据统计</button></td>';
+                            html+='<td><button type="button" onclick="addWebStatistice('+data.spaceId+')">添加数据统计</button></td>';
                         }
                         html+='</tr>';
                     }
@@ -165,7 +175,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            selectUserList(page);
+            webAdspaceList(page);
         }
     }
 
@@ -177,13 +187,13 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            selectUserList(page);
+            webAdspaceList(page);
         }
     }
 
-    function addAppStatistice(spaceId) {
+    function addWebStatistice(spaceId) {
         sessionStorage.setItem("spaceId",spaceId);
-        gotoURL(path + "/addAppStatistics");
+        gotoURL(path + "/addWebStatistics");
     }
 
 </script>

@@ -8,7 +8,7 @@
 <hr>
 
 <form action="#" method="post">
-    <input type="hidden" id="appId">
+    <input type="hidden" id="webId">
     <div>
         <table style="font-size: 14px">
             <tr height = "50" id="spaceIdT">
@@ -19,7 +19,28 @@
                 <td align = "right">广告位名称:&nbsp;&nbsp;</td>
                 <td width="250"><input type="text" size="35" id="spaceName" name="spaceName" placeholder="广告位名称"></td>
             </tr>
-            <tr height = "50" id="nickNameT">
+            <tr height = "50">
+                <td align = "right">广告位终端:&nbsp;&nbsp;</td>
+                <td width="250">
+                    <select style="width: 276px;height: 34px" id="terminal">
+                        <option value="0">请选择</option>
+                        <option value="1">PC</option>
+                        <option value="2">WAP</option>
+                    </select>
+                </td>
+            </tr>
+            <tr height = "50">
+                <td align = "right">广告位类型:&nbsp;&nbsp;</td>
+                <td width="250">
+                    <select style="width: 276px;height: 34px" id="spaceType">
+                        <option value="0">请选择</option>
+                        <option value="1">固定块</option>
+                        <option value="2">右下浮</option>
+                        <option value="3">对联</option>
+                    </select>
+                </td>
+            </tr>
+            <tr height = "50">
                 <td align = "right">广告位宽度:&nbsp;&nbsp;</td>
                 <td width="250"><input type="text" size="35" id="width" name="width" placeholder="请输入广告位宽度"></td>
                 </td>
@@ -30,18 +51,11 @@
                 </td>
             </tr>
             <tr height = "50">
-                <td align = "right">广告位类型:&nbsp;&nbsp;</td>
-                <td width="250">
-                    <select style="width: 276px;height: 34px" id="spaceType">
-                        <option value="0">请选择</option>
-                        <option value="1">横幅</option>
-                        <option value="2">开屏</option>
-                        <option value="3">插屏</option>
-                        <option value="4">信息流</option>
-                        <option value="5">激励视频</option>
-                    </select>
+                <td align = "right">备注:&nbsp;&nbsp;</td>
+                <td width="250"><input type="text" size="35" id="remark" name="remark" placeholder="备注信息"></td>
                 </td>
             </tr>
+
             <tr height = "50">
                 <td></td>
                 <td>
@@ -59,9 +73,9 @@
     //进入页面直接请求数据
     $(document).ready(function(){
 
-        var appId =  sessionStorage.getItem("appId");
-        $('#appId').val(appId);
-        sessionStorage.removeItem("appId");
+        var webId =  sessionStorage.getItem("webId");
+        $('#webId').val(webId);
+        sessionStorage.removeItem("webId");
         $('#spaceIdT').hide();
 
     });
@@ -70,22 +84,26 @@
     //创建广告位信息
     function createAdspace(){
         //收集参数
-        var appId = $('#appId').val();
+        var webId = $('#webId').val();
         var spaceName = $('#spaceName').val();
         var width = $('#width').val();
         var height = $('#height').val();
         var spaceType = $('#spaceType').val();
-        if(""==appId || ""==spaceName || ""==width || ""==height || 0==spaceType){
+        var terminal = $('#terminal').val();
+        var remark = $('#remark').val();
+        if(""==webId || ""==spaceName || ""==width || ""==height || 0==spaceType || 0==terminal){
             alert("请将信息填写完毕再提交");
         }else{
             //保存代码位信息
             $.ajax({
-                url: path + "/app/createAdspace",
+                url: path + "/web/createAdspace",
                 data:{
-                    "appId" : appId,
+                    "webId" : webId,
                     "spaceName" : spaceName,
                     "width" : width,
                     "height" : height,
+                    "terminal" : terminal,
+                    "remark" : remark,
                     "spaceType" : spaceType
                 },
                 type: "post",
@@ -94,7 +112,7 @@
                 success: function (data) {
                     if(data.code == 200){
                         alert(data.message);
-                        gotoURL(path + "/appList");
+                        gotoURL(path + "/webList");
                     }else if(data.code == 300){
                         alert(data.message);
                         window.location = path + "/login";

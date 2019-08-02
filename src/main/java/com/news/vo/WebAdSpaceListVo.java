@@ -1,19 +1,20 @@
-package com.news.entity;
+package com.news.vo;
 
 import java.util.Date;
 
 /**
- * web端广告位信息
+ * web端广告位列表信息
  */
-public class WebAdspace {
+public class WebAdSpaceListVo {
+
     /**
      * 广告位id
      */
     private Long spaceId;
     /**
-     * webId
+     * web网站名称
      */
-    private Long webId;
+    private String webName;
     /**
      * 终端类型(1pc 2wap)
      */
@@ -25,7 +26,7 @@ public class WebAdspace {
     /**
      * 创建时间
      */
-    private Date createTime;
+    private String createTime;
     /**
      * 广告位名称
      */
@@ -38,17 +39,21 @@ public class WebAdspace {
      * 高度
      */
     private int height;
-    /**
-     * 备注
-     */
-    private String remark;
 
-    public String getRemark() {
-        return remark;
+    public Long getSpaceId() {
+        return spaceId;
     }
 
-    public void setRemark(String remark) {
-        this.remark = remark;
+    public void setSpaceId(Long spaceId) {
+        this.spaceId = spaceId;
+    }
+
+    public String getWebName() {
+        return webName;
+    }
+
+    public void setWebName(String webName) {
+        this.webName = webName;
     }
 
     public int getTerminal() {
@@ -59,22 +64,6 @@ public class WebAdspace {
         this.terminal = terminal;
     }
 
-    public Long getSpaceId() {
-        return spaceId;
-    }
-
-    public void setSpaceId(Long spaceId) {
-        this.spaceId = spaceId;
-    }
-
-    public Long getWebId() {
-        return webId;
-    }
-
-    public void setWebId(Long webId) {
-        this.webId = webId;
-    }
-
     public int getSpaceType() {
         return spaceType;
     }
@@ -83,11 +72,11 @@ public class WebAdspace {
         this.spaceType = spaceType;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

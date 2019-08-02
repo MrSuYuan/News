@@ -99,6 +99,6 @@
     </task:scheduled-tasks>-->
 
     <!--静态资源直接访问-->
-    <mvc:resources location="/WEB-INF/picture/" mapping="/picture/**"/>
+    <mvc:resources location="/WEB-INF/index/" mapping="/index/**"/>
 
 </beans>

@@ -1,15 +1,26 @@
 package com.news.service.impl;
 
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.news.dao.UserDao;
 import com.news.dao.WebDao;
+import com.news.entity.AppStatistics;
 import com.news.entity.Web;
+import com.news.entity.WebAdspace;
+import com.news.entity.WebStatistics;
 import com.news.service.WebService;
+import com.news.vo.AppAdspaceListVo;
+import com.news.vo.AppListVo;
+import com.news.vo.WebAdSpaceListVo;
+import com.news.vo.WebListVo;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -65,6 +76,188 @@ public class WebServiceImpl implements WebService {
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("添加成功");
             }
+        }
+        return req;
+    }
+
+    /**
+     * WEB列表
+     */
+    @Override
+    public ReqResponse webList(Long userId, Long webId, String webName, Integer webStatus, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("webId",webId);
+        map.put("webName",webName);
+        map.put("webStatus",webStatus);
+        //查看当前用户身份
+        int userLevel = userDao.userLevel(userId);
+        map.put("userLevel",userLevel);
+        map.put("userId",userId);
+        //最高权限能看到所有的app信息,管理只能看到自己下级,普通用户只能看到自己的
+        //app列表
+        List<WebListVo> webList = webDao.webList(map);
+        //app数量
+        int sumData = webDao.webListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("webList",webList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 修改web状态
+     */
+    @Override
+    public ReqResponse webStatus(Long userId, Long webId, Integer webStatus) {
+        ReqResponse req = new ReqResponse();
+        //查看当前app的上级id
+        Long webParentId = webDao.webParent(webId);
+        if(null != webParentId && userId.longValue() == webParentId.longValue()){
+            //修改状态
+            Map<String,Object> map = new HashMap<>();
+            map.put("webId",webId);
+            map.put("webStatus",webStatus);
+            webDao.updateWebStatus(map);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("修改成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("您没有操作权限");
+        }
+        return req;
+    }
+
+    /**
+     * 创建代码位信息
+     */
+    @Override
+    public ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height) {
+        ReqResponse req = new ReqResponse();
+        Long webParentId = webDao.webParent(webId);
+        if(null != webParentId && userId.longValue() == webParentId.longValue()){
+            WebAdspace ad = new WebAdspace();
+            ad.setWebId(webId);
+            ad.setTerminal(terminal);
+            ad.setSpaceType(spaceType);
+            ad.setSpaceName(spaceName);
+            ad.setWidth(width);
+            ad.setHeight(height);
+            ad.setRemark(remark);
+            webDao.createAdspace(ad);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("创建成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("您没有操作权限");
+        }
+        return req;
+    }
+
+    /**
+     * 广告位列表
+     */
+    @Override
+    public ReqResponse webAdspaceList(Long userId, String webName, String spaceName, int terminal, int spaceType, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("webName",webName);
+        map.put("terminal",terminal);
+        map.put("spaceName",spaceName);
+        map.put("spaceType",spaceType);
+        //查看当前用户身份
+        int userLevel = userDao.userLevel(userId);
+        map.put("userLevel",userLevel);
+        map.put("userId",userId);
+        //最高权限能看到所有的app信息,管理只能看到自己下级,普通用户只能看到自己的
+        //app列表
+        List<WebAdSpaceListVo> adspaceList = webDao.webAdspaceList(map);
+        //app数量
+        int sumData = webDao.webAdspaceListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+        Map<String,Object> result = new HashMap<>();
+        result.put("adspaceList",adspaceList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 上传统计信息
+     */
+    @Override
+    public ReqResponse addWebStatistics(Long userId, String statisticsList) throws Exception {
+        ReqResponse req = new ReqResponse();
+        if(null != statisticsList && !"".equals(statisticsList)){
+            //解析前端传过来的集合数据
+            ObjectMapper mapper = new ObjectMapper();
+            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, WebStatistics.class);
+            List<WebStatistics> list =  mapper.readValue(statisticsList, jt);
+            Long spaceId = list.get(0).getSpaceId();
+
+            //查看广告位所属app的上级id
+            Long parentId = webDao.adParentId(spaceId);
+            if(userId.longValue() == parentId.longValue()){
+                //计算点击率和ecmp
+                //点击率=点击数/展现pv（以百分数形式呈现）
+                //ecpm=收益*1000/展现pv
+                for(int i = 0; i < list.size(); i++){
+                    WebStatistics as = list.get(i);
+                    as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
+                    as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                }
+                webDao.addWebStatistics(list);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("添加成功");
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您无权操作此APP");
+            }
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("参数错误");
         }
         return req;
     }

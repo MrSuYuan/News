@@ -13,4 +13,28 @@ public interface WebService {
      */
     ReqResponse createWeb(Long currentUserId, int currentUserLevel, Web web);
 
+    /**
+     * WEB列表
+     */
+    ReqResponse webList(Long userId, Long webId, String webName, Integer webStatus, Integer currentPage, Integer pageSize);
+
+    /**
+     * 修改web状态
+     */
+    ReqResponse webStatus(Long userId, Long webId, Integer webStatus);
+
+    /**
+     * 创建代码位信息
+     */
+    ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height);
+
+    /**
+     * 广告位列表
+     */
+    ReqResponse webAdspaceList(Long userId, String webName, String spaceName, int terminal, int spaceType, Integer currentPage, Integer pageSize);
+
+    /**
+     * 上传统计信息
+     */
+    ReqResponse addWebStatistics(Long userId, String statisticsList)throws Exception;
 }
