@@ -14,7 +14,7 @@
 <form action="#" method="post">
     <div align="center">
         广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        网站名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
         <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectStatisticsList($('#currentPage').val())">&nbsp;&nbsp;
 
     </div>
@@ -29,7 +29,7 @@
                     <tr style="height: 50px">
                         <th>广告位ID</th>
                         <th>广告位名称</th>
-                        <th>APP名称</th>
+                        <th>网站名称</th>
                         <th>创建时间</th>
                         <th>展现pv</th>
                         <th>点击数</th>
@@ -78,11 +78,11 @@
             return false;
         }
         $.ajax({
-            url: path + "/app/appStatisticsList",
+            url: path + "/web/webStatisticsList",
             type: "post",
             data: {
                 "spaceName" : $('#spaceName').val(),
-                "appName" : $('#appName').val(),
+                "webName" : $('#webName').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
             },
@@ -97,7 +97,7 @@
                         html+='<tr style="height: 40px">';
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
-                        html+='<td> '+data.appName+'</td>';
+                        html+='<td> '+data.webName+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         html+='<td> '+data.lookPV+'</td>';
                         html+='<td> '+data.clickNum+'</td>';
@@ -134,7 +134,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            selectAppList(page);
+            selectStatisticsList(page);
         }
     }
 
@@ -146,7 +146,7 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            selectAppList(page);
+            selectStatisticsList(page);
         }
     }
 

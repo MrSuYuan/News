@@ -111,7 +111,7 @@
             and u.parentId = #{userId}
         </if>
         <if test="userLevel == 3">
-            and a.userId = #{userId}
+            and w.userId = #{userId}
         </if>
         order by s.spaceId asc
         limit #{num},#{pageSize}
@@ -138,7 +138,7 @@
             and u.parentId = #{userId}
         </if>
         <if test="userLevel == 3">
-            and a.userId = #{userId}
+            and w.userId = #{userId}
         </if>
     </select>
 
@@ -157,5 +157,45 @@
             (#{item.spaceId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
         </foreach>
     </insert>
+
+    <!-- 查询数据统计信息列表 -->
+    <select id="webStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsListVo">
+        select w.webName,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
+        from w_statistics s,w_adspace d,w_web w,u_user u
+        where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and w.userId = #{parentId}
+        </if>
+        order by s.statisticsId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询数据统计信息列表数量 -->
+    <select id="webStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(0)
+        from w_statistics s,w_adspace d,w_web w,u_user u
+        where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and w.userId = #{parentId}
+        </if>
+    </select>
 
 </mapper>

@@ -9,10 +9,7 @@ import com.news.entity.Web;
 import com.news.entity.WebAdspace;
 import com.news.entity.WebStatistics;
 import com.news.service.WebService;
-import com.news.vo.AppAdspaceListVo;
-import com.news.vo.AppListVo;
-import com.news.vo.WebAdSpaceListVo;
-import com.news.vo.WebListVo;
+import com.news.vo.*;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
 import org.springframework.stereotype.Service;
@@ -259,6 +256,53 @@ public class WebServiceImpl implements WebService {
             req.setCode(ErrorMessage.FAIL.getCode());
             req.setMessage("参数错误");
         }
+        return req;
+    }
+
+    /**
+     * 查看WEB统计列表
+     */
+    @Override
+    public ReqResponse webStatisticsList(Long userId, String spaceName, String webName, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("spaceName",spaceName);
+        map.put("webName",webName);
+        map.put("parentId",userId);
+        //先查询当前用户身份
+        int currentUserLevel = userDao.userLevel(userId);
+        map.put("currentUserLevel",currentUserLevel);
+
+        //查询集合列表
+        List<WebStatisticsListVo> statisticsList = webDao.webStatisticsList(map);
+        //总数量
+        int sumData = webDao.webStatisticsListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("statisticsList",statisticsList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
         return req;
     }
 }

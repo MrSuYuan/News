@@ -7,6 +7,7 @@ import com.news.entity.WebStatistics;
 import com.news.vo.AppListVo;
 import com.news.vo.WebAdSpaceListVo;
 import com.news.vo.WebListVo;
+import com.news.vo.WebStatisticsListVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,5 +78,15 @@ public interface WebDao {
      * 批量添加广告位数据统计信息
      */
     void addWebStatistics(List<WebStatistics> list);
+
+    /**
+     * 查看数据统计信息列表
+     */
+    List<WebStatisticsListVo> webStatisticsList(Map<String,Object> map);
+
+    /**
+     * 查看数据统计信息列表数量
+     */
+    int webStatisticsListNum(Map<String,Object> map);
 
 }

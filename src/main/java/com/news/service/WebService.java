@@ -37,4 +37,10 @@ public interface WebService {
      * 上传统计信息
      */
     ReqResponse addWebStatistics(Long userId, String statisticsList)throws Exception;
+
+    /**
+     * 查看WEB统计列表
+     */
+    ReqResponse webStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+
 }
