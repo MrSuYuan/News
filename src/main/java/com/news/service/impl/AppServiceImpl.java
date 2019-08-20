@@ -10,6 +10,7 @@ import com.news.vo.AppAdspaceListVo;
 import com.news.vo.AppListVo;
 import com.news.vo.AppStatisticsListVo;
 import com.news.vo.UserListVo;
+import com.utils.id.AppIdUtil;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
 import org.springframework.stereotype.Service;
@@ -68,6 +69,9 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse createApp(Long currentUserId, Integer currentUserLevel, App app) {
         ReqResponse req = new ReqResponse();
+        String appId = AppIdUtil.getAppId();
+        System.out.println(appId);
+        app.setAppId(appId);
         //查看app用户名是否可用
         int appName = appDao.appName(app.getAppName());
         if(appName > 0){
@@ -105,7 +109,7 @@ public class AppServiceImpl implements AppService {
      * APP列表
      */
     @Override
-    public ReqResponse appList(Long userId, Long appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(Long userId, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -152,7 +156,7 @@ public class AppServiceImpl implements AppService {
      * 修改app状态
      */
     @Override
-    public ReqResponse appStatus(Long userId, Long appId, Integer appStatus) {
+    public ReqResponse appStatus(Long userId, String appId, Integer appStatus) {
         ReqResponse req = new ReqResponse();
         //查看当前app的上级id
         Long appParentId = appDao.appParent(appId);
@@ -175,16 +179,18 @@ public class AppServiceImpl implements AppService {
      * 创建代码位信息
      */
     @Override
-    public ReqResponse createAdspace(Long userId, Long appId, int spaceType, String spaceName, int width, int height) {
+    public ReqResponse createAdspace(Long userId, String appId, int spaceType, String spaceName, int width, int height) {
         ReqResponse req = new ReqResponse();
         Long appParentId = appDao.appParent(appId);
         if(null != appParentId && userId.longValue() == appParentId.longValue()){
             AppAdspace ad = new AppAdspace();
+            System.out.println("appId是:"+appId);
             ad.setAppId(appId);
             ad.setSpaceType(spaceType);
             ad.setSpaceName(spaceName);
             ad.setWidth(width);
             ad.setHeight(height);
+            ad.setSpaceId(AppIdUtil.getSpaceId());
             appDao.createAdspace(ad);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("创建成功");
@@ -243,6 +249,44 @@ public class AppServiceImpl implements AppService {
     }
 
     /**
+     * 添加上游广告位信息
+     */
+    @Override
+    public ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, int upstreamType) {
+        ReqResponse req = new ReqResponse();
+        //查看广告位所属app的上级id
+        Map<String,Object> parent = appDao.adParentId(spaceId);
+        if(userId.longValue() == (Long)parent.get("parentId")){
+            //添加上游广告位信息
+            AppUpstream appUpstream = new AppUpstream();
+            appUpstream.setCreateTime(new Date());
+            appUpstream.setSpaceId(spaceId);
+            appUpstream.setUpstreamId(upstreamId);
+            appUpstream.setUpstreamAppId(upstreamAppId);
+            appUpstream.setUpstreamType(upstreamType);
+            appDao.insertAppUpstream(appUpstream);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("添加成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("您无权操作此APP");
+        }
+        return req;
+    }
+
+    /**
+     * 上游广告位列表
+     */
+    @Override
+    public ReqResponse appUpstreamList(String spaceId) {
+        ReqResponse req = new ReqResponse();
+        List<AppUpstream> list = appDao.appUpstreamList(spaceId);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setResult(list);
+        return req;
+    }
+
+    /**
      * 上传统计信息
      */
     @Override
@@ -253,11 +297,12 @@ public class AppServiceImpl implements AppService {
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
             List<AppStatistics> list =  mapper.readValue(statisticsList, jt);
-            Long spaceId = list.get(0).getSpaceId();
+            String upstreamId = list.get(0).getUpstreamId();
 
             //查看广告位所属app的上级id
-            Long parentId = appDao.adParentId(spaceId);
-            if(userId.longValue() == parentId.longValue()){
+            Map<String,Object> parent = appDao.adParent(upstreamId);
+            String appId = parent.get("appId").toString();
+            if(userId.longValue() == (Long)parent.get("parentId")){
                 //计算点击率和ecmp
                 //点击率=点击数/展现pv（以百分数形式呈现）
                 //ecpm=收益*1000/展现pv
@@ -265,6 +310,9 @@ public class AppServiceImpl implements AppService {
                     AppStatistics as = list.get(i);
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
                     as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                    as.setAppId(appId);
+                    as.setSpaceId(parent.get("spaceId").toString());
+                    as.setUpstreamId(upstreamId);
                 }
                 appDao.addAppStatistics(list);
                 req.setCode(ErrorMessage.SUCCESS.getCode());

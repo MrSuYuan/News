@@ -116,6 +116,7 @@ function setNewsList(temp){
         //单图
         }else if(news.type == 1){
             str+='<li class="content-li content-li02">\n' +
+
                 '            <a class="" href='+path+'/news/newsDetail?newsId='+news.newsId+' target="_blank">\n' +
                 '                <div class="img-wrap clearfix"><div class="imgdiv">\n' +
                 '                    <img class="img list-li-img" src="'+news.pictureUrl[0]+'"/>\n' +

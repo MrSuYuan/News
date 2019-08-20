@@ -10,13 +10,13 @@ public class AppAdspace {
     /**
      * 广告位id
      */
-    private Long spaceId;
+    private String spaceId;
     /**
      * appId
      */
-    private Long appId;
+    private String appId;
     /**
-     * 广告位类型(1横幅 2开屏 3插屏 4信息流)
+     * 广告位类型(1横幅 2开屏 3插屏 4信息流 5激励视频)
      */
     private int spaceType;
     /**
@@ -35,6 +35,38 @@ public class AppAdspace {
      * 高度
      */
     private int height;
+
+    public String getSpaceId() {
+        return spaceId;
+    }
+
+    public void setSpaceId(String spaceId) {
+        this.spaceId = spaceId;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public int getSpaceType() {
+        return spaceType;
+    }
+
+    public void setSpaceType(int spaceType) {
+        this.spaceType = spaceType;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
 
     public String getSpaceName() {
         return spaceName;
@@ -58,37 +90,5 @@ public class AppAdspace {
 
     public void setHeight(int height) {
         this.height = height;
-    }
-
-    public Long getSpaceId() {
-        return spaceId;
-    }
-
-    public void setSpaceId(Long spaceId) {
-        this.spaceId = spaceId;
-    }
-
-    public Long getAppId() {
-        return appId;
-    }
-
-    public void setAppId(Long appId) {
-        this.appId = appId;
-    }
-
-    public int getSpaceType() {
-        return spaceType;
-    }
-
-    public void setSpaceType(int spaceType) {
-        this.spaceType = spaceType;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
     }
 }

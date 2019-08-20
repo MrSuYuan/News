@@ -8,13 +8,11 @@ import com.news.vo.UserListVo;
 import com.utils.MD5.MD5Util;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
+import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 用户模块
@@ -211,16 +209,25 @@ public class UserServiceImpl implements UserService {
     public static void main(String[] args) {
         //点击率=点击数/展现pv（以百分数形式呈现）
         //ecpm=收益*1000/展现pv
-        int i = 156;
+        /*int i = 156;
         int j = 265;
         //点击率
         System.out.println((double)i/(double)j*100);
 
         double a = 10.56 * 1000;
         double b = 8.74;
-        System.out.println(a/b);
+        System.out.println(a/b);*/
 
         //System.out.println(MD5Util.hexSALT("zghd","zghd"));
+        Login login = new Login();
+        login.setLoginName("用户名");
+        login.setPassWord("密码");
+        login.setCaptcha("验证码");
+        JSONObject json = new JSONObject().fromObject(login);
+        System.out.println("转换的json===============》"+json);
+
+        System.out.println(new Date().getTime());
+        System.out.println(new Date().getTime());
     }
 
 }

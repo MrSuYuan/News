@@ -12,7 +12,7 @@
 <font size="4"><STRONG>添加数据统计</STRONG></font>
 <hr>
 
-<input type = "hidden" id="spaceId">
+<input type = "hidden" id="upstreamId">
 
 <div class="row">
     <div class="col-xs-12">
@@ -62,9 +62,9 @@
      * 页面加载完毕,取出session的spaceId
      */
     $(document).ready(function(){
-        var spaceId =  sessionStorage.getItem("spaceId");
-        $('#spaceId').val(spaceId);
-        sessionStorage.removeItem("spaceId");
+        var upstreamId =  sessionStorage.getItem("upstreamId");
+        $('#upstreamId').val(upstreamId);
+        sessionStorage.removeItem("upstreamId");
     })
 
     /**
@@ -117,11 +117,11 @@
      * 提交
      */
     function submit() {
-        var spaceId = $('#spaceId').val();
+        var upstreamId = $('#upstreamId').val();
         var objs = [];
         $('.trClass').each(function(index,val){
             var obj = {
-                spaceId : spaceId,
+                upstreamId : upstreamId,
                 createTime : $(val).find('input[name=createTime]').eq(0).val(),
                 lookPV : $(val).find('input[name=lookPV]').eq(0).val(),
                 clickNum : $(val).find('input[name=clickNum]').eq(0).val(),

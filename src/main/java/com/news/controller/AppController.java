@@ -101,14 +101,14 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "app列表", notes = "app列表", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appStatus" , value="app状态" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appList(Long appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
@@ -124,11 +124,11 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "修改app状态", notes = "修改app状态", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appStatus" , value="app状态" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appStatus(Long appId, Integer appStatus) {
+    public ReqResponse appStatus(String appId, Integer appStatus) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
@@ -144,14 +144,14 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "创建广告位信息", notes = "创建广告位信息", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="appId" , value="appId" ,required = true , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="appId" , value="appId" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = true , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="width" , value="宽度" ,required = true , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="height" , value="高度" ,required = true , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse createAdspace(Long appId, int spaceType, String spaceName, int width, int height) {
+    public ReqResponse createAdspace(String appId, int spaceType, String spaceName, int width, int height) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
@@ -185,6 +185,49 @@ public class AppController extends BaseController {
         }
         return req;
     }
+
+
+    @RequestMapping(value = "/appAdUpstream",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "添加广告位上游信息", notes = "添加广告位上游信息", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="upstreamId" , value="上游广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="upstreamAppId" , value="上游appId" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="upstreamType" , value="上游平台类型" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appAdUpstream(String spaceId, String upstreamId, String upstreamAppId, int upstreamType) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appAdUpstream((Long) userId, spaceId, upstreamId, upstreamAppId, upstreamType);
+        }
+        return req;
+    }
+
+    @RequestMapping(value = "/appUpstreamList",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位上游信息详情", notes = "广告位上游信息详情", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse appUpstreamList(String spaceId) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appUpstreamList(spaceId);
+        }
+        return req;
+    }
+
 
     @RequestMapping(value="addAppStatistics", method= RequestMethod.POST)
     @ResponseBody

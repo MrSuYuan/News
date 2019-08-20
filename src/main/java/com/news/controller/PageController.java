@@ -157,6 +157,20 @@ public class PageController extends BaseController {
     public String appAdspaceList(){ return "app/adspaceList";}
 
     /**
+     * APP编辑上游信息
+     */
+    @RequestMapping(value = "addUpstream" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP编辑上游信息", notes = "APP编辑上游信息", httpMethod = "GET")
+    public String addUpstream(){ return "app/addUpstream";}
+
+    /**
+     * APP上游信息列表
+     */
+    @RequestMapping(value = "appUpstreamList" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP上游信息列表", notes = "APP上游信息列表", httpMethod = "GET")
+    public String appUpstreamList(){ return "app/appUpstreamList";}
+
+    /**
      * APP添加数据统计
      */
     @RequestMapping(value = "addAppStatistics" , method= RequestMethod.GET)
@@ -212,7 +226,12 @@ public class PageController extends BaseController {
     @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
     public String webStatisticsList(){ return "web/webStatisticsList";}
 
-
+    /**
+     * 测试
+     */
+    @RequestMapping(value = "test" , method= RequestMethod.GET)
+    @ApiOperation(value = "测试", notes = "测试", httpMethod = "GET")
+    public String test(){ return "index/test";}
 
 
 }

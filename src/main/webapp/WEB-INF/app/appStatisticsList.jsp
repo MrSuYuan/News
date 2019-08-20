@@ -30,6 +30,7 @@
                         <th>广告位ID</th>
                         <th>广告位名称</th>
                         <th>APP名称</th>
+                        <th>上游平台</th>
                         <th>创建时间</th>
                         <th>展现pv</th>
                         <th>点击数</th>
@@ -98,6 +99,20 @@
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appName+'</td>';
+                        var upstreamType = data.upstreamType;
+                        if(upstreamType == 1){
+                            html+='<td> 东方</td>';
+                        }else if(upstreamType == 2){
+                            html+='<td> 万咖</td>';
+                        }else if(upstreamType == 3){
+                            html+='<td> 极光</td>';
+                        }else if(upstreamType == 4){
+                            html+='<td> 余梁</td>';
+                        }else if(upstreamType == 5){
+                            html+='<td> 一点通</td>';
+                        }else{
+                            html+='<td> <font color="red">信息错误</font> </td>';
+                        }
                         html+='<td> '+data.createTime+'</td>';
                         html+='<td> '+data.lookPV+'</td>';
                         html+='<td> '+data.clickNum+'</td>';

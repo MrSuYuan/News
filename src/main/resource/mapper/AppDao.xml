@@ -22,10 +22,10 @@
     <!-- 添加APP信息 -->
     <insert id="createApp" parameterType="com.news.entity.App">
         insert into a_app
-        (appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
+        (appId, appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
           platform,terminal,packageName,version,description,keyWords)
         values
-        (#{appName},#{downloadlink},now(),#{userId},#{accessMethod},1,#{rootType},#{subType},
+        (#{appId},#{appName},#{downloadlink},now(),#{userId},#{accessMethod},1,#{rootType},#{subType},
           #{platform},#{terminal},#{packageName},#{version},#{description},#{keyWords})
     </insert>
 
@@ -81,7 +81,7 @@
     </select>
 
     <!-- 查看当前app的上级id -->
-    <select id="appParent" parameterType="java.lang.Long" resultType="java.lang.Long">
+    <select id="appParent" parameterType="java.lang.String" resultType="java.lang.Long">
         select u.parentId
         from a_app a,u_user u
         where a.appId = #{appId} and a.userId = u.userId
@@ -95,9 +95,9 @@
     <!-- 创建广告位信息 -->
     <insert id="createAdspace" parameterType="com.news.entity.AppAdspace">
         insert into a_adspace
-        (appId, spaceType, createTime, spaceName, width, height)
+        (spaceId, appId, spaceType, createTime, spaceName, width, height)
         values
-        (#{appId},#{spaceType},now(),#{spaceName},#{width},#{height})
+        (#{spaceId},#{appId},#{spaceType},now(),#{spaceName},#{width},#{height})
     </insert>
 
     <!-- 广告位列表 -->
@@ -146,25 +146,45 @@
         </if>
     </select>
 
-    <!-- 查看广告位所属app的上级id -->
-    <select id="adParentId" parameterType="java.lang.Long" resultType="java.lang.Long">
-        select u.parentId
+    <!-- 查看平台广告位所属app的上级id -->
+    <select id="adParentId" parameterType="java.lang.String" resultType="java.util.Map">
+        select u.parentId,a.appId
         from a_adspace d,a_app a,u_user u
         where d.spaceId = #{spaceId} and d.appId = a.appId and a.userId = u.userId
+    </select>
+
+    <!-- 查看上游广告位所属app的相关信息 -->
+    <select id="adParent" parameterType="java.lang.String" resultType="java.util.Map">
+        select u.parentId,a.appId,d.spaceId,t.upstreamAppId
+        from a_adspace d,a_app a,u_user u,a_upstream t
+        where t.upstreamId = #{upstreamId} and t.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
+    </select>
+
+    <!-- 添加上游信息 -->
+    <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
+        insert into a_upstream
+        (upstreamId, spaceId, upstreamType, upstreamAppId, createTime)
+        values
+        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{createTime})
+    </insert>
+
+    <!-- 广告位上游信息列表 -->
+    <select id="appUpstreamList" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
+        select * from a_upstream where spaceId = #{spaceId}
     </select>
 
     <!-- 添加广告位数据统计信息 -->
     <insert id="addAppStatistics">
         insert into a_statistics
-        (spaceId, createTime, lookPV, clickNum, clickProbability, income, ecmp) values
+        (spaceId, appId, upstreamId, createTime, lookPV, clickNum, clickProbability, income, ecmp) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
         </foreach>
     </insert>
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
+        select a.appName,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,d.upstreamType
         from a_statistics s,a_adspace d,a_app a,u_user u
         where s.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
         <if test="appName != null and appName !=''">

@@ -5,7 +5,7 @@ package com.news.vo;
  */
 public class AppStatisticsListVo {
 
-    private Long spaceId;
+    private String spaceId;
     private String spaceName;
     private String appName;
     private String createTime;
@@ -14,12 +14,21 @@ public class AppStatisticsListVo {
     private double clickProbability;
     private double income;
     private double ecmp;
+    private int upstreamType;
 
-    public Long getSpaceId() {
+    public int getUpstreamType() {
+        return upstreamType;
+    }
+
+    public void setUpstreamType(int upstreamType) {
+        this.upstreamType = upstreamType;
+    }
+
+    public String getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(Long spaceId) {
+    public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
     }
 

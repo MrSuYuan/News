@@ -53,7 +53,7 @@ public interface AppDao {
     /**
      * 查看当前app的上级id
      */
-    Long appParent(Long appId);
+    Long appParent(String appId);
 
     /**
      * 修改app状态
@@ -76,9 +76,24 @@ public interface AppDao {
     int appAdspaceListNum(Map<String,Object> map);
 
     /**
-     * 查看广告位所属app的上级id
+     * 查看平台广告位所属app的上级id
      */
-    Long adParentId(Long spaceId);
+    Map<String,Object> adParentId(String spaceId);
+
+    /**
+     * 查看上游广告位所属app的相关信息
+     */
+    Map<String,Object> adParent(String upstreamId);
+
+    /**
+     * 添加上游信息
+     */
+    void insertAppUpstream(AppUpstream appUpstream);
+
+    /**
+     * 广告位上游信息列表
+     */
+    List<AppUpstream> appUpstreamList(String spaceId);
 
     /**
      * 批量添加广告位数据统计信息

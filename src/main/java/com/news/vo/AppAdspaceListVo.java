@@ -8,13 +8,13 @@ public class AppAdspaceListVo {
     /**
      * 广告位id
      */
-    private Long spaceId;
+    private String spaceId;
     /**
      * appId
      */
-    private Long appId;
+    private String appId;
     /**
-     * 广告位类型(1横幅 2开屏 3插屏 4信息流)
+     * 广告位类型(1横幅 2开屏 3插屏 4信息流 5激励视频)
      */
     private int spaceType;
     /**
@@ -42,19 +42,19 @@ public class AppAdspaceListVo {
      */
     private String nickName;
 
-    public Long getSpaceId() {
+    public String getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(Long spaceId) {
+    public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
     }
 
-    public Long getAppId() {
+    public String getAppId() {
         return appId;
     }
 
-    public void setAppId(Long appId) {
+    public void setAppId(String appId) {
         this.appId = appId;
     }
 

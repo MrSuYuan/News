@@ -26,22 +26,32 @@ public interface AppService {
     /**
      * APP列表
      */
-    ReqResponse appList(Long userId, Long appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize);
+    ReqResponse appList(Long userId, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize);
 
     /**
      * 修改app状态
      */
-    ReqResponse appStatus(Long userId, Long appId, Integer appStatus);
+    ReqResponse appStatus(Long userId, String appId, Integer appStatus);
 
     /**
      * 创建代码位信息
      */
-    ReqResponse createAdspace(Long userId, Long appId, int spaceType, String spaceName, int width, int height);
+    ReqResponse createAdspace(Long userId, String appId, int spaceType, String spaceName, int width, int height);
 
     /**
      * 广告位列表
      */
     ReqResponse appAdspaceList(Long userId, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize);
+
+    /**
+     * 添加上游广告位信息
+     */
+    ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, int upstreamType);
+
+    /**
+     * 上游广告位列表
+     */
+    ReqResponse appUpstreamList(String spaceId);
 
     /**
      * 上传统计信息

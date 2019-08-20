@@ -4,7 +4,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
-<font size="4"><STRONG>添加代码位</STRONG></font>
+<font size="4"><STRONG>添加广告位</STRONG></font>
 <hr>
 
 <form action="#" method="post">
@@ -13,25 +13,25 @@
         <table style="font-size: 14px">
             <tr height = "50" id="spaceIdT">
                 <td align = "right">广告位ID:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="spaceId" name="spaceId" placeholder="请输入广告位ID"></td>
+                <td width="300"><input type="text" size="35" id="spaceId" name="spaceId" placeholder="请输入广告位ID"><font color="red">&nbsp;&nbsp;*</font></td>
             </tr>
             <tr height = "50">
                 <td align = "right">广告位名称:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="spaceName" name="spaceName" placeholder="广告位名称"></td>
+                <td width="300"><input type="text" size="35" id="spaceName" name="spaceName" placeholder="广告位名称"><font color="red">&nbsp;&nbsp;*</font></td>
             </tr>
             <tr height = "50" id="nickNameT">
                 <td align = "right">广告位宽度:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="width" name="width" placeholder="请输入广告位宽度"></td>
+                <td width="300"><input type="text" size="35" id="width" name="width" placeholder="请输入广告位宽度"><font color="red">&nbsp;&nbsp;*</font></td>
                 </td>
             </tr>
             <tr height = "50">
                 <td align = "right">广告位高度:&nbsp;&nbsp;</td>
-                <td width="250"><input type="text" size="35" id="height" name="height" placeholder="请输入广告位高度"></td>
+                <td width="300"><input type="text" size="35" id="height" name="height" placeholder="请输入广告位高度"><font color="red">&nbsp;&nbsp;*</font></td>
                 </td>
             </tr>
             <tr height = "50">
                 <td align = "right">广告位类型:&nbsp;&nbsp;</td>
-                <td width="250">
+                <td width="300">
                     <select style="width: 276px;height: 34px" id="spaceType">
                         <option value="0">请选择</option>
                         <option value="1">横幅</option>
@@ -40,6 +40,7 @@
                         <option value="4">信息流</option>
                         <option value="5">激励视频</option>
                     </select>
+                    <font color="red">&nbsp;&nbsp;*</font>
                 </td>
             </tr>
             <tr height = "50">
@@ -63,7 +64,6 @@
         $('#appId').val(appId);
         sessionStorage.removeItem("appId");
         $('#spaceIdT').hide();
-
     });
 
 

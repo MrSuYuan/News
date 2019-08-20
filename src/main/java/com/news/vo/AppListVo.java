@@ -5,7 +5,7 @@ public class AppListVo {
     /**
      * appId
      */
-    private Long appId;
+    private String appId;
     /**
      * app名称
      */
@@ -35,11 +35,11 @@ public class AppListVo {
      */
     private int terminal;
 
-    public Long getAppId() {
+    public String getAppId() {
         return appId;
     }
 
-    public void setAppId(Long appId) {
+    public void setAppId(String appId) {
         this.appId = appId;
     }
 

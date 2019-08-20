@@ -39,11 +39,11 @@
                         <th>广告位ID</th>
                         <th>广告位名称</th>
                         <th>APP名称</th>
-                        <th>类型</th>
+                        <th>广告类型</th>
                         <th>宽度</th>
                         <th>高度</th>
                         <th>创建时间</th>
-                        <th id="statistics">数据统计</th>
+                        <th id="operate">操作</th>
                     </tr>
                     </thead>
                     <tbody id="coll_list_begin_body">
@@ -101,7 +101,8 @@
                 "pageSize" : pageSize,
                 "appName" : $('#appName').val(),
                 "spaceName" : $('#spaceName').val(),
-                "spaceType" :  $('#spaceType option:selected').val()
+                "spaceType" :  $('#spaceType option:selected').val(),
+                "upstreamType" : $('#upstreamType option:selected').val()
             },
             dataType: 'json',
             async: false,
@@ -133,7 +134,10 @@
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2){
-                            html+='<td><button type="button" onclick="addAppStatistice('+data.spaceId+')">添加数据统计</button></td>';
+                            html+='<td>' +
+                                '<button type="button" onclick="addUpstream(\''+data.spaceId+'\')">操作</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                '<button type="button" onclick="checkUpstream(\''+data.spaceId+'\')">查看</button>' +
+                                '</td>';
                         }
                         html+='</tr>';
                     }
@@ -181,9 +185,14 @@
         }
     }
 
-    function addAppStatistice(spaceId) {
+    function addUpstream(spaceId) {
         sessionStorage.setItem("spaceId",spaceId);
-        gotoURL(path + "/addAppStatistics");
+        gotoURL(path + "/addUpstream");
+    }
+
+    function checkUpstream(spaceId) {
+        sessionStorage.setItem("spaceId",spaceId);
+        gotoURL(path + "/appUpstreamList");
     }
 
 </script>

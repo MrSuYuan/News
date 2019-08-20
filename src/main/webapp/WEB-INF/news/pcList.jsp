@@ -136,6 +136,7 @@
             <div class="right-wrap">
 
                 <div class="hot-news"><span> 相关推荐 </span></div>
+                <script type="text/javascript" smua="d=m&s=b&u=u4141949&h=20:7" src="//www.smucdn.com/smu0/o.js"></script>
                 <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
                 <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
                 <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>

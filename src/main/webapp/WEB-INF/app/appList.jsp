@@ -146,8 +146,8 @@
                         if(appStatus == 1){
                             html+='<td id="appStatus'+data.appId+'">未审核</td>';
                             html+='<td id="operating'+data.appId+'">' +
-                                '<input type=button style="background:green" value="通过" onclick="changeAppStatus('+data.appId+','+4+')"/>' +
-                                '<input type=button style="background:red" value="驳回" onclick="changeAppStatus('+data.appId+','+2+')"/>' +
+                                '<input type=button style="background:green" value="通过" onclick="changeAppStatus(\''+data.appId+'\','+4+')"/>' +
+                                '<input type=button style="background:red" value="驳回" onclick="changeAppStatus(\''+data.appId+'\','+2+')"/>' +
                                 '</td>';
                         }else if(appStatus == 2){
                             html+='<td id="appStatus'+data.appId+'">驳回</td>';
@@ -157,19 +157,19 @@
                         }else if(appStatus == 3){
                             html+='<td id="appStatus'+data.appId+'">正常</td>';
                             html+='<td id="operating'+data.appId+'">' +
-                                '<input type=button style="background:red" value="禁用" onclick="changeAppStatus('+data.appId+','+4+')"/>' +
+                                '<input type=button style="background:red" value="禁用" onclick="changeAppStatus(\''+data.appId.toString()+'\','+4+')"/>' +
                                 '</td>';
                         }else if(appStatus == 4){
                             html+='<td id="appStatus'+data.appId+'">禁用</td>';
                             html+='<td id="operating'+data.appId+'">' +
-                                '<input type=button style="background:green" value="启用" onclick="changeAppStatus('+data.appId+','+3+')"/>' +
+                                '<input type=button style="background:green" value="启用" onclick="changeAppStatus(\''+data.appId.toString()+'\','+3+')"/>' +
                                 '</td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
                         }
                         if(currentUserLevel == 2){
-                            html+='<td><button type="button" onclick="addAdspace('+data.appId+')">添加广告位</button></td>';
+                            html+='<td><button type="button" onclick="addAdspace(\''+data.appId+'\')">添加广告位</button></td>';
                         }
                         html+='</tr>';
                     }
@@ -242,14 +242,14 @@
                     }else if(appStatus == 3){
                         $('#appStatus'+appId).html("正常");
                         var html='<td id="operating'+appId+'">'+
-                            '<input type=button style="background:red" value="禁用" onclick="changeAppStatus('+appId+','+4+')"/>'+
+                            '<input type=button style="background:red" value="禁用" onclick="changeAppStatus(\''+appId+'\','+4+')"/>'+
                             '</td>';
                         $('#operating'+appId).html(html);
 
                     }else if(appStatus == 4){
                         $('#appStatus'+appId).html("禁用");
                         var html='<td id="operating'+appId+'">'+
-                            '<input type=button style="background:green" value="启用" onclick="changeAppStatus('+appId+','+3+')"/>'+
+                            '<input type=button style="background:green" value="启用" onclick="changeAppStatus(\''+appId+'\','+3+')"/>'+
                             '</td>';
                         $('#operating'+appId).html(html);
 

@@ -12,9 +12,17 @@ public class AppStatistics {
      */
     private Long statisticsId;
     /**
-     * 广告位id
+     * 上游广告位id
      */
-    private Long spaceId;
+    private String upstreamId;
+    /**
+     * 平台广告位id
+     */
+    private String spaceId;
+    /**
+     * appid
+     */
+    private String appId;
     /**
      * 创建时间
      */
@@ -40,6 +48,14 @@ public class AppStatistics {
      */
     private double ecmp;
 
+    public String getUpstreamId() {
+        return upstreamId;
+    }
+
+    public void setUpstreamId(String upstreamId) {
+        this.upstreamId = upstreamId;
+    }
+
     public Long getStatisticsId() {
         return statisticsId;
     }
@@ -48,12 +64,20 @@ public class AppStatistics {
         this.statisticsId = statisticsId;
     }
 
-    public Long getSpaceId() {
+    public String getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(Long spaceId) {
+    public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
+    }
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
     public Date getCreateTime() {
