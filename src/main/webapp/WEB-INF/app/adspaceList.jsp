@@ -75,7 +75,7 @@
 
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
-        if(currentUserLevel == 2){
+        if(currentUserLevel == 2 || currentUserLevel == 1){
             $('#operate').show();
         }else{
             $('#operate').hide();
@@ -133,7 +133,7 @@
                         html+='<td> '+data.width+'</td>';
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        if(currentUserLevel == 2){
+                        if(currentUserLevel == 2 || currentUserLevel == 1){
                             html+='<td>' +
                                 '<button type="button" onclick="addUpstream(\''+data.spaceId+'\')">操作</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
                                 '<button type="button" onclick="checkUpstream(\''+data.spaceId+'\')">查看</button>' +

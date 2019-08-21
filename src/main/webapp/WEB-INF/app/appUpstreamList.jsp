@@ -47,8 +47,16 @@
 
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
+
+
         if(currentUserLevel == 3){
             alert("权限不足");
+        }else if(currentUserLevel == 1) {
+            $('#statistics').hide();
+            var spaceId =  sessionStorage.getItem("spaceId");
+            $('#spaceId').val(spaceId);
+            sessionStorage.removeItem("spaceId");
+            appUpstreamList();
         }else{
             var spaceId =  sessionStorage.getItem("spaceId");
             $('#spaceId').val(spaceId);
