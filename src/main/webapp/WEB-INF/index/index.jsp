@@ -478,17 +478,17 @@
         if(currentUserLevel == 1){
             $('#userList').show();
             $('#appList').show();
-            $('#web').show();
+            $('#web').hide();
 
         }else if(currentUserLevel == 2){
             $('#userList').show();
             $('#appList').show();
-            $('#web').show();
+            $('#web').hide();
 
         }else if(currentUserLevel == 3){
             $('#user').hide();
             $('#appList').show();
-            $('#web').show();
+            $('#web').hide();
 
         }else{
 

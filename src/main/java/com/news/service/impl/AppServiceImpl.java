@@ -16,6 +16,7 @@ import com.utils.response.ReqResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -181,10 +182,9 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse createAdspace(Long userId, String appId, int spaceType, String spaceName, int width, int height) {
         ReqResponse req = new ReqResponse();
-        Long appParentId = appDao.appParent(appId);
-        if(null != appParentId && userId.longValue() == appParentId.longValue()){
+        //Long appParentId = appDao.appParent(appId);
+        //if(null != appParentId && userId.longValue() == appParentId.longValue()){
             AppAdspace ad = new AppAdspace();
-            System.out.println("appId是:"+appId);
             ad.setAppId(appId);
             ad.setSpaceType(spaceType);
             ad.setSpaceName(spaceName);
@@ -194,10 +194,10 @@ public class AppServiceImpl implements AppService {
             appDao.createAdspace(ad);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("创建成功");
-        }else{
-            req.setCode(ErrorMessage.FAIL.getCode());
-            req.setMessage("您没有操作权限");
-        }
+        //}else{
+        //    req.setCode(ErrorMessage.FAIL.getCode());
+        //    req.setMessage("您没有操作权限");
+        //}
         return req;
     }
 
@@ -353,8 +353,58 @@ public class AppServiceImpl implements AppService {
 
         //查询集合列表
         List<AppStatisticsListVo> statisticsList = appDao.appStatisticsList(map);
+        for(int i = 0; i < statisticsList.size(); i++){
+            AppStatisticsListVo as = statisticsList.get(i);
+            DecimalFormat df = new DecimalFormat("######0.00");
+            as.setClickProbability(Double.parseDouble(df.format((double)as.getClickNum()/(double)as.getLookPV()*100)));
+            as.setEcmp(Double.parseDouble(df.format(as.getIncome()*1000/(double)as.getLookPV())));
+        }
         //总数量
         int sumData = appDao.appStatisticsListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("statisticsList",statisticsList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 查看APP统计列表-用户
+     */
+    @Override
+    public ReqResponse appStatisticsUserList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("spaceName",spaceName);
+        map.put("appName",appName);
+        map.put("parentId",userId);
+
+        //查询集合列表
+        List<AppStatisticsListVo> statisticsList = appDao.appStatisticsUserList(map);
+        //总数量
+        int sumData = appDao.appStatisticsUserListNum(map);
         //总页数
         int sumPage = 0;
         if(sumData%Integer.valueOf(pageSize) == 0){

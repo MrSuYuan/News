@@ -59,8 +59,13 @@ public interface AppService {
     ReqResponse addAppStatistics(Long userId, String statisticsList)throws Exception;
 
     /**
-     * 查看APP统计列表
+     * 查看APP统计列表-管理
      */
     ReqResponse appStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+
+    /**
+     * 查看APP统计列表-用户
+     */
+    ReqResponse appStatisticsUserList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
 }

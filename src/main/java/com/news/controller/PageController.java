@@ -182,7 +182,14 @@ public class PageController extends BaseController {
      */
     @RequestMapping(value = "appStatisticsList" , method= RequestMethod.GET)
     @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
-    public String appStatisticsList(){ return "app/appStatisticsList";}
+    public String appStatisticsList(){
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null != userLevel && (int)userLevel == 3){
+            return "app/appStatisticsUserList";
+        }else{
+            return "app/appStatisticsList";
+        }
+    }
 
     /**
      * WEB列表页

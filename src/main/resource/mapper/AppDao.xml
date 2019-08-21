@@ -184,9 +184,9 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,d.upstreamType
-        from a_statistics s,a_adspace d,a_app a,u_user u
-        where s.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
+        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -206,8 +206,8 @@
     <!-- 查询数据统计信息列表数量 -->
     <select id="appStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(0)
-        from a_statistics s,a_adspace d,a_app a,u_user u
-        where s.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -220,6 +220,36 @@
         <if test="currentUserLevel == 3">
             and a.userId = #{parentId}
         </if>
+    </select>
+
+    <!-- 查询数据统计信息列表 -->
+    <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
+        select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and a.userId = #{parentId}
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        GROUP BY s.createTime
+        order by s.statisticsId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询数据统计信息列表数量 -->
+    <select id="appStatisticsUserListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(0)
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and a.userId = #{parentId}
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        GROUP BY s.createTime
     </select>
 
 </mapper>

@@ -4,27 +4,18 @@
 <html>
 
 <head>
-    <title>广告位列表</title>
+    <title>数据统计列表</title>
 </head>
 
 <body>
-<font size="4"><STRONG>广告位列表</STRONG></font>
+<font size="4"><STRONG>数据统计列表</STRONG></font>
 <hr>
 
 <form action="#" method="post">
     <div align="center">
-        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
         广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-        广告位类型：
-        <select id="spaceType" style="width:100px;height:30px">
-            <option value="0">请选择</option>
-            <option value="1">横幅</option>
-            <option value="2">开屏</option>
-            <option value="3">插屏</option>
-            <option value="4">信息流</option>
-            <option value="5">激励视频</option>
-        </select>&nbsp;&nbsp;&nbsp;&nbsp;
-        <input type="button" style="width:50px;height:30px" value="搜索" onclick="appAdspaceList($('#currentPage').val())">&nbsp;&nbsp;
+        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectStatisticsList($('#currentPage').val())">&nbsp;&nbsp;
 
     </div>
     <br><span></span><br>
@@ -36,14 +27,16 @@
                        class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr style="height: 50px">
-                        <th>广告位ID</th>
-                        <th>广告位名称</th>
                         <th>APP名称</th>
-                        <th>广告类型</th>
-                        <th>宽度</th>
-                        <th>高度</th>
+                        <th>广告位名称</th>
+                        <th>APPID</th>
+                        <th>广告位ID</th>
                         <th>创建时间</th>
-                        <th id="operate">操作</th>
+                        <th>展现pv</th>
+                        <th>点击数</th>
+                        <th>点击率</th>
+                        <th>收益</th>
+                        <th>ecpm</th>
                     </tr>
                     </thead>
                     <tbody id="coll_list_begin_body">
@@ -65,27 +58,19 @@
 
 </form>
 
-
 </body>
 
 <script type="text/javascript">
 
     //进入页面直接请求数据
     $(document).ready(function(){
-
-        //根据权限隐藏特定的展示栏和搜索条件
-        var currentUserLevel = $('#currentUserLevel').val();
-        if(currentUserLevel == 2){
-            $('#operate').show();
-        }else{
-            $('#operate').hide();
-        }
-        appAdspaceList(1);
+        selectStatisticsList(1);
     });
 
     //点击搜索数据展示
-    function appAdspaceList(currentPage) {
-        var currentUserLevel = $('#currentUserLevel').val();
+    function selectStatisticsList(currentPage) {
+
+        //var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -94,51 +79,33 @@
             return false;
         }
         $.ajax({
-            url: path + "/app/appAdspaceList",
+            url: path + "/app/appStatisticsUserList",
             type: "post",
             data: {
-                "currentPage" : currentPage,
-                "pageSize" : pageSize,
-                "appName" : $('#appName').val(),
                 "spaceName" : $('#spaceName').val(),
-                "spaceType" :  $('#spaceType option:selected').val(),
-                "upstreamType" : $('#upstreamType option:selected').val()
+                "appName" : $('#appName').val(),
+                "currentPage" : currentPage,
+                "pageSize" : pageSize
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result.adspaceList;
+                    var list = obj.result.statisticsList;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.spaceId+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appName+'</td>';
-                        var spaceType = data.spaceType;
-                        if(spaceType == 1){
-                            html+='<td> 横幅 </td>';
-                        }else if(spaceType == 2){
-                            html+='<td> 开屏 </td>';
-                        }else if(spaceType == 3){
-                            html+='<td> 插屏 </td>';
-                        }else if(spaceType == 4){
-                            html+='<td> 信息流 </td>';
-                        }else if(spaceType == 5){
-                            html+='<td> 激励视频 </td>';
-                        }else{
-                            html+='<td> <font color="red">信息错误</font> </td>';
-                        }
-                        html+='<td> '+data.width+'</td>';
-                        html+='<td> '+data.height+'</td>';
+                        html+='<td> '+data.spaceName+'</td>';
+                        html+='<td> '+data.appId+'</td>';
+                        html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        if(currentUserLevel == 2){
-                            html+='<td>' +
-                                '<button type="button" onclick="addUpstream(\''+data.spaceId+'\')">操作</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                '<button type="button" onclick="checkUpstream(\''+data.spaceId+'\')">查看</button>' +
-                                '</td>';
-                        }
+                        html+='<td> '+data.lookPV+'</td>';
+                        html+='<td> '+data.clickNum+'</td>';
+                        html+='<td> '+data.clickProbability+'%</td>';
+                        html+='<td> '+data.income+'</td>';
+                        html+='<td> '+data.ecmp+'</td>';
                         html+='</tr>';
                     }
                     //添加数据
@@ -169,7 +136,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            selectUserList(page);
+            selectStatisticsList(page);
         }
     }
 
@@ -181,18 +148,8 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            selectUserList(page);
+            selectStatisticsList(page);
         }
-    }
-
-    function addUpstream(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
-        gotoURL(path + "/addUpstream");
-    }
-
-    function checkUpstream(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
-        gotoURL(path + "/appUpstreamList");
     }
 
 </script>

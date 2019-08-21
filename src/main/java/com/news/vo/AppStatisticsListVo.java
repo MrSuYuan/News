@@ -5,9 +5,12 @@ package com.news.vo;
  */
 public class AppStatisticsListVo {
 
+    private String appName;
+    private String appId;
     private String spaceId;
     private String spaceName;
-    private String appName;
+    private String upstreamAppId;
+    private String upstreamId;
     private String createTime;
     private int lookPV;
     private int clickNum;
@@ -15,6 +18,30 @@ public class AppStatisticsListVo {
     private double income;
     private double ecmp;
     private int upstreamType;
+
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
+    }
+
+    public String getUpstreamAppId() {
+        return upstreamAppId;
+    }
+
+    public void setUpstreamAppId(String upstreamAppId) {
+        this.upstreamAppId = upstreamAppId;
+    }
+
+    public String getUpstreamId() {
+        return upstreamId;
+    }
+
+    public void setUpstreamId(String upstreamId) {
+        this.upstreamId = upstreamId;
+    }
 
     public int getUpstreamType() {
         return upstreamType;

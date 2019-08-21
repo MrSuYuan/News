@@ -250,7 +250,7 @@ public class AppController extends BaseController {
 
     @RequestMapping(value="appStatisticsList", method= RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "统计列表", notes = "统计列表", httpMethod = "POST")
+    @ApiOperation(value = "统计列表-管理", notes = "统计列表-管理", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
@@ -259,6 +259,28 @@ public class AppController extends BaseController {
     })
     @CrossOrigin
     public ReqResponse appStatisticsList(String spaceName, String appName, Integer currentPage, Integer pageSize){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appStatisticsList((Long)userId, spaceName, appName, currentPage, pageSize);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="appStatisticsUserList", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "统计列表-用户", notes = "统计列表-用户", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appStatisticsUserList(String spaceName, String appName, Integer currentPage, Integer pageSize){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){

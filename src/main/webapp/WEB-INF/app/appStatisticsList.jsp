@@ -27,9 +27,12 @@
                        class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr style="height: 50px">
-                        <th>广告位ID</th>
-                        <th>广告位名称</th>
                         <th>APP名称</th>
+                        <th>广告位名称</th>
+                        <th>APPID</th>
+                        <th>广告位ID</th>
+                        <th>上游APPID</th>
+                        <th>上游广告位ID</th>
                         <th>上游平台</th>
                         <th>创建时间</th>
                         <th>展现pv</th>
@@ -96,9 +99,12 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.spaceId+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appName+'</td>';
+                        html+='<td> '+data.spaceName+'</td>';
+                        html+='<td> '+data.appId+'</td>';
+                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.upstreamAppId+'</td>';
+                        html+='<td> '+data.upstreamId+'</td>';
                         var upstreamType = data.upstreamType;
                         if(upstreamType == 1){
                             html+='<td> 东方</td>';

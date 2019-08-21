@@ -83,7 +83,7 @@
         if(currentUserLevel == 1){
             $('#addApp').hide();
         }
-        if(currentUserLevel == 2){
+        if(currentUserLevel == 2 || currentUserLevel == 3){
             $('#adspace').show();
         }else{
             $('#adspace').hide();
@@ -168,7 +168,7 @@
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
                         }
-                        if(currentUserLevel == 2){
+                        if(currentUserLevel == 2 || currentUserLevel == 3){
                             html+='<td><button type="button" onclick="addAdspace(\''+data.appId+'\')">添加广告位</button></td>';
                         }
                         html+='</tr>';

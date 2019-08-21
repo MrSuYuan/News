@@ -110,4 +110,14 @@ public interface AppDao {
      */
     int appStatisticsListNum(Map<String,Object> map);
 
+    /**
+     * 查看数据统计信息列表
+     */
+    List<AppStatisticsListVo> appStatisticsUserList(Map<String,Object> map);
+
+    /**
+     * 查看数据统计信息列表数量
+     */
+    int appStatisticsUserListNum(Map<String,Object> map);
+
 }
