@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 用户模块 -->
+<mapper namespace="com.news.dao.UserDao">
+
+    <!-- 用户登录 -->
+    <select id="user" parameterType="java.lang.String" resultType="com.news.entity.User">
+        select * from u_user where loginName = #{loginName}
+    </select>
+
+    <!-- 查询密码 -->
+    <select id="passWord" parameterType="java.lang.Long" resultType="java.lang.String">
+        select passWord from u_user where userId = #{userId}
+    </select>
+    
+    <!-- 修改密码 -->
+    <update id="updatePassWord" parameterType="com.news.entity.User">
+        update u_user set passWord = #{passWord} where userId = #{userId}
+    </update>
+
+    <!-- 创建新用户 -->
+    <insert id="createUser" parameterType="com.news.entity.User">
+        insert into u_user
+        (loginName, passWord, nickName, parentId, userLevel, userStatus, createTime)
+        values
+        (#{loginName},#{passWord},#{nickName},#{parentId},#{userLevel},2,now())
+    </insert>
+
+    <!-- 查询当前用户身份 -->
+    <select id="userLevel" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select userLevel from u_user where userId = #{userId}
+    </select>
+
+    <!-- 查询用户列表 -->
+    <select id="userList" parameterType="java.util.Map" resultType="com.news.vo.UserListVo">
+        SELECT u.userId,u.loginName,u.nickName,u.userStatus,u.userLevel,s.nickName as parentName,DATE_FORMAT(u.createTime,"%Y-%m-%d %H:%i:%s")as createTime
+        FROM u_user u,u_user s
+        where u.parentId = s.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
+        <if test="userStatus != null and userStatus !='' and userStatus != 0">
+            and u.userStatus = #{userStatus}
+        </if>
+        <if test="currentUserLevel == 1 and userLevel != 0">
+            and u.userLevel = #{userLevel}
+        </if>
+        <if test="currentUserLevel != 1">
+            and u.parentId = #{parentId}
+        </if>
+        order by u.userId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询用户列表总数 -->
+    <select id="userListSumData" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        FROM u_user u,u_user s
+        where u.parentId = s.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
+        <if test="userStatus != null and userStatus !='' and userStatus != 0">
+            and u.userStatus = #{userStatus}
+        </if>
+        <if test="currentUserLevel == 1 and userLevel != 0">
+            and u.userLevel = #{userLevel}
+        </if>
+        <if test="currentUserLevel != 1">
+            and u.parentId = #{parentId}
+        </if>
+    </select>
+
+    <!-- 查看被操作用户和当前用户的绑定关系 -->
+    <select id="userAndParent" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from u_user
+        where userId = #{userId} and parentId = #{currentUserId}
+    </select>
+
+    <!-- 修改用户状态 -->
+    <update id="userStatus" parameterType="java.util.Map">
+        update u_user set userStatus = #{userStatus} where userId = #{userId}
+    </update>
+
+</mapper>

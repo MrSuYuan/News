@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- APP模块 -->
+<mapper namespace="com.news.dao.AppDao">
+
+    <!-- 查看行业分类大类 -->
+    <select id="rootType" resultType="com.news.entity.Industy">
+        select * from i_industy where parentId = 0 order by id asc
+    </select>
+
+    <!-- 查看行业分类小类 -->
+    <select id="subType" resultType="com.news.entity.Industy">
+        select * from i_industy where parentId != 0 order by id asc
+    </select>
+
+    <!-- 查询此管理下的用户 -->
+    <select id="beLongUser" parameterType="java.lang.Long" resultType="com.news.entity.User">
+        select userId,nickName from u_user where parentId = #{parentId}
+    </select>
+
+    <!-- 添加APP信息 -->
+    <insert id="createApp" parameterType="com.news.entity.App">
+        insert into a_app
+        (appId, appName, downloadlink,createTime,userId,accessMethod,appStatus,rootType,subType,
+          platform,terminal,packageName,version,description,keyWords)
+        values
+        (#{appId},#{appName},#{downloadlink},now(),#{userId},#{accessMethod},1,#{rootType},#{subType},
+          #{platform},#{terminal},#{packageName},#{version},#{description},#{keyWords})
+    </insert>
+
+    <!-- app名称验重 -->
+    <select id="appName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0) from a_app where appName = #{appName}
+    </select>
+
+    <!-- app列表 -->
+    <select id="appList" parameterType="java.util.Map" resultType="com.news.vo.AppListVo">
+        SELECT a.appId,a.appName,u.nickName,a.downloadlink,a.appStatus,a.platform,a.terminal,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")as createTime
+        from a_app a,u_user u
+        where a.userId = u.userId
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
+        </if>
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="appStatus != 0">
+            and a.appStatus = #{appStatus}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+        order by a.appId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- app列表数量 -->
+    <select id="appListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from a_app a,u_user u
+        where a.userId = u.userId
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
+        </if>
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="appStatus != 0">
+            and a.appStatus = #{appStatus}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+    </select>
+
+    <!-- 查看当前app的上级id -->
+    <select id="appParent" parameterType="java.lang.String" resultType="java.lang.Long">
+        select u.parentId
+        from a_app a,u_user u
+        where a.appId = #{appId} and a.userId = u.userId
+    </select>
+
+    <!-- 修改app状态 -->
+    <update id="updateAppStatus" parameterType="java.util.Map">
+        update a_app set appStatus = #{appStatus} where appId = #{appId}
+    </update>
+
+    <!-- 创建广告位信息 -->
+    <insert id="createAdspace" parameterType="com.news.entity.AppAdspace">
+        insert into a_adspace
+        (spaceId, appId, spaceType, createTime, spaceName, width, height)
+        values
+        (#{spaceId},#{appId},#{spaceType},now(),#{spaceName},#{width},#{height})
+    </insert>
+
+    <!-- 广告位列表 -->
+    <select id="appAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.AppAdspaceListVo">
+        select a.appName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime
+        from a_adspace s,a_app a,u_user u
+        where s.appId = a.appId and a.userId = u.userId
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and s.spaceName = #{spaceName}
+        </if>
+        <if test="spaceType != 0">
+            and s.spaceType = #{spaceType}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+        order by s.spaceId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 广告位列表数量 -->
+    <select id="appAdspaceListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from a_adspace s,a_app a,u_user u
+        where s.appId = a.appId and a.userId = u.userId
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and s.spaceName = #{spaceName}
+        </if>
+        <if test="spaceType != 0">
+            and s.spaceType = #{spaceType}
+        </if>
+        <if test="userLevel == 2">
+            and u.parentId = #{userId}
+        </if>
+        <if test="userLevel == 3">
+            and a.userId = #{userId}
+        </if>
+    </select>
+
+    <!-- 查看平台广告位所属app的上级id -->
+    <select id="adParentId" parameterType="java.lang.String" resultType="java.util.Map">
+        select u.parentId,a.appId
+        from a_adspace d,a_app a,u_user u
+        where d.spaceId = #{spaceId} and d.appId = a.appId and a.userId = u.userId
+    </select>
+
+    <!-- 查看上游广告位所属app的相关信息 -->
+    <select id="adParent" parameterType="java.lang.String" resultType="java.util.Map">
+        select u.parentId,a.appId,d.spaceId,t.upstreamAppId
+        from a_adspace d,a_app a,u_user u,a_upstream t
+        where t.upstreamId = #{upstreamId} and t.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
+    </select>
+
+    <!-- 添加上游信息 -->
+    <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
+        insert into a_upstream
+        (upstreamId, spaceId, upstreamType, upstreamAppId, createTime)
+        values
+        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{createTime})
+    </insert>
+
+    <!-- 广告位上游信息列表 -->
+    <select id="appUpstreamList" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
+        select * from a_upstream where spaceId = #{spaceId}
+    </select>
+
+    <!-- 添加广告位数据统计信息 -->
+    <insert id="addAppStatistics">
+        insert into a_statistics
+        (spaceId, appId, upstreamId, createTime, lookPV, clickNum, clickProbability, income, ecmp) values
+        <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+        </foreach>
+    </insert>
+
+    <!-- 查询数据统计信息列表 -->
+    <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
+        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and a.userId = #{parentId}
+        </if>
+        order by s.statisticsId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询数据统计信息列表数量 -->
+    <select id="appStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(0)
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and a.userId = #{parentId}
+        </if>
+    </select>
+
+    <!-- 查询数据统计信息列表 -->
+    <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
+        select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and a.userId = #{parentId}
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        GROUP BY s.createTime
+        order by s.statisticsId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询数据统计信息列表数量 -->
+    <select id="appStatisticsUserListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(0)
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and a.userId = #{parentId}
+        <if test="appName != null and appName !=''">
+            and a.appName = #{appName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        GROUP BY s.createTime
+    </select>
+
+</mapper>
