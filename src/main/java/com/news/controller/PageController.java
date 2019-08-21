@@ -73,7 +73,7 @@ public class PageController extends BaseController {
         //验证验证码
         Object captcha = request.getSession().getAttribute("captcha");
         if(null != captcha){
-            if(login.getCaptcha().equals(captcha.toString())){
+            if(login.getCaptcha().toLowerCase().equals(captcha.toString())){
                 //验证用户信息
                 req = userService.userLogin(login);
                 if(req.getCode().equals("200")){

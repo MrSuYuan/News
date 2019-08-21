@@ -240,16 +240,17 @@
 
     <!-- 查询数据统计信息列表数量 -->
     <select id="appStatisticsUserListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
-        SELECT count(0)
+        select count(0) from
+        (SELECT count(0)
         from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and a.userId = #{parentId}
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
         <if test="spaceName != null and spaceName !=''">
             and d.spaceName = #{spaceName}
         </if>
-        GROUP BY s.createTime
+        GROUP BY s.createTime) c
     </select>
 
 </mapper>

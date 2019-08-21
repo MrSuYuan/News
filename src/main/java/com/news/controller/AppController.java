@@ -287,7 +287,7 @@ public class AppController extends BaseController {
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appStatisticsList((Long)userId, spaceName, appName, currentPage, pageSize);
+            req = appService.appStatisticsUserList((Long)userId, spaceName, appName, currentPage, pageSize);
         }
         return req;
     }

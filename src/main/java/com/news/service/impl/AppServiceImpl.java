@@ -353,12 +353,6 @@ public class AppServiceImpl implements AppService {
 
         //查询集合列表
         List<AppStatisticsListVo> statisticsList = appDao.appStatisticsList(map);
-        for(int i = 0; i < statisticsList.size(); i++){
-            AppStatisticsListVo as = statisticsList.get(i);
-            DecimalFormat df = new DecimalFormat("######0.00");
-            as.setClickProbability(Double.parseDouble(df.format((double)as.getClickNum()/(double)as.getLookPV()*100)));
-            as.setEcmp(Double.parseDouble(df.format(as.getIncome()*1000/(double)as.getLookPV())));
-        }
         //总数量
         int sumData = appDao.appStatisticsListNum(map);
         //总页数
@@ -403,6 +397,12 @@ public class AppServiceImpl implements AppService {
 
         //查询集合列表
         List<AppStatisticsListVo> statisticsList = appDao.appStatisticsUserList(map);
+        for(int i = 0; i < statisticsList.size(); i++){
+            AppStatisticsListVo as = statisticsList.get(i);
+            DecimalFormat df = new DecimalFormat("######0.00");
+            as.setClickProbability(Double.parseDouble(df.format((double)as.getClickNum()/(double)as.getLookPV()*100)));
+            as.setEcmp(Double.parseDouble(df.format(as.getIncome()*1000/(double)as.getLookPV())));
+        }
         //总数量
         int sumData = appDao.appStatisticsUserListNum(map);
         //总页数
