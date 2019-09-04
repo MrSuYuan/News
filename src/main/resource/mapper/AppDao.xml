@@ -87,10 +87,31 @@
         where a.appId = #{appId} and a.userId = u.userId
     </select>
 
+    <!-- 查看app所属用户id -->
+    <select id="appUserId" parameterType="java.lang.String" resultType="java.lang.Long">
+        select userId
+        from a_app
+        where appId = #{appId}
+    </select>
+
     <!-- 修改app状态 -->
     <update id="updateAppStatus" parameterType="java.util.Map">
         update a_app set appStatus = #{appStatus} where appId = #{appId}
     </update>
+
+    <!-- 查看此app是否拥有同类型广告位(app每一种广告位只能有一种) -->
+    <select id="appSpaceNum" parameterType="com.news.entity.AppAdspace" resultType="java.lang.Integer">
+        select count(0)
+        from a_adspace
+        where appId = #{appId} and spaceType = #{spaceType}
+    </select>
+
+    <!-- 广告位名称验重 -->
+    <select id="spaceNameNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0)
+        from a_adspace
+        where spaceName = #{spaceName}
+    </select>
 
     <!-- 创建广告位信息 -->
     <insert id="createAdspace" parameterType="com.news.entity.AppAdspace">
@@ -160,12 +181,40 @@
         where t.upstreamId = #{upstreamId} and t.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
     </select>
 
+    <!-- 查看此广告位有没有重复上游类型 -->
+    <select id="appUpstreamNum" parameterType="com.news.entity.AppUpstream" resultType="java.lang.Integer">
+        select count(0)
+        from a_upstream
+        where spaceId = #{spaceId} and upstreamType = #{upstreamType}
+    </select>
+
     <!-- 添加上游信息 -->
     <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
         insert into a_upstream
         (upstreamId, spaceId, upstreamType, upstreamAppId, createTime)
         values
         (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{createTime})
+    </insert>
+
+    <!-- 查看此广告位划量分流次数 -->
+    <select id="assignNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0)
+        from a_assign
+        where spaceId = #{spaceId}
+    </select>
+    
+    <!-- 添加划量分流详情 -->
+    <insert id="insertAssignZ" parameterType="com.news.entity.AppAssign">
+      insert into a_assign
+      (spaceId, upstreamType, probability, type)
+      values
+      (#{spaceId},#{upstreamType},#{probability},1)
+    </insert>
+    <insert id="insertAssignC" parameterType="com.news.entity.AppAssign">
+      insert into a_assign
+      (spaceId, upstreamType, probability, type)
+      values
+      (#{spaceId},#{upstreamType},#{probability},2)
     </insert>
 
     <!-- 广告位上游信息列表 -->
@@ -252,5 +301,28 @@
         </if>
         GROUP BY s.createTime) c
     </select>
+
+    <!-- 调度分配展示 -->
+    <select id="selectAppAssign" parameterType="java.lang.String" resultType="com.news.entity.AppAssign">
+        select * from a_assign where spaceId = #{spaceId}
+    </select>
+
+    <!-- 正式服概率修改 -->
+    <update id="updateAssignZ">
+        <foreach collection="list" index="index" item="item" open="" close="" separator=";">
+            update a_assign
+            set probability = #{item.probability}
+            where type = 1 and upstreamType = #{item.upstreamType}
+        </foreach>
+    </update>
+
+    <!-- 测试服概率修改 -->
+    <update id="updateAssignC">
+        <foreach collection="list" index="index" item="item" open="" close="" separator=";">
+            update a_assign
+            set probability = #{item.probability}
+            where type = 2 and upstreamType = #{item.upstreamType}
+        </foreach>
+    </update>
 
 </mapper>

@@ -90,7 +90,7 @@
 
             <a href="/index" class="navbar-brand">
                 <small id="headline">
-                    中关互动后台管理系统
+                    点星后台管理系统
                 </small>
             </a>
         </div>

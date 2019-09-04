@@ -56,9 +56,24 @@ public interface AppDao {
     Long appParent(String appId);
 
     /**
+     * 查看app所属用户id
+     */
+    Long appUserId(String appId);
+
+    /**
      * 修改app状态
      */
     void updateAppStatus(Map<String,Object> map);
+
+    /**
+     * 查看此app是否拥有同类型广告位(app每一种广告位只能有一种)
+     */
+    int appSpaceNum(AppAdspace ad);
+
+    /**
+     * 广告位名称验重
+     */
+    int spaceNameNum(String spaceName);
 
     /**
      * 创建广告位信息
@@ -86,9 +101,25 @@ public interface AppDao {
     Map<String,Object> adParent(String upstreamId);
 
     /**
+     * 查看此广告位有没有重复上游类型
+     */
+    int appUpstreamNum(AppUpstream appUpstream);
+
+    /**
      * 添加上游信息
      */
     void insertAppUpstream(AppUpstream appUpstream);
+
+    /**
+     * 查看此广告位划量分流次数
+     */
+    int assignNum(String spaceId);
+
+    /**
+     * 添加划量分流详情
+     */
+    void insertAssignZ(AppAssign appAssign);
+    void insertAssignC(AppAssign appAssign);
 
     /**
      * 广告位上游信息列表
@@ -120,4 +151,18 @@ public interface AppDao {
      */
     int appStatisticsUserListNum(Map<String,Object> map);
 
+    /**
+     * 调度分配展示
+     */
+    List<AppAssign> selectAppAssign(String spaceId);
+
+    /**
+     * 正式服概率修改
+     */
+    void updateAssignZ(List<AppAssign> list);
+
+    /**
+     * 测试服概率修改
+     */
+    void updateAssignC(List<AppAssign> list);
 }

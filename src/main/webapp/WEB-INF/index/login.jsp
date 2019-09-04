@@ -36,7 +36,7 @@
                 <div class="login-container">
                     <div class="center">
                         <h2 class="light-blue" id="id-company-text">
-                            中关互动后台管理系统
+                            点星后台管理系统
                         </h2>
                     </div>
                     <div class="space-30"></div>

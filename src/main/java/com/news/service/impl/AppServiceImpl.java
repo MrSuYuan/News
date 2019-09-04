@@ -182,22 +182,41 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse createAdspace(Long userId, String appId, int spaceType, String spaceName, int width, int height) {
         ReqResponse req = new ReqResponse();
-        //Long appParentId = appDao.appParent(appId);
-        //if(null != appParentId && userId.longValue() == appParentId.longValue()){
-            AppAdspace ad = new AppAdspace();
-            ad.setAppId(appId);
-            ad.setSpaceType(spaceType);
-            ad.setSpaceName(spaceName);
-            ad.setWidth(width);
-            ad.setHeight(height);
-            ad.setSpaceId(AppIdUtil.getSpaceId());
-            appDao.createAdspace(ad);
-            req.setCode(ErrorMessage.SUCCESS.getCode());
-            req.setMessage("创建成功");
-        //}else{
-        //    req.setCode(ErrorMessage.FAIL.getCode());
-        //    req.setMessage("您没有操作权限");
-        //}
+        //广告位名称验重
+        int spaceNameNum = appDao.spaceNameNum(spaceName);
+        if(spaceNameNum == 0){
+            //查看app上级id
+            Long appParentId = appDao.appParent(appId);
+            //查看app所属用户id
+            Long appUserId = appDao.appUserId(appId);
+            //自己和上级都有资格添加广告位
+            if(userId.longValue() == appParentId.longValue() || userId.longValue() == appUserId.longValue()){
+                AppAdspace ad = new AppAdspace();
+                ad.setAppId(appId);
+                ad.setSpaceType(spaceType);
+                ad.setSpaceName(spaceName);
+                ad.setWidth(width);
+                ad.setHeight(height);
+                ad.setSpaceId(AppIdUtil.getSpaceId());
+                //查看此app是否拥有同类型广告位(app每一种广告位只能有一种)
+                int appSpaceNum = appDao.appSpaceNum(ad);
+                if(appSpaceNum == 0){
+                    appDao.createAdspace(ad);
+                    req.setCode(ErrorMessage.SUCCESS.getCode());
+                    req.setMessage("创建成功");
+                }else{
+                    req.setCode(ErrorMessage.FAIL.getCode());
+                    req.setMessage("该类型广告位已存在");
+                }
+
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有操作权限");
+            }
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("广告位名称已存在");
+        }
         return req;
     }
 
@@ -264,9 +283,35 @@ public class AppServiceImpl implements AppService {
             appUpstream.setUpstreamId(upstreamId);
             appUpstream.setUpstreamAppId(upstreamAppId);
             appUpstream.setUpstreamType(upstreamType);
-            appDao.insertAppUpstream(appUpstream);
-            req.setCode(ErrorMessage.SUCCESS.getCode());
-            req.setMessage("添加成功");
+            //查看此广告位有没有重复上游类型
+            int appUpstreamNum = appDao.appUpstreamNum(appUpstream);
+            if(appUpstreamNum == 0){
+                //添加广告位信息
+                appDao.insertAppUpstream(appUpstream);
+                //如果是第一家,就添加调度信息100%,其余家都是0
+                int assignNum = appDao.assignNum(spaceId);
+                if(assignNum == 0){
+                    AppAssign appAssign = new AppAssign();
+                    appAssign.setSpaceId(spaceId);
+                    appAssign.setProbability(100);
+                    appAssign.setUpstreamType(upstreamType);
+                    appDao.insertAssignZ(appAssign);
+                    appDao.insertAssignC(appAssign);
+                }else{
+                    AppAssign appAssign = new AppAssign();
+                    appAssign.setSpaceId(spaceId);
+                    appAssign.setProbability(0);
+                    appAssign.setUpstreamType(upstreamType);
+                    appDao.insertAssignZ(appAssign);
+                    appDao.insertAssignC(appAssign);
+                }
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("添加成功");
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("该上游信息已经存在");
+            }
+
         }else{
             req.setCode(ErrorMessage.FAIL.getCode());
             req.setMessage("您无权操作此APP");
@@ -422,6 +467,119 @@ public class AppServiceImpl implements AppService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("数据加载完成");
         req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 调度分配展示
+     */
+    @Override
+    public ReqResponse selectAppAssign(String spaceId) {
+        ReqResponse req = new ReqResponse();
+        List<AppAssign> list = appDao.selectAppAssign(spaceId);
+        Map<String,Object> map = new HashMap<>();
+        for(int i=0;i<list.size();i++){
+            AppAssign aa = list.get(i);
+            //正式
+            if(aa.getType() == 1){
+                if(aa.getUpstreamType() == 1){
+                    map.put("dfz",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 2){
+                    map.put("wkz",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 3){
+                    map.put("jgz",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 4){
+                    map.put("ylz",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 5){
+                    map.put("ydtz",aa.getProbability());
+                    continue;
+                }else{
+                    continue;
+                }
+
+            //测试
+            }else if(aa.getType() == 2){
+                if(aa.getUpstreamType() == 1){
+                    map.put("dfc",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 2){
+                    map.put("wkc",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 3){
+                    map.put("jgc",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 4){
+                    map.put("ylc",aa.getProbability());
+                    continue;
+                }else if(aa.getUpstreamType() == 5){
+                    map.put("ydtc",aa.getProbability());
+                    continue;
+                }else{
+                    continue;
+                }
+
+            }
+        }
+        req.setResult(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
+    /**
+     * 修改调度数据
+     */
+    @Override
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type) {
+        ReqResponse req = new ReqResponse();
+        if(df + wk + jg + yl + ydt == 100){
+            List<AppAssign> aList = new ArrayList<>();
+
+            AppAssign dfa = new AppAssign();
+            dfa.setUpstreamType(1);
+            dfa.setProbability(df);
+            aList.add(dfa);
+
+            AppAssign wka = new AppAssign();
+            wka.setUpstreamType(2);
+            wka.setProbability(wk);
+            aList.add(wka);
+
+            AppAssign jga = new AppAssign();
+            jga.setUpstreamType(3);
+            jga.setProbability(jg);
+            aList.add(jga);
+
+            AppAssign yla = new AppAssign();
+            yla.setUpstreamType(4);
+            yla.setProbability(yl);
+            aList.add(yla);
+
+            AppAssign ydta = new AppAssign();
+            ydta.setUpstreamType(5);
+            ydta.setProbability(ydt);
+            aList.add(ydta);
+            System.out.println(aList.size());
+            //批量修改
+            if(type == 1){
+                appDao.updateAssignZ(aList);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("修改成功");
+            }else if(type == 2){
+                appDao.updateAssignC(aList);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("修改成功");
+            }else{
+                req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
+                req.setMessage("参数不合法");
+            }
+        }else{
+            req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
+            req.setMessage("设置概率错误");
+        }
         return req;
     }
 }

@@ -88,7 +88,7 @@
                 success: function (data) {
                     if(data.code == 200){
                         alert(data.message);
-                        gotoURL(path + "/appList");
+                        gotoURL(path + "/appAdspaceList");
                     }else if(data.code == 300){
                         alert(data.message);
                         window.location = path + "/login";

@@ -68,4 +68,13 @@ public interface AppService {
      */
     ReqResponse appStatisticsUserList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
+    /**
+     * 调度分配展示
+     */
+    ReqResponse selectAppAssign(String spaceId);
+
+    /**
+     * 修改调度数据
+     */
+    ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type);
 }

@@ -192,6 +192,15 @@ public class PageController extends BaseController {
     }
 
     /**
+     * APP激励视频调度分配
+     */
+    @RequestMapping(value = "appAssign" , method= RequestMethod.GET)
+    @ApiOperation(value = "激励视频调度分配", notes = "激励视频调度分配", httpMethod = "GET")
+    public String appAssign(){
+        return "app/assign";
+    }
+
+    /**
      * WEB列表页
      */
     @RequestMapping(value = "webList" , method= RequestMethod.GET)

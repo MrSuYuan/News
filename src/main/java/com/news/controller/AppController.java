@@ -292,4 +292,36 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="selectAppAssign", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "查看调度数据", notes = "查看调度数据", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse selectAppAssign(String spaceId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.selectAppAssign(spaceId);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="assignSubmit", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "修改调度数据", notes = "修改调度数据", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.assignSubmit(df, wk, jg, yl, ydt, type);
+        }
+        return req;
+    }
+
 }

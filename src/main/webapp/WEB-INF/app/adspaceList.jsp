@@ -136,7 +136,8 @@
                         if(currentUserLevel == 2 || currentUserLevel == 1){
                             html+='<td>' +
                                 '<button type="button" onclick="addUpstream(\''+data.spaceId+'\')">操作</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                '<button type="button" onclick="checkUpstream(\''+data.spaceId+'\')">查看</button>' +
+                                '<button type="button" onclick="checkUpstream(\''+data.spaceId+'\')">查看</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                '<button type="button" onclick="assign(\''+data.spaceId+'\')">分流</button>' +
                                 '</td>';
                         }
                         html+='</tr>';
@@ -193,6 +194,11 @@
     function checkUpstream(spaceId) {
         sessionStorage.setItem("spaceId",spaceId);
         gotoURL(path + "/appUpstreamList");
+    }
+
+    function assign(spaceId) {
+        sessionStorage.setItem("spaceId",spaceId);
+        gotoURL(path + "/appAssign");
     }
 
 </script>
