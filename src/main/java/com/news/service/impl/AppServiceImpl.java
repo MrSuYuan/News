@@ -198,16 +198,18 @@ public class AppServiceImpl implements AppService {
                 ad.setWidth(width);
                 ad.setHeight(height);
                 ad.setSpaceId(AppIdUtil.getSpaceId());
-                //查看此app是否拥有同类型广告位(app每一种广告位只能有一种)
+                appDao.createAdspace(ad);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("创建成功");
+
+                /*//查看此app是否拥有同类型广告位(app每一种广告位只能有一种)
                 int appSpaceNum = appDao.appSpaceNum(ad);
                 if(appSpaceNum == 0){
-                    appDao.createAdspace(ad);
-                    req.setCode(ErrorMessage.SUCCESS.getCode());
-                    req.setMessage("创建成功");
+
                 }else{
                     req.setCode(ErrorMessage.FAIL.getCode());
                     req.setMessage("该类型广告位已存在");
-                }
+                }*/
 
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
@@ -478,48 +480,23 @@ public class AppServiceImpl implements AppService {
         Map<String,Object> map = new HashMap<>();
         for(int i=0;i<list.size();i++){
             AppAssign aa = list.get(i);
-            //正式
-            if(aa.getType() == 1){
-                if(aa.getUpstreamType() == 1){
-                    map.put("dfz",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 2){
-                    map.put("wkz",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 3){
-                    map.put("jgz",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 4){
-                    map.put("ylz",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 5){
-                    map.put("ydtz",aa.getProbability());
-                    continue;
-                }else{
-                    continue;
-                }
-
-            //测试
-            }else if(aa.getType() == 2){
-                if(aa.getUpstreamType() == 1){
-                    map.put("dfc",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 2){
-                    map.put("wkc",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 3){
-                    map.put("jgc",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 4){
-                    map.put("ylc",aa.getProbability());
-                    continue;
-                }else if(aa.getUpstreamType() == 5){
-                    map.put("ydtc",aa.getProbability());
-                    continue;
-                }else{
-                    continue;
-                }
-
+            if(aa.getUpstreamType() == 1){
+                map.put("df",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 2){
+                map.put("wk",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 3){
+                map.put("jg",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 4){
+                map.put("yl",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 5){
+                map.put("ydt",aa.getProbability());
+                continue;
+            }else{
+                continue;
             }
         }
         req.setResult(map);

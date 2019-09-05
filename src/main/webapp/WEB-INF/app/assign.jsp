@@ -13,80 +13,40 @@
 <div style="width: 100%">
     <form action="#" method="post">
         <div style="display:inline;width: 50%">
-            <font size="4"><STRONG>正式服</STRONG></font>
             <table style="font-size: 14px">
-                <tr height = "50" id="dfzt">
+                <tr height = "50" id="dft">
                     <td align = "right">东方:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="dfz" name="dfz" value="0"></td>
+                    <td width="300"><input type="text" size="35" id="df" name="df" value="0"></td>
                 </tr>
-                <tr height = "50" id="wkzt">
+                <tr height = "50" id="wkt">
                     <td align = "right">万咖:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="wkz" name="wkz" value="0"></td>
+                    <td width="300"><input type="text" size="35" id="wk" name="wk" value="0"></td>
                 </tr>
-                <tr height = "50" id="jgzt">
+                <tr height = "50" id="jgt">
                     <td align = "right">极光:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="jgz" name="jgz" value="0"></td>
+                    <td width="300"><input type="text" size="35" id="jg" name="jg" value="0"></td>
                     </td>
                 </tr>
-                <tr height = "50" id="ylzt">
+                <tr height = "50" id="ylt">
                     <td align = "right">余梁:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="ylz" name="ylz" value="0"></td>
+                    <td width="300"><input type="text" size="35" id="yl" name="yl" value="0"></td>
                     </td>
                 </tr>
-                <tr height = "50" id="ydtzt">
+                <tr height = "50" id="ydtt">
                     <td align = "right">一点通:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="ydtz" name="ydtz" value="0"></td>
+                    <td width="300"><input type="text" size="35" id="ydt" name="ydt" value="0"></td>
                     </td>
                 </tr>
                 <tr height = "50">
                     <td></td>
                     <td>
                         <%--<input type="button" id="editZ" value="编辑" onclick="createAdspace()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                        <input type="button" id="submitZ" value="确定" onclick="updateAssignZ()">
+                        <input type="button" id="submitZ" value="确定" onclick="updateAssign()">
                     </td>
                 </tr>
             </table>
         </div>
         <br>
-    </form>
-    <hr>
-    <form action="#" method="post">
-        <br>
-        <div style="display:inline;width: 50%">
-            <font size="4"><STRONG>测试服</STRONG></font>
-            <table style="font-size: 14px">
-                <tr height = "50" id="dfct">
-                    <td align = "right">东方:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="dfc" name="dfc" value="0"></td>
-                </tr>
-                <tr height = "50" id="wkct">
-                    <td align = "right">万咖:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="wkc" name="wkc" value="0"></td>
-                </tr>
-                <tr height = "50" id="jgct">
-                    <td align = "right">极光:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="jgc" name="jgc" value="0"></td>
-                    </td>
-                </tr>
-                <tr height = "50" id="ylct">
-                    <td align = "right">余梁:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="ylc" name="ylc" value="0"></td>
-                    </td>
-                </tr>
-                <tr height = "50" id="ydtct">
-                    <td align = "right">一点通:&nbsp;&nbsp;</td>
-                    <td width="300"><input type="text" size="35" id="ydtc" name="ydtc" value="0"></td>
-                    </td>
-                </tr>
-                <tr height = "50">
-                    <td></td>
-                    <td>
-                        <%--<input type="button" id="editC" value="编辑" onclick="createAdspace()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
-                        <input type="button" id="submitC" value="确定" onclick="updateAssignC()">
-                    </td>
-                </tr>
-            </table>
-        </div>
     </form>
 </div>
 
@@ -119,57 +79,32 @@
                 console.log(obj)
                 if(obj.code == 200){
                     var result = obj.result;
-                    if(null == result.dfz){
-                        $('#dfzt').hide()
+                    if(null == result.df){
+                        $('#dft').hide()
                     }else{
-                        $('#dfz').val(result.dfz);
+                        $('#df').val(result.df);
                     }
-                    if(null == result.wkz){
-                        $('#wkzt').hide()
+                    if(null == result.wk){
+                        $('#wkt').hide()
                     }else{
-                        $('#wkz').val(result.wkz);
+                        $('#wk').val(result.wk);
                     }
-                    if(null == result.jgz){
-                        $('#jgzt').hide()
+                    if(null == result.jg){
+                        $('#jgt').hide()
                     }else{
-                        $('#jgz').val(result.jgz);
+                        $('#jg').val(result.jg);
                     }
-                    if(null == result.ylz){
-                        $('#ylzt').hide()
+                    if(null == result.yl){
+                        $('#ylt').hide()
                     }else{
-                        $('#ylz').val(result.ylz);
+                        $('#yl').val(result.yl);
                     }
-                    if(null == result.ydtz){
-                        $('#ydtzt').hide()
+                    if(null == result.ydt){
+                        $('#ydtt').hide()
                     }else{
-                        $('#ydtz').val(result.ydtz);
+                        $('#ydt').val(result.ydt);
                     }
 
-                    if(null == result.dfc){
-                        $('#dfct').hide()
-                    }else{
-                        $('#dfc').val(result.dfc);
-                    }
-                    if(null == result.wkc){
-                        $('#wkct').hide()
-                    }else{
-                        $('#wkc').val(result.wkc);
-                    }
-                    if(null == result.jgc){
-                        $('#jgct').hide()
-                    }else{
-                        $('#jgc').val(result.jgc);
-                    }
-                    if(null == result.ylc){
-                        $('#ylct').hide()
-                    }else{
-                        $('#ylc').val(result.ylc);
-                    }
-                    if(null == result.ydtc){
-                        $('#ydtct').hide()
-                    }else{
-                        $('#ydtc').val(result.ydtc);
-                    }
 
                 }else if(obj.code == "300"){
                     alert(obj.message);
@@ -186,16 +121,16 @@
     }
 
     //正式服确认提交
-    function updateAssignZ(){
+    function updateAssign(){
         $.ajax({
             url: path + "/app/assignSubmit",
             type: "post",
             data : {
-                "df" : $('#dfz').val(),
-                "wk" : $('#wkz').val(),
-                "jg" : $('#jgz').val(),
-                "yl" : $('#ylz').val(),
-                "ydt" : $('#ydtz').val(),
+                "df" : $('#df').val(),
+                "wk" : $('#wk').val(),
+                "jg" : $('#jg').val(),
+                "yl" : $('#yl').val(),
+                "ydt" : $('#ydt').val(),
                 "type" : 1
             },
             dataType: 'json',
@@ -217,40 +152,6 @@
             }
         });
     }
-
-    //测试服确认提交
-    function updateAssignC(){
-        $.ajax({
-            url: path + "/app/assignSubmit",
-            type: "post",
-            data : {
-                "df" : $('#dfc').val(),
-                "wk" : $('#wkc').val(),
-                "jg" : $('#jgc').val(),
-                "yl" : $('#ylc').val(),
-                "ydt" : $('#ydtc').val(),
-                "type" : 2
-            },
-            dataType: 'json',
-            async: false,
-            success: function (data) {
-                if(data.code == 200){
-                    alert(data.message);
-
-                }else if(data.code == "300"){
-                    alert(data.message);
-                    window.location = path + "/login";
-                }else{
-                    alert(data.message);
-                }
-
-            },
-            error: function () {
-                alert("请求异常");
-            }
-        });
-    }
-
 
 </script>
 
