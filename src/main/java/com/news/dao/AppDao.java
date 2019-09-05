@@ -118,8 +118,7 @@ public interface AppDao {
     /**
      * 添加划量分流详情
      */
-    void insertAssignZ(AppAssign appAssign);
-    void insertAssignC(AppAssign appAssign);
+    void insertAssign(AppAssign appAssign);
 
     /**
      * 广告位上游信息列表

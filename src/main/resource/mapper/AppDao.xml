@@ -204,17 +204,11 @@
     </select>
     
     <!-- 添加划量分流详情 -->
-    <insert id="insertAssignZ" parameterType="com.news.entity.AppAssign">
+    <insert id="insertAssign" parameterType="com.news.entity.AppAssign">
       insert into a_assign
       (spaceId, upstreamType, probability, type)
       values
       (#{spaceId},#{upstreamType},#{probability},1)
-    </insert>
-    <insert id="insertAssignC" parameterType="com.news.entity.AppAssign">
-      insert into a_assign
-      (spaceId, upstreamType, probability, type)
-      values
-      (#{spaceId},#{upstreamType},#{probability},2)
     </insert>
 
     <!-- 广告位上游信息列表 -->

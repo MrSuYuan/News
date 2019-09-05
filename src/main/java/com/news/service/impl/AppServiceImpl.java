@@ -295,15 +295,13 @@ public class AppServiceImpl implements AppService {
                     appAssign.setSpaceId(spaceId);
                     appAssign.setProbability(100);
                     appAssign.setUpstreamType(upstreamType);
-                    appDao.insertAssignZ(appAssign);
-                    appDao.insertAssignC(appAssign);
+                    appDao.insertAssign(appAssign);
                 }else{
                     AppAssign appAssign = new AppAssign();
                     appAssign.setSpaceId(spaceId);
                     appAssign.setProbability(0);
                     appAssign.setUpstreamType(upstreamType);
-                    appDao.insertAssignZ(appAssign);
-                    appDao.insertAssignC(appAssign);
+                    appDao.insertAssign(appAssign);
                 }
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("添加成功");
