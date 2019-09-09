@@ -131,6 +131,7 @@
                 "jg" : $('#jg').val(),
                 "yl" : $('#yl').val(),
                 "ydt" : $('#ydt').val(),
+                "spaceId" : $('#spaceId').val(),
                 "type" : 1
             },
             dataType: 'json',

@@ -508,7 +508,13 @@ public class AppServiceImpl implements AppService {
      * 修改调度数据
      */
     @Override
-    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type) {
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type, String spaceId) {
+        System.out.println("DF"+df);
+        System.out.println("WK"+wk);
+        System.out.println("JG"+jg);
+        System.out.println("YL"+yl);
+        System.out.println("YDT"+ydt);
+        System.out.println("TYPE"+type);
         ReqResponse req = new ReqResponse();
         if(df + wk + jg + yl + ydt == 100){
             List<AppAssign> aList = new ArrayList<>();
@@ -516,41 +522,37 @@ public class AppServiceImpl implements AppService {
             AppAssign dfa = new AppAssign();
             dfa.setUpstreamType(1);
             dfa.setProbability(df);
+            dfa.setSpaceId(spaceId);
             aList.add(dfa);
 
             AppAssign wka = new AppAssign();
             wka.setUpstreamType(2);
             wka.setProbability(wk);
+            wka.setSpaceId(spaceId);
             aList.add(wka);
 
             AppAssign jga = new AppAssign();
             jga.setUpstreamType(3);
             jga.setProbability(jg);
+            jga.setSpaceId(spaceId);
             aList.add(jga);
 
             AppAssign yla = new AppAssign();
             yla.setUpstreamType(4);
             yla.setProbability(yl);
+            yla.setSpaceId(spaceId);
             aList.add(yla);
 
             AppAssign ydta = new AppAssign();
             ydta.setUpstreamType(5);
             ydta.setProbability(ydt);
+            ydta.setSpaceId(spaceId);
             aList.add(ydta);
-            System.out.println(aList.size());
             //批量修改
-            if(type == 1){
-                appDao.updateAssignZ(aList);
-                req.setCode(ErrorMessage.SUCCESS.getCode());
-                req.setMessage("修改成功");
-            }else if(type == 2){
-                appDao.updateAssignC(aList);
-                req.setCode(ErrorMessage.SUCCESS.getCode());
-                req.setMessage("修改成功");
-            }else{
-                req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
-                req.setMessage("参数不合法");
-            }
+            appDao.updateAssignZ(aList);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("修改成功");
+
         }else{
             req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
             req.setMessage("设置概率错误");

@@ -160,8 +160,5 @@ public interface AppDao {
      */
     void updateAssignZ(List<AppAssign> list);
 
-    /**
-     * 测试服概率修改
-     */
-    void updateAssignC(List<AppAssign> list);
+
 }

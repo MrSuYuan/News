@@ -312,14 +312,14 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "修改调度数据", notes = "修改调度数据", httpMethod = "POST")
     @CrossOrigin
-    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type){
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type, String spaceId){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.assignSubmit(df, wk, jg, yl, ydt, type);
+            req = appService.assignSubmit(df, wk, jg, yl, ydt, type, spaceId);
         }
         return req;
     }

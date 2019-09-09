@@ -76,5 +76,5 @@ public interface AppService {
     /**
      * 修改调度数据
      */
-    ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type);
+    ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type, String spaceId);
 }
