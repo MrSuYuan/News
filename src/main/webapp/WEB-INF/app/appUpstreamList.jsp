@@ -98,6 +98,8 @@
                             html+='<td> 余梁 </td>';
                         }else if(upstreamType == 5){
                             html+='<td> 一点通 </td>';
+                        }else if(upstreamType == 6){
+                            html+='<td> 小知 </td>';
                         }else{
                             html+='<td> <font color="red">信息错误</font> </td>';
                         }

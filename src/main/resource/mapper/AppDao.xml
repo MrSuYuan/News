@@ -123,7 +123,7 @@
 
     <!-- 广告位列表 -->
     <select id="appAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.AppAdspaceListVo">
-        select a.appName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime
+        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
         <if test="appName != null and appName !=''">

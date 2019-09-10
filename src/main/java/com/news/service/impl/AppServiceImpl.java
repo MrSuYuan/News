@@ -434,6 +434,7 @@ public class AppServiceImpl implements AppService {
         if(null == pageSize){
             pageSize = 20;
         }
+        System.out.println(userId);
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
         map.put("spaceName",spaceName);
@@ -495,6 +496,9 @@ public class AppServiceImpl implements AppService {
             }else if(aa.getUpstreamType() == 5){
                 map.put("ydt",aa.getProbability());
                 continue;
+            }else if(aa.getUpstreamType() == 6){
+                map.put("xz",aa.getProbability());
+                continue;
             }else{
                 continue;
             }
@@ -508,7 +512,7 @@ public class AppServiceImpl implements AppService {
      * 修改调度数据
      */
     @Override
-    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int type, String spaceId) {
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int type, String spaceId) {
         System.out.println("DF"+df);
         System.out.println("WK"+wk);
         System.out.println("JG"+jg);
@@ -516,7 +520,7 @@ public class AppServiceImpl implements AppService {
         System.out.println("YDT"+ydt);
         System.out.println("TYPE"+type);
         ReqResponse req = new ReqResponse();
-        if(df + wk + jg + yl + ydt == 100){
+        if(df + wk + jg + yl + ydt + xz == 100){
             List<AppAssign> aList = new ArrayList<>();
 
             AppAssign dfa = new AppAssign();
@@ -548,6 +552,12 @@ public class AppServiceImpl implements AppService {
             ydta.setProbability(ydt);
             ydta.setSpaceId(spaceId);
             aList.add(ydta);
+
+            AppAssign xza = new AppAssign();
+            xza.setUpstreamType(6);
+            xza.setProbability(xz);
+            xza.setSpaceId(spaceId);
+            aList.add(xza);
             //批量修改
             appDao.updateAssignZ(aList);
             req.setCode(ErrorMessage.SUCCESS.getCode());

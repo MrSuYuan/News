@@ -35,6 +35,7 @@
                         <option value="3">极光</option>
                         <option value="4">余梁</option>
                         <option value="5">一点通</option>
+                        <option value="6">小知</option>
                     </select>
                     <font color="red">&nbsp;&nbsp;*</font>
                 </td>

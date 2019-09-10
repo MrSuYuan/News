@@ -37,6 +37,11 @@
                     <td width="300"><input type="text" size="35" id="ydt" name="ydt" value="0"></td>
                     </td>
                 </tr>
+                <tr height = "50" id="xzt">
+                    <td align = "right">小知:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="xz" name="xz" value="0"></td>
+                    </td>
+                </tr>
                 <tr height = "50">
                     <td></td>
                     <td>
@@ -104,6 +109,11 @@
                     }else{
                         $('#ydt').val(result.ydt);
                     }
+                    if(null == result.xz){
+                        $('xzt').hide()
+                    }else{
+                        $('#xz').val(result.xz);
+                    }
 
 
                 }else if(obj.code == "300"){
@@ -131,6 +141,7 @@
                 "jg" : $('#jg').val(),
                 "yl" : $('#yl').val(),
                 "ydt" : $('#ydt').val(),
+                "xz" : $('#xz').val(),
                 "spaceId" : $('#spaceId').val(),
                 "type" : 1
             },

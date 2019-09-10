@@ -37,6 +37,7 @@
                     <thead>
                     <tr style="height: 50px">
                         <th>广告位ID</th>
+                        <th>APPID</th>
                         <th>广告位名称</th>
                         <th>APP名称</th>
                         <th>广告类型</th>
@@ -114,6 +115,7 @@
                         var data = list[i];
                         html+='<tr style="height: 40px">';
                         html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appName+'</td>';
                         var spaceType = data.spaceType;
