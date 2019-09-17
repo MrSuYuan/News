@@ -65,46 +65,7 @@
                 <div class="centre-tip">头条新闻 > <span id="typespan">推荐</span></div>
                 <div class="content-main">
                     <ul class="content-main-ul">
-                        <%--<c:forEach items="${indexNews}" var="i">
-                            <c:if test="${i.type == 2}">
-                                <li class="content-li content-li01">
-                                    <a href="${ctx}/detail?newsId=${i.newsId}" target="_blank">
-                                        <p class="title"><font color="black">${i.title}</font> </p>
-                                        <div class="imgdiv">
-                                            <c:forEach items="${i.pictureUrl}" var="l">
-                                                <img class="img list-li-img" style="width: 156px;height: 117px" src="${l}">
-                                            </c:forEach>
-                                        </div>
-                                    </a>
-                                    <div class="footer-source">
-                                    <span>
-                                            ${i.author}
-                                    </span>
-                                    </div>
-                                </li>
-                            </c:if>
 
-                            <c:if test="${i.type == 1}">
-                                <li class="content-li content-li02">
-                                    <a href="${ctx}/detail?newsId=${i.newsId}" target="_blank">
-                                        <div class="img-wrap clearfix">
-                                            <div class="imgdiv">
-                                                <img class="img list-li-img" style="width: 156px;height: 117px" src="${i.pictureUrl[0]}">
-                                            </div>
-                                        </div>
-                                        <div class="content-li02-right">
-                                            <p class="title"><font color="black">${i.title}</font> </p>
-                                            <div class="footer-source">
-                                                <span>
-                                                    ${i.author}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                            </c:if>
-
-                        </c:forEach>--%>
                     </ul>
                 </div>
                 <div class="data-cue tc beforeload">上滑加载更多</div>
@@ -116,6 +77,19 @@
             <!--右侧新闻列表-->
             <div class="right-wrap">
                 <div class="hot-news"><span> 热门新闻 </span></div>
+                <script type="text/javascript">
+                    (function() {
+                        var s = "_" + Math.random().toString(36).slice(2);
+                        document.write('<div style="" id="' + s + '"></div>');
+                        (window.slotbydup = window.slotbydup || []).push({
+                            id: "u4768084",
+                            container: s
+                        });
+                    })();
+                </script>
+                <!-- 多条广告如下脚本只需引入一次 -->
+                <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" >
+                </script>
                 <div class="hot-news-wrap">
                     <ul class="hot-news-ul">
                         <c:forEach items="${hotNews}" var="i">
@@ -134,15 +108,22 @@
                 </div>
             </div>
             <div class="right-wrap">
+                <div class="hot-news"><span> 相关推荐啊 </span></div>
 
-                <div class="hot-news"><span> 相关推荐 </span></div>
-                <script type="text/javascript" smua="d=m&s=b&u=u4141949&h=20:7" src="//www.smucdn.com/smu0/o.js"></script>
-                <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
-                <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
-                <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
-                <%--<div class="hot-news-wrap">
+                <script type="text/javascript">
+                    (function() {
+                        var s = "_" + Math.random().toString(36).slice(2);
+                        document.write('<div style="" id="' + s + '"></div>');
+                        (window.slotbydup = window.slotbydup || []).push({
+                            id: "u4649345",
+                            container: s
+                        });
+                    })();
+                </script>
+                <!-- 多条广告如下脚本只需引入一次 -->
+                <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" >
+                </script>
 
-                </div>--%>
             </div>
         </div>
     </div>

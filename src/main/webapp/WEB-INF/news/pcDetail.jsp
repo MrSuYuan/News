@@ -43,9 +43,21 @@
                 </ul>
             </div>
             <div class="hot-news"><span> 相关推荐 </span></div>
-            <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
-            <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
-            <script zmua="d=m&s=b&u=u3865842&w=300&h=100" src="http://js.bjzghd.com/x.js"></script>
+
+            <script type="text/javascript">
+                (function() {
+                    var s = "_" + Math.random().toString(36).slice(2);
+                    document.write('<div style="" id="' + s + '"></div>');
+                    (window.slotbydup = window.slotbydup || []).push({
+                        id: "u4768098",
+                        container: s
+                    });
+                })();
+            </script>
+            <!-- 多条广告如下脚本只需引入一次 -->
+            <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" >
+            </script>
+
             <%--<div class="hot-news-wrap">
 
             </div>--%>

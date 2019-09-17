@@ -88,7 +88,7 @@
 
             <%--<img  src="${ctx }/picture/CNAACLogo.png" class="logo">--%>
 
-            <a href="/index" class="navbar-brand">
+            <a href="${ctx }/index" class="navbar-brand">
                 <small id="headline">
                     点星后台管理系统
                 </small>
