@@ -161,4 +161,6 @@ public interface AppDao {
     void updateAssignZ(List<AppAssign> list);
 
 
+    void addReport(List<Report> list);
+    List<Report> reportList(Map<String,Object> map);
 }

@@ -245,6 +245,36 @@
                 </ul>
             </li>
 
+            <li class="" name="report" id="report">
+                <a href="###" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-bars"></i>
+                    <span class="menu-text"> 临时管理 </span>
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/reportAdd">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            添加
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/reportList">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            显示
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+
+                </ul>
+            </li>
+
 
 
 <%--            <li class="" id="userList">
@@ -326,24 +356,24 @@
             </div>
         </div>
     </div><!-- /.main-content -->
+    <!--
+        <div class="footer">
+            <div class="footer-inner">
+                <div class="footer-content">
+                            <span class="bigger-120">
+                                <span class="blue bolder" id="bottom"></span>
+                                后台管理系统 &copy; 2019
+                            </span>
 
-    <div class="footer">
-        <div class="footer-inner">
-            <div class="footer-content">
-						<span class="bigger-120">
-							<span class="blue bolder" id="bottom"></span>
-							后台管理系统 &copy; 2019
-						</span>
-
-                &nbsp; &nbsp;
+                    &nbsp; &nbsp;
+                </div>
             </div>
         </div>
-    </div>
-
-    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-    </a>
-</div><!-- /.main-container -->
+ -->
+        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+        </a>
+    </div><!-- /.main-container -->
 <!-- 修改密码-模态框 -->
 <div class="modal" id="index_changePwd_Modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -479,16 +509,19 @@
             $('#userList').show();
             $('#appList').show();
             $('#web').hide();
+            $('#report').show();
 
         }else if(currentUserLevel == 2){
             $('#userList').show();
             $('#appList').show();
             $('#web').hide();
+            $('#report').hide();
 
         }else if(currentUserLevel == 3){
             $('#user').hide();
             $('#appList').show();
             $('#web').hide();
+            $('#report').hide();
 
         }else{
 

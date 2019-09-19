@@ -310,4 +310,21 @@
         </foreach>
     </update>
 
+    <insert id="addReport">
+        insert into report
+        (createTime, adId, adSize, address, adName, lookPv, income, clickNum, ecpm, clickProbability, cpc) values
+        <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+            (#{item.createTime},#{item.adId},#{item.adSize},#{item.address},#{item.adName},#{item.lookPv},#{item.income},#{item.clickNum},#{item.ecpm},#{item.clickProbability},#{item.cpc})
+        </foreach>
+    </insert>
+    <select id="reportList" parameterType="java.util.Map" resultType="com.news.entity.Report">
+        select * from report
+        where 1=1
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+        </if>
+    </select>
 </mapper>

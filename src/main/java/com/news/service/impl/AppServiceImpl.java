@@ -569,4 +569,35 @@ public class AppServiceImpl implements AppService {
         }
         return req;
     }
+
+    @Override
+    public ReqResponse addReport(String reportList) throws Exception {
+        ReqResponse req = new ReqResponse();
+        if(null != reportList && !"".equals(reportList)){
+            //解析前端传过来的集合数据
+            ObjectMapper mapper = new ObjectMapper();
+            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, Report.class);
+            List<Report> list =  mapper.readValue(reportList, jt);
+            appDao.addReport(list);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("添加成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("参数错误");
+        }
+        return req;
+    }
+
+    @Override
+    public ReqResponse reportList(String startTime, String endTime) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
+        List<Report> reportList = appDao.reportList(map);
+        req.setResult(reportList);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
 }

@@ -324,4 +324,47 @@ public class AppController extends BaseController {
         return req;
     }
 
+
+
+
+
+    @RequestMapping(value="addReport", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "假-统计信息", notes = "假-统计信息", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="reportList" , value="参数集合" ,required = true , paramType = "query" ,dataType = "List")
+    })
+    @CrossOrigin
+    public ReqResponse addReport(@RequestParam("reportList")String reportList)throws Exception{
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.addReport(reportList);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="reportList", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "假-统计列表", notes = "假-统计列表", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse reportList(String startTime, String endTime){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.reportList(startTime, endTime);
+        }
+        return req;
+    }
+
 }
