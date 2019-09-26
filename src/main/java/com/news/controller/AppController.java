@@ -355,14 +355,14 @@ public class AppController extends BaseController {
             @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse reportList(String startTime, String endTime){
+    public ReqResponse reportList(String adId, String startTime, String endTime){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.reportList(startTime, endTime);
+            req = appService.reportList(adId, startTime, endTime);
         }
         return req;
     }

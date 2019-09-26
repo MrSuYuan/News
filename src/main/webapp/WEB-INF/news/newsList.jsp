@@ -60,57 +60,7 @@
         </header><span></span>
         <div>
 
-            <li id="li1">
-                <script type="text/javascript">
-                    (function() {
-                        var s = "_" + Math.random().toString(36).slice(2);
-                        document.write('<div style="" id="' + s + '"></div>');
-                        (window.slotbydup = window.slotbydup || []).push({
-                            id: "u4737114",
-                            container: s
-                        });
-                    })();
-                </script>
-            </li>
-            <li id="li2">
-                <script type="text/javascript">
-                    (function() {
-                        var s = "_" + Math.random().toString(36).slice(2);
-                        document.write('<div style="" id="' + s + '"></div>');
-                        (window.slotbydup = window.slotbydup || []).push({
-                            id: "u4804419",
-                            container: s
-                        });
-                    })();
-                </script>
-            </li>
-            <li id="li3">
-                <script type="text/javascript">
-                    (function() {
-                        var s = "_" + Math.random().toString(36).slice(2);
-                        document.write('<div style="" id="' + s + '"></div>');
-                        (window.slotbydup = window.slotbydup || []).push({
-                            id: "u4769136",
-                            container: s
-                        });
-                    })();
-                </script>
-            </li>
-            <li id="li4">
-                <script type="text/javascript">
-                    (function() {
-                        var s = "_" + Math.random().toString(36).slice(2);
-                        document.write('<div style="" id="' + s + '"></div>');
-                        (window.slotbydup = window.slotbydup || []).push({
-                            id: "u4750296",
-                            container: s
-                        });
-                    })();
-                </script>
-            </li>
-            <!-- 多条广告如下脚本只需引入一次 -->
-            <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" >
-            </script>
+
 
             <content id="pageletListContent" class="feed-list-container"><!-- react-empty: 31 -->
                 <div class="list_content" data-pull-fresh="1">
@@ -128,6 +78,9 @@
 </div>
 
 </body>
+<!-- 多条广告如下脚本只需引入一次 -->
+<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" >
+</script>
 <script src="${ctx}/static/js/jquery.js"></script>
 <script type="text/javascript">
     var path = "${ctx}";
@@ -140,13 +93,6 @@
      * 2加载推荐数据
      */
     $(document).ready(function(){
-
-        $('#li1').show();
-        $('#li2').hide();
-        $('#li3').hide();
-        $('#li4').hide();
-
-
         var btnList = $('.btn');
         btnList[0].style.color = "blue";
         $('#page').val(1);
@@ -164,50 +110,6 @@
             btnList[i].style.color = "black";
         }
         btn.style.color = "blue";
-
-        //广告
-        if(btn.value == 1){
-            $('#li1').show();
-            $('#li2').hide();
-            $('#li3').hide();
-            $('#li4').hide();
-        }
-        if(btn.value == 2){
-            $('#li1').hide();
-            $('#li2').show();
-            $('#li3').hide();
-            $('#li4').hide();
-        }
-        if(btn.value == 3){
-            $('#li1').hide();
-            $('#li2').hide();
-            $('#li3').show();
-            $('#li4').hide();
-        }
-        if(btn.value == 4){
-            $('#li1').hide();
-            $('#li2').hide();
-            $('#li3').hide();
-            $('#li4').show();
-        }
-        if(btn.value == 5){
-            $('#li1').hide();
-            $('#li2').hide();
-            $('#li3').hide();
-            $('#li4').hide();
-        }
-        if(btn.value == 6){
-            $('#li1').hide();
-            $('#li2').hide();
-            $('#li3').hide();
-            $('#li4').hide();
-        }
-        if(btn.value == 7){
-            $('#li1').hide();
-            $('#li2').hide();
-            $('#li3').hide();
-            $('#li4').hide();
-        }
 
         //先清空内容区数据
         $('.list_content').empty();

@@ -85,6 +85,6 @@ public interface AppService {
     /**
      * 查看APP统计列表-管理
      */
-    ReqResponse reportList(String startTime, String endTime);
+    ReqResponse reportList(String adId, String startTime, String endTime);
 
 }

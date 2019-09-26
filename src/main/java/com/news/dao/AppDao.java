@@ -4,6 +4,7 @@ import com.news.entity.*;
 import com.news.vo.AppAdspaceListVo;
 import com.news.vo.AppListVo;
 import com.news.vo.AppStatisticsListVo;
+import com.news.vo.ReportVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -162,5 +163,5 @@ public interface AppDao {
 
 
     void addReport(List<Report> list);
-    List<Report> reportList(Map<String,Object> map);
+    List<ReportVo> reportList(Map<String,Object> map);
 }

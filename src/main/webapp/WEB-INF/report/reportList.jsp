@@ -6,20 +6,20 @@
 <head>
     <meta charset=utf-8>
     <meta http-equiv=X-UA-Compatible content="IE=edge">
-    <link rel=icon href=https://mssp.baidu.com/bqt/favicon.ico>
-    <link rel=stylesheet href=https://mssp.baidu.com/bqt/nprogress/nprogress.css>
+    <link rel="icon" href=https://mssp.baidu.com/bqt/favicon.ico>
+    <link rel="stylesheet" href="https://mssp.baidu.com/bqt/nprogress/nprogress.css">
     <title>百青藤</title>
-    <link href=https://mssp.baidu.com/bqt/css/website-bundle.632aad23.css rel=prefetch>
-    <link href=https://mssp.baidu.com/bqt/js/website-bundle.cd852384.js rel=prefetch>
-    <link href=https://mssp.baidu.com/bqt/css/chunk-common.3ee374fc.css rel=preload as=style>
-    <link href=https://mssp.baidu.com/bqt/css/chunk-vendors.b02c10d4.css rel=preload as=style>
-    <link href=https://mssp.baidu.com/bqt/css/websiteco.ee1140a4.css rel=preload as=style>
-    <link href=https://mssp.baidu.com/bqt/js/chunk-common.10adc6eb.js rel=preload as=script>
-    <link href=https://mssp.baidu.com/bqt/js/chunk-vendors.5d9814b7.js rel=preload as=script>
-    <link href=https://mssp.baidu.com/bqt/js/websiteco.c2e76cac.js rel=preload as=script>
-    <link href=https://mssp.baidu.com/bqt/css/chunk-vendors.b02c10d4.css rel=stylesheet>
-    <link href=https://mssp.baidu.com/bqt/css/chunk-common.3ee374fc.css rel=stylesheet>
-    <link href=https://mssp.baidu.com/bqt/css/websiteco.ee1140a4.css rel=stylesheet>
+    <link href="${ctx}/static/baidu/1.css" rel="prefetch">
+    <link href="${ctx}/static/baidu/2.js" rel="prefetch">
+    <link href="${ctx}/static/baidu/3.css" rel="preload" as="style">
+    <link href="${ctx}/static/baidu/4.css" rel="preload" as="style">
+    <link href="${ctx}/static/baidu/5.css" rel="preload" as="style">
+    <link href="${ctx}/static/baidu/6.js" rel="preload" as="script">
+    <link href="${ctx}/static/baidu/7.js" rel="preload" as="script">
+    <link href="${ctx}/static/baidu/8.js" rel="preload" as="script">
+    <link href="${ctx}/static/baidu/9.css" rel="stylesheet">
+    <link href="${ctx}/static/baidu/10.css" rel="stylesheet">
+    <link href="${ctx}/static/baidu/11.css" rel="stylesheet">
 </head>
 
 <body>
@@ -38,6 +38,7 @@
                         <option value="1">正常</option>
                         <option value="2">禁用</option>
                     </select>--%>
+                    <input type="text" id="adId" placeholder="广告位ID" style="height: 34.2px">&nbsp;&nbsp;&nbsp;
                     <input type="date" id="startTime">&nbsp;&nbsp;&nbsp;-<input type="date" id="endTime">
                     <input type="button" value="查询" onclick="selectUserList()">
                 </div>
@@ -223,10 +224,12 @@
     function selectUserList() {
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
+        var adId = $('#adId').val();
         $.ajax({
             url: path + "/app/reportList",
             type: "post",
             data: {
+                "adId" : adId,
                 "startTime" : startTime,
                 "endTime" : endTime
             },
@@ -245,9 +248,9 @@
                     html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.lookPv).toLocaleString()+'</div></div></td>';
                     html+='<td role="cell"><div class="veui-table-cell"><div>'+data.income+'</div></div></td>';
                     html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.clickNum).toLocaleString()+'</div></div></td>';
-                    html+='<td role="cell"><div class="veui-table-cell"><div>'+data.ecpm+'</div></div></td>';
-                    html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability+'%</div></div></td>';
-                    html+='<td role="cell"><div class="veui-table-cell"><div>'+data.cpc+'</div></div></td>';
+                    html+='<td role="cell"><div class="veui-table-cell"><div>'+data.ecpm2+'</div></div></td>';
+                    html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability2+'%</div></div></td>';
+                    html+='<td role="cell"><div class="veui-table-cell"><div>'+data.cpc2+'</div></div></td>';
                     html+='</tr>';
                 }
                 //添加数据

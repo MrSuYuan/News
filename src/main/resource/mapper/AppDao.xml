@@ -317,9 +317,12 @@
             (#{item.createTime},#{item.adId},#{item.adSize},#{item.address},#{item.adName},#{item.lookPv},#{item.income},#{item.clickNum},#{item.ecpm},#{item.clickProbability},#{item.cpc})
         </foreach>
     </insert>
-    <select id="reportList" parameterType="java.util.Map" resultType="com.news.entity.Report">
+    <select id="reportList" parameterType="java.util.Map" resultType="com.news.vo.ReportVo">
         select * from report
         where 1=1
+        <if test="adId != null and adId !=''">
+            and adId = #{adId}
+        </if>
         <if test="startTime != null and startTime !=''">
             and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
         </if>

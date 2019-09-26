@@ -252,6 +252,13 @@ public class PageController extends BaseController {
     /**
      * 测试
      */
+    @RequestMapping(value = "dl" , method= RequestMethod.GET)
+    @ApiOperation(value = "测试", notes = "测试", httpMethod = "GET")
+    public String dl(){ return "news/dl";}
+
+    /**
+     * 测试
+     */
     @RequestMapping(value = "reportList" , method= RequestMethod.GET)
     @ApiOperation(value = "报表", notes = "报表", httpMethod = "GET")
     public String reportList(){ return "report/reportList";}

@@ -32,9 +32,6 @@
                     <th>广告展现量</th>
                     <th>预计收入</th>
                     <th>点击量</th>
-                    <th>eCPM</th>
-                    <th>点击率</th>
-                    <th>CPC</th>
                 </tr>
 
                 </thead>
@@ -96,12 +93,6 @@
         td7.innerHTML="<input type='text' name='income'/>";
         var td8=document.createElement("td");
         td8.innerHTML="<input type='text' name='clickNum'/>";
-        var td9=document.createElement("td");
-        td9.innerHTML="<input type='text' name='ecpm'/>";
-        var td10=document.createElement("td");
-        td10.innerHTML="<input type='text' name='clickProbability'/>";
-        var td11=document.createElement("td");
-        td11.innerHTML="<input type='text' name='cpc'/>";
         tr.appendChild(td0);
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -111,9 +102,6 @@
         tr.appendChild(td6);
         tr.appendChild(td7);
         tr.appendChild(td8);
-        tr.appendChild(td9);
-        tr.appendChild(td10);
-        tr.appendChild(td11);
         editTable.appendChild(tr);
     }
 
@@ -147,9 +135,9 @@
                 lookPv : $(val).find('input[name=lookPv]').eq(0).val(),
                 income : $(val).find('input[name=income]').eq(0).val(),
                 clickNum : $(val).find('input[name=clickNum]').eq(0).val(),
-                ecpm : $(val).find('input[name=ecpm]').eq(0).val(),
-                clickProbability : $(val).find('input[name=clickProbability]').eq(0).val(),
-                cpc : $(val).find('input[name=cpc]').eq(0).val(),
+                ecpm : 0,
+                clickProbability : 0,
+                cpc : 0,
                 id : 0,
             }
             objs.push(obj)

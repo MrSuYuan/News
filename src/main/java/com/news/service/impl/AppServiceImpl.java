@@ -6,10 +6,7 @@ import com.news.dao.AppDao;
 import com.news.dao.UserDao;
 import com.news.entity.*;
 import com.news.service.AppService;
-import com.news.vo.AppAdspaceListVo;
-import com.news.vo.AppListVo;
-import com.news.vo.AppStatisticsListVo;
-import com.news.vo.UserListVo;
+import com.news.vo.*;
 import com.utils.id.AppIdUtil;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -578,6 +575,12 @@ public class AppServiceImpl implements AppService {
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, Report.class);
             List<Report> list =  mapper.readValue(reportList, jt);
+            for(int i = 0; i < list.size(); i++){
+                Report r = list.get(i);
+                r.setClickProbability((double)r.getClickNum()/(double)r.getLookPv()*100);
+                r.setEcpm(r.getIncome()*1000/(double)r.getLookPv());
+                r.setCpc(r.getIncome()/(double)r.getClickNum());
+            }
             appDao.addReport(list);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("添加成功");
@@ -589,12 +592,20 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ReqResponse reportList(String startTime, String endTime) {
+    public ReqResponse reportList(String adId, String startTime, String endTime) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
+        map.put("adId",adId);
         map.put("startTime",startTime);
         map.put("endTime",endTime);
-        List<Report> reportList = appDao.reportList(map);
+        List<ReportVo> reportList = appDao.reportList(map);
+        DecimalFormat df = new DecimalFormat("######0.00");
+        for(int i = 0; i < reportList.size(); i++){
+            ReportVo r = reportList.get(i);
+            r.setClickProbability2(df.format(r.getClickProbability()));
+            r.setEcpm2(df.format(r.getEcpm()));
+            r.setCpc2(df.format(r.getCpc()));
+        }
         req.setResult(reportList);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");

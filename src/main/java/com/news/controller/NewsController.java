@@ -104,6 +104,7 @@ public class NewsController extends BaseController {
     })
     @CrossOrigin
     public ReqResponse loadData(Integer currentPage, Integer contentType) {
+        System.out.println("123456");
         ReqResponse req = newsService.loadData(currentPage, contentType);
         return req;
     }
