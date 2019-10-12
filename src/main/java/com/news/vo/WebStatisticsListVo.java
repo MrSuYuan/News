@@ -5,7 +5,7 @@ package com.news.vo;
  */
 public class WebStatisticsListVo {
 
-    private Long spaceId;
+    private String spaceId;
     private String spaceName;
     private String webName;
     private String createTime;
@@ -15,11 +15,11 @@ public class WebStatisticsListVo {
     private double income;
     private double ecmp;
 
-    public Long getSpaceId() {
+    public String getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(Long spaceId) {
+    public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
     }
 

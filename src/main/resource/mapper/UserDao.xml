@@ -20,7 +20,7 @@
     </update>
 
     <!-- 创建新用户 -->
-    <insert id="createUser" parameterType="com.news.entity.User">
+    <insert id="createUser" parameterType="com.news.entity.User" useGeneratedKeys="true" keyProperty="userId">
         insert into u_user
         (loginName, passWord, nickName, parentId, userLevel, userStatus, createTime)
         values
@@ -88,6 +88,27 @@
     <!-- 修改用户状态 -->
     <update id="userStatus" parameterType="java.util.Map">
         update u_user set userStatus = #{userStatus} where userId = #{userId}
+    </update>
+
+    <!-- 创建分成比例 -->
+    <insert id="insertUserDivided" parameterType="java.lang.Long">
+        insert into u_divided (userId, type) values (#{userId},1),(#{userId},2)
+    </insert>
+
+    <!-- 查看分成比例 -->
+    <select id="selectDivided" parameterType="com.news.entity.UserDivided" resultType="com.news.entity.UserDivided">
+        select * from u_divided
+        where userId = #{userId} and type = #{type}
+    </select>
+    
+    <!-- 修改分成比例 -->
+    <update id="updateProportion" parameterType="com.news.entity.UserDivided">
+        update u_divided set
+        lookProportion = #{lookProportion},
+        clickProportion = #{clickProportion},
+        upstreamProportion = #{upstreamProportion},
+        userProportion = #{userProportion}
+        where userId = #{userId} and type = #{type}
     </update>
 
 </mapper>

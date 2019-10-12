@@ -20,6 +20,18 @@
                 <td width="250"><input type="text" size="35" id="spaceName" name="spaceName" placeholder="广告位名称"></td>
             </tr>
             <tr height = "50">
+                <td align = "right">广告位上游:&nbsp;&nbsp;</td>
+                <td width="250">
+                    <select style="width: 276px;height: 34px" id="upstreamType">
+                        <option value="0">请选择</option>
+                        <option value="1">环球-中关互动</option>
+                        <option value="2">环球-光粒星辉</option>
+                        <option value="2">百度-zhuangguanhudong</option>
+                        <option value="2">百度-zolcnet</option>
+                    </select>
+                </td>
+            </tr>
+            <tr height = "50">
                 <td align = "right">广告位终端:&nbsp;&nbsp;</td>
                 <td width="250">
                     <select style="width: 276px;height: 34px" id="terminal">
@@ -76,7 +88,7 @@
         var webId =  sessionStorage.getItem("webId");
         $('#webId').val(webId);
         sessionStorage.removeItem("webId");
-        $('#spaceIdT').hide();
+        //$('#spaceIdT').hide();
 
     });
 
@@ -85,7 +97,9 @@
     function createAdspace(){
         //收集参数
         var webId = $('#webId').val();
+        var spaceId = $('#spaceId').val();
         var spaceName = $('#spaceName').val();
+        var upstreamType = $('#upstreamType').val();
         var width = $('#width').val();
         var height = $('#height').val();
         var spaceType = $('#spaceType').val();
@@ -99,6 +113,8 @@
                 url: path + "/web/createAdspace",
                 data:{
                     "webId" : webId,
+                    "spaceId" : spaceId,
+                    "upstreamType" : upstreamType,
                     "spaceName" : spaceName,
                     "width" : width,
                     "height" : height,

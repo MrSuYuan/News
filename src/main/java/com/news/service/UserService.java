@@ -32,4 +32,14 @@ public interface UserService {
      * 禁用/启用用户状态
      */
     ReqResponse userStatus(Long currentUserId, Long userId, Integer userStatus);
+
+    /**
+     * 查看分成比例
+     */
+    ReqResponse selectProportion(Long userId, int type);
+
+    /**
+     * 设置分成比例
+     */
+    ReqResponse updateProportion(Long currentUserId, double lookProportion, double clickProportion, double upstreamProportion, double userProportion, int type);
 }

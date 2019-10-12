@@ -143,7 +143,7 @@
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2){
-                            html+='<td><button type="button" onclick="addWebStatistice('+data.spaceId+')">添加数据统计</button></td>';
+                            html+='<td><button type="button" onclick="addWebStatistice(\''+data.spaceId+'\')">添加数据统计</button></td>';
                         }
                         html+='</tr>';
                     }

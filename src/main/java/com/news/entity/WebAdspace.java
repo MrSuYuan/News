@@ -9,7 +9,7 @@ public class WebAdspace {
     /**
      * 广告位id
      */
-    private Long spaceId;
+    private String spaceId;
     /**
      * webId
      */
@@ -18,6 +18,11 @@ public class WebAdspace {
      * 终端类型(1pc 2wap)
      */
     private int terminal;
+    /**
+     * 上游类型
+     * 1东方 2万咖 3极光 4余梁 5一点通 6百度
+     */
+    private int upstreamType;
     /**
      * 广告位类型(1固定块 2右下浮 3对联)
      */
@@ -43,6 +48,22 @@ public class WebAdspace {
      */
     private String remark;
 
+    public String getSpaceId() {
+        return spaceId;
+    }
+
+    public void setSpaceId(String spaceId) {
+        this.spaceId = spaceId;
+    }
+
+    public int getUpstreamType() {
+        return upstreamType;
+    }
+
+    public void setUpstreamType(int upstreamType) {
+        this.upstreamType = upstreamType;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -57,14 +78,6 @@ public class WebAdspace {
 
     public void setTerminal(int terminal) {
         this.terminal = terminal;
-    }
-
-    public Long getSpaceId() {
-        return spaceId;
-    }
-
-    public void setSpaceId(Long spaceId) {
-        this.spaceId = spaceId;
     }
 
     public Long getWebId() {

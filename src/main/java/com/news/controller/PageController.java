@@ -201,6 +201,15 @@ public class PageController extends BaseController {
     }
 
     /**
+     * APP分润设置
+     */
+    @RequestMapping(value = "appDivided" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP分润设置", notes = "APP分润设置", httpMethod = "GET")
+    public String appDivided(){
+        return "app/appDivided";
+    }
+
+    /**
      * WEB列表页
      */
     @RequestMapping(value = "webList" , method= RequestMethod.GET)
@@ -243,18 +252,21 @@ public class PageController extends BaseController {
     public String webStatisticsList(){ return "web/webStatisticsList";}
 
     /**
+     * WEB分润设置
+     */
+    @RequestMapping(value = "webDivided" , method= RequestMethod.GET)
+    @ApiOperation(value = "WEB分润设置", notes = "WEB分润设置", httpMethod = "GET")
+    public String webDivided(){
+        return "web/webDivided";
+    }
+
+    /**
      * 测试
      */
     @RequestMapping(value = "test" , method= RequestMethod.GET)
     @ApiOperation(value = "测试", notes = "测试", httpMethod = "GET")
     public String test(){ return "index/test";}
 
-    /**
-     * 测试
-     */
-    @RequestMapping(value = "dl" , method= RequestMethod.GET)
-    @ApiOperation(value = "测试", notes = "测试", httpMethod = "GET")
-    public String dl(){ return "news/dl";}
 
     /**
      * 测试

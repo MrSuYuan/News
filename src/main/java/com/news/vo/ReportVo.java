@@ -18,6 +18,15 @@ public class ReportVo {
     private String ecpm2;
     private String clickProbability2;
     private String cpc2;
+    private String createTime2;
+
+    public String getCreateTime2() {
+        return createTime2;
+    }
+
+    public void setCreateTime2(String createTime2) {
+        this.createTime2 = createTime2;
+    }
 
     public Long getId() {
         return id;

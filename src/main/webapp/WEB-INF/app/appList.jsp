@@ -38,6 +38,7 @@
                     <tr style="height: 50px">
                         <th>APPID</th>
                         <th>名称</th>
+                        <th>包名</th>
                         <th>所属用户</th>
                         <th>适用系统</th>
                         <th>适用终端</th>
@@ -123,6 +124,7 @@
                         html+='<tr style="height: 40px">';
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.appName+'</td>';
+                        html+='<td> '+data.packageName+'</td>';
                         html+='<td> '+data.nickName+'</td>';
                         var platform = data.platform;
                         if (platform == 1) {

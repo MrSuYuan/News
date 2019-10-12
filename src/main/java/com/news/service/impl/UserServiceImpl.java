@@ -3,6 +3,7 @@ package com.news.service.impl;
 import com.news.dao.UserDao;
 import com.news.entity.Login;
 import com.news.entity.User;
+import com.news.entity.UserDivided;
 import com.news.service.UserService;
 import com.news.vo.UserListVo;
 import com.utils.MD5.MD5Util;
@@ -114,6 +115,12 @@ public class UserServiceImpl implements UserService {
                 user.setParentId(userId);
                 //添加新用户信息
                 userDao.createUser(user);
+                if(currentUserLevel == 1){
+                    //管理员添加分润比例
+                    userDao.insertUserDivided(user.getUserId());
+                }
+
+
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("创建新用户成功");
 
@@ -203,6 +210,50 @@ public class UserServiceImpl implements UserService {
         }
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("修改成功");
+        return req;
+    }
+
+    @Override
+    public ReqResponse selectProportion(Long userId, int type) {
+        ReqResponse req = new ReqResponse();
+        UserDivided userDivided = new UserDivided();
+        userDivided.setUserId(userId);
+        userDivided.setType(type);
+        userDivided = userDao.selectDivided(userDivided);
+        req.setResult(userDivided);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("修改成功");
+        return req;
+    }
+
+
+    /**
+     * 设置分成比例
+     */
+    @Override
+    public ReqResponse updateProportion(Long currentUserId, double lookProportion, double clickProportion, double upstreamProportion, double userProportion, int type) {
+        ReqResponse req = new ReqResponse();
+        try{
+            if(lookProportion > 1.0 || clickProportion > 1.0 || upstreamProportion > 1.0 || userProportion > 1.0){
+                req.setCode(ErrorMessage.SERVER_ERROR.getCode());
+                req.setMessage("设置比例错误");
+            }else{
+                UserDivided userDivided = new UserDivided();
+                userDivided.setUserId(currentUserId);
+                userDivided.setLookProportion(lookProportion);
+                userDivided.setClickProportion(clickProportion);
+                userDivided.setUpstreamProportion(upstreamProportion);
+                userDivided.setUserProportion(userProportion);
+                userDivided.setType(type);
+                userDao.updateProportion(userDivided);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("修改成功");
+            }
+
+        }catch(Exception e){
+            req.setCode(ErrorMessage.SERVER_ERROR.getCode());
+            req.setMessage("系统错误");
+        }
         return req;
     }
 

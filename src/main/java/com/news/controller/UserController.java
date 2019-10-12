@@ -115,4 +115,48 @@ public class UserController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/selectProportion",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "查看分成比例", notes = "查看分成比例", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="type" , value="类型" ,required = false , paramType = "query" ,dataType = "int")
+    })
+    @CrossOrigin
+    public ReqResponse selectProportion(int type) {
+        ReqResponse req = new ReqResponse();
+        Object currentUserId = request.getSession().getAttribute("userId");
+        if(null == currentUserId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = userService.selectProportion((Long) currentUserId, type);
+        }
+        return req;
+    }
+
+
+    @RequestMapping(value = "/updateProportion",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "设置分成比例", notes = "设置分成比例", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="lookProportion" , value="展现比例" ,required = false , paramType = "query" ,dataType = "double"),
+            @ApiImplicitParam(name="clickProportion" , value="点击比例" ,required = false , paramType = "query" ,dataType = "double"),
+            @ApiImplicitParam(name="upstreamProportion" , value="上游设置分润比例" ,required = false , paramType = "query" ,dataType = "double"),
+            @ApiImplicitParam(name="userProportion" , value="当前用户设置分润比例" ,required = false , paramType = "query" ,dataType = "double"),
+            @ApiImplicitParam(name="type" , value="类型 1app端 2web端" ,required = false , paramType = "query" ,dataType = "int")
+    })
+    @CrossOrigin
+    public ReqResponse updateProportion(double lookProportion, double clickProportion, double upstreamProportion, double userProportion, int type) {
+        ReqResponse req = new ReqResponse();
+        Object currentUserId = request.getSession().getAttribute("userId");
+        if(null == currentUserId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = userService.updateProportion((Long) currentUserId, lookProportion, clickProportion, upstreamProportion, userProportion, type);
+        }
+        return req;
+    }
+
+
 }

@@ -112,6 +112,8 @@ public class WebController extends BaseController {
     @ApiOperation(value = "创建广告位信息", notes = "创建广告位信息", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="webId" , value="webId" ,required = true , paramType = "query" ,dataType = "Long"),
+            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="upstreamType" , value="上游类型" ,required = true , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="terminal" , value="终端信息" ,required = true , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = true , paramType = "query" ,dataType = "Integer"),
@@ -120,14 +122,14 @@ public class WebController extends BaseController {
             @ApiImplicitParam(name="height" , value="高度" ,required = true , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse createAdspace(Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height) {
+    public ReqResponse createAdspace(Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String spaceId, int upstreamType) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = webService.createAdspace((Long)userId, webId, terminal, spaceName, spaceType, remark, width, height);
+            req = webService.createAdspace((Long)userId, webId, terminal, spaceName, spaceType, remark, width, height, spaceId, upstreamType);
         }
         return req;
     }

@@ -10,7 +10,12 @@ public class WebAdSpaceListVo {
     /**
      * 广告位id
      */
-    private Long spaceId;
+    private String spaceId;
+    /**
+     * 上游类型
+     * 1东方 2万咖 3极光 4余梁 5一点通 6百度
+     */
+    private int upstreamType;
     /**
      * web网站名称
      */
@@ -40,12 +45,20 @@ public class WebAdSpaceListVo {
      */
     private int height;
 
-    public Long getSpaceId() {
+    public String getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(Long spaceId) {
+    public void setSpaceId(String spaceId) {
         this.spaceId = spaceId;
+    }
+
+    public int getUpstreamType() {
+        return upstreamType;
+    }
+
+    public void setUpstreamType(int upstreamType) {
+        this.upstreamType = upstreamType;
     }
 
     public String getWebName() {

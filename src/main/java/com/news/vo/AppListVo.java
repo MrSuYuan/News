@@ -11,6 +11,10 @@ public class AppListVo {
      */
     private String appName;
     /**
+     * 主包名
+     */
+    private String packageName;
+    /**
      * 下载地址
      */
     private String downloadlink;
@@ -34,6 +38,14 @@ public class AppListVo {
      * 适用终端(1手机 2平板 3电脑)
      */
     private int terminal;
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
 
     public String getAppId() {
         return appId;

@@ -151,12 +151,14 @@ public class WebServiceImpl implements WebService {
      * 创建代码位信息
      */
     @Override
-    public ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height) {
+    public ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String spaceId, int upstreamType) {
         ReqResponse req = new ReqResponse();
         Long webParentId = webDao.webParent(webId);
         if(null != webParentId && userId.longValue() == webParentId.longValue()){
             WebAdspace ad = new WebAdspace();
             ad.setWebId(webId);
+            ad.setSpaceId(spaceId);
+            ad.setUpstreamType(upstreamType);
             ad.setTerminal(terminal);
             ad.setSpaceType(spaceType);
             ad.setSpaceName(spaceName);
@@ -232,7 +234,7 @@ public class WebServiceImpl implements WebService {
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, WebStatistics.class);
             List<WebStatistics> list =  mapper.readValue(statisticsList, jt);
-            Long spaceId = list.get(0).getSpaceId();
+            String spaceId = list.get(0).getSpaceId();
 
             //查看广告位所属app的上级id
             Long parentId = webDao.adParentId(spaceId);

@@ -1,6 +1,7 @@
 package com.news.dao;
 
 import com.news.entity.User;
+import com.news.entity.UserDivided;
 import com.news.vo.UserListVo;
 import org.springframework.stereotype.Repository;
 
@@ -57,5 +58,20 @@ public interface UserDao {
      * 修改用户状态
      */
     void userStatus(Map<String,Object> map);
+
+    /**
+     * 创建分成比例
+     */
+    void insertUserDivided(Long userId);
+
+    /**
+     * 查看分成比例
+     */
+    UserDivided selectDivided(UserDivided userDivided);
+
+    /**
+     * 修改分成比例
+     */
+    void updateProportion(UserDivided userDivided);
 
 }

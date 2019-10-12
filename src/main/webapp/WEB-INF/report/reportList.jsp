@@ -135,6 +135,9 @@
                         </svg>
                     </svg>
                 </th>
+                <th width="100px">
+                    <div>日期</div>
+                </th>
             </tr>
             </thead>
             <tbody id="coll_list_begin_body">
@@ -251,6 +254,7 @@
                     html+='<td role="cell"><div class="veui-table-cell"><div>'+data.ecpm2+'</div></div></td>';
                     html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability2+'%</div></div></td>';
                     html+='<td role="cell"><div class="veui-table-cell"><div>'+data.cpc2+'</div></div></td>';
+                    html+='<td role="cell" width="100px"><div>'+data.createTime2+'</div></td>';
                     html+='</tr>';
                 }
                 //添加数据

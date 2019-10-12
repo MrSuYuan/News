@@ -90,7 +90,7 @@
 
             <a href="${ctx }/index" class="navbar-brand">
                 <small id="headline">
-                    点星后台管理系统
+                    后台管理系统
                 </small>
             </a>
         </div>
@@ -204,6 +204,15 @@
                         </a>
                         <b class="arrow"></b>
                     </li>
+                    <li class="" id="appDivided">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/appDivided">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            APP分润设置
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
                 </ul>
             </li>
 
@@ -237,6 +246,15 @@
                         <a href="#" class="dropdown-toggle" url="${ctx}/webStatisticsList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB数据统计
+                            <%--<b class="arrow fa fa-angle-down"></b>--%>
+                            <b class="active"></b>
+                        </a>
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="" id="webDivided">
+                        <a href="#" class="dropdown-toggle" url="${ctx}/webDivided">
+                            <i class="menu-icon fa fa-caret-right"></i>
+                            WEB分润设置
                             <%--<b class="arrow fa fa-angle-down"></b>--%>
                             <b class="active"></b>
                         </a>
@@ -427,7 +445,6 @@
     </div>
 </div>
 
-
 <!--[if !IE]> -->
 
 <script src="${ctx}/static/common/assets/js/bootstrap.min.js"></script>
@@ -508,13 +525,13 @@
         if(currentUserLevel == 1){
             $('#userList').show();
             $('#appList').show();
-            $('#web').hide();
+            $('#web').show();
             $('#report').show();
 
         }else if(currentUserLevel == 2){
             $('#userList').show();
             $('#appList').show();
-            $('#web').hide();
+            $('#web').show();
             $('#report').hide();
 
         }else if(currentUserLevel == 3){
@@ -522,6 +539,8 @@
             $('#appList').show();
             $('#web').hide();
             $('#report').hide();
+            $('#appDivided').hide();
+            $('#webDivided').hide();
 
         }else{
 
@@ -538,7 +557,6 @@
     function index_changePwd_updatePwd() {//弹出重置密码模态框
         $("#index_changePwd_Modal").modal("show");
     }
-
 
     function confirm() {//点击确认保存重置密码
         var oldPassWord = $('#oldPassWord').val();
