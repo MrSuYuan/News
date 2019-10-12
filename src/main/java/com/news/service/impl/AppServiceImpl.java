@@ -270,7 +270,7 @@ public class AppServiceImpl implements AppService {
      * 添加上游广告位信息
      */
     @Override
-    public ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, int upstreamType) {
+    public ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamPackageName, int upstreamType) {
         ReqResponse req = new ReqResponse();
         //查看广告位所属app的上级id
         Map<String,Object> parent = appDao.adParentId(spaceId);
@@ -282,6 +282,7 @@ public class AppServiceImpl implements AppService {
             appUpstream.setUpstreamId(upstreamId);
             appUpstream.setUpstreamAppId(upstreamAppId);
             appUpstream.setUpstreamType(upstreamType);
+            appUpstream.setUpstreamPackageName(upstreamPackageName);
             //查看此广告位有没有重复上游类型
             int appUpstreamNum = appDao.appUpstreamNum(appUpstream);
             if(appUpstreamNum == 0){

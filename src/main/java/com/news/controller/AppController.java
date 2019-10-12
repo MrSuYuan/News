@@ -194,17 +194,18 @@ public class AppController extends BaseController {
             @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="upstreamId" , value="上游广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="upstreamAppId" , value="上游appId" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="upstreamType" , value="上游平台类型" ,required = false , paramType = "query" ,dataType = "Integer")
+            @ApiImplicitParam(name="upstreamType" , value="上游平台类型" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="upstreamPackageName" , value="上游包名" ,required = false , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse appAdUpstream(String spaceId, String upstreamId, String upstreamAppId, int upstreamType) {
+    public ReqResponse appAdUpstream(String spaceId, String upstreamId, String upstreamAppId, String upstreamPackageName, int upstreamType) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appAdUpstream((Long) userId, spaceId, upstreamId, upstreamAppId, upstreamType);
+            req = appService.appAdUpstream((Long) userId, spaceId, upstreamId, upstreamAppId, upstreamPackageName, upstreamType);
         }
         return req;
     }

@@ -24,6 +24,11 @@
                 <td width="300"><input type="text" size="35" id="upstreamAppId" name="upstreamAppId" placeholder="上游APPID"></td>
                 </td>
             </tr>
+            <tr height = "50">
+                <td align = "right">上游包名:&nbsp;&nbsp;</td>
+                <td width="300"><input type="text" size="35" id="upstreamPackageName" name="upstreamPackageName" placeholder="上游包名"></td>
+                </td>
+            </tr>
             </tr>
             <tr height = "50">
                 <td align = "right">上游平台:&nbsp;&nbsp;</td>
@@ -71,6 +76,7 @@
         var upstreamId = $('#upstreamId').val();
         var upstreamAppId = $('#upstreamAppId').val();
         var upstreamType = $('#upstreamType').val();
+        var upstreamPackageName = $('#upstreamPackageName').val();
         if(""==upstreamId || 0==upstreamType){
             alert("请将信息填写完毕再提交");
         }else{
@@ -81,7 +87,8 @@
                     "spaceId" : spaceId,
                     "upstreamId" : upstreamId,
                     "upstreamAppId" : upstreamAppId,
-                    "upstreamType" : upstreamType
+                    "upstreamType" : upstreamType,
+                    "upstreamPackageName" : upstreamPackageName
                 },
                 type: "post",
                 dataType: 'json',

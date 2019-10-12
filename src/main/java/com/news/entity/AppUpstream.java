@@ -24,9 +24,21 @@ public class AppUpstream {
      */
     private String upstreamAppId;
     /**
+     * 上游包名
+     */
+    private String upstreamPackageName;
+    /**
      * 创建时间
      */
     private Date createTime;
+
+    public String getUpstreamPackageName() {
+        return upstreamPackageName;
+    }
+
+    public void setUpstreamPackageName(String upstreamPackageName) {
+        this.upstreamPackageName = upstreamPackageName;
+    }
 
     public String getUpstreamId() {
         return upstreamId;

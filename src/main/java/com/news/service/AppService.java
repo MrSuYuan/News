@@ -46,7 +46,7 @@ public interface AppService {
     /**
      * 添加上游广告位信息
      */
-    ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, int upstreamType);
+    ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamPackageName, int upstreamType);
 
     /**
      * 上游广告位列表

@@ -191,9 +191,9 @@
     <!-- 添加上游信息 -->
     <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
         insert into a_upstream
-        (upstreamId, spaceId, upstreamType, upstreamAppId, createTime)
+        (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime)
         values
-        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{createTime})
+        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime})
     </insert>
 
     <!-- 查看此广告位划量分流次数 -->
