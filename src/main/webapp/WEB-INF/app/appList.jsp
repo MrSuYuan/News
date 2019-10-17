@@ -43,7 +43,7 @@
                         <th>适用系统</th>
                         <th>适用终端</th>
                         <th>创建时间</th>
-                        <th>下载地址</th>
+                        <%--<th>下载地址</th>--%>
                         <th>APP状态</th>
                         <th>操作</th>
                         <th id="adspace">代码位</th>
@@ -143,7 +143,7 @@
                             html+='<td> 电脑 </td>';
                         }
                         html+='<td> '+data.createTime+'</td>';
-                        html+='<td> '+data.downloadlink+'</td>';
+                        //html+='<td> '+data.downloadlink+'</td>';
                         var appStatus = data.appStatus;
                         if(appStatus == 1){
                             html+='<td id="appStatus'+data.appId+'">未审核</td>';

@@ -152,9 +152,9 @@
     <!-- 添加广告位数据统计信息 -->
     <insert id="addWebStatistics">
         insert into w_statistics
-        (spaceId, createTime, lookPV, clickNum, clickProbability, income, ecmp) values
+        (spaceId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecmp) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+            (#{item.spaceId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
         </foreach>
     </insert>
 

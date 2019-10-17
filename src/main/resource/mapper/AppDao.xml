@@ -219,9 +219,9 @@
     <!-- 添加广告位数据统计信息 -->
     <insert id="addAppStatistics">
         insert into a_statistics
-        (spaceId, appId, upstreamId, createTime, lookPV, clickNum, clickProbability, income, ecmp) values
+        (spaceId, appId, upstreamId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecmp) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
         </foreach>
     </insert>
 

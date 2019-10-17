@@ -39,6 +39,42 @@ public class WebStatistics {
      * ecmp
      */
     private double ecmp;
+    /**
+     * 初始展现量
+     */
+    private int beforeLookPV;
+    /**
+     * 初始点击量
+     */
+    private int beforeClickNum;
+    /**
+     * 初始收益
+     */
+    private double beforeIncome;
+
+    public int getBeforeLookPV() {
+        return beforeLookPV;
+    }
+
+    public void setBeforeLookPV(int beforeLookPV) {
+        this.beforeLookPV = beforeLookPV;
+    }
+
+    public int getBeforeClickNum() {
+        return beforeClickNum;
+    }
+
+    public void setBeforeClickNum(int beforeClickNum) {
+        this.beforeClickNum = beforeClickNum;
+    }
+
+    public double getBeforeIncome() {
+        return beforeIncome;
+    }
+
+    public void setBeforeIncome(double beforeIncome) {
+        this.beforeIncome = beforeIncome;
+    }
 
     public Long getStatisticsId() {
         return statisticsId;

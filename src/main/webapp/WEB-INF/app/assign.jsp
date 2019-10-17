@@ -110,7 +110,7 @@
                         $('#ydt').val(result.ydt);
                     }
                     if(null == result.xz){
-                        $('xzt').hide()
+                        $('#xzt').hide()
                     }else{
                         $('#xz').val(result.xz);
                     }

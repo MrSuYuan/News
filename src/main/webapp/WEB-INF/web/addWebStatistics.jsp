@@ -85,11 +85,11 @@
         date.name="createTime";
         td1.appendChild(date);
         var td2=document.createElement("td");
-        td2.innerHTML="<input type='text' name='lookPV'/>";
+        td2.innerHTML="<input type='text' name='beforeLookPV'/>";
         var td3=document.createElement("td");
-        td3.innerHTML="<input type='text' name='clickNum'/>";
+        td3.innerHTML="<input type='text' name='beforeClickNum'/>";
         var td5=document.createElement("td");
-        td5.innerHTML="<input type='text' name='income'/>";
+        td5.innerHTML="<input type='text' name='beforeIncome'/>";
         tr.appendChild(td0);
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -123,9 +123,12 @@
             var obj = {
                 spaceId : spaceId,
                 createTime : $(val).find('input[name=createTime]').eq(0).val(),
-                lookPV : $(val).find('input[name=lookPV]').eq(0).val(),
-                clickNum : $(val).find('input[name=clickNum]').eq(0).val(),
-                income : $(val).find('input[name=income]').eq(0).val(),
+                beforeLookPV : $(val).find('input[name=beforeLookPV]').eq(0).val(),
+                beforeClickNum : $(val).find('input[name=beforeClickNum]').eq(0).val(),
+                beforeIncome : $(val).find('input[name=beforeIncome]').eq(0).val(),
+                lookPV : 0,
+                clickNum : 0,
+                income : 0,
                 clickProbability : 0,
                 ecmp : 0,
             }
