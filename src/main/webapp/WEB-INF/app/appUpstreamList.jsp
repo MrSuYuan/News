@@ -100,6 +100,18 @@
                             html+='<td> 一点通 </td>';
                         }else if(upstreamType == 6){
                             html+='<td> 小知 </td>';
+                        }else if(upstreamType == 7){
+                            html+='<td> 旺脉 </td>';
+                        }else if(upstreamType == 8){
+                            html+='<td> 甬祺 </td>';
+                        }else if(upstreamType == 9){
+                            html+='<td> 点开 </td>';
+                        }else if(upstreamType == 10){
+                            html+='<td> 迈吉客 </td>';
+                        }else if(upstreamType == 11){
+                            html+='<td> 聚量 </td>';
+                        }else if(upstreamType == 12){
+                            html+='<td> 众盟 </td>';
                         }else{
                             html+='<td> <font color="red">信息错误</font> </td>';
                         }

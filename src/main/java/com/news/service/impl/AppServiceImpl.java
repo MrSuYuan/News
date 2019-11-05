@@ -505,6 +505,24 @@ public class AppServiceImpl implements AppService {
             }else if(aa.getUpstreamType() == 6){
                 map.put("xz",aa.getProbability());
                 continue;
+            }else if(aa.getUpstreamType() == 7){
+                map.put("wm",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 8){
+                map.put("yq",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 9){
+                map.put("dk",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 10){
+                map.put("mjk",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 11){
+                map.put("jl",aa.getProbability());
+                continue;
+            }else if(aa.getUpstreamType() == 12){
+                map.put("zm",aa.getProbability());
+                continue;
             }else{
                 continue;
             }
@@ -518,15 +536,10 @@ public class AppServiceImpl implements AppService {
      * 修改调度数据
      */
     @Override
-    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int type, String spaceId) {
-        System.out.println("DF"+df);
-        System.out.println("WK"+wk);
-        System.out.println("JG"+jg);
-        System.out.println("YL"+yl);
-        System.out.println("YDT"+ydt);
-        System.out.println("TYPE"+type);
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int wm, int yq, int dk, int mjk, int jl, int zm,
+                                    int type, String spaceId) {
         ReqResponse req = new ReqResponse();
-        if(df + wk + jg + yl + ydt + xz == 100){
+        if(df + wk + jg + yl + ydt + xz + wm + yq + dk + mjk + jl + zm == 100){
             List<AppAssign> aList = new ArrayList<>();
 
             AppAssign dfa = new AppAssign();
@@ -564,6 +577,42 @@ public class AppServiceImpl implements AppService {
             xza.setProbability(xz);
             xza.setSpaceId(spaceId);
             aList.add(xza);
+
+            AppAssign wma = new AppAssign();
+            wma.setUpstreamType(7);
+            wma.setProbability(wm);
+            wma.setSpaceId(spaceId);
+            aList.add(wma);
+
+            AppAssign yqa = new AppAssign();
+            yqa.setUpstreamType(8);
+            yqa.setProbability(yq);
+            yqa.setSpaceId(spaceId);
+            aList.add(yqa);
+
+            AppAssign dka = new AppAssign();
+            dka.setUpstreamType(9);
+            dka.setProbability(dk);
+            dka.setSpaceId(spaceId);
+            aList.add(dka);
+
+            AppAssign mjka = new AppAssign();
+            mjka.setUpstreamType(10);
+            mjka.setProbability(mjk);
+            mjka.setSpaceId(spaceId);
+            aList.add(mjka);
+
+            AppAssign jla = new AppAssign();
+            jla.setUpstreamType(11);
+            jla.setProbability(jl);
+            jla.setSpaceId(spaceId);
+            aList.add(jla);
+
+            AppAssign zma = new AppAssign();
+            zma.setUpstreamType(12);
+            zma.setProbability(zm);
+            zma.setSpaceId(spaceId);
+            aList.add(zma);
             //批量修改
             appDao.updateAssignZ(aList);
             req.setCode(ErrorMessage.SUCCESS.getCode());

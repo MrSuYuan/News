@@ -41,6 +41,12 @@
                         <option value="4">余梁</option>
                         <option value="5">一点通</option>
                         <option value="6">小知</option>
+                        <option value="7">旺脉</option>
+                        <option value="8">甬祺</option>
+                        <option value="9">点开</option>
+                        <option value="10">迈吉客</option>
+                        <option value="11">聚量</option>
+                        <option value="12">众盟</option>
                     </select>
                     <font color="red">&nbsp;&nbsp;*</font>
                 </td>

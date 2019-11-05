@@ -224,7 +224,7 @@
                 </a>
                 <b class="arrow"></b>
                 <ul class="submenu">
-                    <li class="">
+                    <li class="" id="webList">
                         <a href="#" class="dropdown-toggle" url="${ctx}/webList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB列表
@@ -233,7 +233,7 @@
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
+                    <li class="" id="webAdspaceList">
                         <a href="#" class="dropdown-toggle" url="${ctx}/webAdspaceList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB广告位
@@ -242,7 +242,7 @@
                         </a>
                         <b class="arrow"></b>
                     </li>
-                    <li class="">
+                    <li class="" id="webStatisticsList">
                         <a href="#" class="dropdown-toggle" url="${ctx}/webStatisticsList">
                             <i class="menu-icon fa fa-caret-right"></i>
                             WEB数据统计
@@ -537,7 +537,7 @@
         }else if(currentUserLevel == 3){
             $('#user').hide();
             $('#appList').show();
-            $('#web').hide();
+            $('#webList').show();
             $('#report').hide();
             $('#appDivided').hide();
             $('#webDivided').hide();

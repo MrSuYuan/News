@@ -42,6 +42,36 @@
                     <td width="300"><input type="text" size="35" id="xz" name="xz" value="0"></td>
                     </td>
                 </tr>
+                <tr height = "50" id="wmt">
+                    <td align = "right">旺脉:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="wm" name="wm" value="0"></td>
+                    </td>
+                </tr>
+                <tr height = "50" id="yqt">
+                    <td align = "right">甬祺:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="yq" name="yq" value="0"></td>
+                    </td>
+                </tr>
+                <tr height = "50" id="dkt">
+                    <td align = "right">点开:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="dk" name="dk" value="0"></td>
+                    </td>
+                </tr>
+                <tr height = "50" id="mjkt">
+                    <td align = "right">迈吉客:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="mjk" name="mjk" value="0"></td>
+                    </td>
+                </tr>
+                <tr height = "50" id="jlt">
+                    <td align = "right">聚量:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="jl" name="jl" value="0"></td>
+                    </td>
+                </tr>
+                <tr height = "50" id="zmt">
+                    <td align = "right">众盟:&nbsp;&nbsp;</td>
+                    <td width="300"><input type="text" size="35" id="zm" name="zm" value="0"></td>
+                    </td>
+                </tr>
                 <tr height = "50">
                     <td></td>
                     <td>
@@ -114,7 +144,36 @@
                     }else{
                         $('#xz').val(result.xz);
                     }
-
+                    if(null == result.wm){
+                        $('#wmt').hide()
+                    }else{
+                        $('#wm').val(result.wm);
+                    }
+                    if(null == result.yq){
+                        $('#yqt').hide()
+                    }else{
+                        $('#yq').val(result.yq);
+                    }
+                    if(null == result.dk){
+                        $('#dkt').hide()
+                    }else{
+                        $('#dk').val(result.dk);
+                    }
+                    if(null == result.mjk){
+                        $('#mjkt').hide()
+                    }else{
+                        $('#mjk').val(result.mjk);
+                    }
+                    if(null == result.jl){
+                        $('#jlt').hide()
+                    }else{
+                        $('#jl').val(result.jl);
+                    }
+                    if(null == result.zm){
+                        $('#zmt').hide()
+                    }else{
+                        $('#zm').val(result.zm);
+                    }
 
                 }else if(obj.code == "300"){
                     alert(obj.message);
@@ -142,6 +201,12 @@
                 "yl" : $('#yl').val(),
                 "ydt" : $('#ydt').val(),
                 "xz" : $('#xz').val(),
+                "wm" : $('#wm').val(),
+                "yq" : $('#yq').val(),
+                "dk" : $('#dk').val(),
+                "mjk" : $('#mjk').val(),
+                "jl" : $('#jl').val(),
+                "zm" : $('#zm').val(),
                 "spaceId" : $('#spaceId').val(),
                 "type" : 1
             },
