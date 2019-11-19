@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>新闻列表</title>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
-    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="shortcut icon" href="/static/news/img/favicon.ico">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
 
@@ -59,7 +59,7 @@
 <script type='text/javascript' src='//g.alicdn.com/sj/lib/zepto/zepto.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm.min.js' charset='utf-8'></script>
 <script type='text/javascript' src='//g.alicdn.com/msui/sm/0.6.2/js/sm-extend.min.js' charset='utf-8'></script>
-<script src="${ctx}/static/js/jquery.js"></script>
+<script src="${ctx}/static/news/js/jquery.js"></script>
 <script type="text/javascript">
     var path = "${ctx}";
 </script>

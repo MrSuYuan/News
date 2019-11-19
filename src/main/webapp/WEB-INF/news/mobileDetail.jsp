@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css"/>
-    <link rel="stylesheet" href="${ctx}/static/css/templet.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/style.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/templet.css"/>
     <title>新闻详情</title>
 </head>
 <body nid="1" total="5" cate="7">
@@ -20,7 +20,7 @@
                 <div class="top_bar" style="background:#1e90ff">
                     <div class="abs_m">
                         <a href="${ctx}/news/newsList">
-                            <img src="${ctx}/static/img/zol.png" style="width: 285px;height: 86px" >
+                            <img src="${ctx}/static/news/img/zol.png" style="width: 285px;height: 86px" >
                         </a>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
 
     </div>
 </div>
-<script src="${ctx}/static/js/jquery.js"></script>
+<script src="${ctx}/static/news/js/jquery.js"></script>
 
 </body>
 </html>

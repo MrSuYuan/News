@@ -9,9 +9,9 @@
     <meta id="viewport" content="width=device-width, user-scalable=yes,initial-scale=1" name="viewport" />
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css"/>
-    <link rel="stylesheet" href="${ctx}/static/css/mobileList.css"/>
-    <link rel="stylesheet" href="${ctx}/static/css/templet.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/style.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/mobileList.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/templet.css"/>
     <title>新闻详情</title>
 </head>
 <style>
@@ -24,7 +24,7 @@
     <div style="position: fixed;width: 100%;height: 80px" class="header-wrap">
         <div class="nav-main">
             <a href="" class="logo">
-                <img src="${ctx}/static/img/logo.png" style="margin-top: 15px" height="80" width="140">
+                <img src="${ctx}/static/news/img/logo.png" style="margin-top: 15px" height="80" width="140">
             </a>
             <ul class="nav-ul">
                 <li class="nav-ul-li active" cate="1" style="margin-top: 15px"><span><font size="6">推荐</font></span></li>
@@ -76,9 +76,9 @@
 
 </div>
 </body>
-    <script src="${ctx}/static/js/jquery.js"></script>
-    <script src="${ctx}/static/js/scrollLoading.js"></script>
-    <script src="${ctx}/static/js/mobileList.js"></script>
+    <script src="${ctx}/static/news/js/jquery.js"></script>
+    <script src="${ctx}/static/news/js/scrollLoading.js"></script>
+    <script src="${ctx}/static/news/js/mobileList.js"></script>
     <script>
 
         var path = "${ctx}";

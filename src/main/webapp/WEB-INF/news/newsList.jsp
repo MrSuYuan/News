@@ -9,7 +9,7 @@
     <meta name="format-detection" content="telephone=no">
     <meta name="description" content="新闻">
     <meta name="pathname" content="usergrowth_mobile_list">
-    <link href="${ctx}/static/css/newsList.css" rel="stylesheet">
+    <link href="${ctx}/static/news/css/newsList.css" rel="stylesheet">
     <meta name="viewport" content="initial-scale=1, maximum-scale=0.5, minimum-scale=0.5, user-scalable=no">
     <style type="text/css">
         .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container{position:fixed;top:50%;display:inline-block;right:15px;z-index:1400}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container{right:30px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container{right:45px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .qzHOK{width:75px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .qzHOK{width:150px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .qzHOK{width:225px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{position:absolute;top:-8px;right:0;width:20px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{top:-16px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{top:-24px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{width:40px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .icon-container .CtYYQcwfJPPkx{width:60px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{width:40px;height:32px;background:url(${ctx}/static/img/popup_banner_close.png) no-repeat 50%;background-size:17px;position:absolute;left:0;top:0;opacity:.7}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{width:80px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{width:120px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{height:64px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{height:96px}[data-dpr="2"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{background-size:34px}[data-dpr="3"] .FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus-close{background-size:51px}.FFNxqpFxUxiDdymXEjtDDWVHAgR .xkpjpgEPnSSMngdYsNOnofza,.FFNxqpFxUxiDdymXEjtDDWVHAgR .aOFygqEbuytNXZfEgrB{position:fixed;width:8.65625rem;height:11.5625rem;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-ms-transform:translate(-50%,-50%);transform:translate(-50%,-50%);z-index:1400}.FFNxqpFxUxiDdymXEjtDDWVHAgR .aOFygqEbuytNXZfEgrB{background:url(${ctx}/static/img/wap_bonus.png) no-repeat 50%;background-size:cover}.FFNxqpFxUxiDdymXEjtDDWVHAgR .xkpjpgEPnSSMngdYsNOnofza{background:url(${ctx}/static/img/wap_bonus.png) no-repeat 50%;background-size:cover}.FFNxqpFxUxiDdymXEjtDDWVHAgR .bonus{display:block}.FFNxqpFxUxiDdymXEjtDDWVHAgR .mask{display:block;position:absolute;width:100%;height:100%;z-index:1000;left:0;top:0;background:rgba(0,0,0,.3)}
@@ -33,7 +33,7 @@
         <header id="indexHeader">
             <div class="top_bar" style="background:#1e90ff">
                 <div class="abs_m">
-                    <img src="${ctx}/static/img/zol.png" style="width: 285px;height: 86px" >
+                    <img src="${ctx}/static/news/img/zol.png" style="width: 285px;height: 86px" >
                 </div>
             </div>
             <div class="top_menu_bar">
@@ -81,7 +81,7 @@
 <!-- 多条广告如下脚本只需引入一次 -->
 <script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/cm.js" async="async" defer="defer" >
 </script>
-<script src="${ctx}/static/js/jquery.js"></script>
+<script src="${ctx}/static/news/js/jquery.js"></script>
 <script type="text/javascript">
     var path = "${ctx}";
 </script>

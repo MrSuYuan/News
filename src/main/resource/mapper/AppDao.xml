@@ -174,6 +174,13 @@
         where d.spaceId = #{spaceId} and d.appId = a.appId and a.userId = u.userId
     </select>
 
+    <!-- 查询此上游广告位id是否存在 -->
+    <select id="upstreamIdNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0)
+        from a_upstream
+        where upstreamId = #{upstreamId}
+    </select>
+
     <!-- 查看上游广告位所属app的相关信息 -->
     <select id="adParent" parameterType="java.lang.String" resultType="java.util.Map">
         select u.parentId,a.appId,d.spaceId,t.upstreamAppId
@@ -213,7 +220,8 @@
 
     <!-- 广告位上游信息列表 -->
     <select id="appUpstreamList" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
-        select * from a_upstream where spaceId = #{spaceId}
+        select *,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s") as create_Time
+        from a_upstream where spaceId = #{spaceId}
     </select>
 
     <!-- 添加广告位数据统计信息 -->
@@ -268,16 +276,16 @@
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
         select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
-        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and a.userId = #{parentId}
+        from a_statistics s,a_upstream t,a_adspace d,a_app a
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId}
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
         <if test="spaceName != null and spaceName !=''">
             and d.spaceName = #{spaceName}
         </if>
-        GROUP BY s.createTime
-        order by s.statisticsId asc
+        GROUP BY s.spaceId,s.createTime
+        order by s.createTime desc,d.spaceId asc
         limit #{num},#{pageSize}
     </select>
 
@@ -285,15 +293,15 @@
     <select id="appStatisticsUserListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0) from
         (SELECT count(0)
-        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
+        from a_statistics s,a_upstream t,a_adspace d,a_app a
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId}
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
         <if test="spaceName != null and spaceName !=''">
             and d.spaceName = #{spaceName}
         </if>
-        GROUP BY s.createTime) c
+        GROUP BY s.spaceId,s.createTime) c
     </select>
 
     <!-- 调度分配展示 -->
@@ -309,6 +317,53 @@
             where spaceId = #{item.spaceId} and upstreamType = #{item.upstreamType}
         </foreach>
     </update>
+
+    <!-- 广告位统计 -->
+    <select id="appReportList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
+        select a.appName,DATE_FORMAT(s.createTime,'%Y-%m-%d') as createTime,s.slotId,s.appId,
+        sum(case s.type
+          when '1' then s.num
+          else 0
+          end) 'request',
+        sum(case s.type
+          when '2' then s.num
+          else 0
+          end) 'response',
+        sum(case s.type
+          when '3' then s.num
+          else 0
+          end) 'look',
+        sum(case s.type
+          when '4' then s.num
+          else 0
+          end) 'click'
+        from ad_statistics s,a_app a
+        where s.appId = a.appId
+        <if test="appId != null and appId !=''">
+            and s.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and s.slotId = #{slotId}
+        </if>
+        group by s.slotId,s.createTime ORDER BY s.createTime desc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 广告位统计数量 -->
+    <select id="appReportListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from
+        (select a.slotId
+        from
+        ad_statistics a
+        where 1 = 1
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and a.slotId = #{slotId}
+        </if>
+        group by a.slotId,a.createTime) x
+    </select>
 
     <insert id="addReport">
         insert into report

@@ -74,6 +74,11 @@ public interface AppService {
     ReqResponse selectAppAssign(String spaceId);
 
     /**
+     * 广告位统计
+     */
+    ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize);
+
+    /**
      * 修改调度数据
      */
     ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int wm, int yq, int dk, int mjk, int jl, int zm, int type, String spaceId);

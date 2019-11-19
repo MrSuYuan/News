@@ -9,9 +9,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css" />
-    <link rel="stylesheet" href="${ctx}/static/css/templet.css?v=1" />
-    <link rel="shortcut icon" href="${ctx}/static/img/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="${ctx}/static/news/css/style.css" />
+    <link rel="stylesheet" href="${ctx}/static/news/css/templet.css?v=1" />
+    <link rel="shortcut icon" href="${ctx}/static/news/img/favicon.ico" type="image/x-icon" />
     <title>新闻推荐</title>
 </head>
 
@@ -26,7 +26,7 @@
                 <div class="left-nav-main ">
                     <ul class="nav-ul">
                         <a href="${ctx}/news/pcList" target="_self">
-                            <img src="${ctx}/static/img/logo.png" height="50" width="140">
+                            <img src="${ctx}/static/news/img/logo.png" height="50" width="140">
                         </a>
                         <li class="nav-ul-li active" cate="1">
                             <span class='nav-icon tuijian'></span>
@@ -127,9 +127,9 @@
             </div>
         </div>
     </div>
-    <script src="${ctx}/static/js/jquery.js"></script>
-    <script src="${ctx}/static/js/scrollLoading.js"></script>
-    <script src="${ctx}/static/js/pclist.js"></script>
+    <script src="${ctx}/static/news/js/jquery.js"></script>
+    <script src="${ctx}/static/news/js/scrollLoading.js"></script>
+    <script src="${ctx}/static/news/js/pclist.js"></script>
 
 <%--    <script>
         // console.log(document.body.clientHeight, $(window).height(), $(window).width());

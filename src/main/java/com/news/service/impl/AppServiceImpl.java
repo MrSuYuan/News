@@ -275,6 +275,14 @@ public class AppServiceImpl implements AppService {
         //查看广告位所属app的上级id
         Map<String,Object> parent = appDao.adParentId(spaceId);
         if(userId.longValue() == (Long)parent.get("parentId")){
+            //查询此上游广告位id是否存在
+            int upstreamIdNum = appDao.upstreamIdNum(upstreamId);
+            if (upstreamIdNum > 0){
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("此上游广告位ID已经存在");
+                return req;
+            }
+
             //添加上游广告位信息
             AppUpstream appUpstream = new AppUpstream();
             appUpstream.setCreateTime(new Date());
@@ -341,7 +349,7 @@ public class AppServiceImpl implements AppService {
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
             List<AppStatistics> list =  mapper.readValue(statisticsList, jt);
             String upstreamId = list.get(0).getUpstreamId();
-
+            System.out.println(upstreamId);
             //查看广告位所属app的上级id
             Map<String,Object> parent = appDao.adParent(upstreamId);
             String appId = parent.get("appId").toString();
@@ -440,7 +448,6 @@ public class AppServiceImpl implements AppService {
         if(null == pageSize){
             pageSize = 20;
         }
-        System.out.println(userId);
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
         map.put("spaceName",spaceName);
@@ -529,6 +536,47 @@ public class AppServiceImpl implements AppService {
         }
         req.setResult(map);
         req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
+    /**
+     * 广告位统计
+     */
+    @Override
+    public ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("appId",appId);
+        map.put("slotId",slotId);
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        List<AdStatisticsListVo> list = appDao.appReportList(map);
+        int sumData = appDao.appReportListNum(map);
+
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",list);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
         return req;
     }
 

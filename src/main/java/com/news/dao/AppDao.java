@@ -1,10 +1,7 @@
 package com.news.dao;
 
 import com.news.entity.*;
-import com.news.vo.AppAdspaceListVo;
-import com.news.vo.AppListVo;
-import com.news.vo.AppStatisticsListVo;
-import com.news.vo.ReportVo;
+import com.news.vo.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -97,6 +94,11 @@ public interface AppDao {
     Map<String,Object> adParentId(String spaceId);
 
     /**
+     * 查询此上游广告位id是否存在
+     */
+    int upstreamIdNum(String upstreamId);
+
+    /**
      * 查看上游广告位所属app的相关信息
      */
     Map<String,Object> adParent(String upstreamId);
@@ -161,6 +163,11 @@ public interface AppDao {
      */
     void updateAssignZ(List<AppAssign> list);
 
+    /**
+     * 广告位统计
+     */
+    List<AdStatisticsListVo> appReportList(Map<String,Object> map);
+    int appReportListNum(Map<String,Object> map);
 
     void addReport(List<Report> list);
     List<ReportVo> reportList(Map<String,Object> map);

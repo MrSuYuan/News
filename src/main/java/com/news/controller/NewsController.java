@@ -50,7 +50,7 @@ public class NewsController extends BaseController {
      */
     @RequestMapping(value = "/pcList",method=RequestMethod.GET)
     public ModelAndView pcList(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("news/pcList");
+        ModelAndView mv = new ModelAndView("news/pcList.jsp");
         List<News> hotNews = newsService.hotNews();
         mv.addObject("hotNews",hotNews);
         return mv;
@@ -77,7 +77,7 @@ public class NewsController extends BaseController {
      */
     @RequestMapping(value = "/newsDetail",method=RequestMethod.GET)
     public ModelAndView newsDetail(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("news/pcDetail");
+        ModelAndView mv = new ModelAndView("news/pcDetail.jsp");
         Long newsId = Long.parseLong(request.getParameter("newsId"));
         News news = newsService.newDetails(newsId);
         mv.addObject("news",news);
@@ -91,7 +91,7 @@ public class NewsController extends BaseController {
      */
     @RequestMapping(value = "/newsList",method=RequestMethod.GET)
     public ModelAndView newsList(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("news/newsList");
+        ModelAndView mv = new ModelAndView("news/newsList.jsp");
         return mv;
     }
 
@@ -114,7 +114,7 @@ public class NewsController extends BaseController {
      */
     @RequestMapping(value = "/mobileList",method=RequestMethod.GET)
     public ModelAndView mobileList(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("news/mobileList");
+        ModelAndView mv = new ModelAndView("news/mobileList.jsp");
         List<News> indexNews = newsService.indexNews("1","1");
         mv.addObject("index",indexNews);
         return mv;
@@ -125,7 +125,7 @@ public class NewsController extends BaseController {
      */
     @RequestMapping(value = "/mobileDetail",method=RequestMethod.GET)
     public ModelAndView mobileDetail(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("news/mobileDetail");
+        ModelAndView mv = new ModelAndView("news/mobileDetail.jsp");
         Long newsId = Long.parseLong(request.getParameter("newsId"));
         News news = newsService.newDetails(newsId);
         mv.addObject("news",news);
@@ -137,7 +137,7 @@ public class NewsController extends BaseController {
      */
     @RequestMapping(value = "/appList",method=RequestMethod.GET)
     public ModelAndView appList(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("news/appList");
+        ModelAndView mv = new ModelAndView("news/appList.jsp");
         return mv;
     }
 

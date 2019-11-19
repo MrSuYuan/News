@@ -35,11 +35,11 @@ public class PageController extends BaseController {
     UserService userService;
 
     /**
-     * 跳转到登录页
+     * 登录页
      */
     @RequestMapping(value = "/login",method=RequestMethod.GET)
-    public ModelAndView loginPage(HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("/index/login");
+    public ModelAndView loginPage() {
+        ModelAndView mv = new ModelAndView("/html/index/login.jsp");
         return mv;
     }
 
@@ -118,64 +118,80 @@ public class PageController extends BaseController {
     @RequestMapping(value = "index" , method= RequestMethod.GET)
     @ApiOperation(value = "模板主页面", notes = "模板主页面", httpMethod = "GET")
     public String index(){
-        return "/index/index";
+        return "html/index/index.jsp";
     }
+
+    /**
+     * 个人中心
+     */
+    @RequestMapping(value = "userCenter" , method= RequestMethod.GET)
+    @ApiOperation(value = "个人中心", notes = "个人中心", httpMethod = "GET")
+    public String userCenter(){ return "html/user/userCenter.jsp";}
 
     /**
      * 用户列表
      */
     @RequestMapping(value = "userList" , method= RequestMethod.GET)
     @ApiOperation(value = "用户列表", notes = "用户列表", httpMethod = "GET")
-    public String userList(){ return "user/userList";}
+    public String userList(){ return "html/user/userList.jsp";}
 
     /**
      * app列表页
      */
     @RequestMapping(value = "appList" , method= RequestMethod.GET)
     @ApiOperation(value = "app列表页", notes = "app列表页", httpMethod = "GET")
-    public String appList(){ return "app/appList";}
+    public String appList(){ return "html/app/appList.jsp";}
 
     /**
      * app详情页
      */
     @RequestMapping(value = "appDetail" , method= RequestMethod.GET)
     @ApiOperation(value = "app详情页", notes = "app详情页", httpMethod = "GET")
-    public String appDetail(){ return "app/appDetail";}
-
-    /**
-     * APP添加代码位信息
-     */
-    @RequestMapping(value = "addAppAdspace" , method= RequestMethod.GET)
-    @ApiOperation(value = "添加APP代码位信息", notes = "添加APP代码位信息", httpMethod = "GET")
-    public String addAppAdspace(){ return "app/addAdspace";}
+    public String appDetail(){ return "html/app/appDetail.jsp";}
 
     /**
      * APP广告位列表
      */
     @RequestMapping(value = "appAdspaceList" , method= RequestMethod.GET)
     @ApiOperation(value = "APP广告位列表", notes = "APP广告位列表", httpMethod = "GET")
-    public String appAdspaceList(){ return "app/adspaceList";}
+    public String appAdspaceList(){ return "html/app/appAdspaceList.jsp";}
+
+    /**
+     * APP添加代码位信息
+     */
+    @RequestMapping(value = "appAdspaceAdd" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加APP代码位信息", notes = "添加APP代码位信息", httpMethod = "GET")
+    public String appAdspaceAdd(){ return "html/app/appAdspaceAdd.jsp";}
 
     /**
      * APP编辑上游信息
      */
-    @RequestMapping(value = "addUpstream" , method= RequestMethod.GET)
+    @RequestMapping(value = "appAdspaceAddUpstream" , method= RequestMethod.GET)
     @ApiOperation(value = "APP编辑上游信息", notes = "APP编辑上游信息", httpMethod = "GET")
-    public String addUpstream(){ return "app/addUpstream";}
+    public String appAdspaceAddUpstream(){ return "html/app/appAdspaceAddUpstream.jsp";}
 
     /**
      * APP上游信息列表
      */
-    @RequestMapping(value = "appUpstreamList" , method= RequestMethod.GET)
+    @RequestMapping(value = "appAdspaceUpstreamList" , method= RequestMethod.GET)
     @ApiOperation(value = "APP上游信息列表", notes = "APP上游信息列表", httpMethod = "GET")
-    public String appUpstreamList(){ return "app/appUpstreamList";}
+    public String appAdspaceUpstreamList(){ return "html/app/appAdspaceUpstreamList.jsp";}
+
+    /**
+     * APP激励视频调度分配
+     */
+    @RequestMapping(value = "appAssign" , method= RequestMethod.GET)
+    @ApiOperation(value = "激励视频调度分配", notes = "激励视频调度分配", httpMethod = "GET")
+    public String appAssign(){
+        return "html/app/appAssign.jsp";
+    }
 
     /**
      * APP添加数据统计
      */
-    @RequestMapping(value = "addAppStatistics" , method= RequestMethod.GET)
+    @RequestMapping(value = "appStatisticsAdd" , method= RequestMethod.GET)
     @ApiOperation(value = "添加APP数据统计", notes = "添加APP数据统计", httpMethod = "GET")
-    public String addAppStatistics(){ return "app/addAppStatistics";}
+    public String appStatisticsAdd(){ return "html/app/appStatisticsAdd.jsp";}
 
     /**
      * APP数据统计列表
@@ -185,19 +201,10 @@ public class PageController extends BaseController {
     public String appStatisticsList(){
         Object userLevel = request.getSession().getAttribute("userLevel");
         if(null != userLevel && (int)userLevel == 3){
-            return "app/appStatisticsUserList";
+            return "html/app/appStatisticsUser.jsp";
         }else{
-            return "app/appStatisticsList";
+            return "html/app/appStatisticsManage.jsp";
         }
-    }
-
-    /**
-     * APP激励视频调度分配
-     */
-    @RequestMapping(value = "appAssign" , method= RequestMethod.GET)
-    @ApiOperation(value = "激励视频调度分配", notes = "激励视频调度分配", httpMethod = "GET")
-    public String appAssign(){
-        return "app/assign";
     }
 
     /**
@@ -206,50 +213,32 @@ public class PageController extends BaseController {
     @RequestMapping(value = "appDivided" , method= RequestMethod.GET)
     @ApiOperation(value = "APP分润设置", notes = "APP分润设置", httpMethod = "GET")
     public String appDivided(){
-        return "app/appDivided";
+        return "html/app/appDivided.jsp";
     }
+
+    /**
+     * APP上报统计列表
+     */
+    @RequestMapping(value = "appReportList" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP上报统计列表", notes = "APP上报统计列表", httpMethod = "GET")
+    public String appReportList(){
+        return "html/app/appReportList.jsp";
+    }
+
 
     /**
      * WEB列表页
      */
     @RequestMapping(value = "webList" , method= RequestMethod.GET)
     @ApiOperation(value = "web列表页", notes = "web列表页", httpMethod = "GET")
-    public String webList(){ return "web/webList";}
+    public String webList(){ return "html/web/webList.jsp";}
 
     /**
      * WEB详情页
      */
     @RequestMapping(value = "webDetail" , method= RequestMethod.GET)
     @ApiOperation(value = "web详情页", notes = "web详情页", httpMethod = "GET")
-    public String webDetail(){ return "web/webDetail";}
-
-    /**
-     * WEB添加代码位信息
-     */
-    @RequestMapping(value = "addWebAdspace" , method= RequestMethod.GET)
-    @ApiOperation(value = "添加WEB代码位信息", notes = "添加WEB代码位信息", httpMethod = "GET")
-    public String addWebAdspace(){ return "web/addAdspace";}
-
-    /**
-     * WEB广告位列表
-     */
-    @RequestMapping(value = "webAdspaceList" , method= RequestMethod.GET)
-    @ApiOperation(value = "WEB广告位列表", notes = "WEB广告位列表", httpMethod = "GET")
-    public String webAdspaceList(){ return "web/adspaceList";}
-
-    /**
-     * WEB添加数据统计
-     */
-    @RequestMapping(value = "addWebStatistics" , method= RequestMethod.GET)
-    @ApiOperation(value = "添加WEB数据统计", notes = "添加WEB数据统计", httpMethod = "GET")
-    public String addWebStatistics(){ return "web/addWebStatistics";}
-
-    /**
-     * WEB数据统计列表
-     */
-    @RequestMapping(value = "webStatisticsList" , method= RequestMethod.GET)
-    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
-    public String webStatisticsList(){ return "web/webStatisticsList";}
+    public String webDetail(){ return "html/web/webDetail.jsp";}
 
     /**
      * WEB分润设置
@@ -257,30 +246,54 @@ public class PageController extends BaseController {
     @RequestMapping(value = "webDivided" , method= RequestMethod.GET)
     @ApiOperation(value = "WEB分润设置", notes = "WEB分润设置", httpMethod = "GET")
     public String webDivided(){
-        return "web/webDivided";
+        return "html/web/webDivided.jsp";
     }
 
     /**
-     * 测试
+     * WEB添加代码位信息
      */
-    @RequestMapping(value = "test" , method= RequestMethod.GET)
-    @ApiOperation(value = "测试", notes = "测试", httpMethod = "GET")
-    public String test(){ return "index/test";}
-
-
-    /**
-     * 测试
-     */
-    @RequestMapping(value = "reportList" , method= RequestMethod.GET)
-    @ApiOperation(value = "报表", notes = "报表", httpMethod = "GET")
-    public String reportList(){ return "report/reportList";}
+    @RequestMapping(value = "webAdspaceAdd" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加WEB代码位信息", notes = "添加WEB代码位信息", httpMethod = "GET")
+    public String webAdspaceAdd(){ return "html/web/webAdspaceAdd.jsp";}
 
     /**
-     * 测试
+     * WEB广告位列表
      */
-    @RequestMapping(value = "reportAdd" , method= RequestMethod.GET)
+    @RequestMapping(value = "webAdspaceList" , method= RequestMethod.GET)
+    @ApiOperation(value = "WEB广告位列表", notes = "WEB广告位列表", httpMethod = "GET")
+    public String webAdspaceList(){ return "html/web/webAdspaceList.jsp";}
+
+    /**
+     * WEB添加数据统计
+     */
+    @RequestMapping(value = "webStatisticsAdd" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加WEB数据统计", notes = "添加WEB数据统计", httpMethod = "GET")
+    public String webStatisticsAdd(){ return "html/web/webStatisticsAdd.jsp";}
+
+    /**
+     * WEB数据统计列表
+     */
+    @RequestMapping(value = "webStatistics" , method= RequestMethod.GET)
+    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    public String webStatistics(){ return "html/web/webStatistics.jsp";}
+
+    /**
+     * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+     */
+
+    /**
+     * 临时报表
+     */
+    @RequestMapping(value = "temporaryList" , method= RequestMethod.GET)
+    @ApiOperation(value = "展示报表", notes = "展示报表", httpMethod = "GET")
+    public String temporaryList(){ return "html/temporary/temporaryList.jsp";}
+
+    /**
+     * 临时报表
+     */
+    @RequestMapping(value = "temporaryAdd" , method= RequestMethod.GET)
     @ApiOperation(value = "添加报表", notes = "添加报表", httpMethod = "GET")
-    public String reportAdd(){ return "report/reportAdd";}
+    public String temporaryAdd(){ return "html/temporary/temporaryAdd.jsp";}
 
 
 }

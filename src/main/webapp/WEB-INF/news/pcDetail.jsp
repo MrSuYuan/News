@@ -8,8 +8,8 @@
     <meta charset="UTF-8">
     <meta http-equiv="content-type" content="text/html;charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <link rel="stylesheet" href="${ctx}/static/css/style.css"/>
-    <link rel="stylesheet" href="${ctx}/static/css/templet.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/style.css"/>
+    <link rel="stylesheet" href="${ctx}/static/news/css/templet.css"/>
     <title>新闻详情</title>
 </head>
 <body nid="1" total="5" cate="7">
@@ -18,7 +18,7 @@
     <div class="header-wrap">
         <div class="nav-main">
             <a href="${ctx}/news/pcList" target="_self">
-                <img src="${ctx}/static/img/logo.png" height="50" width="140">
+                <img src="${ctx}/static/news/img/logo.png" height="50" width="140">
             </a>
         </div>
     </div>
@@ -80,9 +80,9 @@
     </div>
 </div>
 </div>
-<script src="${ctx}/static/js/jquery.js"></script>
-<script src="${ctx}/static/js/scrollLoading.js"></script>
-<script src="${ctx}/static/js/pclist.js"></script>
+<script src="${ctx}/static/news/js/jquery.js"></script>
+<script src="${ctx}/static/news/js/scrollLoading.js"></script>
+<script src="${ctx}/static/news/js/pclist.js"></script>
 <script>
     $(function(){
         var total=$('body').attr('total');
