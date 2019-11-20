@@ -26,6 +26,7 @@
     <script src="${ctx}/static/common/assets/js/ace-extra.min.js"></script>
     <script src="${ctx}/static/common/assets/js/html5shiv.min.js"></script>
     <script src="${ctx}/static/common/assets/js/respond.min.js"></script>
+
 </head>
 
 <body class="no-skin">
@@ -36,6 +37,7 @@
 <input type="hidden" id="userName" value="${sessionScope.nickName}"/>
 <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
 <input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
+<input type="hidden" id="ctx" value="${ctx}"/>
 
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
@@ -480,6 +482,7 @@
 <script src="${ctx}/static/common/assets/js/jquery.maskedinput.min.js"></script>
 <script src="${ctx}/static/common/assets/js/ace-elements.min.js"></script>
 <script src="${ctx}/static/common/assets/js/ace.min.js"></script>
+
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
     loading("userCenter",$('#userName').val());

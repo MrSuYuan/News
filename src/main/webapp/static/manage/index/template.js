@@ -1,17 +1,18 @@
 //加载公共部分方法
 function loading(pageSign, userName){
-    head(userName);
-    navigationBar();
+    var path = $('#ctx').val();
+    head(userName, path);
+    navigationBar(path);
     permission(pageSign);
     footer();
 }
 
 //头部
-function head(userName){
+function head(userName, path){
 	var html = "";
 	html += '<div class="navbar-container ace-save-state" id="navbar-container">';
 	html += '	<div class="navbar-header pull-left">';
-	html += '		<a href="/index" class="navbar-brand">';
+	html += '		<a href="'+path+'/index" class="navbar-brand">';
 	html += '			<small>';
 	html += '				<i class="fa fa-leaf"></i>';
 	html += '				Ace 后台管理系统';
@@ -22,7 +23,7 @@ function head(userName){
 	html += '		<ul class="nav ace-nav">';
 	html += '			<li class="light-blue dropdown-modal">';
 	html += '				<a data-toggle="dropdown" href="#" class="dropdown-toggle">';
-	html += '					<img class="nav-user-photo" src="/static/common/assets/images/avatars/user.jpg" alt="Jason Photo" />';
+	html += '					<img class="nav-user-photo" src="'+path+'/static/common/assets/images/avatars/user.jpg" alt="Jason Photo" />';
 	html += '					<span class="user-info">';
 	html += '						<small>Welcome</small>';
 	html += '						'+userName+'';
@@ -37,14 +38,14 @@ function head(userName){
 	html += '						</a>';
 	html += '					</li>';
 	html += '					<li>';
-	html += '						<a href="/userCenter">';
+	html += '						<a href="'+path+'/userCenter">';
 	html += '							<i class="ace-icon fa fa-user"></i>';
 	html += '							&nbsp;&nbsp;个人中心';
 	html += '						</a>';
 	html += '					</li>';
 	html += '					<li class="divider"></li>';
 	html += '					<li>';
-	html += '						<a href="/logout">';
+	html += '						<a href="'+path+'/logout">';
 	html += '							<i class="ace-icon fa fa-power-off"></i>';
 	html += '							&nbsp;&nbsp;退出登录';
 	html += '						</a>';
@@ -59,7 +60,7 @@ function head(userName){
 }
 
 //左导航栏
-function navigationBar(){
+function navigationBar(path){
 	var html = "";
 
     html += '<div class="sidebar-shortcuts" id="sidebar-shortcuts">';
@@ -81,7 +82,7 @@ function navigationBar(){
 	//主页
 	html += '<ul class="nav nav-list">';
     html += '	<li class="" id="index">';
-	html += '		<a href="/index">';
+	html += '		<a href="'+path+'/index">';
 	html += '			<i class="menu-icon fa fa-tachometer"></i>';
 	html += '			<span class="menu-text"> 主页 </span>';
     html += '    		<input type="hidden" id="currentUserLevel" value=""/>';
@@ -101,8 +102,8 @@ function navigationBar(){
 	html += '		</a>';	
 	html += '		<b class="arrow"></b>';	
 	html += '		<ul class="submenu">';
-    html += '			<li class="" id="userCenter"><a href="/userCenter"><i class="menu-icon fa fa-caret-right"></i>个人中心</a><b class="arrow"></b></li>';
-    html += '			<li class="" id="userList"><a href="/userList"><i class="menu-icon fa fa-caret-right"></i>用户列表</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="userCenter"><a href="'+path+'/userCenter"><i class="menu-icon fa fa-caret-right"></i>个人中心</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="userList"><a href="'+path+'/userList"><i class="menu-icon fa fa-caret-right"></i>用户列表</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -117,11 +118,11 @@ function navigationBar(){
 	html += '		</a>';	
 	html += '		<b class="arrow"></b>';	
 	html += '		<ul class="submenu">';			
-	html += '			<li class="" id="appList"><a href="/appList"><i class="menu-icon fa fa-caret-right"></i>APP</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="appAdspace"><a href="/appAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="appStatistics"><a href="/appStatisticsList"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="appReport"><a href="/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计</a><b class="arrow"></b></li>';
-    html += '			<li class="" id="appDivided"><a href="/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appList"><a href="'+path+'/appList"><i class="menu-icon fa fa-caret-right"></i>APP</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appAdspace"><a href="'+path+'/appAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appStatistics"><a href="'+path+'/appStatisticsList"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="appDivided"><a href="'+path+'/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -136,10 +137,10 @@ function navigationBar(){
 	html += '		</a>';	
 	html += '		<b class="arrow"></b>';	
 	html += '		<ul class="submenu">';			
-	html += '			<li class="" id="webList"><a href="/webList"><i class="menu-icon fa fa-caret-right"></i>WEB</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="webAdspace"><a href="/webAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="webStatistics"><a href="/webStatistics"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="webDivided"><a href="/webDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webList"><a href="'+path+'/webList"><i class="menu-icon fa fa-caret-right"></i>WEB</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webAdspace"><a href="'+path+'/webAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webStatistics"><a href="'+path+'/webStatistics"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webDivided"><a href="'+path+'/webDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -154,8 +155,8 @@ function navigationBar(){
 	html += '		</a>';	
 	html += '		<b class="arrow"></b>';	
 	html += '		<ul class="submenu">';			
-	html += '			<li class="" id="temporaryAdd"><a href="/temporaryAdd"><i class="menu-icon fa fa-caret-right"></i>添加</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="temporaryList"><a href="/temporaryList"><i class="menu-icon fa fa-caret-right"></i>展示</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="temporaryAdd"><a href="'+path+'/temporaryAdd"><i class="menu-icon fa fa-caret-right"></i>添加</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="temporaryList"><a href="'+path+'/temporaryList"><i class="menu-icon fa fa-caret-right"></i>展示</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	

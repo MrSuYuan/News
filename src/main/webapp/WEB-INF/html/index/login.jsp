@@ -18,8 +18,8 @@
     <link rel="stylesheet" href="${ctx}/static/common/assets/css/ace-rtl.min.css" />
     <link rel="stylesheet" href="${ctx}/static/common/js/main.js" />
     <link id="ICon" rel="Shortcut Icon" href="" type="image/x-icon" />
-    <script type="text/javascript" src="${ctx }/static/js/index/login.js"></script>
-    <script type="text/javascript" src="${ctx }/static/js/index/common.js"></script>
+    <script type="text/javascript" src="${ctx }/static/manage/index/login.js"></script>
+    <script type="text/javascript" src="${ctx }/static/manage/index/common.js"></script>
 </head>
 
 <body class="login-layout blur-login">

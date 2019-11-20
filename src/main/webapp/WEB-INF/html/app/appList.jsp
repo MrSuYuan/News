@@ -26,6 +26,7 @@
 <input type="hidden" id="userName" value="${sessionScope.nickName}"/>
 <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
 <input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
+<input type="hidden" id="ctx" value="${ctx}"/>
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
         try{ace.settings.loadState('main-container')}catch(e){}
@@ -41,7 +42,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/index">Home</a>
+                        <a href="${ctx}/index">Home</a>
                     </li>
                     <li class="active">app列表</li>
                 </ul><!-- /.breadcrumb -->

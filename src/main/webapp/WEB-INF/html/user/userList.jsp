@@ -34,7 +34,7 @@
 <input type="hidden" id="userName" value="${sessionScope.nickName}"/>
 <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
 <input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
-
+<input type="hidden" id="ctx" value="${ctx}"/>
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
         try{ace.settings.loadState('main-container')}catch(e){}
