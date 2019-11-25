@@ -54,7 +54,7 @@
                 <ul class="breadcrumb">
                     <li>
                         <i class="ace-icon fa fa-home home-icon"></i>
-                        <a href="/index">Home</a>
+                        <a href="${ctx}/index">Home</a>
                     </li>
                     <li class="active">个人中心</li>
                 </ul><!-- /.breadcrumb -->

@@ -183,6 +183,8 @@
                             html+='<td> 聚量 </td>';
                         }else if(upstreamType == 12){
                             html+='<td> 众盟 </td>';
+                        }else if(upstreamType == 13){
+                            html+='<td> 虹益 </td>';
                         }else{
                             html+='<td> <font color="red">信息错误</font> </td>';
                         }

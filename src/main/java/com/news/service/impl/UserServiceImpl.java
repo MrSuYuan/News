@@ -269,7 +269,7 @@ public class UserServiceImpl implements UserService {
         double b = 8.74;
         System.out.println(a/b);*/
 
-        System.out.println(MD5Util.hexSALT("shxs123","zghd"));
+        System.out.println(MD5Util.hexSALT("Syzy123","zghd"));
         Login login = new Login();
         login.setLoginName("用户名");
         login.setPassWord("密码");

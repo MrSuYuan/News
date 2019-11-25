@@ -530,6 +530,9 @@ public class AppServiceImpl implements AppService {
             }else if(aa.getUpstreamType() == 12){
                 map.put("zm",aa.getProbability());
                 continue;
+            }else if(aa.getUpstreamType() == 13){
+                map.put("hy",aa.getProbability());
+                continue;
             }else{
                 continue;
             }
@@ -584,10 +587,10 @@ public class AppServiceImpl implements AppService {
      * 修改调度数据
      */
     @Override
-    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int wm, int yq, int dk, int mjk, int jl, int zm,
+    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int wm, int yq, int dk, int mjk, int jl, int zm, int hy,
                                     int type, String spaceId) {
         ReqResponse req = new ReqResponse();
-        if(df + wk + jg + yl + ydt + xz + wm + yq + dk + mjk + jl + zm == 100){
+        if(df + wk + jg + yl + ydt + xz + wm + yq + dk + mjk + jl + zm + hy == 100){
             List<AppAssign> aList = new ArrayList<>();
 
             AppAssign dfa = new AppAssign();
@@ -661,6 +664,12 @@ public class AppServiceImpl implements AppService {
             zma.setProbability(zm);
             zma.setSpaceId(spaceId);
             aList.add(zma);
+
+            AppAssign hya = new AppAssign();
+            hya.setUpstreamType(13);
+            hya.setProbability(hy);
+            hya.setSpaceId(spaceId);
+            aList.add(hya);
             //批量修改
             appDao.updateAssignZ(aList);
             req.setCode(ErrorMessage.SUCCESS.getCode());

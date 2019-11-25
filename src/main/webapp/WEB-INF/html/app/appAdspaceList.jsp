@@ -226,6 +226,7 @@
                     $('#pageSize').val(obj.result.pageSize);
                     $('#sumPage').html(obj.result.sumPage);
                     $('#sumData').html(obj.result.sumData);
+
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";

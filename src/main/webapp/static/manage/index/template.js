@@ -199,7 +199,7 @@ function permission(pageSign){
         $('#userList').hide();
         $('#appDivided').hide();
         $('#appReport').hide();
-        $('#web').hide();
+        $('#webDivided').hide();
         $('#temporary').hide();
 	}
 

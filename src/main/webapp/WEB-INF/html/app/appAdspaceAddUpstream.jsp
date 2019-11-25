@@ -98,6 +98,7 @@
                                         <option value="10">迈吉客</option>
                                         <option value="11">聚量</option>
                                         <option value="12">众盟</option>
+                                        <option value="13">虹益</option>
                                     </select>
                                     <font color="red">&nbsp;&nbsp;*</font>
                                 </td>

@@ -121,6 +121,11 @@
                                     <td width="300"><input type="text" size="35" id="zm" name="zm" value="0"></td>
                                     </td>
                                 </tr>
+                                <tr height = "50" id="hyt">
+                                    <td align = "right">虹益:&nbsp;&nbsp;</td>
+                                    <td width="300"><input type="text" size="35" id="hy" name="hy" value="0"></td>
+                                    </td>
+                                </tr>
                                 <tr height = "50">
                                     <td></td>
                                     <td>
@@ -249,6 +254,11 @@
                     }else{
                         $('#zm').val(result.zm);
                     }
+                    if(null == result.hy){
+                        $('#hyt').hide()
+                    }else{
+                        $('#hy').val(result.hy);
+                    }
 
                 }else if(obj.code == "300"){
                     alert(obj.message);
@@ -282,6 +292,7 @@
                 "mjk" : $('#mjk').val(),
                 "jl" : $('#jl').val(),
                 "zm" : $('#zm').val(),
+                "hy" : $('#hy').val(),
                 "spaceId" : $('#spaceId').val(),
                 "type" : 1
             },
