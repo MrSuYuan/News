@@ -225,6 +225,42 @@ public class PageController extends BaseController {
         return "/html/app/appReportList.jsp";
     }
 
+    /**
+     * APP上游列表
+     */
+    @RequestMapping(value = "appUpstreamList" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP上游列表", notes = "APP上游列表", httpMethod = "GET")
+    public String appUpstreamList(){
+        return "/html/app/appUpstreamList.jsp";
+    }
+
+    /**
+     * APP添加新上游
+     */
+    @RequestMapping(value = "appUpstreamAdd" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP添加新上游", notes = "APP添加新上游", httpMethod = "GET")
+    public String appUpstreamAdd(){
+        return "/html/app/appUpstreamAdd.jsp";
+    }
+
+    /**
+     * APP上游广告位列表
+     */
+    @RequestMapping(value = "appUpstreamIdList" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP上游广告位列表", notes = "APP上游广告位列表", httpMethod = "GET")
+    public String appUpstreamIdList(){
+        return "/html/app/appUpstreamIdList.jsp";
+    }
+
+    /**
+     * APP上游广告位编辑
+     */
+    @RequestMapping(value = "appUpstreamIdEdit" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP上游广告位编辑", notes = "APP上游广告位编辑", httpMethod = "GET")
+    public String appUpstreamIdEdit(){
+        return "/html/app/appUpstreamIdEdit.jsp";
+    }
+
 
     /**
      * WEB列表页

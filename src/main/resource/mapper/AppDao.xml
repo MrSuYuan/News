@@ -318,6 +318,96 @@
         </foreach>
     </update>
 
+    <!-- 查看上游列表 -->
+    <select id="appUpstreamTypeList" parameterType="java.util.Map" resultType="com.news.entity.AppUpstreamType">
+        select *
+        from a_upstream_type
+        limit #{num},#{pageSize}
+    </select>
+    <select id="appUpstreamTypeNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from a_upstream_type
+    </select>
+
+    <!-- 修改上游状态 -->
+    <update id="updateUpstreamStatus" parameterType="java.util.Map">
+        update a_upstream_type
+        set status = #{status}
+        where id = #{id}
+    </update>
+
+    <!-- 添加新上游 -->
+    <insert id="appUpstreamAdd" parameterType="com.news.entity.AppUpstreamType">
+        insert into a_upstream_type
+        (type, name, shortName, createTime, status)
+        values
+        (#{type},#{name},#{shortName},#{createTime},#{status})
+    </insert>
+
+    <!-- 上游广告位 -->
+    <select id="appUpstreamIdList" parameterType="java.util.Map" resultType="com.news.vo.AppUpstreamIdList">
+        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.spaceId,d.spaceName,p.appName from
+        (
+            SELECT u.upstreamId,u.upstreamAppId,t.name,u.spaceId
+            FROM a_upstream u,a_upstream_type t
+            where u.upstreamType = t.type
+            <if test="type != null and type !=''">
+                and u.upstreamType = #{type}
+            </if>
+            <if test="upstreamId != null and upstreamId !=''">
+                and u.upstreamId = #{upstreamId}
+            </if>
+        ) a
+        LEFT JOIN a_adspace d on a.spaceId = d.spaceId
+        LEFT JOIN a_app p on d.appId = p.appId
+        limit #{num},#{pageSize}
+    </select>
+    <select id="appUpstreamIdListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from
+        (
+        SELECT u.upstreamId,u.upstreamAppId,t.name,u.spaceId
+        FROM a_upstream u,a_upstream_type t
+        where u.upstreamType = t.type
+        <if test="type != null and type !=''">
+            and u.upstreamType = #{type}
+        </if>
+        <if test="upstreamId != null and upstreamId !=''">
+            and u.upstreamId = #{upstreamId}
+        </if>
+        ) a
+        LEFT JOIN a_adspace d on a.spaceId = d.spaceId
+        LEFT JOIN a_app p on d.appId = p.appId
+    </select>
+
+    <!-- 上游id对应详情 -->
+    <select id="AppUpstreamIdMsg" parameterType="java.lang.String" resultType="com.news.vo.AppUpstreamIdList">
+        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.spaceId,d.spaceName,p.appName,s.probability,a.upstreamPackageName from
+        (SELECT u.upstreamId,u.upstreamAppId,t.name,u.upstreamType,u.spaceId,u.upstreamPackageName
+        FROM a_upstream u,a_upstream_type t
+        where u.upstreamType = t.type and u.upstreamId = #{upstreamId}) a
+        LEFT JOIN a_adspace d on a.spaceId = d.spaceId
+        LEFT JOIN a_app p on d.appId = p.appId
+        LEFT JOIN a_assign s on a.spaceId = s.spaceId and a.upstreamType = s.upstreamType
+    </select>
+
+    <!-- 更换上游 -->
+    <select id="check" parameterType="java.lang.String" resultType="java.util.Map">
+        SELECT spaceId,upstreamType
+        FROM `a_upstream`
+        where upstreamId = #{upstreamId}
+    </select>
+    <update id="updateUpstream" parameterType="java.util.Map">
+        update a_upstream
+        set upstreamId = #{newUpstreamId},upstreamAppId = #{newUpstreamAppId},
+        upstreamType = #{newUpstreamType},upstreamPackageName = #{newUpstreamPackageName}
+        where upstreamId = #{upstreamId}
+    </update>
+    <update id="updateAssign" parameterType="java.util.Map">
+        update a_assign
+        set upstreamType = #{newUpstreamType}
+        where spaceId = #{spaceId} and upstreamType = #{upstreamType}
+    </update>
+
     <!-- 广告位统计 -->
     <select id="appReportList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
         select a.appName,DATE_FORMAT(s.createTime,'%Y-%m-%d') as createTime,s.slotId,s.appId,

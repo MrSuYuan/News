@@ -485,6 +485,162 @@ public class AppServiceImpl implements AppService {
     }
 
     /**
+     * 上游列表
+     */
+    @Override
+    public ReqResponse appUpstreamList(Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+
+        //查询集合列表
+        List<AppUpstreamType> appUpstreamTypeList = appDao.appUpstreamTypeList(map);
+        int sumData = appDao.appUpstreamTypeNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",appUpstreamTypeList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 修改上游状态
+     */
+    @Override
+    public ReqResponse updateUpstreamStatus(Integer id, Integer status) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("id",id);
+        map.put("status",status);
+        appDao.updateUpstreamStatus(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        return req;
+    }
+
+    /**
+     * 添加新上游
+     */
+    @Override
+    public ReqResponse appUpstreamAdd(Integer type, String name, String shortName) {
+        ReqResponse req = new ReqResponse();
+        AppUpstreamType aut = new AppUpstreamType();
+        aut.setType(type);
+        aut.setName(name);
+        aut.setShortName(shortName);
+        aut.setCreateTime(new Date());
+        aut.setStatus(0);
+        appDao.appUpstreamAdd(aut);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("添加成功");
+        return req;
+    }
+
+    /**
+     * 上游广告位id列表
+     */
+    @Override
+    public ReqResponse appUpstreamIdList(Integer currentPage, Integer pageSize, Integer type, String upstreamId) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("type",type);
+        map.put("upstreamId",upstreamId);
+
+        //查询集合列表
+        List<AppUpstreamIdList> appUpstreamIdList = appDao.appUpstreamIdList(map);
+        int sumData = appDao.appUpstreamIdListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",appUpstreamIdList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 上游id对应详细信息
+     */
+    @Override
+    public ReqResponse appUpstreamIdMsg(String upstreamId) {
+        ReqResponse req = new ReqResponse();
+        AppUpstreamIdList msg = appDao.AppUpstreamIdMsg(upstreamId);
+        req.setResult(msg);
+        req.setMessage("完成");
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
+    /**
+     * 更换上游
+     */
+    @Override
+    public ReqResponse changeUpstream(String upstreamId, String newUpstreamId, String newUpstreamAppId, Integer newUpstreamType, String newUpstreamPackageName) {
+        ReqResponse req = new ReqResponse();
+        try{
+            //修改a_upstream表
+            //修改a_ssign表
+            Map<String,Object> map = appDao.check(upstreamId);
+            map.put("spaceId",map.get("spaceId"));
+            map.put("upstreamId",upstreamId);
+            map.put("upstreamType",map.get("upstreamType"));
+            map.put("newUpstreamId",newUpstreamId);
+            map.put("newUpstreamAppId",newUpstreamAppId);
+            map.put("newUpstreamType",newUpstreamType);
+            map.put("newUpstreamPackageName",newUpstreamPackageName);
+            appDao.updateUpstream(map);
+            appDao.updateAssign(map);
+            req.setMessage("更换成功");
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+        }catch(Exception e){
+            req.setMessage("系统错误");
+            req.setCode(ErrorMessage.SERVER_ERROR.getCode());
+        }
+        return req;
+    }
+
+    /**
      * 调度分配展示
      */
     @Override

@@ -69,6 +69,36 @@ public interface AppService {
     ReqResponse appStatisticsUserList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
     /**
+     * 上游列表
+     */
+    ReqResponse appUpstreamList(Integer currentPage, Integer pageSize);
+
+    /**
+     * 修改上游状态
+     */
+    ReqResponse updateUpstreamStatus(Integer id, Integer status);
+
+    /**
+     * 添加新上游
+     */
+    ReqResponse appUpstreamAdd(Integer type, String name, String shortName);
+
+    /**
+     * 上游广告位id列表
+     */
+    ReqResponse appUpstreamIdList(Integer currentPage, Integer pageSize, Integer type, String upstreamId);
+
+    /**
+     * 上游id对应详细信息
+     */
+    ReqResponse appUpstreamIdMsg(String upstreamId);
+
+    /**
+     * 更换上游
+     */
+    ReqResponse changeUpstream(String upstreamId, String newUpstreamId, String newUpstreamAppId, Integer newUpstreamType, String newUpstreamPackageName);
+
+    /**
      * 调度分配展示
      */
     ReqResponse selectAppAssign(String spaceId);

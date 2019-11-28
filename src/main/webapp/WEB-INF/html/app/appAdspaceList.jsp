@@ -248,7 +248,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            selectUserList(page);
+            appAdspaceList(page);
         }
     }
 
@@ -260,7 +260,7 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            selectUserList(page);
+            appAdspaceList(page);
         }
     }
 

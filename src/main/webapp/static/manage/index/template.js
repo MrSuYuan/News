@@ -123,6 +123,7 @@ function navigationBar(path){
 	html += '			<li class="" id="appStatistics"><a href="'+path+'/appStatisticsList"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appDivided"><a href="'+path+'/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="appUpstream"><a href="'+path+'/appUpstreamList"><i class="menu-icon fa fa-caret-right"></i>上游设置</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -199,8 +200,10 @@ function permission(pageSign){
         $('#userList').hide();
         $('#appDivided').hide();
         $('#appReport').hide();
+        $('#appUpstream').hide();
         $('#webDivided').hide();
         $('#temporary').hide();
+
 	}
 
     if (pageSign == "index"){
@@ -249,6 +252,18 @@ function permission(pageSign){
     }else if (pageSign == "appReportList"){
         $('#app').addClass('active open');
         $('#appReport').addClass('active');
+    }else if (pageSign == "appUpstreamList"){
+        $('#app').addClass('active open');
+        $('#appUpstream').addClass('active');
+    }else if (pageSign == "appUpstreamAdd"){
+        $('#app').addClass('active open');
+        $('#appUpstream').addClass('active');
+    }else if (pageSign == "appUpstreamIdList"){
+        $('#app').addClass('active open');
+        $('#appUpstream').addClass('active');
+    }else if (pageSign == "appUpstreamIdEdit"){
+        $('#app').addClass('active open');
+        $('#appUpstream').addClass('active');
 
 	//web页面
     }else if (pageSign == "webList"){

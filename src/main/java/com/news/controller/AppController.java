@@ -343,7 +343,158 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="appUpstreamTypeList", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上游列表", notes = "上游列表", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appUpstreamTypeList(Integer currentPage, Integer pageSize){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appUpstreamList(currentPage, pageSize);
+        }
+        return req;
+    }
 
+    @RequestMapping(value="updateUpstreamStatus", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "修改上游状态", notes = "修改上游状态", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="id" , value="id" ,required = true , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="status" , value="状态" ,required = true , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse updateUpstreamStatus(Integer id, Integer status){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.updateUpstreamStatus(id, status);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="appUpstreamAdd", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "添加新上游", notes = "添加新上游", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="type" , value="编号" ,required = true , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="name" , value="名称" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="shortName" , value="简称" ,required = true , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse appUpstreamAdd(Integer type, String name, String shortName){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = appService.appUpstreamAdd(type, name, shortName);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+
+        }
+        return req;
+    }
+
+    @RequestMapping(value="appUpstreamIdList", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上游广告位列表", notes = "添加新上游", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="type" , value="上游类型" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="upstreamId" , value="上游id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appUpstreamIdList(Integer currentPage, Integer pageSize, Integer type, String upstreamId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = appService.appUpstreamIdList(currentPage, pageSize, type, upstreamId);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+
+        }
+        return req;
+    }
+
+    @RequestMapping(value="appUpstreamIdMsg", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上游id对应详情", notes = "上游id对应详情", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="upstreamId" , value="上游id" ,required = false , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse appUpstreamIdMsg(String upstreamId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = appService.appUpstreamIdMsg(upstreamId);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+
+        }
+        return req;
+    }
+
+    @RequestMapping(value="newUpstream", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "更换绑定", notes = "更换绑定", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="upstreamId" , value="广告位id" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="newUpstreamId" , value="新上游id" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="newUpstreamAppId" , value="新上游appId" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="newUpstreamPackageName" , value="新上游包名" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="newUpstreamType" , value="新上游类型" ,required = true , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse newUpstream(String upstreamId, String newUpstreamId, String newUpstreamAppId, Integer newUpstreamType, String newUpstreamPackageName){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = appService.changeUpstream(upstreamId, newUpstreamId, newUpstreamAppId, newUpstreamType, newUpstreamPackageName);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+
+        }
+        return req;
+    }
 
     @RequestMapping(value="addReport", method= RequestMethod.POST)
     @ResponseBody

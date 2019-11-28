@@ -164,6 +164,40 @@ public interface AppDao {
     void updateAssignZ(List<AppAssign> list);
 
     /**
+     * 查看上游列表
+     */
+    List<AppUpstreamType> appUpstreamTypeList(Map<String,Object> map);
+    int appUpstreamTypeNum(Map<String,Object> map);
+
+    /**
+     * 修改上游状态
+     */
+    void updateUpstreamStatus(Map<String,Object> map);
+
+    /**
+     * 添加新上游
+     */
+    void appUpstreamAdd(AppUpstreamType aut);
+
+    /**
+     * 上游广告位
+     */
+    List<AppUpstreamIdList> appUpstreamIdList(Map<String,Object> map);
+    int appUpstreamIdListNum(Map<String,Object> map);
+
+    /**
+     * 上游id对应详情
+     */
+    AppUpstreamIdList AppUpstreamIdMsg(String upstreamId);
+
+    /**
+     * 更换上游
+     */
+    Map<String,Object> check(String upstreamId);
+    void updateUpstream(Map<String,Object> map);
+    void updateAssign(Map<String,Object> map);
+
+    /**
      * 广告位统计
      */
     List<AdStatisticsListVo> appReportList(Map<String,Object> map);

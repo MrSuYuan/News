@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>上游列表</title>
+    <title>上游广告位列表</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
     <meta name="description" content="overview &amp; stats" />
@@ -27,6 +27,7 @@
 <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
 <input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
 <input type="hidden" id="ctx" value="${ctx}"/>
+<input type="hidden" id="upstreamType"/>
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
         try{ace.settings.loadState('main-container')}catch(e){}
@@ -44,7 +45,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="${ctx}/index">Home</a>
                     </li>
-                    <li class="active">上游列表</li>
+                    <li class="active">上游广告位ID</li>
                 </ul><!-- /.breadcrumb -->
                 <div class="nav-search" id="nav-search">
                     <form class="form-search">
@@ -58,33 +59,53 @@
 
             <!-- 页面主体部分 -->
             <div class="page-content">
-                <input type="hidden" id="spaceId">
-                <form action="#" method="post">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="table-header"></div>
-                            <div>
-                                <table id="dynamic-table"
-                                       class="table table-striped table-bordered table-hover">
-                                    <thead>
-                                    <tr style="height: 50px">
-                                        <th>广告位ID</th>
-                                        <th>上游广告位ID</th>
-                                        <th>上游APPID</th>
-                                        <th>上游平台</th>
-                                        <th>创建时间</th>
-                                        <th id="statistics">收益统计</th>
-                                        <th id="operating">操作</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody id="coll_list_begin_body">
-                                    </tbody>
-                                </table>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <form action="#" method="post">
+                            <br>
+                            <div align="center">
+                                上游广告位ID：<input type="text" id="upstreamId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectUpstreamIdList(1)">&nbsp;&nbsp;
                             </div>
-                        </div>
-                    </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="table-header"></div>
+                                    <div>
+                                        <table id="dynamic-table"
+                                               class="table table-striped table-bordered table-hover">
+                                            <thead>
+                                            <tr style="height: 50px">
+                                                <th>上游广告位ID</th>
+                                                <th>上游APPID</th>
+                                                <th>上游名称</th>
+                                                <th>平台APPID</th>
+                                                <th>平台广告位ID</th>
+                                                <th>app名称</th>
+                                                <th>广告位名称</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="coll_list_begin_body">
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer no-margin-top">
+                                        页数<a onclick="lastPageData()"><</a>
+                                        &nbsp;<input type="text" id="currentPage" style="width:35px;height:20px">
+                                        <a onclick="nextPageData()">></a>&nbsp;
+                                        共&nbsp;<span id="sumPage"></span>&nbsp;页&nbsp;|&nbsp;
+                                        页面容量
+                                        &nbsp;<input type="text" id="pageSize" style="width:35px;height:20px">&nbsp;|&nbsp;
+                                        共&nbsp;<span id="sumData"></span>&nbsp;条数据
+                                        <ul class="pagination pull-right no-margin" id="coll_begin_page"></ul>
+                                    </div>
+                                </div>
+                            </div>
 
-                </form>
+                        </form>
+                    </div>
+                </div>
             </div><!-- /.page-content -->
         </div>
     </div><!-- /.main-content -->
@@ -115,90 +136,61 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("appAdspaceUpstreamList", $('#userName').val());
+    loading("appUpstreamIdList", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        //根据权限隐藏特定的展示栏和搜索条件
-        var currentUserLevel = $('#currentUserLevel').val();
-
-        var spaceId =  sessionStorage.getItem("spaceId");
-        $('#spaceId').val(spaceId);
-        //sessionStorage.removeItem("spaceId");
-
-        if(currentUserLevel == 3){
-            alert("权限不足");
-        }else if(currentUserLevel == 1) {
-            // $('#statistics').hide();
-            // $('#operating').hide();
-            appUpstreamList();
-        }else{
-            appUpstreamList();
-        }
-
+        var upstreamType =  sessionStorage.getItem("type");
+        $('#upstreamType').val(upstreamType);
+        //sessionStorage.removeItem("type");
+        selectUpstreamIdList(1);
     });
 
-    //页面数据展示
-    function appUpstreamList() {
-
-        var currentUserLevel = $('#currentUserLevel').val();
+    //点击搜索数据展示
+    function selectUpstreamIdList(currentPage) {
+        var pageSize = $('#pageSize').val();
+        if(pageSize == ""){
+            pageSize = 20;
+        }else if(pageSize == 0){
+            alert("页码容量不能为0");
+            return false;
+        }
         $.ajax({
-            url: path + "/app/appUpstreamList",
+            url: path + "/app/appUpstreamIdList",
             type: "post",
             data: {
-                "spaceId" : $('#spaceId').val()
+                //"type" :  $('#appStatus option:selected').val(),
+                "upstreamId" : $('#upstreamId').val(),
+                "type" :  $('#upstreamType').val(),
+                "currentPage" : currentPage,
+                "pageSize" : pageSize
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result;
+                    var list = obj.result.list;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.upstreamId+'</td>';
                         html+='<td> '+data.upstreamAppId+'</td>';
-                        var upstreamType = data.upstreamType;
-                        if(upstreamType == 1){
-                            html+='<td> 东方 </td>';
-                        }else if(upstreamType == 2){
-                            html+='<td> 万咖 </td>';
-                        }else if(upstreamType == 3){
-                            html+='<td> 极光 </td>';
-                        }else if(upstreamType == 4){
-                            html+='<td> 余梁 </td>';
-                        }else if(upstreamType == 5){
-                            html+='<td> 一点通 </td>';
-                        }else if(upstreamType == 6){
-                            html+='<td> 小知 </td>';
-                        }else if(upstreamType == 7){
-                            html+='<td> 旺脉 </td>';
-                        }else if(upstreamType == 8){
-                            html+='<td> 甬祺 </td>';
-                        }else if(upstreamType == 9){
-                            html+='<td> 点开 </td>';
-                        }else if(upstreamType == 10){
-                            html+='<td> 迈吉客 </td>';
-                        }else if(upstreamType == 11){
-                            html+='<td> 聚量 </td>';
-                        }else if(upstreamType == 12){
-                            html+='<td> 众盟 </td>';
-                        }else if(upstreamType == 13){
-                            html+='<td> 虹益 </td>';
-                        }else{
-                            html+='<td> <font color="red">信息错误</font> </td>';
-                        }
-                        html+='<td> '+data.create_Time+'</td>';
-                        //if(currentUserLevel == 2){
-                        html+='<td><button type="button" onclick="addAppStatistice(\''+data.upstreamId+'\')">添加收益统计</button></td>';
-                        html+='<td><button type="button" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">更换绑定</button></td>';
-                        //}
+                        html+='<td> '+data.name+'</td>';
+                        html+='<td> '+data.appId+'</td>';
+                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.appName+'</td>';
+                        html+='<td> '+data.spaceName+'</td>';
+                        html+='<td><input type="button" value="更换绑定" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')"></td>';
                         html+='</tr>';
                     }
                     //添加数据
                     $("#coll_list_begin_body").html(html);
+                    //更新页码
+                    $('#currentPage').val(obj.result.currentPage);
+                    $('#pageSize').val(obj.result.pageSize);
+                    $('#sumPage').html(obj.result.sumPage);
+                    $('#sumData').html(obj.result.sumData);
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";
@@ -213,9 +205,27 @@
         });
     }
 
-    function addAppStatistice(upstreamId) {
-        sessionStorage.setItem("upstreamId",upstreamId);
-        window.location = path + "/appStatisticsAdd";
+    //上一页
+    function lastPageData() {
+        var page = parseInt($('#currentPage').val());
+        if(page == 1){
+            alert("当前是第一页");
+        }else{
+            page = page - 1;
+            selectUpstreamIdList(page);
+        }
+    }
+
+    //下一页
+    function nextPageData() {
+        var page = parseInt($('#currentPage').val());
+        var sumPage = parseInt($('#sumPage').text());
+        if(page == sumPage){
+            alert("当前是最后一页");
+        }else{
+            var page = page + 1;
+            selectUpstreamIdList(page);
+        }
     }
 
     function appUpstreamIdEdit(upstreamId){
