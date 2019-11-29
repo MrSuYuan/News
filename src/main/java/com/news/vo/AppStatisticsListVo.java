@@ -18,6 +18,15 @@ public class AppStatisticsListVo {
     private double income;
     private double ecmp;
     private int upstreamType;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getAppId() {
         return appId;

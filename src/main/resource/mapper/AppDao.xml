@@ -220,8 +220,9 @@
 
     <!-- 广告位上游信息列表 -->
     <select id="appUpstreamList" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
-        select *,DATE_FORMAT(createTime,"%Y-%m-%d %H:%i:%s") as create_Time
-        from a_upstream where spaceId = #{spaceId}
+        select u.*,DATE_FORMAT(u.createTime,"%Y-%m-%d %H:%i:%s") as create_Time,t.`name`
+        from a_upstream u,a_upstream_type t
+		where u.spaceId = #{spaceId} and u.upstreamType = t.type
     </select>
 
     <!-- 添加广告位数据统计信息 -->
@@ -235,9 +236,9 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType
-        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
+        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType,ut.`name`
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -257,8 +258,8 @@
     <!-- 查询数据统计信息列表数量 -->
     <select id="appStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(0)
-        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId
+        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>

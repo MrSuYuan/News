@@ -525,6 +525,23 @@ public class AppServiceImpl implements AppService {
     }
 
     /**
+     * 全部上游
+     */
+    @Override
+    public ReqResponse allAppUpstreamType() {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("num",0);
+        map.put("pageSize",100);
+        //查询集合列表
+        List<AppUpstreamType> list = appDao.appUpstreamTypeList(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(list);
+        return req;
+    }
+
+    /**
      * 修改上游状态
      */
     @Override

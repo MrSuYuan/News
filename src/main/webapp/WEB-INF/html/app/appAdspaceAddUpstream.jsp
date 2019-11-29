@@ -84,22 +84,7 @@
                             <tr height = "50">
                                 <td align = "right">上游平台:&nbsp;&nbsp;</td>
                                 <td width="300">
-                                    <select style="width: 276px;height: 34px" id="upstreamType">
-                                        <option value="0">请选择</option>
-                                        <option value="1">东方</option>
-                                        <option value="2">万咖</option>
-                                        <option value="3">极光</option>
-                                        <option value="4">余梁</option>
-                                        <option value="5">一点通</option>
-                                        <option value="6">小知</option>
-                                        <option value="7">旺脉</option>
-                                        <option value="8">甬祺</option>
-                                        <option value="9">点开</option>
-                                        <option value="10">迈吉客</option>
-                                        <option value="11">聚量</option>
-                                        <option value="12">众盟</option>
-                                        <option value="13">虹益</option>
-                                    </select>
+                                    <span id="upstreamTypeList"></span>
                                     <font color="red">&nbsp;&nbsp;*</font>
                                 </td>
                             </tr>
@@ -147,12 +132,45 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
-
         var spaceId =  sessionStorage.getItem("spaceId");
         $('#spaceId').html(spaceId);
         sessionStorage.removeItem("spaceId");
-
+        upstreamType();
     });
+
+    //查询上游信息
+    function upstreamType(){
+        var html = "";
+        //保存代码位信息
+        $.ajax({
+            url: path + "/app/allAppUpstreamType",
+            data:{
+                "sign" : 1
+            },
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if(data.code == 200){
+                    html += '<select style="width: 276px;height: 34px" id="upstreamType">';
+                    html += '<option value="0">请选择</option>';
+                    var list = data.result;
+                    for (var i = 0; i < list.length; i++){
+                        var d = list[i];
+                        html += '<option value="'+d.type+'">'+d.name+'</option>';
+                    }
+                    html += '</select>';
+                    $("#upstreamTypeList").html(html);
+                }else{
+                    alert(data.message);
+                }
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    }
+
 
 
     //提交广告位上游信息

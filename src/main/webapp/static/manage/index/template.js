@@ -296,7 +296,5 @@ function permission(pageSign){
         $('#temporary').addClass('active open');
         $('#temporaryList').addClass('active');
     }
-
-
 }
 

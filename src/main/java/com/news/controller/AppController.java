@@ -363,6 +363,15 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="allAppUpstreamType", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "全部上游列表", notes = "上游列表", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse allAppUpstreamType(){
+        ReqResponse req = appService.allAppUpstreamType();
+        return req;
+    }
+
     @RequestMapping(value="updateUpstreamStatus", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "修改上游状态", notes = "修改上游状态", httpMethod = "POST")

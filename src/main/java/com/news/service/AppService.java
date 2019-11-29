@@ -74,6 +74,11 @@ public interface AppService {
     ReqResponse appUpstreamList(Integer currentPage, Integer pageSize);
 
     /**
+     * 全部上游
+     */
+    ReqResponse allAppUpstreamType();
+
+    /**
      * 修改上游状态
      */
     ReqResponse updateUpstreamStatus(Integer id, Integer status);

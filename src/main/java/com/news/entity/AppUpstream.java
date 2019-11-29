@@ -35,6 +35,15 @@ public class AppUpstream {
      * 创建时间
      */
     private String create_Time;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getCreate_Time() {
         return create_Time;

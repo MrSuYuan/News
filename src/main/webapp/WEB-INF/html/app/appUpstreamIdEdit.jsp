@@ -173,22 +173,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label no-padding-right">平台</label>
                                                         <div class="col-sm-9">
-                                                            <select style="width: 171.6px;height: 33.8px" id="newUpstreamType">
-                                                                <option value="0">请选择</option>
-                                                                <option value="1">东方</option>
-                                                                <option value="2">万咖</option>
-                                                                <option value="3">极光</option>
-                                                                <option value="4">余梁</option>
-                                                                <option value="5">一点通</option>
-                                                                <option value="6">小知</option>
-                                                                <option value="7">旺脉</option>
-                                                                <option value="8">甬祺</option>
-                                                                <option value="9">点开</option>
-                                                                <option value="10">迈吉客</option>
-                                                                <option value="11">聚量</option>
-                                                                <option value="12">众盟</option>
-                                                                <option value="13">虹益</option>
-                                                            </select>
+                                                            <span id="upstreamTypeList"></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -253,8 +238,42 @@
     $(document).ready(function(){
         var upstreamId =  sessionStorage.getItem("upstreamId");
         $('#upstreamId').val(upstreamId);
+        upstreamType();
         upstreamIdMsg(upstreamId);
     });
+
+    //查询上游信息
+    function upstreamType(){
+        var html = "";
+        //保存代码位信息
+        $.ajax({
+            url: path + "/app/allAppUpstreamType",
+            data:{
+                "sign" : 1
+            },
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if(data.code == 200){
+                    html += '<select style="width: 171.6px;height: 33.8px" id="newUpstreamType">';
+                    html += '<option value="0">请选择</option>';
+                    var list = data.result;
+                    for (var i = 0; i < list.length; i++){
+                        var d = list[i];
+                        html += '<option value="'+d.type+'">'+d.name+'</option>';
+                    }
+                    html += '</select>';
+                    $("#upstreamTypeList").html(html);
+                }else{
+                    alert(data.message);
+                }
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    }
 
     //展示
     function upstreamIdMsg(upstreamId) {
