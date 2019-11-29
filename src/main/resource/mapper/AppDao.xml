@@ -307,7 +307,9 @@
 
     <!-- 调度分配展示 -->
     <select id="selectAppAssign" parameterType="java.lang.String" resultType="com.news.entity.AppAssign">
-        select * from a_assign where spaceId = #{spaceId}
+        select a.*,u.`name`,u.shortName
+        from a_assign a,a_upstream_type u
+        where a.upstreamType = u.type and a.spaceId = #{spaceId}
     </select>
 
     <!-- 正式服概率修改 -->

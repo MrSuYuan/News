@@ -63,69 +63,10 @@
                     <form action="#" method="post">
                         <div style="display:inline;width: 50%">
                             <table style="font-size: 14px">
-                                <tr height = "50" id="dft">
-                                    <td align = "right">东方:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="df" name="df" value="0"></td>
-                                </tr>
-                                <tr height = "50" id="wkt">
-                                    <td align = "right">万咖:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="wk" name="wk" value="0"></td>
-                                </tr>
-                                <tr height = "50" id="jgt">
-                                    <td align = "right">极光:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="jg" name="jg" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="ylt">
-                                    <td align = "right">余梁:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="yl" name="yl" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="ydtt">
-                                    <td align = "right">一点通:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="ydt" name="ydt" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="xzt">
-                                    <td align = "right">小知:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="xz" name="xz" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="wmt">
-                                    <td align = "right">旺脉:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="wm" name="wm" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="yqt">
-                                    <td align = "right">甬祺:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="yq" name="yq" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="dkt">
-                                    <td align = "right">点开:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="dk" name="dk" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="mjkt">
-                                    <td align = "right">迈吉客:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="mjk" name="mjk" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="jlt">
-                                    <td align = "right">聚量:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="jl" name="jl" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="zmt">
-                                    <td align = "right">众盟:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="zm" name="zm" value="0"></td>
-                                    </td>
-                                </tr>
-                                <tr height = "50" id="hyt">
-                                    <td align = "right">虹益:&nbsp;&nbsp;</td>
-                                    <td width="300"><input type="text" size="35" id="hy" name="hy" value="0"></td>
-                                    </td>
-                                </tr>
+
+                                <!-- 详情 -->
+                                <tbody id="upstream"></tbody>
+
                                 <tr height = "50">
                                     <td></td>
                                     <td>
@@ -191,74 +132,18 @@
             dataType: 'json',
             async: false,
             success: function (obj) {
-                console.log(obj)
                 if(obj.code == 200){
-                    var result = obj.result;
-                    if(null == result.df){
-                        $('#dft').hide()
-                    }else{
-                        $('#df').val(result.df);
+
+                    var html = "";
+                    var list = obj.result;
+                    for (var i = 0; i < list.length; i++){
+                        var data = list[i];
+                        html += '<tr height = "50" class = "uTr">';
+                        html += '    <td align = "right">'+data.name+':&nbsp;&nbsp;<input type="hidden" size="35" name="upstreamType" value="'+data.upstreamType+'"></td>';
+                        html += '    <td width="300"><input type="text" size="35" name="probability" value="'+data.probability+'"></td>';
+                        html += '</tr>';
                     }
-                    if(null == result.wk){
-                        $('#wkt').hide()
-                    }else{
-                        $('#wk').val(result.wk);
-                    }
-                    if(null == result.jg){
-                        $('#jgt').hide()
-                    }else{
-                        $('#jg').val(result.jg);
-                    }
-                    if(null == result.yl){
-                        $('#ylt').hide()
-                    }else{
-                        $('#yl').val(result.yl);
-                    }
-                    if(null == result.ydt){
-                        $('#ydtt').hide()
-                    }else{
-                        $('#ydt').val(result.ydt);
-                    }
-                    if(null == result.xz){
-                        $('#xzt').hide()
-                    }else{
-                        $('#xz').val(result.xz);
-                    }
-                    if(null == result.wm){
-                        $('#wmt').hide()
-                    }else{
-                        $('#wm').val(result.wm);
-                    }
-                    if(null == result.yq){
-                        $('#yqt').hide()
-                    }else{
-                        $('#yq').val(result.yq);
-                    }
-                    if(null == result.dk){
-                        $('#dkt').hide()
-                    }else{
-                        $('#dk').val(result.dk);
-                    }
-                    if(null == result.mjk){
-                        $('#mjkt').hide()
-                    }else{
-                        $('#mjk').val(result.mjk);
-                    }
-                    if(null == result.jl){
-                        $('#jlt').hide()
-                    }else{
-                        $('#jl').val(result.jl);
-                    }
-                    if(null == result.zm){
-                        $('#zmt').hide()
-                    }else{
-                        $('#zm').val(result.zm);
-                    }
-                    if(null == result.hy){
-                        $('#hyt').hide()
-                    }else{
-                        $('#hy').val(result.hy);
-                    }
+                    $('#upstream').html(html);
 
                 }else if(obj.code == "300"){
                     alert(obj.message);
@@ -276,25 +161,21 @@
 
     //正式服确认提交
     function updateAssign(){
+
+        var objs = [];
+        $('.uTr').each(function(index,val){
+            var obj = {
+                upstreamType : $(val).find('input[name=upstreamType]').val(),
+                probability : $(val).find('input[name=probability]').val(),
+            }
+            objs.push(obj)
+        })
         $.ajax({
             url: path + "/app/assignSubmit",
             type: "post",
             data : {
-                "df" : $('#df').val(),
-                "wk" : $('#wk').val(),
-                "jg" : $('#jg').val(),
-                "yl" : $('#yl').val(),
-                "ydt" : $('#ydt').val(),
-                "xz" : $('#xz').val(),
-                "wm" : $('#wm').val(),
-                "yq" : $('#yq').val(),
-                "dk" : $('#dk').val(),
-                "mjk" : $('#mjk').val(),
-                "jl" : $('#jl').val(),
-                "zm" : $('#zm').val(),
-                "hy" : $('#hy').val(),
                 "spaceId" : $('#spaceId').val(),
-                "type" : 1
+                "list" : JSON.stringify(objs)
             },
             dataType: 'json',
             async: false,

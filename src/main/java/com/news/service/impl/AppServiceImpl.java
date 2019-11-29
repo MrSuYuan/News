@@ -710,7 +710,7 @@ public class AppServiceImpl implements AppService {
                 continue;
             }
         }
-        req.setResult(map);
+        req.setResult(list);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         return req;
     }
@@ -760,97 +760,35 @@ public class AppServiceImpl implements AppService {
      * 修改调度数据
      */
     @Override
-    public ReqResponse assignSubmit(int df, int wk, int jg, int yl, int ydt, int xz, int wm, int yq, int dk, int mjk, int jl, int zm, int hy,
-                                    int type, String spaceId) {
+    public ReqResponse assignSubmit(String list, String spaceId){
         ReqResponse req = new ReqResponse();
-        if(df + wk + jg + yl + ydt + xz + wm + yq + dk + mjk + jl + zm + hy == 100){
+        try{
+            //解析前端传过来的集合数据
+            ObjectMapper mapper = new ObjectMapper();
+            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppAssignVo.class);
+            List<AppAssignVo> assignList =  mapper.readValue(list, jt);
+            int sumProbability = 0;
             List<AppAssign> aList = new ArrayList<>();
-
-            AppAssign dfa = new AppAssign();
-            dfa.setUpstreamType(1);
-            dfa.setProbability(df);
-            dfa.setSpaceId(spaceId);
-            aList.add(dfa);
-
-            AppAssign wka = new AppAssign();
-            wka.setUpstreamType(2);
-            wka.setProbability(wk);
-            wka.setSpaceId(spaceId);
-            aList.add(wka);
-
-            AppAssign jga = new AppAssign();
-            jga.setUpstreamType(3);
-            jga.setProbability(jg);
-            jga.setSpaceId(spaceId);
-            aList.add(jga);
-
-            AppAssign yla = new AppAssign();
-            yla.setUpstreamType(4);
-            yla.setProbability(yl);
-            yla.setSpaceId(spaceId);
-            aList.add(yla);
-
-            AppAssign ydta = new AppAssign();
-            ydta.setUpstreamType(5);
-            ydta.setProbability(ydt);
-            ydta.setSpaceId(spaceId);
-            aList.add(ydta);
-
-            AppAssign xza = new AppAssign();
-            xza.setUpstreamType(6);
-            xza.setProbability(xz);
-            xza.setSpaceId(spaceId);
-            aList.add(xza);
-
-            AppAssign wma = new AppAssign();
-            wma.setUpstreamType(7);
-            wma.setProbability(wm);
-            wma.setSpaceId(spaceId);
-            aList.add(wma);
-
-            AppAssign yqa = new AppAssign();
-            yqa.setUpstreamType(8);
-            yqa.setProbability(yq);
-            yqa.setSpaceId(spaceId);
-            aList.add(yqa);
-
-            AppAssign dka = new AppAssign();
-            dka.setUpstreamType(9);
-            dka.setProbability(dk);
-            dka.setSpaceId(spaceId);
-            aList.add(dka);
-
-            AppAssign mjka = new AppAssign();
-            mjka.setUpstreamType(10);
-            mjka.setProbability(mjk);
-            mjka.setSpaceId(spaceId);
-            aList.add(mjka);
-
-            AppAssign jla = new AppAssign();
-            jla.setUpstreamType(11);
-            jla.setProbability(jl);
-            jla.setSpaceId(spaceId);
-            aList.add(jla);
-
-            AppAssign zma = new AppAssign();
-            zma.setUpstreamType(12);
-            zma.setProbability(zm);
-            zma.setSpaceId(spaceId);
-            aList.add(zma);
-
-            AppAssign hya = new AppAssign();
-            hya.setUpstreamType(13);
-            hya.setProbability(hy);
-            hya.setSpaceId(spaceId);
-            aList.add(hya);
-            //批量修改
-            appDao.updateAssignZ(aList);
-            req.setCode(ErrorMessage.SUCCESS.getCode());
-            req.setMessage("修改成功");
-
-        }else{
-            req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
-            req.setMessage("设置概率错误");
+            for (int i = 0; i < assignList.size(); i++){
+                sumProbability += assignList.get(i).getProbability();
+                AppAssign dfa = new AppAssign();
+                dfa.setUpstreamType(assignList.get(i).getUpstreamType());
+                dfa.setProbability(assignList.get(i).getProbability());
+                dfa.setSpaceId(spaceId);
+                aList.add(dfa);
+            }
+            if (sumProbability == 100){
+                //批量修改
+                appDao.updateAssignZ(aList);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("修改成功");
+            }else{
+                req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
+                req.setMessage("设置概率错误");
+            }
+        }catch(Exception e){
+            req.setCode(ErrorMessage.SERVER_ERROR.getCode());
+            req.setMessage("系统错误");
         }
         return req;
     }
