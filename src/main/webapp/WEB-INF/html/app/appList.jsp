@@ -73,12 +73,12 @@
                                 <option value="3">正常</option>
                                 <option value="4">禁用</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectAppList($('#currentPage').val())">&nbsp;&nbsp;
-                            <a href="${ctx}/appDetail">
-                                <input id="addApp" type="button" style="width:80px;height:30px" value="添加APP">
+                            <a class="btn btn-primary btn-xs" onclick="selectAppList($('#currentPage').val())" style="width: 80px;">
+                                <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                             </a>
-
-
+                            <a href="${ctx}/appDetail" class="btn btn-primary btn-xs" style="width: 120px;">
+                                <i class="ace-icon glyphicon glyphicon-tag bigger-110"><font size="3">添加APP</font></i>
+                            </a>
                         </div>
                         <br>
                         <div class="row">

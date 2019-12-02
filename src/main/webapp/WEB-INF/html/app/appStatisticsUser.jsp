@@ -63,7 +63,9 @@
                     <div align="center">
                         广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectStatisticsList($('#currentPage').val())">&nbsp;&nbsp;
+                        <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())" style="width: 80px;">
+                            <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                        </a>
 
                     </div>
                     <br>

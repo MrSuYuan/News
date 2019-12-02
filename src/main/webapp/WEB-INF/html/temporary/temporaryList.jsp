@@ -92,7 +92,9 @@
                                     </select>--%>
                                     <input type="text" id="adId" placeholder="广告位ID" style="height: 34.2px">&nbsp;&nbsp;&nbsp;
                                     <input type="date" id="startTime">&nbsp;&nbsp;&nbsp;-<input type="date" id="endTime">
-                                    <input type="button" value="查询" onclick="selectUserList()">
+                                    <a class="btn btn-primary btn-xs" onclick="selectUserList()" style="width: 80px;">
+                                        <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">查询</font></i>
+                                    </a>
                                 </div>
                             </form>
                         </div>

@@ -72,7 +72,7 @@
                             <option value="4">信息流</option>
                             <option value="5">激励视频</option>
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-app btn-primary btn-xs" onclick="appAdspaceList($('#currentPage').val())" style="width: 80px;text-align: center;">
+                        <a class="btn btn-primary btn-xs" onclick="appAdspaceList($('#currentPage').val())" style="width: 80px;text-align: center;">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
                     </div>

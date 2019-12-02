@@ -70,11 +70,16 @@
                                     <option value="1">正常</option>
                                     <option value="0">禁用</option>
                                 </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectAppList($('#currentPage').val())">&nbsp;&nbsp;
-                                <a href="${ctx}/appUpstreamAdd">
-                                    <input id="addAppUpstream" type="button" style="width:80px;height:30px" value="添加新上游">
-                                </a>&nbsp;
-                                <input id="appUpstreamIdList" type="button" onclick="upstreamIdList('')" style="width:80px;height:30px" value="全部广告位">
+                                <a class="btn btn-primary btn-xs" onclick="selectAppList($('#currentPage').val())" style="width: 80px;">
+                                    <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                                </a>
+                                <a href="${ctx}/appUpstreamAdd" class="btn btn-primary btn-xs" onclick="selectUpstreamIdList(1)" style="width: 130px;">
+                                    <i class="ace-icon fa fa-users bigger-110"><font size="3">添加新上游</font></i>
+                                </a>
+                                <a class="btn btn-primary btn-xs" onclick="upstreamIdList('')" style="width: 130px;">
+                                    <i class="ace-icon glyphicon glyphicon-inbox bigger-110"><font size="3">全部广告位</font></i>
+                                </a>
+
                             </div>
                             <br>
                             <div class="row">

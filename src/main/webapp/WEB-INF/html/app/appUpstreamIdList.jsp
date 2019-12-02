@@ -65,7 +65,10 @@
                             <br>
                             <div align="center">
                                 上游广告位ID：<input type="text" id="upstreamId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectUpstreamIdList(1)">&nbsp;&nbsp;
+                                <a class="btn btn-primary btn-xs" onclick="selectUpstreamIdList(1)" style="width: 80px;">
+                                    <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                                </a>
+
                             </div>
                             <br>
                             <div class="row">

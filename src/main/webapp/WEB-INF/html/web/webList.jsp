@@ -71,8 +71,12 @@
                             <option value="3">正常</option>
                             <option value="4">禁用</option>
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectWebList($('#currentPage').val())">&nbsp;&nbsp;
-                        <input id="addWeb" type="button" style="width:100px;height:30px" value="添加WEB网站" onclick="webDetail()">
+                        <a class="btn btn-primary btn-xs" onclick="selectWebList($('#currentPage').val())" style="width: 80px;">
+                            <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                        </a>
+                        <a id="addWeb" class="btn btn-primary btn-xs" onclick="webDetail()" style="width: 130px;">
+                            <i class="ace-icon fa fa-desktop bigger-110"><font size="3">添加WEB网站</font></i>
+                        </a>
 
                     </div>
                     <br>

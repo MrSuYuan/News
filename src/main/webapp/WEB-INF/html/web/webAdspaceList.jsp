@@ -76,7 +76,9 @@
                             <option value="2">右下浮</option>
                             <option value="3">对联</option>
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="button" style="width:50px;height:30px" value="搜索" onclick="webAdspaceList($('#currentPage').val())">&nbsp;&nbsp;
+                        <a class="btn btn-primary btn-xs" onclick="webAdspaceList($('#currentPage').val())" style="width: 80px;">
+                            <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                        </a>
 
                     </div>
                     <br>
