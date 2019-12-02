@@ -213,11 +213,11 @@
                         html+='<td> '+data.createTime+'</td>';
                         var status = data.status;
                         if(status == 0){
-                            html+='<td id="status'+data.id+'">禁用</td>';
-                            html+='<td id="operating'+data.id+'"><input type=button style="background:green" value="启用" onclick="upstreamStatus('+data.id+',1)"/></td>';
+                            html+='<td id="status'+data.id+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                            html+='<td id="operating'+data.id+'"><button type="button" class="btn btn-minier btn-success" onclick="upstreamStatus('+data.id+',1)">启用</button></td>';
                         }else if(status == 1){
-                            html+='<td id="status'+data.id+'">正常</td>';
-                            html+='<td id="operating'+data.id+'"><input type=button style="background:red" value="禁用" onclick="upstreamStatus('+data.id+',0)"/></td>';
+                            html+='<td id="status'+data.id+'"><span class="label label-success label-white middle">正常</span></td>';
+                            html+='<td id="operating'+data.id+'"><button type="button" class="btn btn-minier btn-danger" onclick="upstreamStatus('+data.id+',0)">禁用</button></td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
@@ -286,16 +286,16 @@
                     $('#status'+id).empty();
                     $('#status'+id).empty();
                     if(status == 0){
-                        $('#status'+id).html("禁用");
+                        $('#status'+id).html('<span class="label label-danger label-white middle">禁用</span>');
                         var html='<td id="operating'+id+'">'+
-                            '<input type=button style="background:green" value="启用" onclick="upstreamStatus(\''+id+'\','+1+')"/>'+
+                            '<button type="button" class="btn btn-minier btn-success" onclick="upstreamStatus(\''+id+'\','+1+')">启用</button>'+
                             '</td>';
                         $('#operating'+id).html(html);
 
                     }else if(status == 1){
-                        $('#status'+id).html("正常");
+                        $('#status'+id).html('<span class="label label-success label-white middle">正常</span>');
                         var html='<td id="operating'+id+'">'+
-                            '<input type=button style="background:red" value="禁用" onclick="upstreamStatus(\''+id+'\','+0+')"/>'+
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="upstreamStatus(\''+id+'\','+0+')">禁用</button>'+
                             '</td>';
                         $('#operating'+id).html(html);
                     }

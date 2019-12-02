@@ -230,25 +230,23 @@
                         html+='<td> '+data.createTime+'</td>';
                         var webStatus = data.webStatus;
                         if(webStatus == 1){
-                            html+='<td id="webStatus'+data.webId+'">未审核</td>';
+                            html+='<td id="webStatus'+data.webId+'"><span class="label label-white middle">未审核</span></td>';
                             html+='<td id="operating'+data.webId+'">' +
-                                '<input type=button style="background:green" value="通过" onclick="changeWebStatus('+data.webId+','+4+')"/>' +
-                                '<input type=button style="background:red" value="驳回" onclick="changeWebStatus('+data.webId+','+2+')"/>' +
+                                '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+data.webId+','+4+')">通过</button>' +
+                                '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+data.webId+','+2+')">驳回</button>' +
                                 '</td>';
                         }else if(webStatus == 2){
-                            html+='<td id="webStatus'+data.webId+'">驳回</td>';
-                            html+='<td id="operating'+data.webId+'">' +
-                                'APP未通过审核' +
-                                '</td>';
+                            html+='<td id="webStatus'+data.webId+'"><span class="label label-purple label-white middle">驳回</span></td>';
+                            html+='<td id="operating'+data.webId+'"><span class="label label-purple label-white middle">WEB未通过审核</span></td>';
                         }else if(webStatus == 3){
-                            html+='<td id="webStatus'+data.webId+'">正常</td>';
+                            html+='<td id="webStatus'+data.webId+'"><span class="label label-success label-white middle">正常</span></td>';
                             html+='<td id="operating'+data.webId+'">' +
-                                '<input type=button style="background:red" value="禁用" onclick="changeWebStatus('+data.webId+','+4+')"/>' +
+                                '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+data.webId+','+4+')">禁用</button>' +
                                 '</td>';
                         }else if(webStatus == 4){
-                            html+='<td id="webStatus'+data.webId+'">禁用</td>';
+                            html+='<td id="webStatus'+data.webId+'"><span class="label label-danger label-white middle">禁用</span></td>';
                             html+='<td id="operating'+data.webId+'">' +
-                                '<input type=button style="background:green" value="启用" onclick="changeWebStatus('+data.webId+','+3+')"/>' +
+                                '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+data.webId+','+3+')">启用</button>' +
                                 '</td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
@@ -321,21 +319,21 @@
                     $('#operating'+webId).empty();
 
                     if(webStatus == 2){
-                        $('#webStatus'+webId).html("驳回");
-                        var html='<td id="operating'+webId+'">APP未通过审核</td>';
+                        $('#webStatus'+webId).html('<span class="label label-purple label-white middle">驳回</span>');
+                        var html='<td id="operating'+webId+'"><span class="label label-purple label-white middle">WEB未通过审核</span></td>';
                         $('#operating'+webId).html(html);
 
                     }else if(webStatus == 3){
-                        $('#webStatus'+webId).html("正常");
+                        $('#webStatus'+webId).html('<span class="label label-success label-white middle">正常</span>');
                         var html='<td id="operating'+webId+'">'+
-                            '<input type=button style="background:red" value="禁用" onclick="changeWebStatus('+webId+','+4+')"/>'+
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+webId+','+4+')">禁用</button>'+
                             '</td>';
                         $('#operating'+webId).html(html);
 
                     }else if(webStatus == 4){
-                        $('#webStatus'+webId).html("禁用");
+                        $('#webStatus'+webId).html('<span class="label label-danger label-white middle">禁用</span>');
                         var html='<td id="operating'+webId+'">'+
-                            '<input type=button style="background:green" value="启用" onclick="changeWebStatus('+webId+','+3+')"/>'+
+                            '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+webId+','+3+')">启用</button>'+
                             '</td>';
                         $('#operating'+webId).html(html);
 

@@ -368,11 +368,11 @@
                         html+='<td> '+data.createTime+'</td>';
                         var userStatus = data.userStatus;
                         if(userStatus == 2){
-                            html+='<td id="userStatus'+data.userId+'">禁用</td>';
-                            html+='<td id="operating'+data.userId+'"><input type=button style="background:green" value="启用" onclick="startUserStatus('+data.userId+')"/></td>';
+                            html+='<td id="userStatus'+data.userId+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                            html+='<td id="operating'+data.userId+'"><button type=button class="btn btn-minier btn-success" onclick="startUserStatus('+data.userId+')">启用</button></td>';
                         }else if(userStatus == 1){
-                            html+='<td id="userStatus'+data.userId+'">正常</td>';
-                            html+='<td id="operating'+data.userId+'"><input type=button style="background:red" value="禁用" onclick="stopUserStatus('+data.userId+')"/></td>';
+                            html+='<td id="userStatus'+data.userId+'"><span class="label label-success label-white middle">正常</span></td>';
+                            html+='<td id="operating'+data.userId+'"><button type=button class="btn btn-minier btn-danger" onclick="stopUserStatus('+data.userId+')">禁用</button></td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
@@ -440,8 +440,9 @@
                 if(obj.code == 200){
                     $('#userStatus'+userId).empty();
                     $('#operating'+userId).empty();
-                    $('#userStatus'+userId).html("正常");
-                    var html='<td id="operating'+userId+'"><input type=button style="background:red" value="禁用" onclick="stopUserStatus('+userId+')"/></td>';
+                    var htm ='<td id="userStatus'+userId+'"><span class="label label-success label-white middle">正常</span></td>';
+                    $('#userStatus'+userId).html(htm);
+                    var html='<td id="operating'+userId+'"><button type="button" class="btn btn-minier btn-danger" onclick="stopUserStatus('+userId+')">禁用</button></td>';
                     $('#operating'+userId).html(html);
                 }else if(obj.code == "300"){
                     alert(obj.message);
@@ -475,8 +476,9 @@
                 if(obj.code == 200){
                     $('#userStatus'+userId).empty();
                     $('#operating'+userId).empty();
-                    $('#userStatus'+userId).html("禁用");
-                    var html='<td id="operating'+userId+'"><input type=button style="background:green" value="启用" onclick="startUserStatus('+userId+')"/></td>';
+                    var htm ='<td id="userStatus'+userId+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                    $('#userStatus'+userId).html(htm);
+                    var html='<td id="operating'+userId+'"><button type="button" class="btn btn-minier btn-success" onclick="startUserStatus('+userId+')">启用</button></td>';
                     $('#operating'+userId).html(html);
                 }else if(obj.code == "300"){
                     alert(obj.message);

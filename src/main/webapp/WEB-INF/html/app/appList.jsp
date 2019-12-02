@@ -247,25 +247,25 @@
                         //html+='<td> '+data.downloadlink+'</td>';
                         var appStatus = data.appStatus;
                         if(appStatus == 1){
-                            html+='<td id="appStatus'+data.appId+'">未审核</td>';
+                            html+='<td id="appStatus'+data.appId+'"><span class="label label-white middle">未审核</span></td>';
                             html+='<td id="operating'+data.appId+'">' +
-                                '<input type=button style="background:green" value="通过" onclick="changeAppStatus(\''+data.appId+'\','+4+')"/>' +
-                                '<input type=button style="background:red" value="驳回" onclick="changeAppStatus(\''+data.appId+'\','+2+')"/>' +
+                                '<button type="button" class="btn btn-minier btn-success" onclick="changeAppStatus(\''+data.appId+'\','+4+')">通过</button>' +
+                                '<button type="button" class="btn btn-minier btn-danger" onclick="changeAppStatus(\''+data.appId+'\','+2+')">驳回</button>' +
                                 '</td>';
                         }else if(appStatus == 2){
-                            html+='<td id="appStatus'+data.appId+'">驳回</td>';
+                            html+='<td id="appStatus'+data.appId+'"><span class="label label-purple label-white middle">驳回</span></td>';
                             html+='<td id="operating'+data.appId+'">' +
                                 'APP未通过审核' +
                                 '</td>';
                         }else if(appStatus == 3){
-                            html+='<td id="appStatus'+data.appId+'">正常</td>';
+                            html+='<td id="appStatus'+data.appId+'"><span class="label label-success label-white middle">正常</span></td>';
                             html+='<td id="operating'+data.appId+'">' +
-                                '<input type=button style="background:red" value="禁用" onclick="changeAppStatus(\''+data.appId.toString()+'\','+4+')"/>' +
+                                '<button type="button" class="btn btn-minier btn-danger" onclick="changeAppStatus(\''+data.appId.toString()+'\','+4+')">禁用</button>' +
                                 '</td>';
                         }else if(appStatus == 4){
-                            html+='<td id="appStatus'+data.appId+'">禁用</td>';
+                            html+='<td id="appStatus'+data.appId+'"><span class="label label-danger label-white middle">禁用</span></td>';
                             html+='<td id="operating'+data.appId+'">' +
-                                '<input type=button style="background:green" value="启用" onclick="changeAppStatus(\''+data.appId.toString()+'\','+3+')"/>' +
+                                '<button type="button" class="btn btn-minier btn-success" onclick="changeAppStatus(\''+data.appId.toString()+'\','+3+')">启用</button>' +
                                 '</td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
@@ -338,21 +338,21 @@
                     $('#operating'+appId).empty();
 
                     if(appStatus == 2){
-                        $('#appStatus'+appId).html("驳回");
-                        var html='<td id="operating'+appId+'">APP未通过审核</td>';
+                        $('#appStatus'+appId).html('<span class="label label-purple label-white middle">驳回</span>');
+                        var html='<td id="operating'+appId+'"><span class="label label-purple label-white middle">APP未通过审核</span></td>';
                         $('#operating'+appId).html(html);
 
                     }else if(appStatus == 3){
-                        $('#appStatus'+appId).html("正常");
+                        $('#appStatus'+appId).html('<span class="label label-success label-white middle">正常</span>');
                         var html='<td id="operating'+appId+'">'+
-                            '<input type=button style="background:red" value="禁用" onclick="changeAppStatus(\''+appId+'\','+4+')"/>'+
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="changeAppStatus(\''+appId+'\','+4+')">禁用</button>'+
                             '</td>';
                         $('#operating'+appId).html(html);
 
                     }else if(appStatus == 4){
-                        $('#appStatus'+appId).html("禁用");
+                        $('#appStatus'+appId).html('<span class="label label-danger label-white middle">禁用</span>');
                         var html='<td id="operating'+appId+'">'+
-                            '<input type=button style="background:green" value="启用" onclick="changeAppStatus(\''+appId+'\','+3+')"/>'+
+                            '<button type="button" class="btn btn-minier btn-success" onclick="changeAppStatus(\''+appId+'\','+3+')">启用</button>'+
                             '</td>';
                         $('#operating'+appId).html(html);
 
