@@ -172,6 +172,7 @@ function navigationBar(path){
 	$("#sidebar").html(html);
 }
 
+//页面底部
 function footer(){
 	var html = "";
 

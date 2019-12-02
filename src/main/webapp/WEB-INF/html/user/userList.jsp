@@ -88,8 +88,12 @@
                                     <option value="1">正常</option>
                                     <option value="2">禁用</option>
                                 </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <input type="button" style="width:50px;height:30px" value="搜索" onclick="selectUserList($('#currentPage').val())">&nbsp;&nbsp;
-                                <input type="button" style="width:80px;height:30px" value="创建用户" onclick="createUser()">
+                                <a class="btn btn-app btn-primary btn-xs" onclick="selectUserList($('#currentPage').val())" style="width: 80px;text-align: center;">
+                                    <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                                </a>
+                                <a class="btn btn-app btn-primary btn-xs" onclick="createUser()" style="width: 120px;text-align: center;">
+                                    <i class="ace-icon glyphicon glyphicon-user bigger-110"><font size="3">创建用户</font></i>
+                                </a>
 
                             </div>
                             <br>
@@ -115,16 +119,42 @@
                                             </tbody>
                                         </table>
                                     </div>
+
+                                    <!-- 页面设置 -->
                                     <div class="modal-footer no-margin-top">
-                                        页数<a onclick="lastPageData()"><</a>
-                                        &nbsp;<input type="text" id="currentPage" style="width:35px;height:20px">
-                                        <a onclick="nextPageData()">></a>&nbsp;
-                                        共&nbsp;<span id="sumPage"></span>&nbsp;页&nbsp;|&nbsp;
-                                        页面容量
-                                        &nbsp;<input type="text" id="pageSize" style="width:35px;height:20px">&nbsp;|&nbsp;
-                                        共&nbsp;<span id="sumData"></span>&nbsp;条数据
-                                        <ul class="pagination pull-right no-margin" id="coll_begin_page"></ul>
+                                        <div class="dataTables_paginate paging_simple_numbers">
+                                            <ul class="pagination">
+                                                <li>
+                                                    <a onclick="lastPageData()" title="上一页">
+                                                        <i class="ace-icon fa fa-angle-double-left"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="active">
+                                                    <a title="当前页">
+                                                        <span id="currentPage"></span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a onclick="nextPageData()" title="下一页">
+                                                        <i class="ace-icon fa fa-angle-double-right"></i>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a>
+                                                        共&nbsp;<span id="sumPage"></span>&nbsp;页&nbsp;|&nbsp;
+                                                        共&nbsp;<span id="sumData"></span>&nbsp;条数据
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a>
+                                                        <span>页面容量</span>
+                                                    </a>
+                                                    <input type="text" id="pageSize" style="width: 33.44px;height: 32.4px">
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
+
                                 </div>
                             </div>
 
@@ -294,7 +324,6 @@
 
     //点击搜索数据展示
     function selectUserList(currentPage) {
-
         var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
@@ -353,7 +382,7 @@
                     //添加数据
                     $("#coll_list_begin_body").html(html);
                     //更新页码
-                    $('#currentPage').val(obj.result.currentPage);
+                    $('#currentPage').html(obj.result.currentPage);
                     $('#pageSize').val(obj.result.pageSize);
                     $('#sumPage').html(obj.result.sumPage);
                     $('#sumData').html(obj.result.sumData);
@@ -373,7 +402,7 @@
 
     //上一页
     function lastPageData() {
-        var page = parseInt($('#currentPage').val());
+        var page = parseInt($('#currentPage').text());
         if(page == 1){
             alert("当前是第一页");
         }else{
@@ -384,7 +413,7 @@
 
     //下一页
     function nextPageData() {
-        var page = parseInt($('#currentPage').val());
+        var page = parseInt($('#currentPage').text());
         var sumPage = parseInt($('#sumPage').text());
         if(page == sumPage){
             alert("当前是最后一页");

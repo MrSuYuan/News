@@ -72,8 +72,9 @@
                             <option value="4">信息流</option>
                             <option value="5">激励视频</option>
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input type="button" style="width:50px;height:30px" value="搜索" onclick="appAdspaceList($('#currentPage').val())">&nbsp;&nbsp;
-
+                        <a class="btn btn-app btn-primary btn-xs" onclick="appAdspaceList($('#currentPage').val())" style="width: 80px;text-align: center;">
+                            <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                        </a>
                     </div>
                     <br>
                     <div class="row">
@@ -99,15 +100,39 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <!-- 页面设置 -->
                             <div class="modal-footer no-margin-top">
-                                页数<a onclick="lastPageData()"><</a>
-                                &nbsp;<input type="text" id="currentPage" style="width:35px;height:20px">
-                                <a onclick="nextPageData()">></a>&nbsp;
-                                共&nbsp;<span id="sumPage"></span>&nbsp;页&nbsp;|&nbsp;
-                                页面容量
-                                &nbsp;<input type="text" id="pageSize" style="width:35px;height:20px">&nbsp;|&nbsp;
-                                共&nbsp;<span id="sumData"></span>&nbsp;条数据
-                                <ul class="pagination pull-right no-margin" id="coll_begin_page"></ul>
+                                <div class="dataTables_paginate paging_simple_numbers">
+                                    <ul class="pagination">
+                                        <li>
+                                            <a onclick="lastPageData()" title="上一页">
+                                                <i class="ace-icon fa fa-angle-double-left"></i>
+                                            </a>
+                                        </li>
+                                        <li class="active">
+                                            <a title="当前页">
+                                                <span id="currentPage"></span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a onclick="nextPageData()" title="下一页">
+                                                <i class="ace-icon fa fa-angle-double-right"></i>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                共&nbsp;<span id="sumPage"></span>&nbsp;页&nbsp;|&nbsp;
+                                                共&nbsp;<span id="sumData"></span>&nbsp;条数据
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a>
+                                                <span>页面容量</span>
+                                            </a>
+                                            <input type="text" id="pageSize" style="width: 33.44px;height: 32.4px">
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -222,7 +247,7 @@
                     //添加数据
                     $("#coll_list_begin_body").html(html);
                     //更新页码
-                    $('#currentPage').val(obj.result.currentPage);
+                    $('#currentPage').html(obj.result.currentPage);
                     $('#pageSize').val(obj.result.pageSize);
                     $('#sumPage').html(obj.result.sumPage);
                     $('#sumData').html(obj.result.sumData);
@@ -243,7 +268,7 @@
 
     //上一页
     function lastPageData() {
-        var page = parseInt($('#currentPage').val());
+        var page = parseInt($('#currentPage').text());
         if(page == 1){
             alert("当前是第一页");
         }else{
@@ -254,7 +279,7 @@
 
     //下一页
     function nextPageData() {
-        var page = parseInt($('#currentPage').val());
+        var page = parseInt($('#currentPage').text());
         var sumPage = parseInt($('#sumPage').text());
         if(page == sumPage){
             alert("当前是最后一页");
