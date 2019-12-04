@@ -73,11 +73,11 @@
                                 <option value="3">正常</option>
                                 <option value="4">禁用</option>
                             </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                            <a class="btn btn-primary btn-xs" onclick="selectAppList($('#currentPage').val())" style="width: 80px;">
+                            <a class="btn btn-primary btn-xs" onclick="selectAppList($('#currentPage').val())">
                                 <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                             </a>
-                            <a href="${ctx}/appDetail" class="btn btn-primary btn-xs" style="width: 120px;">
-                                <i class="ace-icon glyphicon glyphicon-tag bigger-110"><font size="3">添加APP</font></i>
+                            <a href="${ctx}/appDetail" class="btn btn-primary btn-xs">
+                                <i class="ace-icon glyphicon bigger-110"><font size="3">添加APP</font></i>
                             </a>
                         </div>
                         <br>
@@ -272,7 +272,13 @@
                             html+='<td><font color="red">状态错误</font></td>';
                         }
                         if(currentUserLevel == 2 || currentUserLevel == 3){
-                            html+='<td><button type="button" onclick="addAdspace(\''+data.appId+'\')">添加广告位</button></td>';
+                            html+='<td>' +
+                                '<div class="hidden-sm hidden-xs btn-group">' +
+                                '<button type="button" class="btn btn-xs btn-primary" onclick="addAdspace(\''+data.appId+'\')">' +
+                                '<i class="ace-icon fa bigger-110">添加广告位</i>' +
+                                '</button>' +
+                                '</div>' +
+                                '</td>';
                         }
                         html+='</tr>';
                     }

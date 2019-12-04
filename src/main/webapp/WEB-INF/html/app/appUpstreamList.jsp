@@ -70,14 +70,14 @@
                                     <option value="1">正常</option>
                                     <option value="0">禁用</option>
                                 </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-primary btn-xs" onclick="selectAppList($('#currentPage').val())" style="width: 80px;">
+                                <a class="btn btn-primary btn-xs" onclick="selectAppList($('#currentPage').val())">
                                     <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                                 </a>
-                                <a href="${ctx}/appUpstreamAdd" class="btn btn-primary btn-xs" onclick="selectUpstreamIdList(1)" style="width: 130px;">
-                                    <i class="ace-icon fa fa-users bigger-110"><font size="3">添加新上游</font></i>
+                                <a href="${ctx}/appUpstreamAdd" class="btn btn-primary btn-xs" onclick="selectUpstreamIdList(1)">
+                                    <i class="ace-icon glyphicon bigger-110"><font size="3">添加新上游</font></i>
                                 </a>
-                                <a class="btn btn-primary btn-xs" onclick="upstreamIdList('')" style="width: 130px;">
-                                    <i class="ace-icon glyphicon glyphicon-inbox bigger-110"><font size="3">全部广告位</font></i>
+                                <a class="btn btn-primary btn-xs" onclick="upstreamIdList('')">
+                                    <i class="ace-icon glyphicon bigger-110"><font size="3">全部广告位</font></i>
                                 </a>
 
                             </div>
@@ -222,7 +222,13 @@
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
                         }
-                        html+='<td><input type="button" value="查看广告位" onclick="upstreamIdList(\''+data.type+'\')"></input></td>';
+                        html+='<td>' +
+                            '<div class="hidden-sm hidden-xs btn-group">' +
+                            '<button type="button" class="btn btn-xs btn-primary" onclick="upstreamIdList(\''+data.type+'\')">' +
+                            '<i class="ace-icon glyphicon bigger-110">查看广告位</i>' +
+                            '</button>' +
+                            '</div>' +
+                            '</td>';
                         html+='</tr>';
                     }
                     //添加数据

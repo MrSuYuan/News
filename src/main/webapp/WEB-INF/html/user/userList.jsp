@@ -88,11 +88,11 @@
                                     <option value="1">正常</option>
                                     <option value="2">禁用</option>
                                 </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                                <a class="btn btn-primary btn-xs" onclick="selectUserList($('#currentPage').val())" style="width: 80px;">
+                                <a class="btn btn-primary btn-xs" onclick="selectUserList($('#currentPage').val())">
                                     <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                                 </a>
-                                <a class="btn btn-primary btn-xs" onclick="createUser()" style="width: 120px;">
-                                    <i class="ace-icon glyphicon glyphicon-user bigger-110"><font size="3">创建用户</font></i>
+                                <a class="btn btn-primary btn-xs" onclick="createUser()">
+                                    <i class="ace-icon glyphicon bigger-110"><font size="3">创建用户</font></i>
                                 </a>
 
                             </div>

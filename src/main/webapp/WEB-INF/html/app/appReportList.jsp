@@ -63,7 +63,7 @@
                     <div align="center">
                         APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位ID：<input type="text" id="slotId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())" style="width: 80px;">
+                        <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
 

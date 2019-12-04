@@ -134,7 +134,7 @@
     $(document).ready(function(){
         var spaceId =  sessionStorage.getItem("spaceId");
         $('#spaceId').html(spaceId);
-        sessionStorage.removeItem("spaceId");
+        //sessionStorage.removeItem("spaceId");
         upstreamType();
     });
 

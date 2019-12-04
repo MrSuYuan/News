@@ -72,7 +72,7 @@
                             <option value="4">信息流</option>
                             <option value="5">激励视频</option>
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-primary btn-xs" onclick="appAdspaceList($('#currentPage').val())" style="width: 80px;text-align: center;">
+                        <a class="btn btn-primary btn-xs" onclick="appAdspaceList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
                     </div>
@@ -237,9 +237,20 @@
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2 || currentUserLevel == 1){
                             html+='<td>' +
-                                '<button type="button" onclick="addUpstream(\''+data.spaceId+'\')">添加</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                '<button type="button" onclick="checkUpstream(\''+data.spaceId+'\')">查看</button>&nbsp;&nbsp;&nbsp;&nbsp;' +
-                                '<button type="button" onclick="assign(\''+data.spaceId+'\')">分流</button>' +
+                                '<div class="hidden-sm hidden-xs btn-group">' +
+                                '<button type="button" class="btn btn-xs btn-success" title="添加" onclick="addUpstream(\''+data.spaceId+'\')">' +
+                                '<i class="ace-icon glyphicon glyphicon-plus bigger-110"></i>' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-xs btn-info" title="查看" onclick="checkUpstream(\''+data.spaceId+'\')">' +
+                                '<i class="ace-icon glyphicon glyphicon-align-justify bigger-110"></i>' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
+                                '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-xs btn-danger" title="删除">' +
+                                '<i class="ace-icon glyphicon glyphicon-trash bigger-110"></i>' +
+                                '</button>' +
+                                '</div>' +
                                 '</td>';
                         }
                         html+='</tr>';

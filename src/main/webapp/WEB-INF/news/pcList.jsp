@@ -11,7 +11,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <link rel="stylesheet" href="${ctx}/static/news/css/style.css" />
     <link rel="stylesheet" href="${ctx}/static/news/css/templet.css?v=1" />
-    <link rel="shortcut icon" href="${ctx}/static/news/img/favicon.ico" type="image/x-icon" />
     <title>新闻推荐</title>
 </head>
 
