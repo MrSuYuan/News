@@ -84,7 +84,7 @@
                                         </label>
 
                                         <label class="btn btn-sm btn-yellow">
-                                            <span class="bigger-110">完善资料</span>
+                                            <span class="bigger-110">修改密码</span>
 
                                             <input type="radio" value="3" />
                                         </label>
@@ -178,7 +178,7 @@
                                                 <li>
                                                     <a data-toggle="tab" href="#edit-password">
                                                         <i class="blue ace-icon fa fa-key bigger-125"></i>
-                                                        Password
+                                                        修改密码
                                                     </a>
                                                 </li>
                                                 <%--<li class="active">
@@ -196,16 +196,23 @@
                                                 <div id="edit-password" class="tab-pane in active">
                                                     <div class="space-10"></div>
                                                     <div class="form-group">
-                                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-pass1">New Password</label>
+                                                        <label class="col-sm-3 control-label no-padding-right" for="oldPassWord">原密码</label>
                                                         <div class="col-sm-9">
-                                                            <input type="password" id="form-field-pass1" />
+                                                            <input type="password" id="oldPassWord" />
                                                         </div>
                                                     </div>
                                                     <div class="space-4"></div>
                                                     <div class="form-group">
-                                                        <label class="col-sm-3 control-label no-padding-right" for="form-field-pass2">Confirm Password</label>
+                                                        <label class="col-sm-3 control-label no-padding-right" for="passWord">新密码</label>
                                                         <div class="col-sm-9">
-                                                            <input type="password" id="form-field-pass2" />
+                                                            <input type="password" id="passWord" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="space-4"></div>
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right" for="confirmPassWord">确认密码</label>
+                                                        <div class="col-sm-9">
+                                                            <input type="password" id="confirmPassWord" />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -214,15 +221,15 @@
 
                                         <div class="clearfix form-actions">
                                             <div class="col-md-offset-3 col-md-9">
-                                                <button class="btn btn-info" type="button">
+                                                <button class="btn btn-info" type="button" onclick="confirm()">
                                                     <i class="ace-icon fa fa-check bigger-110"></i>
-                                                    Save
+                                                    保存
                                                 </button>
 
                                                 &nbsp; &nbsp;
                                                 <button class="btn" type="reset">
                                                     <i class="ace-icon fa fa-undo bigger-110"></i>
-                                                    Reset
+                                                    重置
                                                 </button>
                                             </div>
                                         </div>
@@ -269,7 +276,9 @@
 <script src="${ctx}/static/common/assets/js/jquery.maskedinput.min.js"></script>
 <script src="${ctx}/static/common/assets/js/ace-elements.min.js"></script>
 <script src="${ctx}/static/common/assets/js/ace.min.js"></script>
-
+<script type="text/javascript">
+    var path = "${ctx}";
+</script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
     loading("userCenter",$('#userName').val());
@@ -303,6 +312,38 @@
             $('#user-profile-'+which).parent().removeClass('hide');
         });
     });
+
+    function confirm() {//点击确认保存重置密码
+        var oldPassWord = $('#oldPassWord').val();
+        var passWord = $('#passWord').val();
+        var confirmPassWord = $('#confirmPassWord').val();
+        if(oldPassWord == "" || passWord == "" || confirmPassWord == ""){
+            alert("请完善信息后再提交");
+        }else{
+            $.ajax({
+                url: path + "/user/updatePassWord",
+                type: "post",
+                data: {
+                    "oldPassWord" : oldPassWord,
+                    "passWord" : passWord,
+                    "confirmPassWord" : confirmPassWord
+                },
+                dataType: 'json',
+                async: false,
+                success: function (obj) {
+                    if(obj.code == 200){
+                        alert(obj.message);
+                    }else{
+                        alert(obj.message);
+                    }
+                },
+                error: function () {
+                    $.alertModel("网络超时!获取失败!");
+                }
+            });
+        }
+    }
+
 </script>
 
 </body>

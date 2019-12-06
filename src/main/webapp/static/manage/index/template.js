@@ -121,7 +121,8 @@ function navigationBar(path){
 	html += '			<li class="" id="appList"><a href="'+path+'/appList"><i class="menu-icon fa fa-caret-right"></i>APP</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="appAdspace"><a href="'+path+'/appAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="appStatistics"><a href="'+path+'/appStatisticsList"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appReportNew"><a href="'+path+'/appReportNewList"><i class="menu-icon fa fa-caret-right"></i>上报统计(新)</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计(旧)</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appDivided"><a href="'+path+'/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appUpstream"><a href="'+path+'/appUpstreamList"><i class="menu-icon fa fa-caret-right"></i>上游设置</a><b class="arrow"></b></li>';
 	html += '		</ul>';
@@ -253,6 +254,9 @@ function permission(pageSign){
     }else if (pageSign == "appReportList"){
         $('#app').addClass('active open');
         $('#appReport').addClass('active');
+    }else if (pageSign == "appReportNewList"){
+        $('#app').addClass('active open');
+        $('#appReportNew').addClass('active');
     }else if (pageSign == "appUpstreamList"){
         $('#app').addClass('active open');
         $('#appUpstream').addClass('active');

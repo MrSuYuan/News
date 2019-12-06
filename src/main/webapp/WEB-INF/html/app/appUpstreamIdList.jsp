@@ -200,7 +200,7 @@
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
-                        html+='<tr style="height: 40px">';
+                        html+='<tr id="tr'+data.upstreamId+'" style="height: 40px">';
                         html+='<td> '+data.upstreamId+'</td>';
                         html+='<td> '+data.upstreamAppId+'</td>';
                         html+='<td> '+data.name+'</td>';
@@ -208,7 +208,8 @@
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.appName+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
-                        html+='<td><input type="button" value="更换绑定" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')"></td>';
+                        html+='<td><input type="button" value="更换绑定" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">';
+                        html+='<input type="button" value="删除ID" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
                         html+='</tr>';
                     }
                     //添加数据
@@ -258,6 +259,35 @@
     function appUpstreamIdEdit(upstreamId){
         sessionStorage.setItem("upstreamId",upstreamId);
         window.location = path+"/appUpstreamIdEdit";
+    }
+
+    //删除id
+    function deleteUpstreamId(upstreamId){
+
+        $.ajax({
+            url: path + "/app/deleteUpstreamId",
+            type: "post",
+            data: {
+                "upstreamId" : upstreamId
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    //将这一行隐藏
+                    $('#tr'+upstreamId).hide();
+
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
     }
 </script>
 

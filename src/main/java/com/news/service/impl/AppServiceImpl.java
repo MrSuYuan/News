@@ -658,6 +658,20 @@ public class AppServiceImpl implements AppService {
     }
 
     /**
+     * 删除上游ID
+     */
+    @Override
+    public ReqResponse deleteUpstreamId(String upstreamId) {
+        ReqResponse req = new ReqResponse();
+        AppUpstream appUpstream = appDao.appUpstream(upstreamId);
+        appDao.deleteUpstream(upstreamId);
+        appDao.deleteAssign(appUpstream);
+        req.setMessage("删除成功");
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
+    /**
      * 调度分配展示
      */
     @Override
@@ -753,6 +767,62 @@ public class AppServiceImpl implements AppService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("数据加载完成");
         req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 广告位统计
+     */
+    @Override
+    public ReqResponse appReportNewList(String appId, String slotId, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("appId",appId);
+        map.put("slotId",slotId);
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        //总和
+        List<AdStatisticsListVo> list = appDao.appReportNewList(map);
+        int sumData = appDao.appReportNewListNum(map);
+
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",list);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    @Override
+    public ReqResponse appReportDetail(String appId, String slotId, String createTime) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("appId",appId);
+        map.put("slotId",slotId);
+        map.put("createTime",createTime);
+        List<AdReportUpstreamListVo> appReportDetail = appDao.appReportDetail(map);
+        req.setMessage("数据加载完成");
+        req.setResult(appReportDetail);
+        req.setCode("200");
         return req;
     }
 

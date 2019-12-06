@@ -342,6 +342,38 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="appReportNewList", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位统计", notes = "广告位统计", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse appReportNewList(String appId, String slotId, Integer currentPage, Integer pageSize){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appReportNewList(appId, slotId, currentPage, pageSize);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="appReportDetail", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位统计详情", notes = "广告位统计详情", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse appReportDetail(String appId, String slotId, String createTime){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appReportDetail(appId, slotId, createTime);
+        }
+        return req;
+    }
+
     @RequestMapping(value="appUpstreamTypeList", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "上游列表", notes = "上游列表", httpMethod = "POST")
@@ -495,6 +527,32 @@ public class AppController extends BaseController {
         }else{
             if ((int)userLevel == 1 || (int)userLevel == 2){
                 req = appService.changeUpstream(upstreamId, newUpstreamId, newUpstreamAppId, newUpstreamType, newUpstreamPackageName);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+
+        }
+        return req;
+    }
+
+    @RequestMapping(value="deleteUpstreamId", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "删除上游ID", notes = "删除上游ID", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="upstreamId" , value="广告位id" ,required = true , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse deleteUpstreamId(String upstreamId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = appService.deleteUpstreamId(upstreamId);
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("您没有权限");

@@ -411,6 +411,17 @@
         where spaceId = #{spaceId} and upstreamType = #{upstreamType}
     </update>
 
+    <!-- 删除上游ID -->
+    <select id="appUpstream" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
+        select * from a_upstream where upstreamId = #{upstreamId}
+    </select>
+    <delete id="deleteUpstream" parameterType="java.lang.String">
+        delete from a_upstream where upstreamId = #{upstreamId}
+    </delete>
+    <delete id="deleteAssign" parameterType="com.news.entity.AppAssign">
+        delete from a_assign where spaceId = #{spaceId} and upstreamType = #{upstreamType}
+    </delete>
+
     <!-- 广告位统计 -->
     <select id="appReportList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
         select a.appName,DATE_FORMAT(s.createTime,'%Y-%m-%d') as createTime,s.slotId,s.appId,
@@ -458,6 +469,44 @@
         group by a.slotId,a.createTime) x
     </select>
 
+    <!-- 广告位统计 -->
+    <select id="appReportNewList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
+        SELECT r.id,a.appName,a.appId,r.slotId,DATE_FORMAT(r.createTime,'%Y-%m-%d') as createTime,
+        sum(r.request) as request,sum(r.response) as response,sum(r.look) as look,sum(r.click) as click,count(r.upstreamType) as upstreamNum
+        FROM a_report r,a_app a
+        where r.appId = a.appId
+        <if test="appId != null and appId !=''">
+            and r.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and r.slotId = #{slotId}
+        </if>
+        GROUP BY r.slotId,r.createTime
+        order by r.createTime desc,a.appId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 广告位统计数量 -->
+    <select id="appReportNewListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from
+        (SELECT a.appName
+        FROM a_report r,a_app a
+        where r.appId = a.appId
+        <if test="appId != null and appId !=''">
+            and r.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and r.slotId = #{slotId}
+        </if>
+        GROUP BY r.slotId,r.createTime) x
+    </select>
+
+    <select id="appReportDetail" parameterType="java.util.Map" resultType="com.news.vo.AdReportUpstreamListVo">
+        select r.*,t.`name` as upstreamName
+        from a_report r,a_upstream_type t
+        where r.appId = #{appId} and r.slotId = #{slotId} and TO_DAYS(r.createTime) = TO_DAYS(#{createTime}) and r.upstreamType = t.type
+    </select>
+
     <insert id="addReport">
         insert into report
         (createTime, adId, adSize, address, adName, lookPv, income, clickNum, ecpm, clickProbability, cpc) values
@@ -477,6 +526,7 @@
         </if>
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+
         </if>
         order by createTime desc
     </select>

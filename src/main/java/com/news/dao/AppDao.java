@@ -198,10 +198,20 @@ public interface AppDao {
     void updateAssign(Map<String,Object> map);
 
     /**
+     * 删除上游ID
+     */
+    AppUpstream appUpstream(String upstreamId);
+    void deleteUpstream(String upstreamId);
+    void deleteAssign(AppUpstream appUpstream);
+
+    /**
      * 广告位统计
      */
     List<AdStatisticsListVo> appReportList(Map<String,Object> map);
     int appReportListNum(Map<String,Object> map);
+    List<AdStatisticsListVo> appReportNewList(Map<String,Object> map);
+    int appReportNewListNum(Map<String,Object> map);
+    List<AdReportUpstreamListVo> appReportDetail(Map<String,Object> map);
 
     void addReport(List<Report> list);
     List<ReportVo> reportList(Map<String,Object> map);

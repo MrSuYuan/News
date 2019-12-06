@@ -104,6 +104,11 @@ public interface AppService {
     ReqResponse changeUpstream(String upstreamId, String newUpstreamId, String newUpstreamAppId, Integer newUpstreamType, String newUpstreamPackageName);
 
     /**
+     * 删除上游ID
+     */
+    ReqResponse deleteUpstreamId(String upstreamId);
+
+    /**
      * 调度分配展示
      */
     ReqResponse selectAppAssign(String spaceId);
@@ -112,7 +117,8 @@ public interface AppService {
      * 广告位统计
      */
     ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize);
-
+    ReqResponse appReportNewList(String appId, String slotId, Integer currentPage, Integer pageSize);
+    ReqResponse appReportDetail(String appId, String slotId, String createTime);
     /**
      * 修改调度数据
      */
