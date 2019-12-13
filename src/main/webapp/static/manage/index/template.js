@@ -125,6 +125,7 @@ function navigationBar(path){
 	html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计(旧)</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appDivided"><a href="'+path+'/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appUpstream"><a href="'+path+'/appUpstreamList"><i class="menu-icon fa fa-caret-right"></i>上游设置</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="httpRequest"><a href="'+path+'/httpRequest"><i class="menu-icon fa fa-caret-right"></i>广告请求</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -269,6 +270,9 @@ function permission(pageSign){
     }else if (pageSign == "appUpstreamIdEdit"){
         $('#app').addClass('active open');
         $('#appUpstream').addClass('active');
+    }else if (pageSign == "httpRequest"){
+        $('#app').addClass('active open');
+        $('#httpRequest').addClass('active');
 
 	//web页面
     }else if (pageSign == "webList"){

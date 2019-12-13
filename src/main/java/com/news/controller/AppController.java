@@ -3,6 +3,7 @@ package com.news.controller;
 import com.news.entity.App;
 import com.news.service.AppService;
 import com.news.service.UserService;
+import org.apache.http.HttpResponse;
 import com.utils.base.BaseController;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -10,11 +11,21 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import net.sf.json.JSONObject;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.net.URLDecoder;
 
 @Controller
 @RequestMapping("app")
@@ -597,6 +608,34 @@ public class AppController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             req = appService.reportList(adId, startTime, endTime);
+        }
+        return req;
+    }
+
+    @RequestMapping(value = "/httpRequest", method = {RequestMethod.GET, RequestMethod.POST })
+    @ResponseBody
+    @CrossOrigin
+    public ReqResponse httpRequest(@RequestBody String data,HttpServletResponse response) throws Exception{
+        ReqResponse req = new ReqResponse();
+        System.out.println(data);
+        String url = "http://47.95.31.238/adx/ssp/dspAdVideo";
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        JSONObject jsonResult;
+        HttpPost method = new HttpPost(url);
+        method.setHeader("Content-Type","application/json");
+        try {
+            StringEntity entity = new StringEntity(data);
+            method.setEntity(entity);
+            HttpResponse result = httpClient.execute(method);
+            url = URLDecoder.decode(url, "UTF-8");
+            String str = EntityUtils.toString(result.getEntity(), "utf-8");
+            jsonResult = JSONObject.fromObject(str);
+            System.out.println("post请求提交成功:" + jsonResult);
+            req.setCode("200");
+            req.setResult(jsonResult.toString());
+        } catch (IOException e) {
+            System.out.println("post请求提交失败:" + url);
+            req.setCode("500");
         }
         return req;
     }

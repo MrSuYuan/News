@@ -42,6 +42,15 @@ public class AdStatisticsListVo {
      * 上游数量
      */
     private int upstreamNum;
+    private int downStreamRequest;
+
+    public int getDownStreamRequest() {
+        return downStreamRequest;
+    }
+
+    public void setDownStreamRequest(int downStreamRequest) {
+        this.downStreamRequest = downStreamRequest;
+    }
 
     public long getId() {
         return id;

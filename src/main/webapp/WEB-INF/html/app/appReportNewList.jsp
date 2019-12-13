@@ -207,7 +207,7 @@
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.slotId+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        html+='<td> '+format_number(data.request)+'</td>';
+                        html+='<td> '+format_number(data.downStreamRequest)+'</td>';
                         html+='<td> '+format_number(data.response)+'</td>';
                         html+='<td> '+format_number(data.look)+'</td>';
                         html+='<td> '+format_number(data.click)+'</td>';
@@ -298,6 +298,7 @@
                     html += '<table class="table table-striped table-bordered table-hover">';
                     html += '<tr>';
                     html += '<th>上游</th>';
+                    html += '<th>ID</th>';
                     html += '<th>请求</th>';
                     html += '<th>返回</th>';
                     html += '<th>曝光</th>';
@@ -307,6 +308,7 @@
                         var data = list[i];
                         html += '<tr>';
                         html += '<td>'+data.upstreamName+'</td>';
+                        html += '<td>'+data.upstreamId+'</td>';
                         html += '<td>'+data.request+'</td>';
                         html += '<td>'+data.response+'</td>';
                         html += '<td>'+data.look+'</td>';

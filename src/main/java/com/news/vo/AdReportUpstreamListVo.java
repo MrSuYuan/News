@@ -39,6 +39,15 @@ public class AdReportUpstreamListVo {
      */
     private int upstreamNum;
     private String upstreamName;
+    private String upstreamId;
+
+    public String getUpstreamId() {
+        return upstreamId;
+    }
+
+    public void setUpstreamId(String upstreamId) {
+        this.upstreamId = upstreamId;
+    }
 
     public String getUpstreamName() {
         return upstreamName;

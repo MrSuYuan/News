@@ -270,6 +270,15 @@ public class PageController extends BaseController {
         return "/html/app/appUpstreamIdEdit.jsp";
     }
 
+    /**
+     * httpRequest
+     */
+    @RequestMapping(value = "httpRequest" , method= RequestMethod.GET)
+    @ApiOperation(value = "httpRequest", notes = "httpRequest", httpMethod = "GET")
+    public String httpRequest(){
+        return "/html/app/httpRequest.jsp";
+    }
+
 
     /**
      * WEB列表页
