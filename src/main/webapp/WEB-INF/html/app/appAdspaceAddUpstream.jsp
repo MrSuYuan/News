@@ -64,7 +64,15 @@
                         <table style="font-size: 14px">
                             <tr height = "50" id="spaceIdT">
                                 <td align = "right">广告位ID:&nbsp;&nbsp;</td>
-                                <td width="300"><span id="spaceId"></span><%--<input type="text" size="35" id="spaceId" name="spaceId" placeholder="平台广告位ID" disabled="disabled">--%><font color="red">&nbsp;&nbsp;*</font></td>
+                                <td width="300"><span id="spaceId"></span></td>
+                            </tr>
+                            <tr height = "50" id="appNameT">
+                                <td align = "right">APP名称:&nbsp;&nbsp;</td>
+                                <td width="300"><span id="appName"></span></td>
+                            </tr>
+                            <tr height = "50" id="spaceNameT">
+                                <td align = "right">广告位名称:&nbsp;&nbsp;</td>
+                                <td width="300"><span id="spaceName"></span></td>
                             </tr>
                             <tr height = "50">
                                 <td align = "right">上游广告位ID:&nbsp;&nbsp;</td>
@@ -136,7 +144,33 @@
         $('#spaceId').html(spaceId);
         //sessionStorage.removeItem("spaceId");
         upstreamType();
+        adspace(spaceId);
     });
+
+    //广告位基础信息
+    function adspace(spaceId){
+        $.ajax({
+            url: path + "/app/adspaceDetail",
+            data:{
+                "spaceId" : spaceId
+            },
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if(data.code == 200){
+                    var result = data.result;
+                    $('#appName').html(result.appName);
+                    $('#spaceName').html(result.spaceName);
+                }else{
+                    alert(data.message);
+                }
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    }
 
     //查询上游信息
     function upstreamType(){

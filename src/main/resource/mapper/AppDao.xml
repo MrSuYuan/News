@@ -530,4 +530,12 @@
         </if>
         order by createTime desc
     </select>
+
+    <!-- 广告位详情 -->
+    <select id="adspaceDetail" parameterType="java.lang.String" resultType="java.util.Map">
+        select a.appName,d.spaceName
+        from a_adspace d,a_app a
+        where d.spaceId = #{spaceId} and d.appId = a.appId
+    </select>
+
 </mapper>

@@ -133,4 +133,9 @@ public interface AppService {
      */
     ReqResponse reportList(String adId, String startTime, String endTime);
 
+    /**
+     * 广告位详情
+     */
+    ReqResponse adspaceDetail(String spaceId);
+
 }

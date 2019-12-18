@@ -907,4 +907,17 @@ public class AppServiceImpl implements AppService {
         req.setMessage("成功");
         return req;
     }
+
+    /**
+     * 广告位详情
+     */
+    @Override
+    public ReqResponse adspaceDetail(String spaceId) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = appDao.adspaceDetail(spaceId);
+        req.setResult(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
 }

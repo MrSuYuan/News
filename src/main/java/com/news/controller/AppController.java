@@ -640,4 +640,23 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="adspaceDetail", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位详情", notes = "广告位详情", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceId" , value="广告位ID" ,required = true , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse adspaceDetail(String spaceId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.adspaceDetail(spaceId);
+        }
+        return req;
+    }
+
 }

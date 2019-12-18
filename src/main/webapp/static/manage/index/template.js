@@ -203,9 +203,11 @@ function permission(pageSign){
         $('#userList').hide();
         $('#appDivided').hide();
         $('#appReport').hide();
+        $('#appReportNew').hide();
         $('#appUpstream').hide();
         $('#webDivided').hide();
         $('#temporary').hide();
+        $('#httpRequest').hide();
 
 	}
 

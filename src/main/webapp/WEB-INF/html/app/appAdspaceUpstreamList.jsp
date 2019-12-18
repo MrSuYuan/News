@@ -60,6 +60,16 @@
             <div class="page-content">
                 <input type="hidden" id="spaceId">
                 <form action="#" method="post">
+                    <div>
+                        <table style="font-size: 14px">
+                            <tr height = "50">
+                                <td align = "right">APP名称:&nbsp;&nbsp;</td>
+                                <td width="300"><span id="appName"></span></td>
+                                <td align = "right">广告位名称:&nbsp;&nbsp;</td>
+                                <td width="300"><span id="spaceName"></span></td>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="row">
                         <div class="col-xs-12">
                             <div class="table-header"></div>
@@ -132,11 +142,38 @@
             // $('#statistics').hide();
             // $('#operating').hide();
             appUpstreamList();
+            adspace(spaceId);
         }else{
             appUpstreamList();
+            adspace(spaceId);
         }
 
     });
+
+    //广告位基础信息
+    function adspace(spaceId){
+        $.ajax({
+            url: path + "/app/adspaceDetail",
+            data:{
+                "spaceId" : spaceId
+            },
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if(data.code == 200){
+                    var result = data.result;
+                    $('#appName').html(result.appName);
+                    $('#spaceName').html(result.spaceName);
+                }else{
+                    alert(data.message);
+                }
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    }
 
     //页面数据展示
     function appUpstreamList() {

@@ -59,6 +59,22 @@
             <!-- 页面主体部分 -->
             <div class="page-content">
                 <input type = "hidden" id="upstreamId">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="alert alert-info">
+                            <tr height = "50">
+                                <td align = "right">APP名称&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="appName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">广告位名称&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="spaceName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">上游类型&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="upstreamName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">上游ID&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="upstreamIdSpan"></span></td>
+                            </tr>
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
 
                 <div class="row">
                     <div class="col-xs-12">
@@ -136,8 +152,39 @@
     $(document).ready(function(){
         var upstreamId =  sessionStorage.getItem("upstreamId");
         $('#upstreamId').val(upstreamId);
+        upstreamIdMsg(upstreamId);
         sessionStorage.removeItem("upstreamId");
     })
+
+    //展示
+    function upstreamIdMsg(upstreamId) {
+        $.ajax({
+            url: path + "/app/appUpstreamIdMsg",
+            type: "post",
+            data: {
+                "upstreamId" : upstreamId
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    var msg = obj.result;
+                    $('#appName').html(msg.appName);
+                    $('#spaceName').html(msg.spaceName);
+                    $('#upstreamName').html(msg.name);
+                    $('#upstreamIdSpan').html(msg.upstreamId);
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
 
     /**
      * 动态添加行

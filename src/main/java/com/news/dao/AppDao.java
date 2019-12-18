@@ -215,4 +215,9 @@ public interface AppDao {
 
     void addReport(List<Report> list);
     List<ReportVo> reportList(Map<String,Object> map);
+
+    /**
+     * 广告位详情
+     */
+    Map<String,Object> adspaceDetail(String spaceId);
 }
