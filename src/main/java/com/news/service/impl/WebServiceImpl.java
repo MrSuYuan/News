@@ -270,7 +270,7 @@ public class WebServiceImpl implements WebService {
      * 查看WEB统计列表
      */
     @Override
-    public ReqResponse webStatisticsList(Long userId, String spaceName, String webName, Integer currentPage, Integer pageSize) {
+    public ReqResponse webStatisticsList(String startTime, String endTime, Long userId, String spaceName, String webName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -285,6 +285,8 @@ public class WebServiceImpl implements WebService {
         map.put("spaceName",spaceName);
         map.put("webName",webName);
         map.put("parentId",userId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         //先查询当前用户身份
         int currentUserLevel = userDao.userLevel(userId);
         map.put("currentUserLevel",currentUserLevel);

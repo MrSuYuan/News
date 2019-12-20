@@ -61,12 +61,12 @@ public interface AppService {
     /**
      * 查看APP统计列表-管理
      */
-    ReqResponse appStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
     /**
      * 查看APP统计列表-用户
      */
-    ReqResponse appStatisticsUserList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse appStatisticsUserList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
     /**
      * 上游列表
@@ -117,7 +117,7 @@ public interface AppService {
      * 广告位统计
      */
     ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize);
-    ReqResponse appReportNewList(String appId, String slotId, Integer currentPage, Integer pageSize);
+    ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize);
     ReqResponse appReportDetail(String appId, String slotId, String createTime);
     /**
      * 修改调度数据

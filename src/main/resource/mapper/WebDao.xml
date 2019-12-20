@@ -175,6 +175,12 @@
         <if test="currentUserLevel == 3">
             and w.userId = #{parentId}
         </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
         order by s.statisticsId asc
         limit #{num},#{pageSize}
     </select>
@@ -195,6 +201,12 @@
         </if>
         <if test="currentUserLevel == 3">
             and w.userId = #{parentId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
     </select>
 

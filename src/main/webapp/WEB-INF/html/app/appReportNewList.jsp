@@ -63,6 +63,8 @@
                     <div align="center">
                         APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位ID：<input type="text" id="slotId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        日期：<input type="date" id="startTime" style="width:150px;height:30px">
+                        - <input type="date" id="endTime" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
@@ -182,6 +184,8 @@
             url: path + "/app/appReportNewList",
             type: "post",
             data: {
+                "startTime" : $('#startTime').val(),
+                "endTime" : $('#endTime').val(),
                 "appId" : $('#appId').val(),
                 "slotId" : $('#slotId').val(),
                 "currentPage" : currentPage,

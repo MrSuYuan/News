@@ -41,6 +41,6 @@ public interface WebService {
     /**
      * 查看WEB统计列表
      */
-    ReqResponse webStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse webStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
 }

@@ -187,14 +187,14 @@ public class WebController extends BaseController {
             @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appStatisticsList(String spaceName, String webName, Integer currentPage, Integer pageSize){
+    public ReqResponse appStatisticsList(String startTime, String endTime, String spaceName, String webName, Integer currentPage, Integer pageSize){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = webService.webStatisticsList((Long)userId, spaceName, webName, currentPage, pageSize);
+            req = webService.webStatisticsList(startTime, endTime, (Long)userId, spaceName, webName, currentPage, pageSize);
         }
         return req;
     }

@@ -97,6 +97,9 @@
     <!--<task:scheduled-tasks>
         <task:scheduled ref="taskController" method="getNews" cron="0 18 16 * * ?"/>
     </task:scheduled-tasks>-->
+    <!--<task:scheduled-tasks>
+        <task:scheduled ref="taskController" method="xingChen" cron="0 04 16 * * ?"/>
+    </task:scheduled-tasks>-->
 
     <!--静态资源直接访问-->
     <mvc:resources location="/WEB-INF/index/" mapping="/index/**"/>

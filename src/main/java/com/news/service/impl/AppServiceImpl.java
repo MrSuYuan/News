@@ -391,8 +391,10 @@ public class AppServiceImpl implements AppService {
      * 查看APP统计列表
      */
     @Override
-    public ReqResponse appStatisticsList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
+        System.out.println(startTime);
+        System.out.println(endTime);
         Map<String,Object> map = new HashMap<>();
         //页码格式化
         if(null == currentPage){
@@ -406,6 +408,8 @@ public class AppServiceImpl implements AppService {
         map.put("spaceName",spaceName);
         map.put("appName",appName);
         map.put("parentId",userId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         //先查询当前用户身份
         int currentUserLevel = userDao.userLevel(userId);
         map.put("currentUserLevel",currentUserLevel);
@@ -438,7 +442,7 @@ public class AppServiceImpl implements AppService {
      * 查看APP统计列表-用户
      */
     @Override
-    public ReqResponse appStatisticsUserList(Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appStatisticsUserList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -453,6 +457,8 @@ public class AppServiceImpl implements AppService {
         map.put("spaceName",spaceName);
         map.put("appName",appName);
         map.put("parentId",userId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
 
         //查询集合列表
         List<AppStatisticsListVo> statisticsList = appDao.appStatisticsUserList(map);
@@ -774,11 +780,13 @@ public class AppServiceImpl implements AppService {
      * 广告位统计
      */
     @Override
-    public ReqResponse appReportNewList(String appId, String slotId, Integer currentPage, Integer pageSize) {
+    public ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         map.put("appId",appId);
         map.put("slotId",slotId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         //页码格式化
         if(null == currentPage){
             currentPage = 1;

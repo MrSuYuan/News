@@ -251,6 +251,12 @@
         <if test="currentUserLevel == 3">
             and a.userId = #{parentId}
         </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
         order by s.statisticsId asc
         limit #{num},#{pageSize}
     </select>
@@ -272,6 +278,12 @@
         <if test="currentUserLevel == 3">
             and a.userId = #{parentId}
         </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
     </select>
 
     <!-- 查询数据统计信息列表 -->
@@ -284,6 +296,12 @@
         </if>
         <if test="spaceName != null and spaceName !=''">
             and d.spaceName = #{spaceName}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
         GROUP BY s.spaceId,s.createTime
         order by s.createTime desc,d.spaceId asc
@@ -301,6 +319,12 @@
         </if>
         <if test="spaceName != null and spaceName !=''">
             and d.spaceName = #{spaceName}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
         GROUP BY s.spaceId,s.createTime) c
     </select>
@@ -481,15 +505,21 @@
         <if test="slotId != null and slotId !=''">
             and r.slotId = #{slotId}
         </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(r.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(r.createTime)
+        </if>
         GROUP BY r.slotId,r.createTime
         order by r.createTime desc,a.appId asc
         limit #{num},#{pageSize}
-    </select>
 
+</select>
     <!-- 广告位统计数量 -->
     <select id="appReportNewListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0) from
-        (SELECT a.appName
+        (SELECT a.appName/
         FROM a_report r,a_app a
         where r.appId = a.appId
         <if test="appId != null and appId !=''">
@@ -497,6 +527,12 @@
         </if>
         <if test="slotId != null and slotId !=''">
             and r.slotId = #{slotId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(r.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(r.createTime)
         </if>
         GROUP BY r.slotId,r.createTime) x
     </select>
