@@ -519,7 +519,7 @@
     <!-- 广告位统计数量 -->
     <select id="appReportNewListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0) from
-        (SELECT a.appName/
+        (SELECT a.appName
         FROM a_report r,a_app a
         where r.appId = a.appId
         <if test="appId != null and appId !=''">
