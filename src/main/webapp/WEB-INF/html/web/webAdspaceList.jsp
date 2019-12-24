@@ -243,7 +243,7 @@
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2){
-                            html+='<td><button type="button" onclick="addWebStatistice(\''+data.spaceId+'\')">添加数据统计</button></td>';
+                            html+='<td><button type="button" onclick="addWebStatistice(\''+data.spaceId+'!'+data.spaceName+'!'+data.webName+'\')">添加数据统计</button></td>';
                         }
                         html+='</tr>';
                     }
@@ -291,8 +291,8 @@
         }
     }
 
-    function addWebStatistice(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
+    function addWebStatistice(sign) {
+        sessionStorage.setItem("sign",sign);
         window.location = path + "/webStatisticsAdd";
     }
 

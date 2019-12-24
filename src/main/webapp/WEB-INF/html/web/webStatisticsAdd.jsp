@@ -62,6 +62,21 @@
 
                 <div class="row">
                     <div class="col-xs-12">
+                        <div class="alert alert-info">
+                            <tr height = "50">
+                                <td align = "right">网站名称&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="webName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">广告位名称&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="spaceName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">广告位ID&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="space"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                            </tr>
+                        </div>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+
+                <div class="row">
+                    <div class="col-xs-12">
                         <div class="table-header"></div>
                         <div>
                             <table  width="50%" cellpadding="0" cellspacing="0" id="dynamic-table"
@@ -135,9 +150,13 @@
      * 页面加载完毕,取出session的spaceId
      */
     $(document).ready(function(){
-        var spaceId =  sessionStorage.getItem("spaceId");
-        $('#spaceId').val(spaceId);
-        sessionStorage.removeItem("spaceId");
+        var sign =  sessionStorage.getItem("sign");
+        var str = sign.split('!');
+        $('#spaceId').val(str[0]);
+        $('#space').html(str[0]);
+        $('#spaceName').html(str[1]);
+        $('#webName').html(str[2]);
+        //sessionStorage.removeItem("spaceId");
     })
 
     /**
@@ -221,7 +240,7 @@
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    window.location = path + "/webStatistics";
+                    window.location = path + "/webAdspaceList";
                 }else if(obj.code == 300){
                     alert(obj.message);
                     window.location = path + "/login";

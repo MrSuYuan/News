@@ -502,7 +502,7 @@
             data = $('#jsonStr').val();
         }
         $.ajax({
-            url: path + "app/httpRequest",
+            url: path + "/app/httpRequest",
             type: "post",
             data:data,
             contentType:"json/application",
