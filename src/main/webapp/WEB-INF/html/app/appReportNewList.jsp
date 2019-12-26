@@ -283,7 +283,7 @@
         return r > 0 ? b.slice(0, r) + "," + b.slice(r, len).match(/\d{3}/g).join(",") : b.slice(r, len).match(/\d{3}/g).join(",");
     }
 
-    //查询展开数据
+    //查询展开数据 id是行数从0开始
     function zhankai(id, appId,slotId,createTime){
         $.ajax({
             url: path + "/app/appReportDetail",
