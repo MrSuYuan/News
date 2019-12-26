@@ -495,7 +495,7 @@
 
     <!-- 广告位统计 -->
     <select id="appReportNewList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
-        SELECT r.id,a.appName,a.appId,r.slotId,DATE_FORMAT(r.createTime,'%Y-%m-%d') as createTime,r.downStreamRequest,
+        SELECT a.appName,a.appId,r.slotId,DATE_FORMAT(r.createTime,'%Y-%m-%d') as createTime,r.downStreamRequest,
         sum(r.request) as request,sum(r.response) as response,sum(r.look) as look,sum(r.click) as click,count(r.upstreamType) as upstreamNum
         FROM a_report r,a_app a
         where r.appId = a.appId

@@ -5,7 +5,6 @@ package com.news.vo;
  */
 public class AdStatisticsListVo {
 
-    private long id;
     /**
      * 广告位id
      */
@@ -50,14 +49,6 @@ public class AdStatisticsListVo {
 
     public void setDownStreamRequest(int downStreamRequest) {
         this.downStreamRequest = downStreamRequest;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public int getUpstreamNum() {

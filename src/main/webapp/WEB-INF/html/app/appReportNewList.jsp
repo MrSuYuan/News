@@ -199,11 +199,11 @@
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
-                        html+='<tr id="'+data.id+'" value="0" style="height: 40px">';
+                        html+='<tr id="'+i+'" value="0" style="height: 40px">';
                         html+='<td> '+data.appName+'</td>';
                         html+='<td class="center"> '+
                             '<div class="action-buttons">'+
-                            '<a href="#" class="green bigger-140 show-details-btn" onclick="zhankai(\''+data.id+'\',\''+data.appId+'\',\''+data.slotId+'\',\''+data.createTime+'\')" title="'+data.upstreamNum+'">'+
+                            '<a href="#" class="green bigger-140 show-details-btn" onclick="zhankai(\''+i+'\',\''+data.appId+'\',\''+data.slotId+'\',\''+data.createTime+'\')" title="'+data.upstreamNum+'">'+
                             '<i class="ace-icon fa fa-angle-double-down"></i>'+
                             '</a>'+
                             '</div>'+
@@ -216,8 +216,8 @@
                         html+='<td> '+format_number(data.look)+'</td>';
                         html+='<td> '+format_number(data.click)+'</td>';
                         html+='</tr>';
-                        html+='<span id="span'+data.id+'">'
-                        html+='<tr name="next'+data.id+'" class="detail-row"><td colspan="9"><span id="span'+data.id+'"></span></td></tr>'
+                        html+='<span id="span'+i+'">'
+                        html+='<tr name="next'+i+'" class="detail-row"><td colspan="9"><span id="span'+i+'"></span></td></tr>'
                     }
                     //添加数据
                     $("#coll_list_begin_body").html(html);
