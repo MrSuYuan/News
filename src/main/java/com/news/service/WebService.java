@@ -26,7 +26,7 @@ public interface WebService {
     /**
      * 创建代码位信息
      */
-    ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String spaceId, int upstreamType);
+    ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String upstreamId, int upstreamType);
 
     /**
      * 广告位列表
@@ -43,4 +43,8 @@ public interface WebService {
      */
     ReqResponse webStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
+    /**
+     * 修改id状态
+     */
+    ReqResponse idStatus(int spaceId, int status);
 }

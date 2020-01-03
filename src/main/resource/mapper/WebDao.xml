@@ -85,14 +85,14 @@
     <!-- 创建广告位信息 -->
     <insert id="createAdspace" parameterType="com.news.entity.WebAdspace">
         insert into w_adspace
-        (webId, spaceId, upstreamType, terminal, spaceType, createTime, spaceName, width, height, remark)
+        (webId, upstreamId, upstreamType, terminal, spaceType, createTime, spaceName, width, height, remark, status)
         values
-        (#{webId},#{spaceId},#{upstreamType},#{terminal},#{spaceType},now(),#{spaceName},#{width},#{height},#{remark})
+        (#{webId},#{upstreamId},#{upstreamType},#{terminal},#{spaceType},now(),#{spaceName},#{width},#{height},#{remark},#{status})
     </insert>
 
     <!-- 广告位列表 -->
     <select id="webAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.WebAdSpaceListVo">
-        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal
+        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal,s.upstreamId,s.status
         from w_adspace s,w_web w,u_user u
         where s.webId = w.webId and w.userId = u.userId
         <if test="webName != null and webName !=''">
@@ -160,7 +160,7 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="webStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsListVo">
-        select w.webName,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
+        select w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
         from w_statistics s,w_adspace d,w_web w,u_user u
         where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
         <if test="webName != null and webName !=''">
@@ -184,6 +184,28 @@
         order by s.statisticsId asc
         limit #{num},#{pageSize}
     </select>
+
+    <!-- 查询上游id的使用情况 -->
+    <select id="upstreamIdStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select `status`
+        from w_adspace
+        where upstreamId = #{upstreamId}
+    </select>
+
+    <!-- 查询上游id是否存在 -->
+    <select id="upstreamIdNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0)
+        from w_upstream
+        where upstreamId = #{upstreamId}
+    </select>
+
+    <!-- 添加新上游id -->
+    <insert id="insertUpstream" parameterType="com.news.entity.WebUpstream">
+        insert into w_upstream
+        (upstreamId, upstreamType, createTime, status)
+        values
+        (#{upstreamId},#{upstreamType},#{createTime},#{status})
+    </insert>
 
     <!-- 查询数据统计信息列表数量 -->
     <select id="webStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
@@ -209,5 +231,12 @@
             and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
     </select>
+
+    <!-- 修改id状态 -->
+    <update id="idStatus" parameterType="java.util.Map">
+        update w_adspace
+        set status = #{status}
+        where spaceId = #{spaceId}
+    </update>
 
 </mapper>

@@ -1,9 +1,6 @@
 package com.news.dao;
 
-import com.news.entity.AppStatistics;
-import com.news.entity.Web;
-import com.news.entity.WebAdspace;
-import com.news.entity.WebStatistics;
+import com.news.entity.*;
 import com.news.vo.AppListVo;
 import com.news.vo.WebAdSpaceListVo;
 import com.news.vo.WebListVo;
@@ -85,8 +82,28 @@ public interface WebDao {
     List<WebStatisticsListVo> webStatisticsList(Map<String,Object> map);
 
     /**
+     * 查询上游id的使用情况
+     */
+    List<Integer> upstreamIdStatus(String upstreamId);
+
+    /**
+     * 查询上游id是否存在
+     */
+    int upstreamIdNum(String upstreamId);
+
+    /**
+     * 添加新上游id
+     */
+    void insertUpstream(WebUpstream webUpstream);
+
+    /**
      * 查看数据统计信息列表数量
      */
     int webStatisticsListNum(Map<String,Object> map);
+
+    /**
+     * 修改id状态
+     */
+    void idStatus(Map<String,Object> map);
 
 }

@@ -153,7 +153,7 @@
         var sign =  sessionStorage.getItem("sign");
         var str = sign.split('!');
         $('#spaceId').val(str[0]);
-        $('#space').html(str[0]);
+        $('#space').html(str[3]);
         $('#spaceName').html(str[1]);
         $('#webName').html(str[2]);
         //sessionStorage.removeItem("spaceId");

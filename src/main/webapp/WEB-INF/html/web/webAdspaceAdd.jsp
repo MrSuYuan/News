@@ -62,9 +62,9 @@
                     <input type="hidden" id="webId">
                     <div>
                         <table style="font-size: 14px">
-                            <tr height = "50" id="spaceIdT">
+                            <tr height = "50" id="upstreamIdT">
                                 <td align = "right">广告位ID:&nbsp;&nbsp;</td>
-                                <td width="250"><input type="text" size="35" id="spaceId" name="spaceId" placeholder="请输入广告位ID"></td>
+                                <td width="250"><input type="text" size="35" id="upstreamId" name="upstreamId" placeholder="请输入广告位ID"></td>
                             </tr>
                             <tr height = "50">
                                 <td align = "right">广告位名称:&nbsp;&nbsp;</td>
@@ -75,10 +75,11 @@
                                 <td width="250">
                                     <select style="width: 276px;height: 34px" id="upstreamType">
                                         <option value="0">请选择</option>
-                                        <option value="1">环球-中关互动</option>
-                                        <option value="2">环球-光粒星辉</option>
-                                        <option value="2">百度-zhuangguanhudong</option>
-                                        <option value="2">百度-zolcnet</option>
+                                        <option value="1">平台</option>
+                                        <option value="2">环球-中关互动</option>
+                                        <option value="3">环球-光粒星辉</option>
+                                        <option value="4">百度-zhuangguanhudong</option>
+                                        <option value="5">百度-zolcnet</option>
                                     </select>
                                 </td>
                             </tr>
@@ -167,7 +168,7 @@
         var webId =  sessionStorage.getItem("webId");
         $('#webId').val(webId);
         sessionStorage.removeItem("webId");
-        //$('#spaceIdT').hide();
+        //$('#upstreamIdT').hide();
 
     });
 
@@ -176,7 +177,7 @@
     function createAdspace(){
         //收集参数
         var webId = $('#webId').val();
-        var spaceId = $('#spaceId').val();
+        var upstreamId = $('#upstreamId').val();
         var spaceName = $('#spaceName').val();
         var upstreamType = $('#upstreamType').val();
         var width = $('#width').val();
@@ -192,7 +193,7 @@
                 url: path + "/web/createAdspace",
                 data:{
                     "webId" : webId,
-                    "spaceId" : spaceId,
+                    "upstreamId" : upstreamId,
                     "upstreamType" : upstreamType,
                     "spaceName" : spaceName,
                     "width" : width,

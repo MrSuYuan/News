@@ -47,6 +47,31 @@ public class WebAdspace {
      * 备注
      */
     private String remark;
+    /**
+     * 上游id
+     */
+    private String upstreamId;
+    /**
+     * 上游id状态
+     * 0停用 1正常 2禁用
+     */
+    private int status;
+
+    public String getUpstreamId() {
+        return upstreamId;
+    }
+
+    public void setUpstreamId(String upstreamId) {
+        this.upstreamId = upstreamId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getSpaceId() {
         return spaceId;

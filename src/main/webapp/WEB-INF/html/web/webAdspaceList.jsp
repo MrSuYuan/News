@@ -98,6 +98,8 @@
                                         <th>宽度</th>
                                         <th>高度</th>
                                         <th>创建时间</th>
+                                        <th>ID状态</th>
+                                        <th id="operating">操作</th>
                                         <th id="statistics">数据统计</th>
                                     </tr>
                                     </thead>
@@ -182,8 +184,10 @@
         var currentUserLevel = $('#currentUserLevel').val();
         if(currentUserLevel == 2){
             $('#statistics').show();
+            $('#operating').show();
         }else{
             $('#statistics').hide();
+            $('#operating').hide();
         }
         webAdspaceList(1);
     });
@@ -218,7 +222,7 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.upstreamId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.webName+'</td>';
                         var terminal = data.terminal;
@@ -242,8 +246,38 @@
                         html+='<td> '+data.width+'</td>';
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        if(currentUserLevel == 2){
-                            html+='<td><button type="button" onclick="addWebStatistice(\''+data.spaceId+'!'+data.spaceName+'!'+data.webName+'\')">添加数据统计</button></td>';
+                        var status = data.status;
+                        if(status == 0){
+                            html+='<td id="status'+data.spaceId+'"><span class="label label-purple label-white middle">停用</span></td>';
+                        }else if(status == 1){
+                            html+='<td id="status'+data.spaceId+'"><span class="label label-success label-white middle">正常</span></td>';
+                        }else if(status == 2){
+                            html+='<td id="status'+data.spaceId+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                        }else{
+                            html+='<td><font color="red">状态错误</font></td>';
+                        }
+                        if(currentUserLevel != 3){
+                            //停用
+                            if(status == 0){
+                                html+='<td id="operating'+data.spaceId+'">' +
+                                    '<button type=button class="btn btn-minier btn-success" onclick="idStatus('+data.spaceId+',1)">启用</button>&nbsp;' +
+                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">禁用</button>' +
+                                    '</td>';
+                            //正常
+                            }else if(status == 1){
+                                html+='<td id="operating'+data.spaceId+'">' +
+                                    '<button type=button class="btn btn-minier btn-purple" onclick="idStatus('+data.spaceId+',0)">停用</button>&nbsp;' +
+                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">禁用</button>' +
+                                    '</td>';
+                            //禁用
+                            }else if(status == 2){
+                                html+='<td id="operating'+data.spaceId+'">' +
+                                    '<font color="red">此ID已被禁用</font>' +
+                                    '</td>';
+                            }
+                        }
+                        if(currentUserLevel != 3){
+                            html+='<td><button type=button class="btn btn-minier" onclick="addWebStatistice(\''+data.spaceId+'!'+data.spaceName+'!'+data.webName+'!'+data.upstreamId+'\')">添加数据统计</button></td>';
                         }
                         html+='</tr>';
                     }
@@ -291,6 +325,55 @@
         }
     }
 
+    //idStatus
+    function idStatus(spaceId, status){
+        $.ajax({
+            url: path + "/web/idStatus",
+            type: "post",
+            data: {
+                "spaceId" : spaceId,
+                "status" : status
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    $('#status'+spaceId).empty();
+                    $('#operating'+spaceId).empty();
+                    var htm = '';
+                    var html = '';
+                    if (status == 0){
+                        htm +='<td id="status'+spaceId+'"><span class="label label-purple label-white middle">停用</span></td>';
+                        html +='<td id="operating'+spaceId+'">' +
+                            '<button type="button" class="btn btn-minier btn-success" onclick="idStatus('+spaceId+',1)">启用</button>&nbsp;' +
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">禁用</button>' +
+                            '</td>';
+                    } else if (status == 1) {
+                        htm +='<td id="status'+spaceId+'"><span class="label label-success label-white middle">正常</span></td>';
+                        html +='<td id="operating'+spaceId+'">' +
+                            '<button type="button" class="btn btn-minier btn-purple" onclick="idStatus('+spaceId+',0)">停用</button>&nbsp;' +
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">禁用</button>' +
+                            '</td>';
+                    } else if (status == 2) {
+                        htm +='<td id="status'+spaceId+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                        html +='<td id="operating'+spaceId+'"><font color="red">此ID已被禁用</font></td>';
+                    }
+                    $('#status'+spaceId).html(htm);
+                    $('#operating'+spaceId).html(html);
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path+"/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
+    //tongji
     function addWebStatistice(sign) {
         sessionStorage.setItem("sign",sign);
         window.location = path + "/webStatisticsAdd";

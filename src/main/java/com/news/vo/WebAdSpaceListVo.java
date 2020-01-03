@@ -8,9 +8,17 @@ import java.util.Date;
 public class WebAdSpaceListVo {
 
     /**
+     * 上游id
+     */
+    private String upstreamId;
+    /**
+     * 使用状态
+     */
+    private int status;
+    /**
      * 广告位id
      */
-    private String spaceId;
+    private int spaceId;
     /**
      * 上游类型
      * 1东方 2万咖 3极光 4余梁 5一点通 6百度
@@ -45,11 +53,27 @@ public class WebAdSpaceListVo {
      */
     private int height;
 
-    public String getSpaceId() {
+    public String getUpstreamId() {
+        return upstreamId;
+    }
+
+    public void setUpstreamId(String upstreamId) {
+        this.upstreamId = upstreamId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(String spaceId) {
+    public void setSpaceId(int spaceId) {
         this.spaceId = spaceId;
     }
 

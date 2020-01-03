@@ -12,10 +12,7 @@ import com.utils.response.ReqResponse;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * WEB模块逻辑层实现
@@ -148,13 +145,35 @@ public class WebServiceImpl implements WebService {
      * 创建代码位信息
      */
     @Override
-    public ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String spaceId, int upstreamType) {
+    public ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String upstreamId, int upstreamType) {
         ReqResponse req = new ReqResponse();
         Long webParentId = webDao.webParent(webId);
         if(null != webParentId && userId.longValue() == webParentId.longValue()){
+            //1查看此id有没有使用
+            List<Integer> upstreamIdList = webDao.upstreamIdStatus(upstreamId);
+            for (int i = 0; i < upstreamIdList.size(); i++){
+                int status = upstreamIdList.get(i);
+                if (status == 1){
+                    req.setCode(ErrorMessage.FAIL.getCode());
+                    req.setMessage("该ID被占用,请详查后再设置");
+                    return req;
+                }
+            }
+            //2查询上游id表有没有记录此id
+            int upstreamIdNum = webDao.upstreamIdNum(upstreamId);
+            if (upstreamIdNum == 0){
+                //添加上游id
+                WebUpstream webUpstream = new WebUpstream();
+                webUpstream.setUpstreamId(upstreamId);
+                webUpstream.setUpstreamType(spaceType);
+                webUpstream.setCreateTime(new Date());
+                webUpstream.setStatus(1);
+                webDao.insertUpstream(webUpstream);
+            }
+            //3添加广告位信息,并绑定上游id
             WebAdspace ad = new WebAdspace();
             ad.setWebId(webId);
-            ad.setSpaceId(spaceId);
+            ad.setUpstreamId(upstreamId);
             ad.setUpstreamType(upstreamType);
             ad.setTerminal(terminal);
             ad.setSpaceType(spaceType);
@@ -162,6 +181,7 @@ public class WebServiceImpl implements WebService {
             ad.setWidth(width);
             ad.setHeight(height);
             ad.setRemark(remark);
+            ad.setStatus(1);
             webDao.createAdspace(ad);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("创建成功");
@@ -312,6 +332,26 @@ public class WebServiceImpl implements WebService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("数据加载完成");
         req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 修改id状态
+     */
+    @Override
+    public ReqResponse idStatus(int spaceId, int status) {
+        ReqResponse req = new ReqResponse();
+        try{
+            Map<String,Object> map = new HashMap<>();
+            map.put("spaceId",spaceId);
+            map.put("status",status);
+            webDao.idStatus(map);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("成功");
+        }catch (Exception e){
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("失败");
+        }
         return req;
     }
 }
