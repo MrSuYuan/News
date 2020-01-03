@@ -14,7 +14,7 @@ public class WebStatistics {
     /**
      * 广告位id
      */
-    private String spaceId;
+    private int spaceId;
     /**
      * 创建时间
      */
@@ -84,11 +84,11 @@ public class WebStatistics {
         this.statisticsId = statisticsId;
     }
 
-    public String getSpaceId() {
+    public int getSpaceId() {
         return spaceId;
     }
 
-    public void setSpaceId(String spaceId) {
+    public void setSpaceId(int spaceId) {
         this.spaceId = spaceId;
     }
 

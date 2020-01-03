@@ -251,7 +251,7 @@ public class WebServiceImpl implements WebService {
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, WebStatistics.class);
             List<WebStatistics> list =  mapper.readValue(statisticsList, jt);
-            String spaceId = list.get(0).getSpaceId();
+            int spaceId = list.get(0).getSpaceId();
 
             //查看广告位所属app的上级id
             Long parentId = webDao.adParentId(spaceId);

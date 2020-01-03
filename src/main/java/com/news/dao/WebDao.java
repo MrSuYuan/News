@@ -69,7 +69,7 @@ public interface WebDao {
     /**
      * 查看广告位所属app的上级id
      */
-    Long adParentId(String spaceId);
+    Long adParentId(int spaceId);
 
     /**
      * 批量添加广告位数据统计信息

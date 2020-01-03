@@ -8,5 +8,5 @@ public interface TaskService {
     /**
      * 星辰广告统计
      */
-    void xingChen(String str);
+    void xingChen(String str, String date);
 }

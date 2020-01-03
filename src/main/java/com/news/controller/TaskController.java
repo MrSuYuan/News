@@ -2,6 +2,9 @@ package com.news.controller;
 
 import com.news.service.NewsService;
 import com.news.service.TaskService;
+import com.utils.base.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -11,7 +14,12 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,8 +30,11 @@ import java.util.Date;
 /**
  * 定时器
  */
-@Service
-public class TaskController {
+//@Service
+@Controller
+@RequestMapping("task")
+@Api(value = "/task", tags = "task模块")
+public class TaskController extends BaseController {
 
     private final Logger logger = LoggerFactory.getLogger(NewsController.class);
 
@@ -47,6 +58,10 @@ public class TaskController {
     /**
      * 星辰+数据统计
      */
+    @RequestMapping(value = "/xingChen",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "星辰", notes = "星辰", httpMethod = "POST")
+    @CrossOrigin
     public void xingChen() {
         logger.error("++++++++++++++星辰广告数据统计开始+++++++++++++++++++");
 
@@ -60,7 +75,7 @@ public class TaskController {
         String date=sp.format(d);
 
         String url = "https://channel.xingchenjia.com/client/dataapi/pcwap?key="+key+"&date="+date;
-        System.out.println(url);
+        //https://channel.xingchenjia.com/client/dataapi/pcwap?key=47484e3dbaf3b66a80ced2&date=2020-01-01
         CloseableHttpClient httpClient = HttpClients.createDefault();
         HttpGet httpGet = new HttpGet(url);
         CloseableHttpResponse response;
@@ -68,10 +83,17 @@ public class TaskController {
             response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String str = EntityUtils.toString(entity,"utf-8");
-            taskService.xingChen(str);
+            taskService.xingChen(str, date);
         } catch (IOException e) {
             e.printStackTrace();
         }
         logger.error("++++++++++++++星辰广告数据统计结束+++++++++++++++++++");
+
+
+//        select * from
+//                (select id,spaceId,upstreamId,startTime,IFNULL(endTime,now())as endTime
+//                        from w_adspace_upstream
+//                        where upstreamId = "u3624090") w
+//        where TO_DAYS(w.startTime)<=TO_DAYS('2019-12-20') and TO_DAYS(w.endTime)>TO_DAYS('2019-12-20')
     }
 }
