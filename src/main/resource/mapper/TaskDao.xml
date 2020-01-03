@@ -5,6 +5,15 @@
 <!-- 定时器模块 -->
 <mapper namespace="com.news.dao.TaskDao">
 
-
+    <!-- 查询分润参数 -->
+    <select id="dividedVo" parameterType="java.util.Map" resultType="com.news.vo.DividedVo">
+        select a.spaceId,a.upstreamId,a.spaceDivided,w.webDivided,t.upstreamDivided
+        from w_web w,w_adspace a,w_upstream_type t,
+            (select spaceId,upstreamId,startTime,IFNULL(endTime,now())as endTime
+            from w_adspace_upstream
+            where upstreamId = #{upstreamId}) au
+        where TO_DAYS(#{date})>=TO_DAYS(au.startTime) and TO_DAYS(au.endTime)>TO_DAYS(#{date})
+        and au.spaceId = a.spaceId and a.webId = w.webId and a.upstreamType = t.upstreamType
+    </select>
 
 </mapper>

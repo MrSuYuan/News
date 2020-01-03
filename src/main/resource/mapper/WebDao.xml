@@ -143,7 +143,7 @@
     </select>
 
     <!-- 查看广告位所属app的上级id -->
-    <select id="adParentId" parameterType="java.lang.String" resultType="java.lang.Long">
+    <select id="adParentId" parameterType="java.lang.Integer" resultType="java.lang.Long">
         select u.parentId
         from w_adspace d,w_web w,u_user u
         where d.spaceId = #{spaceId} and d.webId = w.webId and w.userId = u.userId

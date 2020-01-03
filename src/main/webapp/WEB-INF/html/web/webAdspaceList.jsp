@@ -182,7 +182,7 @@
 
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
-        if(currentUserLevel == 2){
+        if(currentUserLevel != 3){
             $('#statistics').show();
             $('#operating').show();
         }else{
@@ -252,7 +252,7 @@
                         }else if(status == 1){
                             html+='<td id="status'+data.spaceId+'"><span class="label label-success label-white middle">正常</span></td>';
                         }else if(status == 2){
-                            html+='<td id="status'+data.spaceId+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                            html+='<td id="status'+data.spaceId+'"><span class="label label-danger label-white middle">封禁</span></td>';
                         }else{
                             html+='<td><font color="red">状态错误</font></td>';
                         }
@@ -261,18 +261,18 @@
                             if(status == 0){
                                 html+='<td id="operating'+data.spaceId+'">' +
                                     '<button type=button class="btn btn-minier btn-success" onclick="idStatus('+data.spaceId+',1)">启用</button>&nbsp;' +
-                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">禁用</button>' +
+                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">封禁</button>' +
                                     '</td>';
                             //正常
                             }else if(status == 1){
                                 html+='<td id="operating'+data.spaceId+'">' +
                                     '<button type=button class="btn btn-minier btn-purple" onclick="idStatus('+data.spaceId+',0)">停用</button>&nbsp;' +
-                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">禁用</button>' +
+                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">封禁</button>' +
                                     '</td>';
-                            //禁用
+                            //封禁
                             }else if(status == 2){
                                 html+='<td id="operating'+data.spaceId+'">' +
-                                    '<font color="red">此ID已被禁用</font>' +
+                                    '<font color="red">此ID已被封禁</font>' +
                                     '</td>';
                             }
                         }
@@ -346,17 +346,17 @@
                         htm +='<td id="status'+spaceId+'"><span class="label label-purple label-white middle">停用</span></td>';
                         html +='<td id="operating'+spaceId+'">' +
                             '<button type="button" class="btn btn-minier btn-success" onclick="idStatus('+spaceId+',1)">启用</button>&nbsp;' +
-                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">禁用</button>' +
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">封禁</button>' +
                             '</td>';
                     } else if (status == 1) {
                         htm +='<td id="status'+spaceId+'"><span class="label label-success label-white middle">正常</span></td>';
                         html +='<td id="operating'+spaceId+'">' +
                             '<button type="button" class="btn btn-minier btn-purple" onclick="idStatus('+spaceId+',0)">停用</button>&nbsp;' +
-                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">禁用</button>' +
+                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">封禁</button>' +
                             '</td>';
                     } else if (status == 2) {
-                        htm +='<td id="status'+spaceId+'"><span class="label label-danger label-white middle">禁用</span></td>';
-                        html +='<td id="operating'+spaceId+'"><font color="red">此ID已被禁用</font></td>';
+                        htm +='<td id="status'+spaceId+'"><span class="label label-danger label-white middle">封禁</span></td>';
+                        html +='<td id="operating'+spaceId+'"><font color="red">此ID已被封禁</font></td>';
                     }
                     $('#status'+spaceId).html(htm);
                     $('#operating'+spaceId).html(html);
