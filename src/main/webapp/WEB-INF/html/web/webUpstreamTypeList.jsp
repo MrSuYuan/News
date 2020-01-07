@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>广告位列表</title>
+    <title>上游列表</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
     <meta name="description" content="overview &amp; stats" />
@@ -44,7 +44,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="${ctx}/index">Home</a>
                     </li>
-                    <li class="active">广告位列表</li>
+                    <li class="active">WEB上游列表</li>
                 </ul><!-- /.breadcrumb -->
                 <div class="nav-search" id="nav-search">
                     <form class="form-search">
@@ -61,22 +61,9 @@
                 <form action="#" method="post">
                     <br>
                     <div align="center">
-                        WEB名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        终端：
-                        <select id="terminal" style="width:100px;height:30px">
-                            <option value="0">请选择</option>
-                            <option value="1">PC</option>
-                            <option value="2">WAP</option>
-                        </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        广告位类型：
-                        <select id="spaceType" style="width:100px;height:30px">
-                            <option value="0">请选择</option>
-                            <option value="1">固定块</option>
-                            <option value="2">右下浮</option>
-                            <option value="3">对联</option>
-                        </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-primary btn-xs" onclick="webAdspaceList($('#currentPage').val())">
+                        备用筛选项：<input type="text" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        备用筛选项：<input type="text" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-primary btn-xs" onclick="webUpstreamTypeList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
 
@@ -90,17 +77,11 @@
                                        class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr style="height: 50px">
-                                        <th>广告位ID</th>
-                                        <th>广告位名称</th>
-                                        <th>WEB名称</th>
-                                        <th>终端</th>
-                                        <th>类型</th>
-                                        <th>宽度</th>
-                                        <th>高度</th>
+                                        <th>上游编号</th>
+                                        <th>上游名称</th>
                                         <th>创建时间</th>
-                                        <th>ID状态</th>
-                                        <th id="operating">操作</th>
-                                        <th id="statistics" style="width: 140px">数据统计</th>
+                                        <th>分成比例</th>
+                                        <th id="operating">设置</th>
                                     </tr>
                                     </thead>
                                     <tbody id="coll_list_begin_body">
@@ -153,24 +134,14 @@
                                 <div class="modal-header">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                             aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title">设置YZ<input type="hidden" id="spaceId"></h4>
+                                    <h4 class="modal-title">设置分成比例<input type="hidden" id="upstreamType"></h4>
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right "> Y : </label>
+                                            <label class="col-sm-3 control-label no-padding-right "> X : </label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="col-xs-10 col-sm-7" id="dividedY">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="row">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label no-padding-right "> Z : </label>
-                                            <div class="col-sm-8">
-                                                <input type="text" class="col-xs-10 col-sm-7" id="dividedZ">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="upstreamDivided">
                                             </div>
                                         </div>
                                     </div>
@@ -214,7 +185,7 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("webAdspaceList", $('#userName').val());
+    loading("webUpstreamTypeList", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
@@ -228,11 +199,11 @@
             $('#statistics').hide();
             $('#operating').hide();
         }
-        webAdspaceList(1);
+        webUpstreamTypeList(1);
     });
 
     //点击搜索数据展示
-    function webAdspaceList(currentPage) {
+    function webUpstreamTypeList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
@@ -242,83 +213,28 @@
             return false;
         }
         $.ajax({
-            url: path + "/web/webAdspaceList",
+            url: path + "/web/webUpstreamTypeList",
             type: "post",
             data: {
                 "currentPage" : currentPage,
-                "pageSize" : pageSize,
-                "webName" : $('#webName').val(),
-                "spaceName" : $('#spaceName').val(),
-                "terminal" : $('#terminal').val(),
-                "spaceType" :  $('#spaceType option:selected').val()
+                "pageSize" : pageSize
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result.adspaceList;
+                    var list = obj.result.list;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.upstreamId+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
-                        html+='<td> '+data.webName+'</td>';
-                        var terminal = data.terminal;
-                        if(terminal == 1){
-                            html+='<td> PC </td>';
-                        }else if(terminal == 2){
-                            html+='<td> WAP </td>';
-                        }else{
-                            html+='<td> <font color="red">信息错误</font> </td>';
-                        }
-                        var spaceType = data.spaceType;
-                        if(spaceType == 1){
-                            html+='<td> 固定块 </td>';
-                        }else if(spaceType == 2){
-                            html+='<td> 右下浮 </td>';
-                        }else if(spaceType == 3){
-                            html+='<td> 对联 </td>';
-                        }else{
-                            html+='<td> <font color="red">信息错误</font> </td>';
-                        }
-                        html+='<td> '+data.width+'</td>';
-                        html+='<td> '+data.height+'</td>';
-                        html+='<td> '+data.createTime+'</td>';
-                        var status = data.status;
-                        if(status == 0){
-                            html+='<td id="status'+data.spaceId+'"><span class="label label-purple label-white middle">停用</span></td>';
-                        }else if(status == 1){
-                            html+='<td id="status'+data.spaceId+'"><span class="label label-success label-white middle">正常</span></td>';
-                        }else if(status == 2){
-                            html+='<td id="status'+data.spaceId+'"><span class="label label-danger label-white middle">封禁</span></td>';
-                        }else{
-                            html+='<td><font color="red">状态错误</font></td>';
-                        }
-                        if(currentUserLevel != 3){
-                            //停用
-                            if(status == 0){
-                                html+='<td id="operating'+data.spaceId+'">' +
-                                    '<button type=button class="btn btn-minier btn-success" onclick="idStatus('+data.spaceId+',1)">启用</button>&nbsp;' +
-                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">封禁</button>' +
-                                    '</td>';
-                            //正常
-                            }else if(status == 1){
-                                html+='<td id="operating'+data.spaceId+'">' +
-                                    '<button type=button class="btn btn-minier btn-purple" onclick="idStatus('+data.spaceId+',0)">停用</button>&nbsp;' +
-                                    '<button type=button class="btn btn-minier btn-danger" onclick="idStatus('+data.spaceId+',2)">封禁</button>' +
-                                    '</td>';
-                            //封禁
-                            }else if(status == 2){
-                                html+='<td id="operating'+data.spaceId+'">' +
-                                    '<font color="red">此ID已被封禁</font>' +
-                                    '</td>';
-                            }
-                        }
-                        if(currentUserLevel != 3){
-                            html+='<td><button type=button class="btn btn-minier" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">分成</button>&nbsp;' +
-                                '<button type=button class="btn btn-minier" onclick="addWebStatistice(\''+data.spaceId+'!'+data.spaceName+'!'+data.webName+'!'+data.upstreamId+'\')">添加数据统计</button></td>';
-                        }
+                        html+='<td> '+data.upstreamType+'</td>';
+                        html+='<td> '+data.name+'</td>';
+                        html+='<td> '+data.time+'</td>';
+                        html+='<td> '+data.upstreamDivided+'</td>';
+                        html+='<td id="operating'+data.spaceId+'">' +
+                            '<button type=button class="btn btn-minier" onclick="divided('+data.upstreamType+','+data.upstreamDivided+')">分成</button>' +
+                            '</td>';
                         html+='</tr>';
                     }
                     //添加数据
@@ -349,7 +265,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            webAdspaceList(page);
+            webUpstreamTypeList(page);
         }
     }
 
@@ -361,88 +277,30 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            webAdspaceList(page);
+            webUpstreamTypeList(page);
         }
     }
 
-    //idStatus
-    function idStatus(spaceId, status){
-        $.ajax({
-            url: path + "/web/idStatus",
-            type: "post",
-            data: {
-                "spaceId" : spaceId,
-                "status" : status
-            },
-            dataType: 'json',
-            async: false,
-            success: function (obj) {
-                if(obj.code == 200){
-                    $('#status'+spaceId).empty();
-                    $('#operating'+spaceId).empty();
-                    var htm = '';
-                    var html = '';
-                    if (status == 0){
-                        htm +='<td id="status'+spaceId+'"><span class="label label-purple label-white middle">停用</span></td>';
-                        html +='<td id="operating'+spaceId+'">' +
-                            '<button type="button" class="btn btn-minier btn-success" onclick="idStatus('+spaceId+',1)">启用</button>&nbsp;' +
-                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">封禁</button>' +
-                            '</td>';
-                    } else if (status == 1) {
-                        htm +='<td id="status'+spaceId+'"><span class="label label-success label-white middle">正常</span></td>';
-                        html +='<td id="operating'+spaceId+'">' +
-                            '<button type="button" class="btn btn-minier btn-purple" onclick="idStatus('+spaceId+',0)">停用</button>&nbsp;' +
-                            '<button type="button" class="btn btn-minier btn-danger" onclick="idStatus('+spaceId+',2)">封禁</button>' +
-                            '</td>';
-                    } else if (status == 2) {
-                        htm +='<td id="status'+spaceId+'"><span class="label label-danger label-white middle">封禁</span></td>';
-                        html +='<td id="operating'+spaceId+'"><font color="red">此ID已被封禁</font></td>';
-                    }
-                    $('#status'+spaceId).html(htm);
-                    $('#operating'+spaceId).html(html);
-                }else if(obj.code == "300"){
-                    alert(obj.message);
-                    window.location = path+"/login";
-                }else{
-                    alert(obj.message);
-                }
-            },
-            error: function () {
-                alert("请求异常");
-            }
-        });
-    }
-
-    //tongji
-    function addWebStatistice(sign) {
-        sessionStorage.setItem("sign",sign);
-        window.location = path + "/webStatisticsAdd";
-    }
-
     //set
-    function divided(data){
-        var str = data.split('!');
-        $('#spaceId').val(str[0]);
-        $('#dividedY').val(str[1]);
-        $('#dividedZ').val(str[2]);
+    function divided(upstreamType, upstreamDivided){
+        $('#upstreamType').val(upstreamType);
+        $('#upstreamDivided').val(upstreamDivided);
         $("#web_divided_set").modal("show");
     }
-    
+
     //update
     function updateProportion() {
-        var spaceId = $('#spaceId').val();
-        var dividedY = $('#dividedY').val();
-        var dividedZ = $('#dividedZ').val();
-        if (dividedY > 1 || dividedZ > 1) {
+        var upstreamType = $('#upstreamType').val();
+        var upstreamDivided = $('#upstreamDivided').val();
+        if (upstreamDivided > 1) {
             alert("参数错误");
         }else{
             $.ajax({
-                url: path + "/web/spaceDivided",
+                url: path + "/web/webUpstreamDivided",
                 type: "post",
                 data: {
-                    "spaceId" : spaceId,
-                    "dividedY" : dividedY,
-                    "dividedZ" : dividedZ
+                    "upstreamType" : upstreamType,
+                    "upstreamDivided" : upstreamDivided
                 },
                 dataType: 'json',
                 async: false,
@@ -450,7 +308,7 @@
                     if(obj.code == 200){
                         $("#web_divided_set").modal("hide");
                         var page = parseInt($('#currentPage').text());
-                        webAdspaceList(page);
+                        webUpstreamTypeList(page);
                     }else if(obj.code == "300"){
                         alert(obj.message);
                         window.location = path+"/login";

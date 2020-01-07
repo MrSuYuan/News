@@ -29,7 +29,7 @@ public class TaskServiceImpl implements TaskService {
      * 星辰广告统计
      */
     @Override
-    public void xingChen(String str, String date) {
+    public void xingChen(String str, String date, Date yesterday) {
         JSONObject json = JSONObject.fromObject(str);
         String data = json.getString("data");
         if (null != data && !"".equals(data)){
@@ -53,17 +53,17 @@ public class TaskServiceImpl implements TaskService {
                     int click = jb.getInt("click");//点击
                     double income = jb.getDouble("income");//收入
                     double upstreamDivided = dv.getUpstreamDivided();
-                    double webDivided = dv.getWebDivided();
-                    double spaceDivided = dv.getSpaceDivided();
+                    double dividedY = dv.getDividedY();
+                    double dividedZ = dv.getDividedZ();
                     WebStatistics as = new WebStatistics();
-                    as.setCreateTime(new Date());
+                    as.setCreateTime(yesterday);
                     as.setSpaceId(dv.getSpaceId());
                     as.setBeforeLookPV(show);
                     as.setBeforeClickNum(click);
                     as.setBeforeIncome(income);
-                    as.setLookPV((int)(as.getBeforeLookPV() * upstreamDivided * webDivided * spaceDivided));
-                    as.setClickNum((int)(as.getBeforeClickNum() * upstreamDivided * webDivided * spaceDivided));
-                    as.setIncome(as.getBeforeIncome() * upstreamDivided * webDivided * spaceDivided);
+                    as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
+                    as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
+                    as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
                     as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
                     list.add(as);

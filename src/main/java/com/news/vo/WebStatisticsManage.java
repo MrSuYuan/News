@@ -1,10 +1,11 @@
 package com.news.vo;
 
 /**
- * WEB端数据统计列表
+ * web统计-管理
  */
-public class WebStatisticsListVo {
+public class WebStatisticsManage {
 
+    private int statisticsId;
     private String spaceId;
     private String spaceName;
     private String webName;
@@ -14,6 +15,36 @@ public class WebStatisticsListVo {
     private double clickProbability;
     private double income;
     private double ecmp;
+    private int status;
+    private int beforeLookPV;
+    private int beforeClickNum;
+    private double beforeIncome;
+    private double dividedY;
+    private double dividedZ;
+
+    public double getDividedY() {
+        return dividedY;
+    }
+
+    public void setDividedY(double dividedY) {
+        this.dividedY = dividedY;
+    }
+
+    public double getDividedZ() {
+        return dividedZ;
+    }
+
+    public void setDividedZ(double dividedZ) {
+        this.dividedZ = dividedZ;
+    }
+
+    public int getStatisticsId() {
+        return statisticsId;
+    }
+
+    public void setStatisticsId(int statisticsId) {
+        this.statisticsId = statisticsId;
+    }
 
     public String getSpaceId() {
         return spaceId;
@@ -85,5 +116,37 @@ public class WebStatisticsListVo {
 
     public void setEcmp(double ecmp) {
         this.ecmp = ecmp;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getBeforeLookPV() {
+        return beforeLookPV;
+    }
+
+    public void setBeforeLookPV(int beforeLookPV) {
+        this.beforeLookPV = beforeLookPV;
+    }
+
+    public int getBeforeClickNum() {
+        return beforeClickNum;
+    }
+
+    public void setBeforeClickNum(int beforeClickNum) {
+        this.beforeClickNum = beforeClickNum;
+    }
+
+    public double getBeforeIncome() {
+        return beforeIncome;
+    }
+
+    public void setBeforeIncome(double beforeIncome) {
+        this.beforeIncome = beforeIncome;
     }
 }

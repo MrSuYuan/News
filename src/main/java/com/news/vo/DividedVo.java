@@ -7,9 +7,25 @@ public class DividedVo {
 
     private int spaceId;
     private String upstreamId;
-    private double spaceDivided;
-    private double webDivided;
+    private double dividedY;
+    private double dividedZ;
     private double upstreamDivided;
+
+    public double getDividedY() {
+        return dividedY;
+    }
+
+    public void setDividedY(double dividedY) {
+        this.dividedY = dividedY;
+    }
+
+    public double getDividedZ() {
+        return dividedZ;
+    }
+
+    public void setDividedZ(double dividedZ) {
+        this.dividedZ = dividedZ;
+    }
 
     public int getSpaceId() {
         return spaceId;
@@ -25,22 +41,6 @@ public class DividedVo {
 
     public void setUpstreamId(String upstreamId) {
         this.upstreamId = upstreamId;
-    }
-
-    public double getSpaceDivided() {
-        return spaceDivided;
-    }
-
-    public void setSpaceDivided(double spaceDivided) {
-        this.spaceDivided = spaceDivided;
-    }
-
-    public double getWebDivided() {
-        return webDivided;
-    }
-
-    public void setWebDivided(double webDivided) {
-        this.webDivided = webDivided;
     }
 
     public double getUpstreamDivided() {

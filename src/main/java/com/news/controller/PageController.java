@@ -318,6 +318,13 @@ public class PageController extends BaseController {
     public String webAdspaceList(){ return "/html/web/webAdspaceList.jsp";}
 
     /**
+     * WEB上游列表
+     */
+    @RequestMapping(value = "webUpstreamTypeList" , method= RequestMethod.GET)
+    @ApiOperation(value = "WEB上游列表", notes = "WEB上游列表", httpMethod = "GET")
+    public String webUpstreamTypeList(){ return "/html/web/webUpstreamTypeList.jsp";}
+
+    /**
      * WEB添加数据统计
      */
     @RequestMapping(value = "webStatisticsAdd" , method= RequestMethod.GET)
@@ -329,7 +336,14 @@ public class PageController extends BaseController {
      */
     @RequestMapping(value = "webStatistics" , method= RequestMethod.GET)
     @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
-    public String webStatistics(){ return "/html/web/webStatistics.jsp";}
+    public String webStatistics(){
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null != userLevel && (int)userLevel == 3){
+            return "/html/web/webStatisticsUser.jsp";
+        }else{
+            return "/html/web/webStatisticsManage.jsp";
+        }
+    }
 
     /**
      * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

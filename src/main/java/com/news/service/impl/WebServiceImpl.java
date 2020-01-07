@@ -290,7 +290,7 @@ public class WebServiceImpl implements WebService {
      * 查看WEB统计列表
      */
     @Override
-    public ReqResponse webStatisticsList(String startTime, String endTime, Long userId, String spaceName, String webName, Integer currentPage, Integer pageSize) {
+    public ReqResponse webStatisticsUser(String startTime, String endTime, Long userId, String spaceName, String webName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -312,9 +312,9 @@ public class WebServiceImpl implements WebService {
         map.put("currentUserLevel",currentUserLevel);
 
         //查询集合列表
-        List<WebStatisticsListVo> statisticsList = webDao.webStatisticsList(map);
+        List<WebStatisticsUser> statisticsList = webDao.webStatisticsUser(map);
         //总数量
-        int sumData = webDao.webStatisticsListNum(map);
+        int sumData = webDao.webStatisticsUserNum(map);
         //总页数
         int sumPage = 0;
         if(sumData%Integer.valueOf(pageSize) == 0){
@@ -336,6 +336,56 @@ public class WebServiceImpl implements WebService {
     }
 
     /**
+     * 查看WEB统计列表
+     */
+    @Override
+    public ReqResponse webStatisticsManage(String startTime, String endTime, Long userId, String spaceName, String webName, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        map.put("spaceName",spaceName);
+        map.put("webName",webName);
+        map.put("parentId",userId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
+        //先查询当前用户身份
+        int currentUserLevel = userDao.userLevel(userId);
+        map.put("currentUserLevel",currentUserLevel);
+
+        //查询集合列表
+        List<WebStatisticsManage> statisticsList = webDao.webStatisticsManage(map);
+        //总数量
+        int sumData = webDao.webStatisticsManageNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("statisticsList",statisticsList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+
+    /**
      * 修改id状态
      */
     @Override
@@ -352,6 +402,100 @@ public class WebServiceImpl implements WebService {
             req.setCode(ErrorMessage.FAIL.getCode());
             req.setMessage("失败");
         }
+        return req;
+    }
+
+    /**
+     * 通过/删除数据
+     */
+    @Override
+    public ReqResponse webStatisticsStatus(int statisticsId, int status) {
+        ReqResponse req = new ReqResponse();
+        //status 0删除 1通过
+        if (status == 0){
+            webDao.deleteStatistics(statisticsId);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("成功");
+        }else if (status == 1){
+            webDao.updateStatistics(statisticsId);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("成功");
+        }else{
+            req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
+            req.setMessage("参数错误");
+        }
+        return req;
+    }
+
+    /**
+     * 广告位divided
+     */
+    @Override
+    public ReqResponse spaceDivided(int spaceId, double dividedY, double dividedZ) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("spaceId",spaceId);
+        map.put("dividedY",dividedY);
+        map.put("dividedZ",dividedZ);
+        webDao.spaceDivided(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    /**
+     * 上游列表
+     */
+    @Override
+    public ReqResponse webUpstreamTypeList(Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+
+        //列表
+        List<WebUpstreamType> list = webDao.webUpstreamTypeList(map);
+        //总数量
+        int sumData = webDao.webUpstreamTypeListNum(map);
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",list);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 设置上游分成比例
+     */
+    @Override
+    public ReqResponse webUpstreamDivided(Integer upstreamType, double upstreamDivided) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("upstreamType",upstreamType);
+        map.put("upstreamDivided",upstreamDivided);
+        webDao.webUpstreamDivided(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
         return req;
     }
 }

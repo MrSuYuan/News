@@ -143,6 +143,7 @@ function navigationBar(path){
 	html += '			<li class="" id="webList"><a href="'+path+'/webList"><i class="menu-icon fa fa-caret-right"></i>WEB</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webAdspace"><a href="'+path+'/webAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webStatistics"><a href="'+path+'/webStatistics"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webUpstreamTypeList"><a href="'+path+'/webUpstreamTypeList"><i class="menu-icon fa fa-caret-right"></i>上游信息</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webDivided"><a href="'+path+'/webDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
@@ -208,6 +209,7 @@ function permission(pageSign){
         $('#webDivided').hide();
         $('#temporary').hide();
         $('#httpRequest').hide();
+        $('#webUpstreamTypeList').hide();
 
 	}
 
@@ -292,9 +294,15 @@ function permission(pageSign){
     }else if (pageSign == "webStatisticsAdd"){
         $('#web').addClass('active open');
         $('#webStatistics').addClass('active');
-    }else if (pageSign == "webStatistics"){
+    }else if (pageSign == "webStatisticsUser"){
         $('#web').addClass('active open');
         $('#webStatistics').addClass('active');
+    }else if (pageSign == "webStatisticsManage"){
+        $('#web').addClass('active open');
+        $('#webStatistics').addClass('active');
+    }else if (pageSign == "webUpstreamTypeList"){
+        $('#web').addClass('active open');
+        $('#webUpstreamTypeList').addClass('active');
     }else if (pageSign == "webDivided"){
         $('#web').addClass('active open');
         $('#webDivided').addClass('active');

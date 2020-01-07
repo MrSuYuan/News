@@ -1,10 +1,7 @@
 package com.news.dao;
 
 import com.news.entity.*;
-import com.news.vo.AppListVo;
-import com.news.vo.WebAdSpaceListVo;
-import com.news.vo.WebListVo;
-import com.news.vo.WebStatisticsListVo;
+import com.news.vo.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -77,11 +74,6 @@ public interface WebDao {
     void addWebStatistics(List<WebStatistics> list);
 
     /**
-     * 查看数据统计信息列表
-     */
-    List<WebStatisticsListVo> webStatisticsList(Map<String,Object> map);
-
-    /**
      * 查询上游id的使用情况
      */
     List<Integer> upstreamIdStatus(String upstreamId);
@@ -97,13 +89,53 @@ public interface WebDao {
     void insertUpstream(WebUpstream webUpstream);
 
     /**
-     * 查看数据统计信息列表数量
+     * 查看数据统计信息列表-用户
      */
-    int webStatisticsListNum(Map<String,Object> map);
+    List<WebStatisticsUser> webStatisticsUser(Map<String,Object> map);
+
+    /**
+     * 查看数据统计信息列表数量-用户
+     */
+    int webStatisticsUserNum(Map<String,Object> map);
+
+    /**
+     * 查看数据统计信息列表-管理
+     */
+    List<WebStatisticsManage> webStatisticsManage(Map<String,Object> map);
+
+    /**
+     * 查看数据统计信息列表数量-管理
+     */
+    int webStatisticsManageNum(Map<String,Object> map);
 
     /**
      * 修改id状态
      */
     void idStatus(Map<String,Object> map);
 
+    /**
+     * 删除数据统计
+     */
+    void updateStatistics(int statisticsId);
+
+    /**
+     * 通过数据统计
+     */
+    void deleteStatistics(int statisticsId);
+
+    /**
+     * 设置广告位divided
+     */
+    void spaceDivided(Map<String,Object> map);
+
+    /**
+     * 上游列表
+     */
+    List<WebUpstreamType> webUpstreamTypeList(Map<String,Object> map);
+    int webUpstreamTypeListNum(Map<String,Object> map);
+
+    /**
+     * 设置上游分成比例
+     */
+    void webUpstreamDivided(Map<String,Object> map);
 }

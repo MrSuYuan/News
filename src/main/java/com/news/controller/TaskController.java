@@ -83,7 +83,7 @@ public class TaskController extends BaseController {
             response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
             String str = EntityUtils.toString(entity,"utf-8");
-            taskService.xingChen(str, date);
+            taskService.xingChen(str, date, d);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -92,7 +92,7 @@
 
     <!-- 广告位列表 -->
     <select id="webAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.WebAdSpaceListVo">
-        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal,s.upstreamId,s.status
+        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal,s.upstreamId,s.status,s.dividedY,s.dividedZ
         from w_adspace s,w_web w,u_user u
         where s.webId = w.webId and w.userId = u.userId
         <if test="webName != null and webName !=''">
@@ -152,38 +152,11 @@
     <!-- 添加广告位数据统计信息 -->
     <insert id="addWebStatistics">
         insert into w_statistics
-        (spaceId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecmp) values
+        (spaceId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecmp, status) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+            (#{item.spaceId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp},0)
         </foreach>
     </insert>
-
-    <!-- 查询数据统计信息列表 -->
-    <select id="webStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsListVo">
-        select w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
-        from w_statistics s,w_adspace d,w_web w,u_user u
-        where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
-        <if test="webName != null and webName !=''">
-            and w.webName = #{webName}
-        </if>
-        <if test="spaceName != null and spaceName !=''">
-            and d.spaceName = #{spaceName}
-        </if>
-        <if test="currentUserLevel == 2">
-            and u.parentId = #{parentId}
-        </if>
-        <if test="currentUserLevel == 3">
-            and w.userId = #{parentId}
-        </if>
-        <if test="startTime != null and startTime !=''">
-            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
-        </if>
-        <if test="endTime != null and endTime !=''">
-            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
-        </if>
-        order by s.statisticsId asc
-        limit #{num},#{pageSize}
-    </select>
 
     <!-- 查询上游id的使用情况 -->
     <select id="upstreamIdStatus" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -207,8 +180,88 @@
         (#{upstreamId},#{upstreamType},#{createTime},#{status})
     </insert>
 
-    <!-- 查询数据统计信息列表数量 -->
-    <select id="webStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <!-- 查询数据统计信息列表-用户 -->
+    <select id="webStatisticsUser" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsUser">
+        select w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
+        from w_statistics s,w_adspace d,w_web w,u_user u
+        where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId and s.status = 1
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and w.userId = #{parentId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        order by s.createTime desc,s.statisticsId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询数据统计信息列表数量-用户 -->
+    <select id="webStatisticsUserNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT count(0)
+        from w_statistics s,w_adspace d,w_web w,u_user u
+        where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId and s.status = 1
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and w.userId = #{parentId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+    </select>
+
+    <!-- 查询数据统计信息列表-管理 -->
+    <select id="webStatisticsManage" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsManage">
+        select s.statisticsId,w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,d.dividedY,d.dividedZ,
+          s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,s.status,s.beforeLookPV,s.beforeClickNum,s.beforeIncome
+        from w_statistics s,w_adspace d,w_web w,u_user u
+        where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
+        <if test="spaceName != null and spaceName !=''">
+            and d.spaceName = #{spaceName}
+        </if>
+        <if test="currentUserLevel == 2">
+            and u.parentId = #{parentId}
+        </if>
+        <if test="currentUserLevel == 3">
+            and w.userId = #{parentId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        order by s.createTime desc,s.statisticsId asc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 查询数据统计信息列表数量-管理 -->
+    <select id="webStatisticsManageNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(0)
         from w_statistics s,w_adspace d,w_web w,u_user u
         where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
@@ -237,6 +290,44 @@
         update w_adspace
         set status = #{status}
         where spaceId = #{spaceId}
+    </update>
+
+    <!-- 删除数据统计 -->
+    <delete id="deleteStatistics" parameterType="java.lang.Integer">
+        delete from w_statistics where statisticsId = #{statisticsId}
+    </delete>
+
+    <!-- 通过数据统计 -->
+    <update id="updateStatistics" parameterType="java.lang.Integer">
+        update w_statistics
+        set status = 1
+        where statisticsId = #{statisticsId}
+    </update>
+
+    <!-- 设置广告位divided -->
+    <update id="spaceDivided" parameterType="java.util.Map">
+        update w_adspace
+        set dividedY = #{dividedY}, dividedZ = #{dividedZ}
+        where spaceId = #{spaceId}
+    </update>
+
+    <!-- 上游列表 -->
+    <select id="webUpstreamTypeList" parameterType="java.util.Map" resultType="com.news.entity.WebUpstreamType">
+        select *,DATE_FORMAT(createTime,"%Y-%m-%d") as time
+        from w_upstream_type
+        order by createTime asc
+        limit #{num},#{pageSize}
+    </select>
+    <select id="webUpstreamTypeListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from w_upstream_type
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 设置上游分成比例 -->
+    <update id="webUpstreamDivided" parameterType="java.util.Map">
+        update w_upstream_type
+        set upstreamDivided = #{upstreamDivided}
+        where upstreamType = #{upstreamType}
     </update>
 
 </mapper>

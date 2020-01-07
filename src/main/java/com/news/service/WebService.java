@@ -39,12 +39,37 @@ public interface WebService {
     ReqResponse addWebStatistics(Long userId, String statisticsList)throws Exception;
 
     /**
-     * 查看WEB统计列表
+     * 查看WEB统计列表-manage
      */
-    ReqResponse webStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse webStatisticsManage(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+
+    /**
+     * 查看WEB统计列表-user
+     */
+    ReqResponse webStatisticsUser(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
     /**
      * 修改id状态
      */
     ReqResponse idStatus(int spaceId, int status);
+
+    /**
+     * 通过/删除数据
+     */
+    ReqResponse webStatisticsStatus(int statisticsId, int status);
+
+    /**
+     * 广告位divided
+     */
+    ReqResponse spaceDivided(int spaceId, double dividedY, double dividedZ);
+
+    /**
+     * 上游列表
+     */
+    ReqResponse webUpstreamTypeList(Integer currentPage, Integer pageSize);
+
+    /**
+     * 设置上游分成比例
+     */
+    ReqResponse webUpstreamDivided(Integer upstreamType, double upstreamDivided);
 }

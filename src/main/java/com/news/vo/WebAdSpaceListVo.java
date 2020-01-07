@@ -52,6 +52,24 @@ public class WebAdSpaceListVo {
      * 高度
      */
     private int height;
+    private double dividedY;
+    private double dividedZ;
+
+    public double getDividedY() {
+        return dividedY;
+    }
+
+    public void setDividedY(double dividedY) {
+        this.dividedY = dividedY;
+    }
+
+    public double getDividedZ() {
+        return dividedZ;
+    }
+
+    public void setDividedZ(double dividedZ) {
+        this.dividedZ = dividedZ;
+    }
 
     public String getUpstreamId() {
         return upstreamId;
