@@ -19,8 +19,17 @@ public class WebStatisticsManage {
     private int beforeLookPV;
     private int beforeClickNum;
     private double beforeIncome;
+    private double upstreamDivided;
     private double dividedY;
     private double dividedZ;
+
+    public double getUpstreamDivided() {
+        return upstreamDivided;
+    }
+
+    public void setUpstreamDivided(double upstreamDivided) {
+        this.upstreamDivided = upstreamDivided;
+    }
 
     public double getDividedY() {
         return dividedY;

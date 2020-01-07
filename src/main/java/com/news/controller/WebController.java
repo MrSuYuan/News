@@ -243,31 +243,7 @@ public class WebController extends BaseController {
         return req;
     }
 
-    @RequestMapping(value="webStatisticsStatus", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "通过/删除数据", notes = "通过/删除数据", httpMethod = "POST")
-    @ApiImplicitParams(value={
-            @ApiImplicitParam(name="statisticsId" , value="数据id" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="status" , value="状态" ,required = false , paramType = "query" ,dataType = "Integer")
-    })
-    @CrossOrigin
-    public ReqResponse webStatisticsStatus(Integer statisticsId, Integer status){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        Object userLevel = request.getSession().getAttribute("userLevel");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            if ((int)userLevel == 1 || (int)userLevel == 2){
-                req = webService.webStatisticsStatus(statisticsId, status);
-            }else{
-                req.setCode(ErrorMessage.FAIL.getCode());
-                req.setMessage("您没有权限");
-            }
-        }
-        return req;
-    }
+
 
     @RequestMapping(value="spaceDivided", method= RequestMethod.POST)
     @ResponseBody
@@ -341,6 +317,91 @@ public class WebController extends BaseController {
         }else{
             if ((int)userLevel == 1 || (int)userLevel == 2){
                 req = webService.webUpstreamDivided(upstreamType, upstreamDivided);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+        }
+        return req;
+    }
+
+    @RequestMapping(value="webStatisticsStatus", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "通过/删除数据", notes = "通过/删除数据", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="statisticsId" , value="数据id" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="status" , value="状态" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse webStatisticsStatus(Integer statisticsId, Integer status){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = webService.webStatisticsStatus(statisticsId, status);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+        }
+        return req;
+    }
+
+    @RequestMapping(value="webStatisticsOne", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "查询数据", notes = "查询数据", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="statisticsId" , value="数据id" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse webStatisticsOne(Integer statisticsId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = webService.webStatisticsOne(statisticsId);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+        }
+        return req;
+    }
+
+    @RequestMapping(value="updateStatistics", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "修改数据", notes = "修改数据", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="dividedY" , value="y" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="dividedZ" , value="z" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="lookPV" , value="展现" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="clickNum" , value="点击" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="income" , value="收入" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="clickProbability" , value="点击率" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="ecmp" , value="ecpm" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="statisticsId" , value="数据id" ,required = false , paramType = "query" ,dataType = "Integer"),
+    })
+    @CrossOrigin
+    public ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability,
+                                        double ecmp, Integer spaceId, Integer statisticsId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = webService.updateStatistics(dividedY, dividedZ, lookPV, clickNum, income, clickProbability, ecmp, spaceId, statisticsId);
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("您没有权限");

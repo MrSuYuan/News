@@ -136,6 +136,88 @@
                     </div>
 
                 </form>
+
+                <!-- 设置模态框 -->
+                <div class="modal" id="web_divided_set" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <form class="form-horizontal" role="form">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title">修改统计数据<input type="hidden" id="spaceId"><input type="hidden" id="statisticsId"></h4>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right "> 上游曝光 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="beforeLookPV" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> 上游点击 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="beforeClickNum" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> 上游收入 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="beforeIncome" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right "> X : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="upstreamDivided" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> Y : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="dividedY">
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> Z : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="dividedZ">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label no-padding-right "> 下游曝光 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="lookPV" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> 下游点击 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="clickNum" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> 下游收入 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="income" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> 下游点击率 : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="clickProbability" disabled>
+                                            </div>
+                                            <label class="col-sm-3 control-label no-padding-right "> 下游ecpm : </label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="col-xs-10 col-sm-7" id="ecmp" disabled>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" onclick="updateStatistics()">修改</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
             </div><!-- /.page-content -->
         </div>
     </div><!-- /.main-content -->
@@ -219,7 +301,7 @@
                         var status = data.status;
                         if (status == 0){
                             html+='<td id="td'+data.statisticsId+'"><button type="button" class="btn btn-minier btn-success" onclick="changeStatus('+data.statisticsId+')">通过</button>&nbsp;' +
-                                '<button type="button" class="btn btn-minier btn-inverse" onclick="deleteStatus('+data.statisticsId+')">修改</button></td>';
+                                '<button type="button" class="btn btn-minier btn-inverse" onclick="showStatistics('+data.statisticsId+')">修改</button></td>';
                         } else if (status == 1) {
                             html+='<td>已通过</td>';
                         }
@@ -305,21 +387,113 @@
             }
         });
     }
-    
-    //删除
-    function deleteStatus(statisticsId) {
+
+    //模态框
+    function showStatistics(statisticsId) {
+        $("#web_divided_set").modal("show");
+        //查询此条数据
         $.ajax({
-            url: path + "/web/webStatisticsStatus",
+            url: path + "/web/webStatisticsOne",
             type: "post",
             data: {
-                "statisticsId" : statisticsId,
-                "status" : 0
+                "statisticsId" : statisticsId
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    $('#tr'+statisticsId).hide();
+                    var data = obj.result;
+                    $('#beforeLookPV').val(data.beforeLookPV);
+                    $('#beforeClickNum').val(data.beforeClickNum);
+                    $('#beforeIncome').val(data.beforeIncome);
+                    $('#upstreamDivided').val(data.upstreamDivided);
+                    $('#dividedY').val(data.dividedY);
+                    $('#dividedZ').val(data.dividedZ);
+                    $('#lookPV').val(data.lookPV);
+                    $('#clickNum').val(data.clickNum);
+                    $('#income').val(data.income);
+                    $('#clickProbability').val(data.clickProbability);
+                    $('#ecmp').val(data.ecmp);
+                    $('#spaceId').val(data.spaceId);
+                    $('#statisticsId').val(data.statisticsId);
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
+    //onchange
+    $("#dividedY").change(function(){
+        var dividedY = $("#dividedY").val();
+        var dividedZ = $("#dividedZ").val();
+        compute(dividedY,dividedZ);
+    });
+    $("#dividedZ").change(function(){
+        var dividedY = $("#dividedY").val();
+        var dividedZ = $("#dividedZ").val();
+        compute(dividedY,dividedZ);
+    });
+
+    //计算
+    function compute(dividedY,dividedZ) {
+
+        var beforeLookPV = $('#beforeLookPV').val();
+        var beforeClickNum = $('#beforeClickNum').val();
+        var beforeIncome = $('#beforeIncome').val();
+        var dividedX = $('#upstreamDivided').val();
+
+        var lookPV = beforeLookPV * dividedZ;
+        var clickNum = beforeClickNum * dividedZ;
+        var income = beforeIncome * dividedX * dividedY * dividedZ;
+        var clickProbability = clickNum * 100 / lookPV;
+        var ecmp = income * 1000 / lookPV;
+
+        $('#lookPV').val(lookPV.toFixed(0));
+        $('#clickNum').val(clickNum.toFixed(0));
+        $('#income').val(income.toFixed(2));
+        $('#clickProbability').val(clickProbability.toFixed(2));
+        $('#ecmp').val(ecmp.toFixed(2));
+    }
+
+    //修改
+    function updateStatistics() {
+        var dividedY = $("#dividedY").val();
+        var dividedZ = $("#dividedZ").val();
+        var lookPV = $('#lookPV').val();
+        var clickNum = $('#clickNum').val();
+        var income = $('#income').val();
+        var clickProbability = $('#clickProbability').val();
+        var ecmp = $('#ecmp').val();
+        var spaceId = $('#spaceId').val();
+        var statisticsId = $('#statisticsId').val();
+        $.ajax({
+            url: path + "/web/updateStatistics",
+            type: "post",
+            data: {
+                "statisticsId" : statisticsId,
+                "dividedY" : dividedY,
+                "dividedZ" : dividedZ,
+                "lookPV" : lookPV,
+                "clickNum" : clickNum,
+                "income" : income,
+                "clickProbability" : clickProbability,
+                "ecmp" : ecmp,
+                "spaceId" : spaceId
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    $("#web_divided_set").modal("hide");
+                    var page = parseInt($('#currentPage').text());
+                    webStatisticsManage(page);
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";

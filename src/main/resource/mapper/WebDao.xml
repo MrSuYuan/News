@@ -298,7 +298,7 @@
     </delete>
 
     <!-- 通过数据统计 -->
-    <update id="updateStatistics" parameterType="java.lang.Integer">
+    <update id="updateStatisticsStatus" parameterType="java.lang.Integer">
         update w_statistics
         set status = 1
         where statisticsId = #{statisticsId}
@@ -328,6 +328,21 @@
         update w_upstream_type
         set upstreamDivided = #{upstreamDivided}
         where upstreamType = #{upstreamType}
+    </update>
+
+    <!-- 查询数据 -->
+    <select id="webStatisticsOne" parameterType="java.lang.Integer" resultType="com.news.vo.WebStatisticsManage">
+        select s.statisticsId,d.spaceId,t.upstreamDivided,d.dividedY,d.dividedZ,s.beforeLookPV,s.beforeClickNum,s.beforeIncome,
+        s.lookPV,s.clickNum,s.income,s.clickProbability,s.ecmp
+        from w_statistics s,w_adspace d,w_upstream_type t
+        where s.statisticsId = #{statisticsId} and s.spaceId = d.spaceId and d.upstreamType = t.upstreamType
+    </select>
+
+    <!-- 修改数据 -->
+    <update id="updateStatistics" parameterType="java.util.Map">
+        update w_statistics
+        set lookPV = #{lookPV}, clickNum = #{clickNum}, income = #{income}, clickProbability = #{clickProbability}, ecmp = #{ecmp}
+        where statisticsId = #{statisticsId}
     </update>
 
 </mapper>

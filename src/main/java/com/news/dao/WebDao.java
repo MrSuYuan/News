@@ -114,12 +114,12 @@ public interface WebDao {
     void idStatus(Map<String,Object> map);
 
     /**
-     * 删除数据统计
+     * 通过数据统计
      */
-    void updateStatistics(int statisticsId);
+    void updateStatisticsStatus(int statisticsId);
 
     /**
-     * 通过数据统计
+     * 删除数据统计
      */
     void deleteStatistics(int statisticsId);
 
@@ -138,4 +138,14 @@ public interface WebDao {
      * 设置上游分成比例
      */
     void webUpstreamDivided(Map<String,Object> map);
+
+    /**
+     * 查询数据
+     */
+    WebStatisticsManage webStatisticsOne(int statisticsId);
+
+    /**
+     * 修改数据
+     */
+    void updateStatistics(Map<String,Object> map);
 }

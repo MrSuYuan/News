@@ -417,7 +417,7 @@ public class WebServiceImpl implements WebService {
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("成功");
         }else if (status == 1){
-            webDao.updateStatistics(statisticsId);
+            webDao.updateStatisticsStatus(statisticsId);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("成功");
         }else{
@@ -494,6 +494,48 @@ public class WebServiceImpl implements WebService {
         map.put("upstreamType",upstreamType);
         map.put("upstreamDivided",upstreamDivided);
         webDao.webUpstreamDivided(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    /**
+     * 查询数据
+     */
+    @Override
+    public ReqResponse webStatisticsOne(int statisticsId) {
+        ReqResponse req = new ReqResponse();
+        WebStatisticsManage data =  webDao.webStatisticsOne(statisticsId);
+        req.setResult(data);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    /**
+     * 修改数据
+     */
+    @Override
+    public ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability, double ecmp, Integer spaceId, Integer statisticsId) {
+        ReqResponse req = new ReqResponse();
+
+        //1改yx
+        Map<String,Object> map = new HashMap<>();
+        map.put("spaceId",spaceId);
+        map.put("dividedY",dividedY);
+        map.put("dividedZ",dividedZ);
+        webDao.spaceDivided(map);
+
+        //2改数据
+        Map<String,Object> m = new HashMap<>();
+        m.put("lookPV",lookPV);
+        m.put("clickNum",clickNum);
+        m.put("income",income);
+        m.put("clickProbability",clickProbability);
+        m.put("ecmp",ecmp);
+        m.put("statisticsId",statisticsId);
+        webDao.updateStatistics(m);
+
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;

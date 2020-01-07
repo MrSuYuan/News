@@ -64,7 +64,7 @@ public class TaskServiceImpl implements TaskService {
                     as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
                     as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
                     as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
-                    as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
+                    as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
                     as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
                     list.add(as);
                 }

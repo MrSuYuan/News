@@ -72,4 +72,15 @@ public interface WebService {
      * 设置上游分成比例
      */
     ReqResponse webUpstreamDivided(Integer upstreamType, double upstreamDivided);
+
+    /**
+     * 查询数据
+     */
+    ReqResponse webStatisticsOne(int statisticsId);
+
+    /**
+     * 修改数据
+     */
+    ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability,
+                                 double ecmp, Integer spaceId, Integer statisticsId);
 }
