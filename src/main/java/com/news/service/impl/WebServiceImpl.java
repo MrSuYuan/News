@@ -183,6 +183,12 @@ public class WebServiceImpl implements WebService {
             ad.setRemark(remark);
             ad.setStatus(1);
             webDao.createAdspace(ad);
+            //4添加w_adspace_upstream表记录
+            WebAdspaceUpstream wau = new WebAdspaceUpstream();
+            wau.setSpaceId(ad.getSpaceId());
+            wau.setUpstreamId(upstreamId);
+            wau.setStartTime(new Date());
+            webDao.insertAdspaceUpstream(wau);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("创建成功");
         }else{
@@ -392,10 +398,25 @@ public class WebServiceImpl implements WebService {
     public ReqResponse idStatus(int spaceId, int status) {
         ReqResponse req = new ReqResponse();
         try{
+            //0停用 1正常 2禁用
             Map<String,Object> map = new HashMap<>();
             map.put("spaceId",spaceId);
             map.put("status",status);
             webDao.idStatus(map);
+            //修改w_adspace_upstream表
+            WebAdspaceUpstream wau = webDao.selectAdspaceUpstream(spaceId);
+            //停用和禁用时,如果结束时间为空,则添加结束时间
+            if (status == 0 || status == 2){
+                if (null == wau.getEndTime()){
+                    webDao.updateEndTime(wau);
+                }
+            }
+            //如果是启用,则添加一条新数据
+            if (status == 1){
+                wau.setStartTime(new Date());
+                webDao.insertAdspaceUpstream(wau);
+            }
+
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("成功");
         }catch (Exception e){

@@ -98,7 +98,7 @@
         <task:scheduled ref="taskController" method="getNews" cron="0 18 16 * * ?"/>
     </task:scheduled-tasks>-->
     <task:scheduled-tasks>
-        <task:scheduled ref="taskController" method="xingChen" cron="0 20 17 * * ?"/>
+        <task:scheduled ref="taskController" method="xingChen" cron="0 30 10 * * ?"/>
     </task:scheduled-tasks>
 
     <!--静态资源直接访问-->

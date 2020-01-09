@@ -83,16 +83,39 @@
     </update>
 
     <!-- 创建广告位信息 -->
-    <insert id="createAdspace" parameterType="com.news.entity.WebAdspace">
+    <insert id="createAdspace" parameterType="com.news.entity.WebAdspace" useGeneratedKeys="true" keyProperty="spaceId" keyColumn="spaceId">
         insert into w_adspace
         (webId, upstreamId, upstreamType, terminal, spaceType, createTime, spaceName, width, height, remark, status)
         values
         (#{webId},#{upstreamId},#{upstreamType},#{terminal},#{spaceType},now(),#{spaceName},#{width},#{height},#{remark},#{status})
     </insert>
 
+    <!-- 创建id使用记录信息 -->
+    <insert id="insertAdspaceUpstream" parameterType="com.news.entity.WebAdspaceUpstream">
+        insert into w_adspace_upstream
+        (spaceId, upstreamId, startTime)
+        values
+        (#{spaceId},#{upstreamId},#{startTime})
+    </insert>
+
+    <!-- 查询最新id使用记录信息 -->
+    <select id="selectAdspaceUpstream" parameterType="java.lang.Integer" resultType="com.news.entity.WebAdspaceUpstream">
+        select u.*
+        from w_adspace a,w_adspace_upstream u
+        where a.spaceId = #{spaceId} and a.spaceId = u.spaceId and a.upstreamId = u.upstreamId
+        ORDER BY u.startTime desc limit 0,1
+    </select>
+
+    <!-- 修改id使用记录信息结束时间 -->
+    <update id="updateEndTime" parameterType="com.news.entity.WebAdspaceUpstream">
+        update w_adspace_upstream
+        set endTime = now()
+        where spaceId = #{spaceId} and upstreamId = #{upstreamId}
+    </update>
+
     <!-- 广告位列表 -->
     <select id="webAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.WebAdSpaceListVo">
-        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal,s.upstreamId,s.status,s.dividedY,s.dividedZ
+        select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal,s.upstreamId,s.status,s.dividedY,s.dividedZ,DATE_FORMAT(s.updateTime,"%Y-%m-%d %H:%i:%s") as updateTime
         from w_adspace s,w_web w,u_user u
         where s.webId = w.webId and w.userId = u.userId
         <if test="webName != null and webName !=''">

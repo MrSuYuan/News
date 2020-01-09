@@ -40,6 +40,7 @@ public class WebAdSpaceListVo {
      * 创建时间
      */
     private String createTime;
+    private String updateTime;
     /**
      * 广告位名称
      */
@@ -54,6 +55,14 @@ public class WebAdSpaceListVo {
     private int height;
     private double dividedY;
     private double dividedZ;
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public double getDividedY() {
         return dividedY;

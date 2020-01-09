@@ -64,9 +64,15 @@ public class TaskController extends BaseController {
     @CrossOrigin
     public void xingChen() {
         logger.error("++++++++++++++星辰广告数据统计开始+++++++++++++++++++");
-
         //星辰账号key
-        String key = "47484e3dbaf3b66a80ced2";
+        //String key = "47484e3dbaf3b66a80ced2";
+        //String key = "fe27c82de28463ec3c3b81";
+        key("47484e3dbaf3b66a80ced2");
+        key("fe27c82de28463ec3c3b81");
+        logger.error("++++++++++++++星辰广告数据统计结束+++++++++++++++++++");
+    }
+
+    public void key(String key){
         //获取日期(获取昨天的日期)
         Calendar cal=Calendar.getInstance();
         cal.add(Calendar.DATE,-1);
@@ -87,13 +93,6 @@ public class TaskController extends BaseController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.error("++++++++++++++星辰广告数据统计结束+++++++++++++++++++");
 
-
-//        select * from
-//                (select id,spaceId,upstreamId,startTime,IFNULL(endTime,now())as endTime
-//                        from w_adspace_upstream
-//                        where upstreamId = "u3624090") w
-//        where TO_DAYS(w.startTime)<=TO_DAYS('2019-12-20') and TO_DAYS(w.endTime)>TO_DAYS('2019-12-20')
     }
 }

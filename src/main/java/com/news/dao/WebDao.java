@@ -54,6 +54,21 @@ public interface WebDao {
     void createAdspace(WebAdspace ad);
 
     /**
+     * 创建id使用记录信息
+     */
+    void insertAdspaceUpstream(WebAdspaceUpstream webAdspaceUpstream);
+
+    /**
+     * 查询最新id使用记录信息
+     */
+    WebAdspaceUpstream selectAdspaceUpstream(int spaceId);
+
+    /**
+     * 修改id使用记录信息结束时间
+     */
+    void updateEndTime(WebAdspaceUpstream wau);
+
+    /**
      * 广告位列表
      */
     List<WebAdSpaceListVo> webAdspaceList(Map<String,Object> map);
