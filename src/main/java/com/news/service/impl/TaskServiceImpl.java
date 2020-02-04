@@ -27,6 +27,9 @@ public class TaskServiceImpl implements TaskService {
 
     /**
      * 星辰广告统计
+     * str是星辰返回信息
+     * date是字符串格式昨日日期
+     * yesterday是时间格式昨日日期
      */
     @Override
     public void xingChen(String str, String date, Date yesterday) {
@@ -43,32 +46,45 @@ public class TaskServiceImpl implements TaskService {
                 Map<String,Object> map = new HashMap<>();
                 map.put("upstreamId",upstreamId);
                 map.put("date",date);
+                //查询对应广告位id和分润概率
                 DividedVo dv = taskDao.dividedVo(map);
                 if (null == dv){
                     System.out.println("不存在ID---"+upstreamId);
                     continue;
                 }else{
-                    System.out.println("ID---"+upstreamId+"?"+dv.getSpaceId());
-                    int show = jb.getInt("show");//展现
-                    int click = jb.getInt("click");//点击
-                    double income = jb.getDouble("income");//收入
-                    double upstreamDivided = dv.getUpstreamDivided();
-                    double dividedY = dv.getDividedY();
-                    double dividedZ = dv.getDividedZ();
-                    WebStatistics as = new WebStatistics();
-                    as.setCreateTime(yesterday);
-                    as.setSpaceId(dv.getSpaceId());
-                    as.setBeforeLookPV(show);
-                    as.setBeforeClickNum(click);
-                    as.setBeforeIncome(income);
-                    as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
-                    as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
-                    as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
-                    as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
-                    as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
-                    list.add(as);
+                    System.out.println("正常ID---"+upstreamId+"..."+dv.getSpaceId());
+                    //查看有没有当日数据
+                    int spaceId = dv.getSpaceId();
+                    map.put("spaceId",spaceId);
+                    int num = taskDao.statisticsNum(map);
+                    //没有昨日数据,添加数据
+                    if (num == 0){
+                        int show = jb.getInt("show");//展现
+                        int click = jb.getInt("click");//点击
+                        double income = jb.getDouble("income");//收入
+                        double upstreamDivided = dv.getUpstreamDivided();
+                        double dividedY = dv.getDividedY();
+                        double dividedZ = dv.getDividedZ();
+                        WebStatistics as = new WebStatistics();
+                        as.setCreateTime(yesterday);
+                        as.setSpaceId(spaceId);
+                        as.setBeforeLookPV(show);
+                        as.setBeforeClickNum(click);
+                        as.setBeforeIncome(income);
+                        as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
+                        as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
+                        as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
+                        as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
+                        as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                        list.add(as);
+                    }
+                    //有昨日数据,跳过无操作
+                    else{
+
+                    }
                 }
             }
+            //添加数据统计
             if (list.size()>0){
                 webDao.addWebStatistics(list);
             }

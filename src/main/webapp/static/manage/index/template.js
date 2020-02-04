@@ -145,6 +145,7 @@ function navigationBar(path){
 	html += '			<li class="" id="webStatistics"><a href="'+path+'/webStatistics"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webUpstreamTypeList"><a href="'+path+'/webUpstreamTypeList"><i class="menu-icon fa fa-caret-right"></i>上游信息</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webDivided"><a href="'+path+'/webDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webReadExcel"><a href="'+path+'/webReadExcel"><i class="menu-icon fa fa-caret-right"></i>上传Excel</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -210,6 +211,7 @@ function permission(pageSign){
         $('#temporary').hide();
         $('#httpRequest').hide();
         $('#webUpstreamTypeList').hide();
+        $('#webReadExcel').hide();
 
 	}
 
@@ -306,6 +308,9 @@ function permission(pageSign){
     }else if (pageSign == "webDivided"){
         $('#web').addClass('active open');
         $('#webDivided').addClass('active');
+    }else if (pageSign == "webReadExcel"){
+        $('#web').addClass('active open');
+        $('#webReadExcel').addClass('active');
 
     //临时
     }else if (pageSign == "temporaryAdd"){

@@ -2,6 +2,7 @@ package com.news.service.impl;
 
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.news.dao.TaskDao;
 import com.news.dao.UserDao;
 import com.news.dao.WebDao;
 import com.news.entity.*;
@@ -9,9 +10,14 @@ import com.news.service.WebService;
 import com.news.vo.*;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -560,5 +566,89 @@ public class WebServiceImpl implements WebService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;
+    }
+
+    @Resource
+    private TaskDao taskDao;
+
+
+    /**
+     * 百度Excel
+     */
+    @Override
+    public ReqResponse baiDuExcel(Sheet sheetAt) {
+        int rowsOfSheet = sheetAt.getPhysicalNumberOfRows();
+        List<WebStatistics> list = new ArrayList<>();
+        // 第2行+--数据行
+        for (int r = 1; r < rowsOfSheet; r++) {
+            Row row = sheetAt.getRow(r);
+            if (row == null) {
+                continue;
+            } else {
+                int rowNum = row.getRowNum() + 1;
+                //System.out.println("当前行:" + rowNum);
+                row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(6).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(7).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(8).setCellType(Cell.CELL_TYPE_STRING);
+                String c1 = row.getCell(1).getStringCellValue();//第2列-代码位
+                String c5 = row.getCell(5).getStringCellValue();//第6列-时间
+                String c6 = row.getCell(6).getStringCellValue();//第7列-展现
+                String c7 = row.getCell(7).getStringCellValue();//第8列-点击
+                String c8 = row.getCell(8).getStringCellValue();//第9列-收入
+                //代码位-时间-展现-点击-收入
+                Map<String,Object> map = new HashMap<>();
+                map.put("upstreamId",c1);
+                map.put("date",c5);
+                DividedVo dv = taskDao.dividedVo(map);
+                if (null == dv){
+                    System.out.println("不存在ID---"+c1);
+                    continue;
+                }else{
+                    //查看有没有当日数据
+                    int spaceId = dv.getSpaceId();
+                    map.put("spaceId",spaceId);
+                    int num = taskDao.statisticsNum(map);
+                    //没有昨日数据,添加数据
+                    if (num == 0){
+                        System.out.println("ID---"+c1+"..."+dv.getSpaceId());
+                        int show = Integer.valueOf(c6);//展现
+                        int click = Integer.valueOf(c7);//点击
+                        double income = Double.parseDouble(c8);//收入
+                        double upstreamDivided = dv.getUpstreamDivided();
+                        double dividedY = dv.getDividedY();
+                        double dividedZ = dv.getDividedZ();
+                        WebStatistics as = new WebStatistics();
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                        Date d = null;
+                        try {
+                            d = sdf.parse(c5);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        as.setCreateTime(d);
+                        as.setSpaceId(dv.getSpaceId());
+                        as.setBeforeLookPV(show);
+                        as.setBeforeClickNum(click);
+                        as.setBeforeIncome(income);
+                        as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
+                        as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
+                        as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
+                        as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
+                        as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                        list.add(as);
+                    }
+                    //有数据,跳过无操作
+                    else{
+
+                    }
+                }
+            }
+        }
+        if (list.size()>0){
+            webDao.addWebStatistics(list);
+        }
+        return null;
     }
 }

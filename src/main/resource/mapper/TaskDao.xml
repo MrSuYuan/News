@@ -16,4 +16,12 @@
         and au.spaceId = a.spaceId and a.upstreamType = t.upstreamType
     </select>
 
+    <!-- 查看此id有没有当日数据信息 -->
+    <select id="statisticsNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from w_statistics
+        where TO_DAYS(createTime) = TO_DAYS(#{date})
+        and spaceId = #{spaceId}
+    </select>
+
 </mapper>

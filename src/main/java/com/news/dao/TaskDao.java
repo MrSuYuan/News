@@ -13,4 +13,8 @@ public interface TaskDao {
      */
     DividedVo dividedVo(Map<String,Object> map);
 
+    /**
+     * 查看有没有数据信息
+     */
+    int statisticsNum(Map<String,Object> map);
 }

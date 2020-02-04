@@ -9,11 +9,22 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+
+import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Iterator;
 
 @Controller
 @RequestMapping("web")
@@ -409,5 +420,42 @@ public class WebController extends BaseController {
         }
         return req;
     }
+
+    @RequestMapping(value="upload", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上传Excel", notes = "上传Excel", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse upload(HttpServletRequest request) throws Exception {
+        ReqResponse req = new ReqResponse();
+        Workbook workBook;
+        // 创建一个通用的多部分解析器
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver( request.getSession().getServletContext());
+        // 判断 request 是否有文件上传,即多部分请求
+        if (multipartResolver.isMultipart(request)) {
+            // 转换成多部分request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            // 取得request中的所有文件名
+            Iterator<String> iter = multiRequest.getFileNames();
+            while (iter.hasNext()) {
+                // 取得上传文件\
+                MultipartFile file = multiRequest.getFile(iter.next());
+                InputStream fis =  file.getInputStream();
+                workBook = WorkbookFactory.create(fis);
+                int numberOfSheets = workBook.getNumberOfSheets();
+                // sheet工作表
+                for (int s = 0; s < numberOfSheets; s++) {
+                    Sheet sheetAt = workBook.getSheetAt(s);
+                    webService.baiDuExcel(sheetAt);
+                }
+            }
+            req.setCode("200");
+            req.setMessage("成功");
+        }else{
+            req.setCode("300");
+            req.setMessage("检测不到文件");
+        }
+        return req;
+    }
+
 
 }

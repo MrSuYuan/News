@@ -74,12 +74,12 @@ public class TaskController extends BaseController {
 
     public void key(String key){
         //获取日期(获取昨天的日期)
-        Calendar cal=Calendar.getInstance();
+        Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE,-1);
-        Date d=cal.getTime();
-        SimpleDateFormat sp=new SimpleDateFormat("yyyy-MM-dd");
-        String date=sp.format(d);
-
+        Date d = cal.getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String date = sdf.format(d);
+        //请求地址
         String url = "https://channel.xingchenjia.com/client/dataapi/pcwap?key="+key+"&date="+date;
         //https://channel.xingchenjia.com/client/dataapi/pcwap?key=47484e3dbaf3b66a80ced2&date=2020-01-01
         CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -88,6 +88,7 @@ public class TaskController extends BaseController {
         try {
             response = httpClient.execute(httpGet);
             HttpEntity entity = response.getEntity();
+            //返回数据
             String str = EntityUtils.toString(entity,"utf-8");
             taskService.xingChen(str, date, d);
         } catch (IOException e) {

@@ -257,7 +257,7 @@
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
-        order by s.statisticsId asc
+        order by s.createTime desc
         limit #{num},#{pageSize}
     </select>
 

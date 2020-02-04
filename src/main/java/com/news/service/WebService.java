@@ -2,6 +2,7 @@ package com.news.service;
 
 import com.news.entity.Web;
 import com.utils.response.ReqResponse;
+import org.apache.poi.ss.usermodel.Sheet;
 
 /**
  * WEB模块逻辑层接口
@@ -83,4 +84,9 @@ public interface WebService {
      */
     ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability,
                                  double ecmp, Integer spaceId, Integer statisticsId);
+
+    /**
+     * 百度Excel
+     */
+    ReqResponse baiDuExcel(Sheet sheetAt);
 }
