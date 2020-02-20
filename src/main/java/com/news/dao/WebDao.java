@@ -134,6 +134,11 @@ public interface WebDao {
     void updateStatisticsStatus(int statisticsId);
 
     /**
+     * 查询id状态
+     */
+    int adspaceIdStatus(int statisticsId);
+
+    /**
      * 删除数据统计
      */
     void deleteStatistics(int statisticsId);
@@ -163,4 +168,19 @@ public interface WebDao {
      * 修改数据
      */
     void updateStatistics(Map<String,Object> map);
+
+    /**
+     * 查看有没有消息
+     */
+    Map<String,Object> messageNum();
+
+    /**
+     * 查看有没有读
+     */
+    int unReadMessage(Long userId);
+
+    /**
+     * 改为已读
+     */
+    void readMessage(Map<String,Object> map);
 }

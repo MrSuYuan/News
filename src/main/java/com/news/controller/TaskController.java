@@ -96,4 +96,20 @@ public class TaskController extends BaseController {
         }
 
     }
+
+    /**
+     * 查看没有数据广告位的消息
+     */
+    @RequestMapping(value = "/xiaoxi",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "消息", notes = "消息", httpMethod = "POST")
+    @CrossOrigin
+    public void xiaoxi() {
+        System.out.println("+++++++++++++++++++");
+        logger.error("++++++++++++++消息整理开始+++++++++++++++++++");
+        taskService.xiaoxi();
+        logger.error("++++++++++++++消息整理开始+++++++++++++++++++");
+    }
+
+
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import javax.swing.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -90,4 +91,87 @@ public class TaskServiceImpl implements TaskService {
             }
         }
     }
+
+    /**
+     * 消息
+     */
+    @Override
+    public void xiaoxi() {
+        //时间
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar c = Calendar.getInstance();
+        //-1.昨天时间 0.当前时间 1.明天时间 *以此类推
+        c.add(Calendar.DATE, -1);
+        String t1 = sdf.format(c.getTime());
+        //-1.昨天时间 0.当前时间 1.明天时间 *以此类推
+        c.add(Calendar.DATE, -1);
+        String t2 = sdf.format(c.getTime());
+
+        //先看看今天有没有出数据(昨天的数据id)
+        List<String> l1 = taskDao.dayData(t1);
+        System.out.println("昨天数据"+l1.size());
+        //出了
+        if (l1.size() > 0){
+            //再看看今天有没有消息
+            int todayMessage = taskDao.todayMessage();
+            System.out.println("昨天消息"+todayMessage);
+            //没有消息
+            if (todayMessage == 0){
+                //查看今天的id
+                List<String> l2 = taskDao.dayData(t2);
+                System.out.println("前天数据"+l2.size());
+                //对比-添加消息
+                int k = 0;
+                for (int i = 0; i < l2.size(); i++){
+                    for (int j = 0; j < l1.size(); j++){
+                        if (l2.get(i).equals(l1.get(j))){
+                            l2.set(i,"");
+                            k = k + 1;
+                            continue;
+                        }
+                    }
+                }
+                String message = "昨日无数据ID : ";
+                if (k != l2.size()){
+                    for (int i = 0; i < l2.size(); i++){
+                        if (!"".equals(l2.get(i))){
+                            message = message + l2.get(i) + "  ";
+                        }
+                    }
+                    System.out.println("消息"+message);
+                    //添加新消息
+                    taskDao.insertMessage(message);
+
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        List l1 = new ArrayList();
+        l1.add(1);
+        l1.add(5);
+        l1.add(3);
+        l1.add(6);
+        l1.add(8);
+        List l2 = new ArrayList();
+        l2.add(5);
+        l2.add(3);
+        l2.add(6);
+        for (int i = 0; i < l1.size(); i++){
+            for (int j = 0; j < l2.size(); j++){
+                if (l1.get(i) == l2.get(j)){
+                    l1.set(i,0);
+                    continue;
+                }
+            }
+        }
+        for (int i = 0; i < l1.size(); i++){
+            if ((int)l1.get(i) != 0){
+                System.out.println(l1.get(i));
+            }
+
+        }
+    }
+
 }

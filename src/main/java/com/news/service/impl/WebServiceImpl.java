@@ -438,18 +438,25 @@ public class WebServiceImpl implements WebService {
     @Override
     public ReqResponse webStatisticsStatus(int statisticsId, int status) {
         ReqResponse req = new ReqResponse();
-        //status 0删除 1通过
-        if (status == 0){
-            webDao.deleteStatistics(statisticsId);
-            req.setCode(ErrorMessage.SUCCESS.getCode());
-            req.setMessage("成功");
-        }else if (status == 1){
-            webDao.updateStatisticsStatus(statisticsId);
-            req.setCode(ErrorMessage.SUCCESS.getCode());
-            req.setMessage("成功");
+        //查看此id有没有被禁用
+        int idStatus = webDao.adspaceIdStatus(statisticsId);
+        if (idStatus == 1){
+            //status 0删除 1通过
+            if (status == 0){
+                webDao.deleteStatistics(statisticsId);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("删除成功");
+            }else if (status == 1){
+                webDao.updateStatisticsStatus(statisticsId);
+                req.setCode(ErrorMessage.SUCCESS.getCode());
+                req.setMessage("通过成功");
+            }else{
+                req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
+                req.setMessage("参数错误");
+            }
         }else{
-            req.setCode(ErrorMessage.PARAMETER_ILLEGAL.getCode());
-            req.setMessage("参数错误");
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("该id被禁用或停用");
         }
         return req;
     }
@@ -650,5 +657,34 @@ public class WebServiceImpl implements WebService {
             webDao.addWebStatistics(list);
         }
         return null;
+    }
+
+    /**
+     * 消息
+     * @param userId
+     * @return
+     */
+    @Override
+    public ReqResponse message(Long userId) {
+        ReqResponse req = new ReqResponse();
+        //查看今天有没有消息
+        Map<String,Object> map = webDao.messageNum();
+        if (null != map){
+            //查看今天有没有读
+            int num = webDao.unReadMessage(userId);
+            if (num == 0){
+                //提示,并改为已读
+                map.put("userId",userId);
+                map.put("msgId",map.get("id"));
+                webDao.readMessage(map);
+                req.setCode("300");
+                req.setMessage(map.get("content").toString());
+            }else{
+                req.setCode("200");
+            }
+        }else{
+            req.setCode("200");
+        }
+        return req;
     }
 }

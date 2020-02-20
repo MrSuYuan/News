@@ -457,5 +457,19 @@ public class WebController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="message", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "管理员消息", notes = "管理员消息", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse message(){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+
+        }else{
+            req = webService.message((long)userId);
+        }
+        return req;
+    }
 
 }

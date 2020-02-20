@@ -102,6 +102,10 @@
         <task:scheduled ref="taskController" method="xingChen" cron="0 30 * * * ?"/>
     </task:scheduled-tasks>
 
+    <task:scheduled-tasks>
+        <task:scheduled ref="taskController" method="xiaoxi" cron="0 35 * * * ?"/>
+    </task:scheduled-tasks>
+
     <!--静态资源直接访问-->
     <mvc:resources location="/WEB-INF/index/" mapping="/index/**"/>
 

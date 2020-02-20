@@ -166,7 +166,14 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
+        alert("..."+currentUserLevel);
+        //加载数据
         selectStatisticsList(1);
+        //加载消息
+        var currentUserLevel = $('#currentUserLevel').val();
+        if(currentUserLevel == 0 || currentUserLevel ==1){
+            message();
+        }
     });
 
     //点击搜索数据展示
@@ -262,6 +269,24 @@
         if (len <= 3) { return b; }
         var r = len % 3;
         return r > 0 ? b.slice(0, r) + "," + b.slice(r, len).match(/\d{3}/g).join(",") : b.slice(r, len).match(/\d{3}/g).join(",");
+    }
+
+    //消息
+    function message() {
+        $.ajax({
+            url: path + "/web/message",
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+
+                alert(obj.message);
+
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
     }
 
 </script>

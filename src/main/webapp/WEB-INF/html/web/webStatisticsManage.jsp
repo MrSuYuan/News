@@ -253,6 +253,7 @@
     //进入页面直接请求数据
     $(document).ready(function(){
         webStatisticsManage(1);
+        message();
     });
 
     //点击搜索数据展示
@@ -507,6 +508,23 @@
         });
     }
 
+    //消息
+    function message() {
+        $.ajax({
+            url: path + "/web/message",
+            type: "post",
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if (obj.code == 300) {
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
 </script>
 
 </html>

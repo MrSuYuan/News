@@ -315,6 +315,13 @@
         where spaceId = #{spaceId}
     </update>
 
+    <!-- 查询id状态 -->
+    <select id="adspaceIdStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select a.`status` from
+        w_statistics s,w_adspace a
+        where s.statisticsId = #{statisticsId} and s.spaceId = a.spaceId
+    </select>
+
     <!-- 删除数据统计 -->
     <delete id="deleteStatistics" parameterType="java.lang.Integer">
         delete from w_statistics where statisticsId = #{statisticsId}
@@ -367,5 +374,27 @@
         set lookPV = #{lookPV}, clickNum = #{clickNum}, income = #{income}, clickProbability = #{clickProbability}, ecmp = #{ecmp}
         where statisticsId = #{statisticsId}
     </update>
+
+    <!-- 查看有没有消息 -->
+    <select id="messageNum" resultType="java.util.Map">
+        select * from w_message
+        where TO_DAYS(createTime) >= TO_DAYS(now())
+    </select>
+
+    <!-- 查看有没有读 -->
+    <select id="unReadMessage" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select count(0) from w_message_read
+        where userId = #{userId} and TO_DAYS(createTime) >= TO_DAYS(now())
+
+    </select>
+
+    <!-- 改为已读 -->
+    <insert id="readMessage" parameterType="java.util.Map">
+        insert into w_message_read
+        (msgId, userId ,createTime)
+        values
+        (#{msgId},#{userId},now())
+    </insert>
+
 
 </mapper>

@@ -24,4 +24,25 @@
         and spaceId = #{spaceId}
     </select>
 
+    <!-- 查询指定时间的数据 -->
+    <select id="dayData" parameterType="java.lang.String" resultType="java.lang.String">
+        select u.upstreamId from
+        (select spaceId,upstreamId
+        from w_adspace_upstream where TO_DAYS(#{date}) >= TO_DAYS(startTime) and (endTime is null or TO_DAYS(endTime) > TO_DAYS(#{date})))u,w_statistics s
+        where u.spaceId = s.spaceId and TO_DAYS(s.createTime) = TO_DAYS(#{date})
+    </select>
+
+    <!-- 查看当日消息 -->
+    <select id="todayMessage" resultType="java.lang.Integer">
+        select count(0) from w_message where TO_DAYS(createTime) >= TO_DAYS(now())
+    </select>
+
+    <!-- 添加消息 -->
+    <insert id="insertMessage" parameterType="java.lang.String">
+        insert into w_message
+        (content,createTime)
+        values
+        (#{message},now())
+    </insert>
+
 </mapper>

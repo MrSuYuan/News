@@ -89,4 +89,9 @@ public interface WebService {
      * 百度Excel
      */
     ReqResponse baiDuExcel(Sheet sheetAt);
+
+    /**
+     * 消息
+     */
+    ReqResponse message(Long userId);
 }
