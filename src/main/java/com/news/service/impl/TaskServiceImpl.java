@@ -72,11 +72,20 @@ public class TaskServiceImpl implements TaskService {
                         as.setBeforeLookPV(show);
                         as.setBeforeClickNum(click);
                         as.setBeforeIncome(income);
-                        as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
-                        as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
-                        as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
-                        as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
-                        as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                        int lookpv = (int)(as.getBeforeLookPV() * dividedZ);
+                        if (lookpv == 0){
+                            as.setLookPV(0);
+                            as.setClickNum(0);
+                            as.setIncome(0);
+                            as.setClickProbability(0);
+                            as.setEcmp(0);
+                        }else{
+                            as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
+                            as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
+                            as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
+                            as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
+                            as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                        }
                         list.add(as);
                     }
                     //有昨日数据,跳过无操作
