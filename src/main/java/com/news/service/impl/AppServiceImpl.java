@@ -896,12 +896,23 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ReqResponse reportList(String adId, String startTime, String endTime) {
+    public ReqResponse reportList(String adId, String startTime, String endTime, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         map.put("adId",adId);
         map.put("startTime",startTime);
         map.put("endTime",endTime);
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
+        }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+
+        //list数据
         List<ReportVo> reportList = appDao.reportList(map);
         DecimalFormat df = new DecimalFormat("######0.00");
         for(int i = 0; i < reportList.size(); i++){
@@ -910,7 +921,27 @@ public class AppServiceImpl implements AppService {
             r.setEcpm2(df.format(r.getEcpm()));
             r.setCpc2(df.format(r.getCpc()));
         }
-        req.setResult(reportList);
+
+        //总和
+        int sumData = appDao.reportListNum(map);
+
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",reportList);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+
+
+        req.setResult(result);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;

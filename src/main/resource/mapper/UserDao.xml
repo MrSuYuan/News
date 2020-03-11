@@ -16,15 +16,15 @@
     
     <!-- 修改密码 -->
     <update id="updatePassWord" parameterType="com.news.entity.User">
-        update u_user set passWord = #{passWord} where userId = #{userId}
+        update u_user set passWord = #{passWord},miMa = #{miMa} where userId = #{userId}
     </update>
 
     <!-- 创建新用户 -->
     <insert id="createUser" parameterType="com.news.entity.User" useGeneratedKeys="true" keyProperty="userId">
         insert into u_user
-        (loginName, passWord, nickName, parentId, userLevel, userStatus, createTime)
+        (loginName, passWord, nickName, parentId, userLevel, userStatus, createTime, miMa)
         values
-        (#{loginName},#{passWord},#{nickName},#{parentId},#{userLevel},2,now())
+        (#{loginName},#{passWord},#{nickName},#{parentId},#{userLevel},2,now(),#{miMa})
     </insert>
 
     <!-- 查询当前用户身份 -->
@@ -109,6 +109,11 @@
         upstreamProportion = #{upstreamProportion},
         userProportion = #{userProportion}
         where userId = #{userId} and type = #{type}
+    </update>
+
+    <!-- 为老客户添加密码项 -->
+    <update id="updateMiMa" parameterType="com.news.entity.User">
+        update u_user set miMa = #{miMa} where loginName = #{loginName}
     </update>
 
 </mapper>

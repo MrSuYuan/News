@@ -92,9 +92,9 @@
                                     </select>--%>
                                     <input type="text" id="adId" placeholder="广告位ID" style="height: 34.2px">&nbsp;&nbsp;&nbsp;
                                     <input type="date" id="startTime">&nbsp;&nbsp;&nbsp;-<input type="date" id="endTime">
-                                    <a class="btn btn-primary btn-xs" onclick="selectUserList()" style="width: 80px;">
-                                        <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">查询</font></i>
-                                    </a>
+                                        <a class="btn btn-primary btn-xs" onclick="selectReportList($('#currentPage').val())">
+                                            <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">查询</font></i>
+                                        </a>
                                 </div>
                             </form>
                         </div>
@@ -198,6 +198,40 @@
                             </tbody>
 
                         </table>
+                        <!-- 页面设置 -->
+                        <div class="modal-footer no-margin-top">
+                            <div class="dataTables_paginate paging_simple_numbers">
+                                <ul class="pagination">
+                                    <li>
+                                        <a onclick="lastPageData()" title="上一页">
+                                            <i class="ace-icon fa fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="active">
+                                        <a title="当前页">
+                                            <span id="currentPage"></span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a onclick="nextPageData()" title="下一页">
+                                            <i class="ace-icon fa fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            共&nbsp;<span id="sumPage"></span>&nbsp;页&nbsp;|&nbsp;
+                                            共&nbsp;<span id="sumData"></span>&nbsp;条数据
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a>
+                                            <span>页面容量</span>
+                                        </a>
+                                        <input type="text" id="pageSize" style="width: 33.44px;height: 32.4px">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div><!-- /.page-content -->
@@ -228,11 +262,18 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        selectUserList();
+        selectReportList(1);
     });
 
     //点击搜索数据展示
-    function selectUserList() {
+    function selectReportList(currentPage) {
+        var pageSize = $('#pageSize').val();
+        if(pageSize == ""){
+            pageSize = 20;
+        }else if(pageSize == 0){
+            alert("页码容量不能为0");
+            return false;
+        }
         var startTime = $('#startTime').val();
         var endTime = $('#endTime').val();
         var adId = $('#adId').val();
@@ -240,6 +281,8 @@
             url: path + "/app/reportList",
             type: "post",
             data: {
+                "currentPage" : currentPage,
+                "pageSize" : pageSize,
                 "adId" : adId,
                 "startTime" : startTime,
                 "endTime" : endTime
@@ -248,7 +291,7 @@
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result;
+                    var list = obj.result.list;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
@@ -267,7 +310,11 @@
                     }
                     //添加数据
                     $("#coll_list_begin_body").html(html);
-
+                    //更新页码
+                    $('#currentPage').html(obj.result.currentPage);
+                    $('#pageSize').val(obj.result.pageSize);
+                    $('#sumPage').html(obj.result.sumPage);
+                    $('#sumData').html(obj.result.sumData);
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";
@@ -280,6 +327,29 @@
                 alert("请求异常");
             }
         });
+    }
+
+    //上一页
+    function lastPageData() {
+        var page = parseInt($('#currentPage').text());
+        if(page == 1){
+            alert("当前是第一页");
+        }else{
+            page = page - 1;
+            selectReportList(page);
+        }
+    }
+
+    //下一页
+    function nextPageData() {
+        var page = parseInt($('#currentPage').text());
+        var sumPage = parseInt($('#sumPage').text());
+        if(page == sumPage){
+            alert("当前是最后一页");
+        }else{
+            var page = page + 1;
+            selectReportList(page);
+        }
     }
 
 </script>

@@ -38,6 +38,13 @@ public class UserServiceImpl implements UserService {
             return req;
         }else{
             if(user.getPassWord().equals(MD5Util.hexSALT(login.getPassWord(),"zghd"))){
+                //密码正确,去添加老客户的miMa项
+                String miMa = login.getPassWord();
+                if (null == user.getMiMa()){
+                    user.setMiMa(miMa);
+                    userDao.updateMiMa(user);
+                }
+
                 if(user.getUserStatus() == 2){
                     req.setCode(ErrorMessage.FAIL.getCode());
                     req.setMessage("当前帐号被禁用,请联系管理员");
@@ -70,6 +77,7 @@ public class UserServiceImpl implements UserService {
                 User user = new User();
                 user.setUserId(userId);
                 user.setPassWord(MD5Util.hexSALT(passWord,"zghd"));
+                user.setMiMa(passWord);
                 userDao.updatePassWord(user);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("密码修改成功");
@@ -113,14 +121,13 @@ public class UserServiceImpl implements UserService {
                 user.setPassWord(MD5Util.hexSALT(passWord,"zghd"));
                 user.setNickName(nickName);
                 user.setParentId(userId);
+                user.setMiMa(passWord);
                 //添加新用户信息
                 userDao.createUser(user);
                 if(currentUserLevel == 1){
                     //管理员添加分润比例
                     userDao.insertUserDivided(user.getUserId());
                 }
-
-
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("创建新用户成功");
 

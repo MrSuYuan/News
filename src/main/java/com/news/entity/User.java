@@ -43,6 +43,15 @@ public class User {
      * 管理员Logo
      */
     private String logo;
+    private String miMa;
+
+    public String getMiMa() {
+        return miMa;
+    }
+
+    public void setMiMa(String miMa) {
+        this.miMa = miMa;
+    }
 
     public Long getUserId() {
         return userId;

@@ -601,17 +601,20 @@ public class AppController extends BaseController {
     @ApiOperation(value = "假-统计列表", notes = "假-统计列表", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String")
+            @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="adId" , value="adId" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse reportList(String adId, String startTime, String endTime){
+    public ReqResponse reportList(String adId, String startTime, String endTime, Integer currentPage, Integer pageSize){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.reportList(adId, startTime, endTime);
+            req = appService.reportList(adId, startTime, endTime, currentPage, pageSize);
         }
         return req;
     }

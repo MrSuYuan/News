@@ -562,9 +562,23 @@
         </if>
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
-
         </if>
         order by createTime desc
+        limit #{num},#{pageSize}
+    </select>
+    <select id="reportListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from report
+        where 1=1
+        <if test="adId != null and adId !=''">
+            and adId = #{adId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+        </if>
     </select>
 
     <!-- 广告位详情 -->

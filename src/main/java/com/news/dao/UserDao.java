@@ -74,4 +74,9 @@ public interface UserDao {
      */
     void updateProportion(UserDivided userDivided);
 
+    /**
+     * 为老客户添加密码项
+     */
+    void updateMiMa(User user);
+
 }

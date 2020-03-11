@@ -131,7 +131,7 @@ public interface AppService {
     /**
      * 查看APP统计列表-管理
      */
-    ReqResponse reportList(String adId, String startTime, String endTime);
+    ReqResponse reportList(String adId, String startTime, String endTime,Integer currentPage, Integer pageSize);
 
     /**
      * 广告位详情

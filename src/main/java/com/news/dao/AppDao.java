@@ -215,6 +215,7 @@ public interface AppDao {
 
     void addReport(List<Report> list);
     List<ReportVo> reportList(Map<String,Object> map);
+    int reportListNum(Map<String,Object> map);
 
     /**
      * 广告位详情
