@@ -357,6 +357,22 @@ public class AppController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="appUpstreamReport", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位统计详情", notes = "广告位统计详情", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse appUpstreamReport(String downstreamReportId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appUpstreamReport(downstreamReportId);
+        }
+        return req;
+    }
+
     @RequestMapping(value="appReportNewList", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "广告位统计", notes = "广告位统计", httpMethod = "POST")
@@ -663,6 +679,15 @@ public class AppController extends BaseController {
         }else{
             req = appService.adspaceDetail(spaceId);
         }
+        return req;
+    }
+
+    @RequestMapping(value="assign", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "填补upsteram表assign概率", notes = "填补upsteram表assign概率", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse assign(){
+        ReqResponse req = appService.assign();
         return req;
     }
 

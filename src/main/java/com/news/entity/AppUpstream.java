@@ -36,6 +36,18 @@ public class AppUpstream {
      */
     private String create_Time;
     private String name;
+    /**
+     * 概率
+     */
+    private int probability;
+
+    public int getProbability() {
+        return probability;
+    }
+
+    public void setProbability(int probability) {
+        this.probability = probability;
+    }
 
     public String getName() {
         return name;

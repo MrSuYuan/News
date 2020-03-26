@@ -209,6 +209,7 @@ public interface AppDao {
      */
     List<AdStatisticsListVo> appReportList(Map<String,Object> map);
     int appReportListNum(Map<String,Object> map);
+    List<AdReportUpstreamListVo> appUpstreamReport(String downstreamReportId);
     List<AdStatisticsListVo> appReportNewList(Map<String,Object> map);
     int appReportNewListNum(Map<String,Object> map);
     List<AdReportUpstreamListVo> appReportDetail(Map<String,Object> map);
@@ -221,4 +222,14 @@ public interface AppDao {
      * 广告位详情
      */
     Map<String,Object> adspaceDetail(String spaceId);
+
+    /**
+     * 查询所有a_assign表数据
+     */
+    List<AppAssign> assignList();
+
+    /**
+     * 修改a_upstream表assign概率数据
+     */
+    void upstreamAssign(List<AppAssign> list);
 }

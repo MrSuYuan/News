@@ -776,6 +776,16 @@ public class AppServiceImpl implements AppService {
         return req;
     }
 
+    @Override
+    public ReqResponse appUpstreamReport(String downstreamReportId) {
+        ReqResponse req = new ReqResponse();
+        List<AdReportUpstreamListVo> appReportDetail = appDao.appUpstreamReport(downstreamReportId);
+        req.setMessage("数据加载完成");
+        req.setResult(appReportDetail);
+        req.setCode("200");
+        return req;
+    }
+
     /**
      * 广告位统计
      */
@@ -958,5 +968,24 @@ public class AppServiceImpl implements AppService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;
+    }
+
+    /**
+     * 填补upsteram表assign概率
+     */
+    @Override
+    public ReqResponse assign() {
+        ReqResponse resp = new ReqResponse();
+        /**
+         * 查询所有a_assign表数据
+         */
+        List<AppAssign> assignList = appDao.assignList();
+
+        /**
+         * 修改a_upstream表assign概率数据
+         */
+        appDao.upstreamAssign(assignList);
+        resp.setCode("200");
+        return resp;
     }
 }

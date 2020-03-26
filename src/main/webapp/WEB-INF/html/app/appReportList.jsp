@@ -5,7 +5,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>上报统计</title>
+    <title>新上报统计</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta charset="utf-8" />
     <meta name="description" content="overview &amp; stats" />
@@ -63,6 +63,8 @@
                     <div align="center">
                         APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位ID：<input type="text" id="slotId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        日期：<input type="date" id="startTime" style="width:150px;height:30px">
+                        - <input type="date" id="endTime" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
@@ -78,6 +80,7 @@
                                     <thead>
                                     <tr style="height: 50px">
                                         <th>APP</th>
+                                        <th>数量</th>
                                         <th>APPID</th>
                                         <th>广告位ID</th>
                                         <th>日期</th>
@@ -181,6 +184,8 @@
             url: path + "/app/appReportList",
             type: "post",
             data: {
+                "startTime" : $('#startTime').val(),
+                "endTime" : $('#endTime').val(),
                 "appId" : $('#appId').val(),
                 "slotId" : $('#slotId').val(),
                 "currentPage" : currentPage,
@@ -194,16 +199,25 @@
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
-                        html+='<tr style="height: 40px">';
+                        html+='<tr id="'+i+'" value="0" style="height: 40px">';
                         html+='<td> '+data.appName+'</td>';
+                        html+='<td class="center"> '+
+                            '<div class="action-buttons">'+
+                            '<a href="#" class="green bigger-140 show-details-btn" onclick="zhankai(\''+i+'\',\''+data.downstreamReportId+'\')">'+
+                            '<i class="ace-icon fa fa-angle-double-down"></i>'+
+                            '</a>'+
+                            '</div>'+
+                            '</td>';
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.slotId+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        html+='<td> '+format_number(data.request)+'</td>';
+                        html+='<td> '+format_number(data.downstreamRequest)+'</td>';
                         html+='<td> '+format_number(data.response)+'</td>';
                         html+='<td> '+format_number(data.look)+'</td>';
                         html+='<td> '+format_number(data.click)+'</td>';
                         html+='</tr>';
+                        html+='<span id="span'+i+'">'
+                        html+='<tr name="next'+i+'" class="detail-row"><td colspan="9"><span id="span'+i+'"></span></td></tr>'
                     }
                     //添加数据
                     $("#coll_list_begin_body").html(html);
@@ -212,6 +226,17 @@
                     $('#pageSize').val(obj.result.pageSize);
                     $('#sumPage').html(obj.result.sumPage);
                     $('#sumData').html(obj.result.sumData);
+
+                    //这组代码放到别的位置就失效了,原因未知
+                    $('.show-details-btn').on('click', function (e) {
+                        e.preventDefault();
+                        //行id
+                        var id = $(this).closest('tr').attr("id");
+                        $('tr[name="next'+id+'"]').each(function(index,val){
+                            $(val).toggleClass('open');
+                        });
+                    });
+
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";
@@ -257,6 +282,68 @@
         var r = len % 3;
         return r > 0 ? b.slice(0, r) + "," + b.slice(r, len).match(/\d{3}/g).join(",") : b.slice(r, len).match(/\d{3}/g).join(",");
     }
+
+    //查询展开数据 id是行数从0开始
+    function zhankai(id, downstreamReportId){
+        $.ajax({
+            url: path + "/app/appUpstreamReport",
+            type: "post",
+            data: {
+                "downstreamReportId" : downstreamReportId
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    var list = obj.result;
+                    var html="";
+                    html += '<table class="table table-striped table-bordered table-hover">';
+                    html += '<tr>';
+                    html += '<th>上游</th>';
+                    html += '<th>ID</th>';
+                    html += '<th>请求</th>';
+                    html += '<th>返回</th>';
+                    html += '<th>曝光</th>';
+                    html += '<th>点击</th>';
+                    html += '</tr>';
+                    for (var i=0;i<list.length;i++){
+                        var data = list[i];
+                        html += '<tr>';
+                        html += '<td>'+data.upstreamName+'</td>';
+                        html += '<td>'+data.upstreamId+'</td>';
+                        html += '<td>'+data.request+'</td>';
+                        html += '<td>'+data.response+'</td>';
+                        html += '<td>'+data.look+'</td>';
+                        html += '<td>'+data.click+'</td>';
+                        html += '</tr>';
+                    }
+                    html += '</table>';
+                    $('#span'+id).html(html);
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
+    //多层展开
+    /*jQuery(function($) {
+        $('.show-details-btn').on('click', function (e) {
+            alert(111)
+            e.preventDefault();
+            //行id
+            var id = $(this).closest('tr').attr("id");
+            $('tr[name="next'+id+'"]').each(function(index,val){
+                $(val).toggleClass('open');
+            });
+        });
+    })*/
 </script>
 
 </html>

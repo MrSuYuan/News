@@ -117,6 +117,7 @@ public interface AppService {
      * 广告位统计
      */
     ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize);
+    ReqResponse appUpstreamReport(String downstreamReportId);
     ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize);
     ReqResponse appReportDetail(String appId, String slotId, String createTime);
     /**
@@ -137,5 +138,10 @@ public interface AppService {
      * 广告位详情
      */
     ReqResponse adspaceDetail(String spaceId);
+
+    /**
+     * 填补upsteram表assign概率
+     */
+    ReqResponse assign();
 
 }

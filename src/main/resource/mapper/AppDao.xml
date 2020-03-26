@@ -448,49 +448,63 @@
 
     <!-- 广告位统计 -->
     <select id="appReportList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
-        select a.appName,DATE_FORMAT(s.createTime,'%Y-%m-%d') as createTime,s.slotId,s.appId,
-        sum(case s.type
-          when '1' then s.num
-          else 0
-          end) 'request',
-        sum(case s.type
-          when '2' then s.num
-          else 0
-          end) 'response',
-        sum(case s.type
-          when '3' then s.num
-          else 0
-          end) 'look',
-        sum(case s.type
-          when '4' then s.num
-          else 0
-          end) 'click'
-        from ad_statistics s,a_app a
-        where s.appId = a.appId
-        <if test="appId != null and appId !=''">
-            and s.appId = #{appId}
-        </if>
-        <if test="slotId != null and slotId !=''">
-            and s.slotId = #{slotId}
-        </if>
-        group by s.slotId,s.createTime ORDER BY s.createTime desc
+        SELECT
+            x.appName, x.downstreamReportId, x.createTime, x.downstreamRequest, y.request, y.response, y.look, y.click, x.appId, x.slotId
+        FROM
+            (
+            SELECT
+                a.appName, d.downstreamReportId, d.createTime, d.downstreamRequest, d.appId, d.slotId
+            FROM
+                a_report_downstream d, a_app a
+            WHERE
+                d.appId = a.appId
+            ) x
+            LEFT JOIN (
+            SELECT
+                downstreamReportId, sum( request ) AS request, sum( response ) AS response, sum( look ) AS look, sum( click ) AS click
+            FROM
+                a_report_upstream
+            GROUP BY
+                downstreamReportId, createTime
+            ) y ON x.downstreamReportId = y.downstreamReportId
+        ORDER BY
+            x.createTime DESC
         limit #{num},#{pageSize}
     </select>
 
     <!-- 广告位统计数量 -->
     <select id="appReportListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
-        select count(0) from
-        (select a.slotId
-        from
-        ad_statistics a
-        where 1 = 1
-        <if test="appId != null and appId !=''">
-            and a.appId = #{appId}
-        </if>
-        <if test="slotId != null and slotId !=''">
-            and a.slotId = #{slotId}
-        </if>
-        group by a.slotId,a.createTime) x
+        SELECT
+            count( 0 )
+        FROM
+            (
+            SELECT
+                a.appName,
+                d.downstreamReportId,
+                d.createTime,
+                d.downstreamRequest,
+                d.appId,
+                d.slotId
+            FROM
+                a_report_downstream d,
+                a_app a
+            WHERE
+                d.appId = a.appId
+            ) x
+            LEFT JOIN (
+            SELECT
+                downstreamReportId,
+                sum( request ) AS request,
+                sum( response ) AS response,
+                sum( look ) AS look,
+                sum( click ) AS click
+            FROM
+                a_report_upstream
+            GROUP BY
+                downstreamReportId,
+                createTime
+            ) y
+        ON x.downstreamReportId = y.downstreamReportId
     </select>
 
     <!-- 广告位统计 -->
@@ -535,6 +549,12 @@
             and TO_DAYS(#{endTime}) >= TO_DAYS(r.createTime)
         </if>
         GROUP BY r.slotId,r.createTime) x
+    </select>
+
+    <select id="appUpstreamReport" parameterType="java.lang.String" resultType="com.news.vo.AdReportUpstreamListVo">
+        select u.*,t.`name` as upstreamName
+        from a_report_upstream u,a_upstream_type t
+        where u.downstreamReportId = #{downstreamReportId} and u.upstreamType = t.type
     </select>
 
     <select id="appReportDetail" parameterType="java.util.Map" resultType="com.news.vo.AdReportUpstreamListVo">
@@ -587,5 +607,18 @@
         from a_adspace d,a_app a
         where d.spaceId = #{spaceId} and d.appId = a.appId
     </select>
+
+    <!-- 查询所有a_assign表数据 -->
+    <select id="assignList" resultType="com.news.entity.AppAssign">
+        select * from a_assign
+    </select>
+
+    <!-- 修改a_upstream表assign概率数据 -->
+    <update id="upstreamAssign">
+        <foreach collection="list" index="index" item="item" open="" close="" separator=";">
+            update a_upstream set probability = #{item.probability}
+            where spaceId = #{item.spaceId} and upstreamType = #{item.upstreamType}
+        </foreach>
+    </update>
 
 </mapper>

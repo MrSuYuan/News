@@ -1,7 +1,7 @@
 package com.news.vo;
 
 public class AdReportUpstreamListVo {
-    private long id;
+    private String id;
     /**
      * 广告位id
      */
@@ -57,11 +57,11 @@ public class AdReportUpstreamListVo {
         this.upstreamName = upstreamName;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
