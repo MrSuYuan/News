@@ -583,7 +583,7 @@
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
         </if>
-        order by createTime desc
+        order by createTime desc,lookPv desc
         limit #{num},#{pageSize}
     </select>
     <select id="reportListNum" parameterType="java.util.Map" resultType="java.lang.Integer">

@@ -595,7 +595,7 @@ public class AppController extends BaseController {
 
     @RequestMapping(value="addReport", method= RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "假-统计信息", notes = "假-统计信息", httpMethod = "POST")
+    @ApiOperation(value = "假-统计信息-添加", notes = "假-统计信息-添加", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="reportList" , value="参数集合" ,required = true , paramType = "query" ,dataType = "List")
     })
