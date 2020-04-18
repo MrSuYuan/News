@@ -70,7 +70,13 @@
                                 <td align = "right">上游类型&nbsp;:&nbsp;</td>
                                 <td width="300"><span id="upstreamName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td align = "right">上游ID&nbsp;:&nbsp;</td>
-                                <td width="300"><span id="upstreamIdSpan"></span></td>
+                                <td width="300"><span id="upstreamIdSpan"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">上游分成X&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="dividedX"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">下游分成Y&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="dividedY"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td align = "right">展现点击扣量Z&nbsp;:&nbsp;</td>
+                                <td width="300"><span id="dividedZ"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                             </tr>
                         </div>
                     </div><!-- /.col -->
@@ -168,11 +174,15 @@
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var msg = obj.result;
+                    var msg = obj.result.msg;
                     $('#appName').html(msg.appName);
                     $('#spaceName').html(msg.spaceName);
                     $('#upstreamName').html(msg.name);
                     $('#upstreamIdSpan').html(msg.upstreamId);
+                    var divided = obj.result.divided;
+                    $('#dividedX').html(divided.dividedX);
+                    $('#dividedY').html(divided.dividedY);
+                    $('#dividedZ').html(divided.dividedZ);
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";
@@ -260,6 +270,7 @@
             url: path + "/app/addAppStatistics",
             type: "post",
             data: {
+                "currentUserLevel" : $('#currentUserLevel').val(),
                 "statisticsList" : JSON.stringify(objs)
             },
             dataType: 'json',

@@ -687,4 +687,21 @@ public class WebServiceImpl implements WebService {
         }
         return req;
     }
+
+    /**
+     * 上游id对应详细信息
+     */
+    @Override
+    public ReqResponse webUpstreamIdMsg(String upstreamId) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> result = new HashMap<>();
+        Map<String,Object> divided = webDao.divided(upstreamId);
+        result.put("divided",divided);
+        req.setResult(result);
+        req.setMessage("完成");
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
 }
+

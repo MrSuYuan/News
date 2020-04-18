@@ -94,4 +94,9 @@ public interface WebService {
      * 消息
      */
     ReqResponse message(Long userId);
+
+    /**
+     * 上游id对应详细信息
+     */
+    ReqResponse webUpstreamIdMsg(String upstreamId);
 }

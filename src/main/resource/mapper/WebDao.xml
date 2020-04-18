@@ -397,5 +397,11 @@
         (#{msgId},#{userId},now())
     </insert>
 
+    <!-- 此id对应的分润比例 -->
+    <select id="divided" parameterType="java.lang.String" resultType="java.util.Map">
+        select t.upstreamDivided as dividedX,a.dividedY,a.dividedZ
+        from a_upstream u,a_adspace a,a_upstream_type t
+        where u.upstreamId = #{upstreamId} and u.spaceId = a.spaceId and u.upstreamType = t.type
+    </select>
 
 </mapper>

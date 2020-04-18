@@ -26,7 +26,7 @@ public interface AppService {
     /**
      * APP列表
      */
-    ReqResponse appList(Long userId, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize);
+    ReqResponse appList(Long currentUserId, String appId, String appName, Integer appStatus, String nickName, Integer currentPage, Integer pageSize);
 
     /**
      * 修改app状态
@@ -41,7 +41,7 @@ public interface AppService {
     /**
      * 广告位列表
      */
-    ReqResponse appAdspaceList(Long userId, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize);
+    ReqResponse appAdspaceList(Long userId,String nickName, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize);
 
     /**
      * 添加上游广告位信息
@@ -56,7 +56,7 @@ public interface AppService {
     /**
      * 上传统计信息
      */
-    ReqResponse addAppStatistics(Long userId, String statisticsList)throws Exception;
+    ReqResponse addAppStatistics(Long userId, int currentUserLevel, String statisticsList)throws Exception;
 
     /**
      * 查看APP统计列表-管理
@@ -109,6 +109,11 @@ public interface AppService {
     ReqResponse deleteUpstreamId(String upstreamId);
 
     /**
+     * 设置上游分成比例
+     */
+    ReqResponse appUpstreamDivided(Integer upstreamType, double upstreamDivided);
+
+    /**
      * 调度分配展示
      */
     ReqResponse selectAppAssign(String spaceId);
@@ -116,7 +121,7 @@ public interface AppService {
     /**
      * 广告位统计
      */
-    ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize);
+    ReqResponse appReportList(String appId, String slotId, String startTime, String endTime, Integer currentPage, Integer pageSize);
     ReqResponse appUpstreamReport(String downstreamReportId);
     ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize);
     ReqResponse appReportDetail(String appId, String slotId, String createTime);
@@ -138,6 +143,16 @@ public interface AppService {
      * 广告位详情
      */
     ReqResponse adspaceDetail(String spaceId);
+
+    /**
+     * 广告位divided
+     */
+    ReqResponse updateSpaceDivided(String spaceId, double dividedY, double dividedZ);
+
+    /**
+     * 数据统计状态修改 0删除 1通过
+     */
+    ReqResponse changeStatus(String statisticsId,int status);
 
     /**
      * 填补upsteram表assign概率

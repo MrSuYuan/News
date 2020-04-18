@@ -472,4 +472,30 @@ public class WebController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="appUpstreamIdMsg", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上游id对应详情", notes = "上游id对应详情", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="upstreamId" , value="上游id" ,required = false , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse appUpstreamIdMsg(String upstreamId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            if ((int)userLevel == 1 || (int)userLevel == 2){
+                req = webService.webUpstreamIdMsg(upstreamId);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("您没有权限");
+            }
+
+        }
+        return req;
+    }
+
 }

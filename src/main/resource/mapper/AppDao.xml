@@ -39,6 +39,9 @@
         SELECT a.appId,a.appName,a.packageName,u.nickName,a.downloadlink,a.appStatus,a.platform,a.terminal,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")as createTime
         from a_app a,u_user u
         where a.userId = u.userId
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
         <if test="appId != null and appId !=''">
             and a.appId = #{appId}
         </if>
@@ -49,10 +52,10 @@
             and a.appStatus = #{appStatus}
         </if>
         <if test="userLevel == 2">
-            and u.parentId = #{userId}
+            and u.parentId = #{currentUserId}
         </if>
         <if test="userLevel == 3">
-            and a.userId = #{userId}
+            and a.userId = #{currentUserId}
         </if>
         order by a.appId asc
         limit #{num},#{pageSize}
@@ -63,6 +66,9 @@
         select count(0)
         from a_app a,u_user u
         where a.userId = u.userId
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
         <if test="appId != null and appId !=''">
             and a.appId = #{appId}
         </if>
@@ -73,10 +79,10 @@
             and a.appStatus = #{appStatus}
         </if>
         <if test="userLevel == 2">
-            and u.parentId = #{userId}
+            and u.parentId = #{currentUserId}
         </if>
         <if test="userLevel == 3">
-            and a.userId = #{userId}
+            and a.userId = #{currentUserId}
         </if>
     </select>
 
@@ -123,9 +129,12 @@
 
     <!-- 广告位列表 -->
     <select id="appAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.AppAdspaceListVo">
-        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime
+        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -150,6 +159,9 @@
         select count(0)
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -236,7 +248,7 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType,ut.`name`
+        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType,ut.`name`,s.status,s.statisticsId
         from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
         where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
         <if test="appName != null and appName !=''">
@@ -290,7 +302,7 @@
     <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
         select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
         from a_statistics s,a_upstream t,a_adspace d,a_app a
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId}
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId} and s.status = 1
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -313,7 +325,7 @@
         select count(0) from
         (SELECT count(0)
         from a_statistics s,a_upstream t,a_adspace d,a_app a
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId}
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId} and s.status = 1
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -417,6 +429,13 @@
         LEFT JOIN a_assign s on a.spaceId = s.spaceId and a.upstreamType = s.upstreamType
     </select>
 
+    <!-- 此id对应的分润比例 -->
+    <select id="divided" parameterType="java.lang.String" resultType="java.util.Map">
+        select t.upstreamDivided as dividedX,a.dividedY,a.dividedZ
+        from a_upstream u,a_adspace a,a_upstream_type t
+        where u.upstreamId = #{upstreamId} and u.spaceId = a.spaceId and u.upstreamType = t.type
+    </select>
+
     <!-- 更换上游 -->
     <select id="check" parameterType="java.lang.String" resultType="java.util.Map">
         SELECT spaceId,upstreamType
@@ -446,6 +465,13 @@
         delete from a_assign where spaceId = #{spaceId} and upstreamType = #{upstreamType}
     </delete>
 
+    <!-- 设置上游分成比例 -->
+    <update id="appUpstreamDivided" parameterType="java.util.Map">
+        update a_upstream_type
+        set upstreamDivided = #{upstreamDivided}
+        where type = #{upstreamType}
+    </update>
+
     <!-- 广告位统计 -->
     <select id="appReportList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
         SELECT
@@ -458,6 +484,18 @@
                 a_report_downstream d, a_app a
             WHERE
                 d.appId = a.appId
+                <if test="appId != null and appId !=''">
+                    and d.appId = #{appId}
+                </if>
+                <if test="slotId != null and slotId !=''">
+                    and d.slotId = #{slotId}
+                </if>
+                <if test="startTime != null and startTime !=''">
+                    and TO_DAYS(d.createTime) >= TO_DAYS(#{startTime})
+                </if>
+                <if test="endTime != null and endTime !=''">
+                    and TO_DAYS(#{endTime}) >= TO_DAYS(d.createTime)
+                </if>
             ) x
             LEFT JOIN (
             SELECT
@@ -490,6 +528,18 @@
                 a_app a
             WHERE
                 d.appId = a.appId
+                <if test="appId != null and appId !=''">
+                    and d.appId = #{appId}
+                </if>
+                <if test="slotId != null and slotId !=''">
+                    and d.slotId = #{slotId}
+                </if>
+                <if test="startTime != null and startTime !=''">
+                    and TO_DAYS(d.createTime) >= TO_DAYS(#{startTime})
+                </if>
+                <if test="endTime != null and endTime !=''">
+                    and TO_DAYS(#{endTime}) >= TO_DAYS(d.createTime)
+                </if>
             ) x
             LEFT JOIN (
             SELECT
@@ -606,6 +656,25 @@
         select a.appName,d.spaceName
         from a_adspace d,a_app a
         where d.spaceId = #{spaceId} and d.appId = a.appId
+    </select>
+
+    <!-- 设置广告位divided -->
+    <update id="updateSpaceDivided" parameterType="java.util.Map">
+        update a_adspace
+        set dividedY = #{dividedY}, dividedZ = #{dividedZ}
+        where spaceId = #{spaceId}
+    </update>
+
+    <!-- 改变统计数据 -->
+    <select id="changeStatus" parameterType="java.lang.String">
+        update a_statistics
+        set status = 1
+        where statisticsId = #{statisticsId}
+    </select>
+
+    <!-- 删除统计数据 -->
+    <select id="deleteStatistics" parameterType="java.lang.String">
+        delete from a_statistics where statisticsId = #{statisticsId}
     </select>
 
     <!-- 查询所有a_assign表数据 -->

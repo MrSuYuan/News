@@ -32,6 +32,15 @@ public class AppUpstreamType {
      * 启用状态
      */
     private int status;
+    private double upstreamDivided;
+
+    public double getUpstreamDivided() {
+        return upstreamDivided;
+    }
+
+    public void setUpstreamDivided(double upstreamDivided) {
+        this.upstreamDivided = upstreamDivided;
+    }
 
     public int getId() {
         return id;

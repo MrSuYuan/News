@@ -41,6 +41,27 @@ public class AppAdspaceListVo {
      * 所属用户名称
      */
     private String nickName;
+    /**
+     * 分成比例
+     */
+    private double dividedY;
+    private double dividedZ;
+
+    public double getDividedY() {
+        return dividedY;
+    }
+
+    public void setDividedY(double dividedY) {
+        this.dividedY = dividedY;
+    }
+
+    public double getDividedZ() {
+        return dividedZ;
+    }
+
+    public void setDividedZ(double dividedZ) {
+        this.dividedZ = dividedZ;
+    }
 
     public String getSpaceId() {
         return spaceId;

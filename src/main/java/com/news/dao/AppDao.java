@@ -191,6 +191,11 @@ public interface AppDao {
     AppUpstreamIdList AppUpstreamIdMsg(String upstreamId);
 
     /**
+     * 此id对应的分润比例
+     */
+    Map<String,Object> divided(String upstreamId);
+
+    /**
      * 更换上游
      */
     Map<String,Object> check(String upstreamId);
@@ -203,6 +208,11 @@ public interface AppDao {
     AppUpstream appUpstream(String upstreamId);
     void deleteUpstream(String upstreamId);
     void deleteAssign(AppUpstream appUpstream);
+
+    /**
+     * 设置上游分成比例
+     */
+    void appUpstreamDivided(Map<String,Object> map);
 
     /**
      * 广告位统计
@@ -222,6 +232,21 @@ public interface AppDao {
      * 广告位详情
      */
     Map<String,Object> adspaceDetail(String spaceId);
+
+    /**
+     * 设置广告位divided
+     */
+    void updateSpaceDivided(Map<String,Object> map);
+
+    /**
+     * 改变统计数据
+     */
+    void changeStatus(String statisticsId);
+
+    /**
+     * 删除统计数据
+     */
+    void deleteStatistics(String statisticsId);
 
     /**
      * 查询所有a_assign表数据

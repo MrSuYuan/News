@@ -83,7 +83,7 @@
                                         <th>广告位名称</th>
                                         <th>APPID</th>
                                         <th>广告位ID</th>
-                                        <th>上游APPID</th>
+                                        <%--<th>上游APPID</th>--%>
                                         <th>上游广告位ID</th>
                                         <th>上游平台</th>
                                         <th>日期</th>
@@ -92,6 +92,7 @@
                                         <th>点击率</th>
                                         <th>收益</th>
                                         <th>ecpm</th>
+                                        <th>审核</th>
                                     </tr>
                                     </thead>
                                     <tbody id="coll_list_begin_body">
@@ -208,7 +209,7 @@
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.spaceId+'</td>';
-                        html+='<td> '+data.upstreamAppId+'</td>';
+                        /*html+='<td> '+data.upstreamAppId+'</td>';*/
                         html+='<td> '+data.upstreamId+'</td>';
                         html+='<td> '+data.name+'</td>';
                         html+='<td> '+data.createTime+'</td>';
@@ -217,6 +218,13 @@
                         html+='<td> '+data.clickProbability+'%</td>';
                         html+='<td> '+data.income+'</td>';
                         html+='<td> '+data.ecmp+'</td>';
+                        var status = data.status;
+                        if (status == 0){
+                            html+='<td id="td'+data.statisticsId+'"><button type="button" class="btn btn-minier btn-success" onclick="changeStatus('+data.statisticsId+')">通过</button>&nbsp;' +
+                                '<button type="button" class="btn btn-minier btn-danger" onclick="deleteStatistics('+data.statisticsId+')">删除</button></td>';
+                        } else if (status == 1) {
+                            html+='<td>已通过</td>';
+                        }
                         html+='</tr>';
                     }
                     //添加数据
@@ -270,6 +278,62 @@
         if (len <= 3) { return b; }
         var r = len % 3;
         return r > 0 ? b.slice(0, r) + "," + b.slice(r, len).match(/\d{3}/g).join(",") : b.slice(r, len).match(/\d{3}/g).join(",");
+    }
+
+    //通过
+    function changeStatus(statisticsId) {
+        $.ajax({
+            url: path + "/app/changeStatus",
+            type: "post",
+            data: {
+                "statisticsId" : statisticsId,
+                "status" : 1
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    $('#td'+statisticsId).empty();
+                    $('#td'+statisticsId).html("已通过");
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
+    //删除
+    function deleteStatistics(statisticsId) {
+        $.ajax({
+            url: path + "/app/changeStatus",
+            type: "post",
+            data: {
+                "statisticsId" : statisticsId,
+                "status" : 0
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    $('#td'+statisticsId).empty();
+                    $('#td'+statisticsId).html("已删除");
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
     }
 </script>
 

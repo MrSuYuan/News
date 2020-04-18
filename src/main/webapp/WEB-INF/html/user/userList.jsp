@@ -113,6 +113,7 @@
                                                 <th>创建时间</th>
                                                 <th>用户状态</th>
                                                 <th>权限操作</th>
+                                                <th>APP/广告位</th>
                                             </tr>
                                             </thead>
                                             <tbody id="coll_list_begin_body">
@@ -377,6 +378,10 @@
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
                         }
+                        html+='<td>' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="toApp(\''+data.nickName+'\')">APP</button>&nbsp;&nbsp;' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="toAdspace(\''+data.nickName+'\')">广告位</button>' +
+                            '</td>';
                         html+='</tr>';
                     }
                     //添加数据
@@ -491,6 +496,16 @@
                 alert("请求异常");
             }
         });
+    }
+
+    function toApp(nickName) {
+        sessionStorage.setItem("nickName",nickName);
+        window.location = path+"/appList";
+    }
+
+    function toAdspace(nickName) {
+        sessionStorage.setItem("nickName",nickName);
+        window.location = path+"/appAdspaceList";
     }
 
 </script>

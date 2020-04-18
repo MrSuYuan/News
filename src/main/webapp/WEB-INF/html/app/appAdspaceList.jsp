@@ -61,6 +61,7 @@
                 <form action="#" method="post">
                     <br>
                     <div align="center">
+                        <span id="nickNameSpan">用户：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                         APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位类型：
@@ -89,10 +90,12 @@
                                         <th>APPID</th>
                                         <th>广告位名称</th>
                                         <th>APP名称</th>
+                                        <th id="nickNameTh">所属用户</th>
                                         <th>广告类型</th>
                                         <th>宽度</th>
                                         <th>高度</th>
                                         <th>创建时间</th>
+                                        <th id="divided">分成</th>
                                         <th id="operate">操作</th>
                                     </tr>
                                     </thead>
@@ -135,6 +138,46 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 设置模态框 -->
+                        <div class="modal" id="app_divided_set" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form class="form-horizontal" role="form">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">设置YZ<input type="hidden" id="spaceId"></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right "> Y : </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="col-xs-10 col-sm-7" id="dividedY">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right "> Z : </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="col-xs-10 col-sm-7" id="dividedZ">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="updateProportion()">确定</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
 
                 </form>
@@ -173,13 +216,24 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
+        var nickName = sessionStorage.getItem("nickName");
+        if(nickName != null){
+            $('#nickName').val(nickName);
+            sessionStorage.removeItem("nickName");
+        }
 
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
         if(currentUserLevel == 2 || currentUserLevel == 1){
             $('#operate').show();
+            $('#divided').show();
         }else{
             $('#operate').hide();
+            $('#divided').hide();
+        }
+        if(currentUserLevel == 3){
+            $('#nickNameSpan').hide();
+            $('#nickNameTh').hide();
         }
         appAdspaceList(1);
     });
@@ -187,6 +241,7 @@
     //点击搜索数据展示
     function appAdspaceList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
+        var nickName = $('#nickName').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -198,6 +253,7 @@
             url: path + "/app/appAdspaceList",
             type: "post",
             data: {
+                "nickName" : nickName,
                 "currentPage" : currentPage,
                 "pageSize" : pageSize,
                 "appName" : $('#appName').val(),
@@ -218,6 +274,9 @@
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appName+'</td>';
+                        if (currentUserLevel != 3){
+                            html+='<td> '+data.nickName+'</td>';
+                        }
                         var spaceType = data.spaceType;
                         if(spaceType == 1){
                             html+='<td> 横幅 </td>';
@@ -236,6 +295,7 @@
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2 || currentUserLevel == 1){
+                            html+='<td> Y : '+data.dividedY+' , Z : '+data.dividedZ+'</td>';
                             html+='<td>' +
                                 '<div class="hidden-sm hidden-xs btn-group">' +
                                 '<button type="button" class="btn btn-xs btn-success" title="添加" onclick="addUpstream(\''+data.spaceId+'\')">' +
@@ -246,6 +306,9 @@
                                 '</button>' +
                                 '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
+                                '</button>' +
+                                '<button type="button" class="btn btn-xs btn-default" title="分成" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
+                                '<i class="ace-icon glyphicon glyphicon-edit bigger-110"></i>' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-xs btn-danger" title="删除">' +
                                 '<i class="ace-icon glyphicon glyphicon-trash bigger-110"></i>' +
@@ -316,6 +379,52 @@
     function assign(spaceId) {
         sessionStorage.setItem("spaceId",spaceId);
         window.location = path + "/appAssign";
+    }
+
+    //set
+    function divided(data){
+        var str = data.split('!');
+        $('#spaceId').val(str[0]);
+        $('#dividedY').val(str[1]);
+        $('#dividedZ').val(str[2]);
+        $("#app_divided_set").modal("show");
+    }
+
+    //update
+    function updateProportion() {
+        var spaceId = $('#spaceId').val();
+        var dividedY = $('#dividedY').val();
+        var dividedZ = $('#dividedZ').val();
+        if (dividedY > 1 || dividedZ > 1) {
+            alert("参数错误");
+        }else{
+            $.ajax({
+                url: path + "/app/updateSpaceDivided",
+                type: "post",
+                data: {
+                    "spaceId" : spaceId,
+                    "dividedY" : dividedY,
+                    "dividedZ" : dividedZ
+                },
+                dataType: 'json',
+                async: false,
+                success: function (obj) {
+                    if(obj.code == 200){
+                        $("#app_divided_set").modal("hide");
+                        var page = parseInt($('#currentPage').text());
+                        appAdspaceList(page);
+                    }else if(obj.code == "300"){
+                        alert(obj.message);
+                        window.location = path+"/login";
+                    }else{
+                        alert(obj.message);
+                    }
+                },
+                error: function () {
+                    alert("请求异常");
+                }
+            });
+        }
     }
 </script>
 

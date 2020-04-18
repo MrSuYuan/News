@@ -7,6 +7,7 @@ import com.news.dao.UserDao;
 import com.news.entity.*;
 import com.news.service.AppService;
 import com.news.vo.*;
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.utils.id.AppIdUtil;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -107,7 +108,7 @@ public class AppServiceImpl implements AppService {
      * APP列表
      */
     @Override
-    public ReqResponse appList(Long userId, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(Long currentUserId, String appId, String appName, Integer appStatus, String nickName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -122,10 +123,11 @@ public class AppServiceImpl implements AppService {
         map.put("appId",appId);
         map.put("appName",appName);
         map.put("appStatus",appStatus);
+        map.put("nickName",nickName);
         //查看当前用户身份
-        int userLevel = userDao.userLevel(userId);
+        int userLevel = userDao.userLevel(currentUserId);
         map.put("userLevel",userLevel);
-        map.put("userId",userId);
+        map.put("currentUserId",currentUserId);
         //最高权限能看到所有的app信息,管理只能看到自己下级,普通用户只能看到自己的
         //app列表
         List<AppListVo> appList = appDao.appList(map);
@@ -223,7 +225,7 @@ public class AppServiceImpl implements AppService {
      * 广告位列表
      */
     @Override
-    public ReqResponse appAdspaceList(Long userId, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse appAdspaceList(Long userId, String nickName, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -238,6 +240,7 @@ public class AppServiceImpl implements AppService {
         map.put("appName",appName);
         map.put("spaceName",spaceName);
         map.put("spaceType",spaceType);
+        map.put("nickName",nickName);
         //查看当前用户身份
         int userLevel = userDao.userLevel(userId);
         map.put("userLevel",userLevel);
@@ -341,7 +344,7 @@ public class AppServiceImpl implements AppService {
      * 上传统计信息
      */
     @Override
-    public ReqResponse addAppStatistics(Long userId, String statisticsList) throws Exception {
+    public ReqResponse addAppStatistics(Long userId,  int currentUserLevel, String statisticsList) throws Exception {
         ReqResponse req = new ReqResponse();
         if(null != statisticsList && !"".equals(statisticsList)){
             //解析前端传过来的集合数据
@@ -349,24 +352,23 @@ public class AppServiceImpl implements AppService {
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
             List<AppStatistics> list =  mapper.readValue(statisticsList, jt);
             String upstreamId = list.get(0).getUpstreamId();
-            System.out.println(upstreamId);
             //查看广告位所属app的上级id
             Map<String,Object> parent = appDao.adParent(upstreamId);
             String appId = parent.get("appId").toString();
-            if(userId.longValue() == (Long)parent.get("parentId")){
+            if(currentUserLevel == 1 || userId.longValue() == (Long)parent.get("parentId")){
                 //查看分润比例
-                UserDivided ud = new UserDivided();
-                ud.setType(1);
-                ud.setUserId(userId);
-                ud = userDao.selectDivided(ud);
+                Map<String,Object> ud = appDao.divided(upstreamId);
+                double x = Double.parseDouble(ud.get("dividedX").toString());
+                double y = Double.parseDouble(ud.get("dividedY").toString());
+                double z = Double.parseDouble(ud.get("dividedZ").toString());
                 //计算点击率和ecmp
                 //点击率=点击数/展现pv（以百分数形式呈现）
                 //ecpm=收益*1000/展现pv
                 for(int i = 0; i < list.size(); i++){
                     AppStatistics as = list.get(i);
-                    as.setLookPV((int)(as.getBeforeLookPV() * ud.getLookProportion()));
-                    as.setClickNum((int)(as.getBeforeClickNum() * ud.getClickProportion()));
-                    as.setIncome(as.getBeforeIncome() * ud.getUpstreamProportion() * ud.getUserProportion());
+                    as.setLookPV((int)(as.getBeforeLookPV() * z));
+                    as.setClickNum((int)(as.getBeforeClickNum() * z));
+                    as.setIncome(as.getBeforeIncome() * x * y);
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
                     as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
                     as.setAppId(appId);
@@ -393,8 +395,6 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
-        System.out.println(startTime);
-        System.out.println(endTime);
         Map<String,Object> map = new HashMap<>();
         //页码格式化
         if(null == currentPage){
@@ -628,8 +628,12 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse appUpstreamIdMsg(String upstreamId) {
         ReqResponse req = new ReqResponse();
+        Map<String,Object> result = new HashMap<>();
         AppUpstreamIdList msg = appDao.AppUpstreamIdMsg(upstreamId);
-        req.setResult(msg);
+        Map<String,Object> divided = appDao.divided(upstreamId);
+        result.put("msg",msg);
+        result.put("divided",divided);
+        req.setResult(result);
         req.setMessage("完成");
         req.setCode(ErrorMessage.SUCCESS.getCode());
         return req;
@@ -674,6 +678,21 @@ public class AppServiceImpl implements AppService {
         appDao.deleteAssign(appUpstream);
         req.setMessage("删除成功");
         req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
+    /**
+     * 设置上游分成比例
+     */
+    @Override
+    public ReqResponse appUpstreamDivided(Integer upstreamType, double upstreamDivided) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("upstreamType",upstreamType);
+        map.put("upstreamDivided",upstreamDivided);
+        appDao.appUpstreamDivided(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
         return req;
     }
 
@@ -739,11 +758,13 @@ public class AppServiceImpl implements AppService {
      * 广告位统计
      */
     @Override
-    public ReqResponse appReportList(String appId, String slotId, Integer currentPage, Integer pageSize) {
+    public ReqResponse appReportList(String appId, String slotId, String startTime, String endTime, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         map.put("appId",appId);
         map.put("slotId",slotId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
         //页码格式化
         if(null == currentPage){
             currentPage = 1;
@@ -893,7 +914,11 @@ public class AppServiceImpl implements AppService {
                 Report r = list.get(i);
                 r.setClickProbability((double)r.getClickNum()/(double)r.getLookPv()*100);
                 r.setEcpm(r.getIncome()*1000/(double)r.getLookPv());
-                r.setCpc(r.getIncome()/(double)r.getClickNum());
+                if (r.getClickNum() == 0){
+                    r.setCpc(0);
+                }else{
+                    r.setCpc(r.getIncome()/(double)r.getClickNum());
+                }
             }
             appDao.addReport(list);
             req.setCode(ErrorMessage.SUCCESS.getCode());
@@ -927,9 +952,17 @@ public class AppServiceImpl implements AppService {
         DecimalFormat df = new DecimalFormat("######0.00");
         for(int i = 0; i < reportList.size(); i++){
             ReportVo r = reportList.get(i);
+            if (r.getEcpm() == 0){
+                r.setEcpm2("0");
+            }else{
+                r.setEcpm2(df.format(r.getEcpm()));
+            }
+            if (r.getCpc() == 0){
+                r.setCpc2("0");
+            }else{
+                r.setCpc2(df.format(r.getCpc()));
+            }
             r.setClickProbability2(df.format(r.getClickProbability()));
-            r.setEcpm2(df.format(r.getEcpm()));
-            r.setCpc2(df.format(r.getCpc()));
         }
 
         //总和
@@ -968,6 +1001,43 @@ public class AppServiceImpl implements AppService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;
+    }
+
+    /**
+     * 广告位divided
+     */
+    @Override
+    public ReqResponse updateSpaceDivided(String spaceId, double dividedY, double dividedZ) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("spaceId",spaceId);
+        map.put("dividedY",dividedY);
+        map.put("dividedZ",dividedZ);
+        appDao.updateSpaceDivided(map);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    /**
+     * 数据统计状态修改 0删除 1通过
+     */
+    @Override
+    public ReqResponse changeStatus(String statisticsId, int status) {
+        ReqResponse resp = new ReqResponse();
+        if (status == 0){
+            appDao.deleteStatistics(statisticsId);
+            resp.setCode(ErrorMessage.SUCCESS.getCode());
+            resp.setMessage("删除成功");
+        }else if (status == 1){
+            appDao.changeStatus(statisticsId);
+            resp.setCode(ErrorMessage.SUCCESS.getCode());
+            resp.setMessage("通过成功");
+        }else{
+            resp.setCode(ErrorMessage.FAIL.getCode());
+            resp.setMessage("参数错误");
+        }
+        return resp;
     }
 
     /**

@@ -287,7 +287,7 @@
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var msg = obj.result;
+                    var msg = obj.result.msg;
                     $('#appName').val(msg.appName);
                     $('#adspaceName').val(msg.spaceName);
                     $('#appId').val(msg.appId);

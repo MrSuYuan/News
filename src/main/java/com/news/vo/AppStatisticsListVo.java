@@ -4,7 +4,7 @@ package com.news.vo;
  * 广告位统计列表返回信息
  */
 public class AppStatisticsListVo {
-
+    private long statisticsId;
     private String appName;
     private String appId;
     private String spaceId;
@@ -19,6 +19,23 @@ public class AppStatisticsListVo {
     private double ecmp;
     private int upstreamType;
     private String name;
+    private int status;
+
+    public long getStatisticsId() {
+        return statisticsId;
+    }
+
+    public void setStatisticsId(long statisticsId) {
+        this.statisticsId = statisticsId;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
 
     public String getName() {
         return name;

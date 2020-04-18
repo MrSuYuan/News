@@ -63,6 +63,7 @@
                     <form action="#" method="post">
                         <br>
                         <div align="center">
+                            <span id="nickNameSpan">用户：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                             APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                             APP状态：
@@ -180,6 +181,12 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
+        var nickName = sessionStorage.getItem("nickName");
+        if(nickName != null){
+            $('#nickName').val(nickName);
+            sessionStorage.removeItem("nickName");
+        }
+
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
         if(currentUserLevel == 1){
@@ -190,13 +197,16 @@
         }else{
             $('#adspace').hide();
         }
+        if(currentUserLevel == 3){
+            $('#nickNameSpan').hide();
+        }
         selectAppList(1);
     });
 
     //点击搜索数据展示
     function selectAppList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
-
+        var nickName = $('#nickName').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -211,6 +221,7 @@
                 "appId" : $('#appId').val(),
                 "appName" : $('#appName').val(),
                 "appStatus" :  $('#appStatus option:selected').val(),
+                "nickName" : nickName,
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
             },

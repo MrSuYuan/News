@@ -93,10 +93,11 @@
                                                 <th>编号</th>
                                                 <th>名称</th>
                                                 <th>简称</th>
-                                                <th>创建时间</th>
+                                                <%--<th>创建时间</th>--%>
+                                                <th>分成比例</th>
                                                 <th>上游状态</th>
                                                 <th>操作</th>
-                                                <th>广告位</th>
+                                                <th width="20%">广告位</th>
                                             </tr>
                                             </thead>
                                             <tbody id="coll_list_begin_body">
@@ -137,6 +138,35 @@
                                             </ul>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+
+                            <!-- 设置模态框 -->
+                            <div class="modal" id="app_divided_set" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form class="form-horizontal" role="form">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                        aria-hidden="true">&times;</span></button>
+                                                <h4 class="modal-title">设置上游分成比例<input type="hidden" id="upstreamType"></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="form-group">
+                                                        <label class="col-sm-3 control-label no-padding-right "> X : </label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="col-xs-10 col-sm-7" id="upstreamDivided">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                                <button type="button" class="btn btn-primary" onclick="updateProportion()">确定</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
 
@@ -210,7 +240,8 @@
                         html+='<td> '+data.type+'</td>';
                         html+='<td> '+data.name+'</td>';
                         html+='<td> '+data.shortName+'</td>';
-                        html+='<td> '+data.createTime+'</td>';
+                        /*html+='<td> '+data.createTime+'</td>';*/
+                        html+='<td> '+data.upstreamDivided+'</td>';
                         var status = data.status;
                         if(status == 0){
                             html+='<td id="status'+data.id+'"><span class="label label-danger label-white middle">禁用</span></td>';
@@ -226,6 +257,9 @@
                             '<div class="hidden-sm hidden-xs btn-group">' +
                             '<button type="button" class="btn btn-xs btn-primary" onclick="upstreamIdList(\''+data.type+'\')">' +
                             '<i class="ace-icon glyphicon bigger-110">查看广告位</i>' +
+                            '</button>&nbsp;&nbsp;' +
+                            '<button type="button" class="btn btn-xs btn-primary" onclick="divided('+data.type+','+data.upstreamDivided+')">' +
+                            '<i class="ace-icon glyphicon bigger-110">设置分成</i>' +
                             '</button>' +
                             '</div>' +
                             '</td>';
@@ -317,6 +351,48 @@
                 alert("请求异常");
             }
         });
+    }
+
+    //set
+    function divided(upstreamType, upstreamDivided){
+        $('#upstreamType').val(upstreamType);
+        $('#upstreamDivided').val(upstreamDivided);
+        $("#app_divided_set").modal("show");
+    }
+
+    //update
+    function updateProportion() {
+        var upstreamType = $('#upstreamType').val();
+        var upstreamDivided = $('#upstreamDivided').val();
+        if (upstreamDivided > 1) {
+            alert("参数错误");
+        }else{
+            $.ajax({
+                url: path + "/app/appUpstreamDivided",
+                type: "post",
+                data: {
+                    "upstreamType" : upstreamType,
+                    "upstreamDivided" : upstreamDivided
+                },
+                dataType: 'json',
+                async: false,
+                success: function (obj) {
+                    if(obj.code == 200){
+                        $("#app_divided_set").modal("hide");
+                        var page = parseInt($('#currentPage').text());
+                        selectAppList(page);
+                    }else if(obj.code == "300"){
+                        alert(obj.message);
+                        window.location = path+"/login";
+                    }else{
+                        alert(obj.message);
+                    }
+                },
+                error: function () {
+                    alert("请求异常");
+                }
+            });
+        }
     }
 
     function upstreamIdList(type){

@@ -183,4 +183,9 @@ public interface WebDao {
      * 改为已读
      */
     void readMessage(Map<String,Object> map);
+
+    /**
+     * 此id对应的分润比例
+     */
+    Map<String,Object> divided(String upstreamId);
 }
