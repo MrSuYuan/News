@@ -302,7 +302,10 @@
     <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
         select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
         from a_statistics s,a_upstream t,a_adspace d,a_app a
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId} and s.status = 1
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
+        <if test="parentId != null and parentId !=''">
+            and a.userId = #{parentId}
+        </if>
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -325,7 +328,10 @@
         select count(0) from
         (SELECT count(0)
         from a_statistics s,a_upstream t,a_adspace d,a_app a
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = #{parentId} and s.status = 1
+        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
+        <if test="parentId != null and parentId !=''">
+            and a.userId = #{parentId}
+        </if>
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -689,5 +695,16 @@
             where spaceId = #{item.spaceId} and upstreamType = #{item.upstreamType}
         </foreach>
     </update>
+
+    <!-- 查询excel数据库对应数据 -->
+    <select id="queryExcel" resultType="com.news.entity.UCStatisticsList">
+        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId
+        from a_upstream au,a_adspace ad,a_app ap,u_user u
+        where au.upstreamId in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        and au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId
+    </select>
 
 </mapper>

@@ -194,17 +194,22 @@ public class PageController extends BaseController {
     public String appStatisticsAdd(){ return "/html/app/appStatisticsAdd.jsp";}
 
     /**
-     * APP数据统计列表
+     * APP数据统计列表-管理
      */
-    @RequestMapping(value = "appStatisticsList" , method= RequestMethod.GET)
+    @RequestMapping(value = "appStatisticsManage" , method= RequestMethod.GET)
     @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
-    public String appStatisticsList(){
-        Object userLevel = request.getSession().getAttribute("userLevel");
-        if(null != userLevel && (int)userLevel == 3){
-            return "/html/app/appStatisticsUser.jsp";
-        }else{
-            return "/html/app/appStatisticsManage.jsp";
-        }
+    public String appStatisticsManage(){
+        return "/html/app/appStatisticsManage.jsp";
+    }
+
+
+    /**
+     * APP数据统计列表-客户
+     */
+    @RequestMapping(value = "appStatisticsUser" , method= RequestMethod.GET)
+    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    public String appStatisticsUser(){
+        return "/html/app/appStatisticsUser.jsp";
     }
 
     /**
@@ -259,6 +264,15 @@ public class PageController extends BaseController {
     @ApiOperation(value = "APP上游广告位列表", notes = "APP上游广告位列表", httpMethod = "GET")
     public String appUpstreamIdList(){
         return "/html/app/appUpstreamIdList.jsp";
+    }
+
+    /**
+     * APP上游广告位编辑
+     */
+    @RequestMapping(value = "appUploadExcel" , method= RequestMethod.GET)
+    @ApiOperation(value = "上传excel", notes = "上传excel", httpMethod = "GET")
+    public String appUploadExcel(){
+        return "/html/app/appUploadExcel.jsp";
     }
 
     /**

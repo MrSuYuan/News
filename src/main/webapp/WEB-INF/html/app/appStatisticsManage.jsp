@@ -68,7 +68,6 @@
                         <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
-
                     </div>
                     <br>
                     <div class="row">

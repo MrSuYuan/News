@@ -1,8 +1,11 @@
 package com.news.controller;
 
 import com.news.entity.App;
+import com.news.entity.Login;
+import com.news.entity.User;
 import com.news.service.AppService;
 import com.news.service.UserService;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.http.HttpResponse;
 import com.utils.base.BaseController;
 import com.utils.response.ErrorMessage;
@@ -17,15 +20,28 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
+import java.io.*;
 import java.net.URLDecoder;
+import java.util.Iterator;
 
 @Controller
 @RequestMapping("app")
@@ -300,11 +316,12 @@ public class AppController extends BaseController {
     public ReqResponse appStatisticsUser(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
+        Object userLevel = request.getSession().getAttribute("userLevel");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appStatisticsUserList(startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize);
+            req = appService.appStatisticsUserList((int)userLevel, startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize);
         }
         return req;
     }
@@ -766,6 +783,73 @@ public class AppController extends BaseController {
     @CrossOrigin
     public ReqResponse assign(){
         ReqResponse req = appService.assign();
+        return req;
+    }
+
+    /**
+     * 上传uc_excel
+     */
+    @RequestMapping(value = "/uploadExcel", method = RequestMethod.POST)
+    @ResponseBody
+    public ReqResponse uploadExcel(HttpServletRequest request) throws Exception {
+        ReqResponse req = new ReqResponse();
+        // 创建一个通用的多部分解析器
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver( request.getSession().getServletContext());
+        // 判断 request 是否有文件上传,即多部分请求
+        if (multipartResolver.isMultipart(request)) {
+            // 转换成多部分request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            // 取得request中的所有文件名
+            Iterator<String> iter = multiRequest.getFileNames();
+            while (iter.hasNext()) {
+                // 取得上传文件
+                MultipartFile file = multiRequest.getFile(iter.next());
+                InputStream inputStream = file.getInputStream(); // 获取文件的输入流
+                Workbook workbook = WorkbookFactory.create(inputStream);
+                int numberOfSheets = workbook.getNumberOfSheets();
+                if (numberOfSheets > 0){
+                    // sheet工作表
+                    Sheet sheet = workbook.getSheetAt(0);
+                    req = appService.readExcel(sheet);
+                    req.setCode("200");
+                    req.setMessage("成功");
+                }else{
+                    req.setCode("300");
+                    req.setMessage("表格数据错误");
+                }
+            }
+
+        }else{
+            req.setCode("300");
+            req.setMessage("检测不到文件");
+        }
+        return req;
+    }
+
+
+    @RequestMapping(value="addAppStatisticsUC", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "保存UCExcel数据", notes = "保存UCExcel数据", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="statisticsList" , value="参数集合" ,required = true , paramType = "query" ,dataType = "List")
+    })
+    @CrossOrigin
+    public ReqResponse addAppStatisticsUC(@RequestParam("statisticsList")String statisticsList)throws Exception{
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            int userLevel = (int)request.getSession().getAttribute("userLevel");
+            if (userLevel == 0 || userLevel == 1 || userLevel == 2){
+                req = appService.addAppStatisticsUC(statisticsList);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("无权限操作");
+            }
+        }
         return req;
     }
 

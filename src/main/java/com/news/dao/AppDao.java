@@ -257,4 +257,9 @@ public interface AppDao {
      * 修改a_upstream表assign概率数据
      */
     void upstreamAssign(List<AppAssign> list);
+
+    /**
+     * 查询excel数据库对应数据
+     */
+    List<UCStatisticsList> queryExcel(List upstreamId);
 }

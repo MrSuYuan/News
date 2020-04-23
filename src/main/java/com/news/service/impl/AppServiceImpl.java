@@ -11,10 +11,14 @@ import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.utils.id.AppIdUtil;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -442,7 +446,7 @@ public class AppServiceImpl implements AppService {
      * 查看APP统计列表-用户
      */
     @Override
-    public ReqResponse appStatisticsUserList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -456,7 +460,11 @@ public class AppServiceImpl implements AppService {
         map.put("pageSize",pageSize);
         map.put("spaceName",spaceName);
         map.put("appName",appName);
-        map.put("parentId",userId);
+        if (userLevel == 1 || userLevel == 2){
+            map.put("parentId",null);
+        }else{
+            map.put("parentId",userId);
+        }
         map.put("startTime",startTime);
         map.put("endTime",endTime);
 
@@ -1057,5 +1065,94 @@ public class AppServiceImpl implements AppService {
         appDao.upstreamAssign(assignList);
         resp.setCode("200");
         return resp;
+    }
+
+    /**
+     * 读取表格数据
+     */
+    @Override
+    public ReqResponse readExcel(Sheet sheet) {
+        ReqResponse req = new ReqResponse();
+        DecimalFormat df = new DecimalFormat("######0.00");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int rowsOfSheet = sheet.getPhysicalNumberOfRows();
+        List<UCStatisticsList> list = new ArrayList<>();
+        List upstreamIds = new ArrayList();
+        // 第2行+--数据行
+        for (int r = 1; r < rowsOfSheet; r++) {
+            Row row = sheet.getRow(r);
+            if (row == null) {
+                continue;
+            } else {
+                int rowNum = row.getRowNum() + 1;//行数
+                row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(5).setCellType(Cell.CELL_TYPE_STRING);
+                Date c1 = row.getCell(0).getDateCellValue();
+                double c2 = Double.parseDouble(row.getCell(1).getStringCellValue());
+                String c3 = row.getCell(2).getStringCellValue();
+                String c4 = row.getCell(3).getStringCellValue();
+                String c5 = row.getCell(4).getStringCellValue();
+                int c6 = Integer.valueOf(row.getCell(5).getStringCellValue());
+                UCStatisticsList uc = new UCStatisticsList();
+                uc.setCreate_Time(sdf.format(c1));
+                uc.setBeforeIncome(c2);
+                uc.setUpstreamName(c3);
+                uc.setUpstreamId(c5);
+                uc.setBeforeLookPV(c6);
+                double beforeEcpm = uc.getBeforeIncome()*1000/uc.getBeforeLookPV();
+                uc.setBeforeEcpm(df.format(beforeEcpm));
+                list.add(uc);
+                upstreamIds.add(c5);
+            }
+        }
+        //去数据库匹配数据
+        List<UCStatisticsList> appList = appDao.queryExcel(upstreamIds);
+        for(int i = 0; i < list.size(); i++){
+            UCStatisticsList uc = list.get(i);
+            for (int j = 0; j < appList.size(); j++){
+                UCStatisticsList app = appList.get(j);
+                if (uc.getUpstreamId().equals(app.getUpstreamId())){
+                    uc.setNickName(app.getNickName());
+                    uc.setAppId(app.getAppId());
+                    uc.setAppName(app.getAppName());
+                    uc.setSpaceId(app.getSpaceId());
+                    uc.setDividedY(app.getDividedY());
+                    double afterIncome = Double.parseDouble(df.format(uc.getBeforeIncome() * app.getDividedY()));
+                    uc.setIncome(afterIncome);
+                    double afterEcpm = afterIncome * 1000 / uc.getBeforeLookPV();
+                    uc.setAfterEcpm(df.format(afterEcpm));
+                    break;
+                }
+            }
+        }
+
+        req.setResult(list);
+        return req;
+    }
+
+
+    /**
+     * 上传统计信息
+     */
+    @Override
+    public ReqResponse addAppStatisticsUC(String statisticsList) throws Exception {
+        ReqResponse req = new ReqResponse();
+        if(null != statisticsList && !"".equals(statisticsList)){
+            //解析前端传过来的集合数据
+            ObjectMapper mapper = new ObjectMapper();
+            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
+            List<AppStatistics> list =  mapper.readValue(statisticsList, jt);
+            System.out.println(list.get(0).getLookPV());
+            appDao.addAppStatistics(list);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("添加成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("参数错误");
+        }
+        return req;
     }
 }

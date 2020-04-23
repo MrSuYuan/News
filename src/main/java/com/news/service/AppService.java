@@ -2,6 +2,7 @@ package com.news.service;
 
 import com.news.entity.App;
 import com.utils.response.ReqResponse;
+import org.apache.poi.ss.usermodel.Sheet;
 
 /**
  * APP模块
@@ -66,7 +67,7 @@ public interface AppService {
     /**
      * 查看APP统计列表-用户
      */
-    ReqResponse appStatisticsUserList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
 
     /**
      * 上游列表
@@ -159,4 +160,13 @@ public interface AppService {
      */
     ReqResponse assign();
 
+    /**
+     * 读取表格数据
+     */
+    ReqResponse readExcel(Sheet sheet);
+
+    /**
+     * 上传统计信息
+     */
+    ReqResponse addAppStatisticsUC(String statisticsList)throws Exception;
 }
