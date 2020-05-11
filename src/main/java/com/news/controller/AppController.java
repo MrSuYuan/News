@@ -1,11 +1,8 @@
 package com.news.controller;
 
 import com.news.entity.App;
-import com.news.entity.Login;
-import com.news.entity.User;
 import com.news.service.AppService;
 import com.news.service.UserService;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.http.HttpResponse;
 import com.utils.base.BaseController;
 import com.utils.response.ErrorMessage;
@@ -20,11 +17,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,13 +25,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.*;
 import java.net.URLDecoder;
 import java.util.Iterator;
@@ -636,47 +625,6 @@ public class AppController extends BaseController {
         return req;
     }
 
-    @RequestMapping(value="addReport", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "假-统计信息-添加", notes = "假-统计信息-添加", httpMethod = "POST")
-    @ApiImplicitParams(value={
-            @ApiImplicitParam(name="reportList" , value="参数集合" ,required = true , paramType = "query" ,dataType = "List")
-    })
-    @CrossOrigin
-    public ReqResponse addReport(@RequestParam("reportList")String reportList)throws Exception{
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.addReport(reportList);
-        }
-        return req;
-    }
-
-    @RequestMapping(value="reportList", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "假-统计列表", notes = "假-统计列表", httpMethod = "POST")
-    @ApiImplicitParams(value={
-            @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="adId" , value="adId" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
-    })
-    @CrossOrigin
-    public ReqResponse reportList(String adId, String startTime, String endTime, Integer currentPage, Integer pageSize){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.reportList(adId, startTime, endTime, currentPage, pageSize);
-        }
-        return req;
-    }
 
     @RequestMapping(value = "/httpRequest", method = {RequestMethod.GET, RequestMethod.POST })
     @ResponseBody
@@ -852,5 +800,8 @@ public class AppController extends BaseController {
         }
         return req;
     }
+
+
+
 
 }

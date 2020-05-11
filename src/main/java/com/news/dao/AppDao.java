@@ -224,9 +224,7 @@ public interface AppDao {
     int appReportNewListNum(Map<String,Object> map);
     List<AdReportUpstreamListVo> appReportDetail(Map<String,Object> map);
 
-    void addReport(List<Report> list);
-    List<ReportVo> reportList(Map<String,Object> map);
-    int reportListNum(Map<String,Object> map);
+
 
     /**
      * 广告位详情

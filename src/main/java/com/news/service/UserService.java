@@ -21,7 +21,7 @@ public interface UserService {
     /**
      * 创建新用户
      */
-    ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName);
+    ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany);
 
     /**
      * 用户列表

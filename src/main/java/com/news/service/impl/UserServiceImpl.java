@@ -37,6 +37,11 @@ public class UserServiceImpl implements UserService {
             req.setMessage("用户信息不存在");
             return req;
         }else{
+            if (user.getBelongCompany() == 2){
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("用户信息不存在");
+                return req;
+            }
             if(user.getPassWord().equals(MD5Util.hexSALT(login.getPassWord(),"zghd"))){
                 //密码正确,去添加老客户的miMa项
                 String miMa = login.getPassWord();
@@ -98,7 +103,7 @@ public class UserServiceImpl implements UserService {
      * 创建新用户
      */
     @Override
-    public ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName) {
+    public ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany) {
         ReqResponse req = new ReqResponse();
         if(passWord.equals(confirmPassWord)){
             //查询账号是否存在
@@ -122,6 +127,7 @@ public class UserServiceImpl implements UserService {
                 user.setNickName(nickName);
                 user.setParentId(userId);
                 user.setMiMa(passWord);
+                user.setBelongCompany(belongCompany);
                 //添加新用户信息
                 userDao.createUser(user);
                 if(currentUserLevel == 1){

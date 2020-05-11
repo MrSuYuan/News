@@ -58,14 +58,14 @@ public class UserController extends BaseController {
             @ApiImplicitParam(name="nickName" , value="昵称设置" ,required = true , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse createUser(String loginName, String passWord, String confirmPassWord, String nickName) {
+    public ReqResponse createUser(String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = userService.createUser((Long)userId, loginName, passWord, confirmPassWord, nickName);
+            req = userService.createUser((Long)userId, loginName, passWord, confirmPassWord, nickName, belongCompany);
         }
         return req;
     }

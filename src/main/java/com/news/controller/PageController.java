@@ -386,5 +386,19 @@ public class PageController extends BaseController {
     @ApiOperation(value = "添加报表", notes = "添加报表", httpMethod = "GET")
     public String temporaryAdd(){ return "/html/temporary/temporaryAdd.jsp";}
 
+    /**
+     * 临时报表2
+     */
+    @RequestMapping(value = "copyList" , method= RequestMethod.GET)
+    @ApiOperation(value = "展示报表", notes = "展示报表", httpMethod = "GET")
+    public String copyList(){ return "/html/temporary/copyList.jsp";}
+
+    /**
+     * 临时报表2
+     */
+    @RequestMapping(value = "copyAdd" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加报表", notes = "添加报表", httpMethod = "GET")
+    public String copyAdd(){ return "/html/temporary/copyAdd.jsp";}
+
 
 }

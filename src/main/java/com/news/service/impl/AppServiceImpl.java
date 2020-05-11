@@ -7,7 +7,6 @@ import com.news.dao.UserDao;
 import com.news.entity.*;
 import com.news.service.AppService;
 import com.news.vo.*;
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import com.utils.id.AppIdUtil;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -15,10 +14,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -76,12 +73,12 @@ public class AppServiceImpl implements AppService {
         System.out.println(appId);
         app.setAppId(appId);
         //查看app用户名是否可用
-        int appName = appDao.appName(app.getAppName());
+        /*int appName = appDao.appName(app.getAppName());
         if(appName > 0){
             req.setCode(ErrorMessage.FAIL.getCode());
             req.setMessage("此APP名称已经存在");
             return req;
-        }
+        }*/
         //封装剩余信息
         app.setAccessMethod(1);
         //个人填写app信息
@@ -910,93 +907,6 @@ public class AppServiceImpl implements AppService {
         return req;
     }
 
-    @Override
-    public ReqResponse addReport(String reportList) throws Exception {
-        ReqResponse req = new ReqResponse();
-        if(null != reportList && !"".equals(reportList)){
-            //解析前端传过来的集合数据
-            ObjectMapper mapper = new ObjectMapper();
-            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, Report.class);
-            List<Report> list =  mapper.readValue(reportList, jt);
-            for(int i = 0; i < list.size(); i++){
-                Report r = list.get(i);
-                r.setClickProbability((double)r.getClickNum()/(double)r.getLookPv()*100);
-                r.setEcpm(r.getIncome()*1000/(double)r.getLookPv());
-                if (r.getClickNum() == 0){
-                    r.setCpc(0);
-                }else{
-                    r.setCpc(r.getIncome()/(double)r.getClickNum());
-                }
-            }
-            appDao.addReport(list);
-            req.setCode(ErrorMessage.SUCCESS.getCode());
-            req.setMessage("添加成功");
-        }else{
-            req.setCode(ErrorMessage.FAIL.getCode());
-            req.setMessage("参数错误");
-        }
-        return req;
-    }
-
-    @Override
-    public ReqResponse reportList(String adId, String startTime, String endTime, Integer currentPage, Integer pageSize) {
-        ReqResponse req = new ReqResponse();
-        Map<String,Object> map = new HashMap<>();
-        map.put("adId",adId);
-        map.put("startTime",startTime);
-        map.put("endTime",endTime);
-        //页码格式化
-        if(null == currentPage){
-            currentPage = 1;
-        }
-        if(null == pageSize){
-            pageSize = 20;
-        }
-        map.put("num",(currentPage - 1) * pageSize);
-        map.put("pageSize",pageSize);
-
-        //list数据
-        List<ReportVo> reportList = appDao.reportList(map);
-        DecimalFormat df = new DecimalFormat("######0.00");
-        for(int i = 0; i < reportList.size(); i++){
-            ReportVo r = reportList.get(i);
-            if (r.getEcpm() == 0){
-                r.setEcpm2("0");
-            }else{
-                r.setEcpm2(df.format(r.getEcpm()));
-            }
-            if (r.getCpc() == 0){
-                r.setCpc2("0");
-            }else{
-                r.setCpc2(df.format(r.getCpc()));
-            }
-            r.setClickProbability2(df.format(r.getClickProbability()));
-        }
-
-        //总和
-        int sumData = appDao.reportListNum(map);
-
-        //总页数
-        int sumPage = 0;
-        if(sumData%Integer.valueOf(pageSize) == 0){
-            sumPage = (sumData/Integer.valueOf(pageSize));
-        }else{
-            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
-        }
-
-        Map<String,Object> result = new HashMap<>();
-        result.put("list",reportList);
-        result.put("currentPage",currentPage);
-        result.put("pageSize",pageSize);
-        result.put("sumPage",sumPage);
-        result.put("sumData",sumData);
-
-
-        req.setResult(result);
-        req.setCode(ErrorMessage.SUCCESS.getCode());
-        req.setMessage("成功");
-        return req;
-    }
 
     /**
      * 广告位详情
@@ -1155,4 +1065,6 @@ public class AppServiceImpl implements AppService {
         }
         return req;
     }
+
+
 }

@@ -44,6 +44,15 @@ public class User {
      */
     private String logo;
     private String miMa;
+    private int belongCompany;
+
+    public int getBelongCompany() {
+        return belongCompany;
+    }
+
+    public void setBelongCompany(int belongCompany) {
+        this.belongCompany = belongCompany;
+    }
 
     public String getMiMa() {
         return miMa;

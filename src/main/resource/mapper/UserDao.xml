@@ -22,9 +22,9 @@
     <!-- 创建新用户 -->
     <insert id="createUser" parameterType="com.news.entity.User" useGeneratedKeys="true" keyProperty="userId">
         insert into u_user
-        (loginName, passWord, nickName, parentId, userLevel, userStatus, createTime, miMa)
+        (loginName, passWord, nickName, parentId, userLevel, userStatus, createTime, miMa,belongCompany)
         values
-        (#{loginName},#{passWord},#{nickName},#{parentId},#{userLevel},2,now(),#{miMa})
+        (#{loginName},#{passWord},#{nickName},#{parentId},#{userLevel},2,now(),#{miMa},#{belongCompany})
     </insert>
 
     <!-- 查询当前用户身份 -->

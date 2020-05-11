@@ -132,15 +132,6 @@ public interface AppService {
     ReqResponse assignSubmit(String list, String spaceId);
 
     /**
-     * 上传统计信息
-     */
-    ReqResponse addReport(String reportList)throws Exception;
-    /**
-     * 查看APP统计列表-管理
-     */
-    ReqResponse reportList(String adId, String startTime, String endTime,Integer currentPage, Integer pageSize);
-
-    /**
      * 广告位详情
      */
     ReqResponse adspaceDetail(String spaceId);
@@ -169,4 +160,6 @@ public interface AppService {
      * 上传统计信息
      */
     ReqResponse addAppStatisticsUC(String statisticsList)throws Exception;
+
+
 }

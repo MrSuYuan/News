@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 临时统计模块 -->
+<mapper namespace="com.news.dao.TemporaryDao">
+
+    <insert id="addReport">
+        insert into report
+        (createTime, adId, adSize, address, adName, lookPv, income, clickNum, ecpm, clickProbability, cpc) values
+        <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+            (#{item.createTime},#{item.adId},#{item.adSize},#{item.address},#{item.adName},#{item.lookPv},#{item.income},#{item.clickNum},#{item.ecpm},#{item.clickProbability},#{item.cpc})
+        </foreach>
+    </insert>
+
+    <select id="reportList" parameterType="java.util.Map" resultType="com.news.vo.ReportVo">
+        select *,DATE_FORMAT(createTime,"%Y-%m-%d") as createTime2
+        from report
+        where 1=1
+        <if test="adId != null and adId !=''">
+            and adId = #{adId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+        </if>
+        order by createTime desc,lookPv desc
+        limit #{num},#{pageSize}
+    </select>
+
+    <select id="reportListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from report
+        where 1=1
+        <if test="adId != null and adId !=''">
+            and adId = #{adId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+        </if>
+    </select>
+
+    <insert id="addCopy">
+        insert into b_copy
+        (createTime, adId, adName, accessPv, detailPv, lookPv, income, clickNum, ecpm, clickProbability, cpc) values
+        <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+            (#{item.createTime},#{item.adId},#{item.adName},#{item.accessPv},#{item.detailPv},#{item.lookPv},#{item.income},#{item.clickNum},#{item.ecpm},#{item.clickProbability},#{item.cpc})
+        </foreach>
+    </insert>
+
+    <select id="copyList" parameterType="java.util.Map" resultType="com.news.vo.CopyVo">
+        select *,DATE_FORMAT(createTime,"%m-%d") as createTime2
+        from b_copy
+        where 1=1
+        <if test="adId != null and adId !=''">
+            and adId = #{adId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+        </if>
+        order by createTime desc,lookPv desc
+        limit #{num},#{pageSize}
+    </select>
+
+    <select id="copyListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from b_copy
+        where 1=1
+        <if test="adId != null and adId !=''">
+            and adId = #{adId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(createTime)
+        </if>
+    </select>
+
+</mapper>
