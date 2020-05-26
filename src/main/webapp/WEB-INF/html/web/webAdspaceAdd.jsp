@@ -80,6 +80,7 @@
                                         <option value="3">环球-光粒星辉</option>
                                         <option value="4">百度-zhuangguanhudong</option>
                                         <option value="5">百度-zolcnet</option>
+                                        <option value="6">云告-中关互动</option>
                                     </select>
                                 </td>
                             </tr>

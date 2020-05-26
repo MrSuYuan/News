@@ -267,20 +267,15 @@ public class WebServiceImpl implements WebService {
 
             //查看广告位所属app的上级id
             Long parentId = webDao.adParentId(spaceId);
-            if(userId.longValue() == parentId.longValue()){
-                //查看分润比例
-                UserDivided ud = new UserDivided();
-                ud.setType(2);
-                ud.setUserId(userId);
-                ud = userDao.selectDivided(ud);
+            if(userId.longValue() == parentId.longValue() || userId.longValue() == 1){
                 //计算点击率和ecmp
                 //点击率=点击数/展现pv（以百分数形式呈现）
                 //ecpm=收益*1000/展现pv
                 for(int i = 0; i < list.size(); i++){
                     WebStatistics as = list.get(i);
-                    as.setLookPV((int)(as.getBeforeLookPV() * ud.getLookProportion()));
-                    as.setClickNum((int)(as.getBeforeClickNum() * ud.getClickProportion()));
-                    as.setIncome(as.getBeforeIncome() * ud.getUpstreamProportion() * ud.getUserProportion());
+                    as.setLookPV((int)(as.getBeforeLookPV()));
+                    as.setClickNum((int)(as.getBeforeClickNum()));
+                    as.setIncome(as.getBeforeIncome());
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
                     as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
                 }

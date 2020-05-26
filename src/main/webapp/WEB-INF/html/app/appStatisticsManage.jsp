@@ -63,10 +63,18 @@
                     <div align="center">
                         广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        日期：<input type="date" id="startTime" style="width:150px;height:30px">
-                        - <input type="date" id="endTime" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        日期：<input type="date" id="startTime" style="width:120px;height:30px">
+                        - <input type="date" id="endTime" style="width:120px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        审核状态：<select id="status" style="width:80px;height:30px">
+                                        <option value="2">请选择</option>
+                                        <option value="1">通过</option>
+                                        <option value="0">未审核</option>
+                                  </select>&nbsp;&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                        </a>
+                        <a class="btn btn-primary btn-xs" onclick="examinationPassed()">
+                            <i class="ace-icon glyphicon glyphicon-ok bigger-110"><font size="3">通过</font></i>
                         </a>
                     </div>
                     <br>
@@ -78,6 +86,7 @@
                                        class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr style="height: 50px">
+                                        <th><input type="checkbox" id="boxid" onclick="setAllNo()"/>全选</th>
                                         <th>APP名称</th>
                                         <th>广告位名称</th>
                                         <th>APPID</th>
@@ -175,7 +184,6 @@
 
     //点击搜索数据展示
     function selectStatisticsList(currentPage) {
-
         //var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
@@ -188,6 +196,7 @@
             url: path + "/app/appStatisticsManage",
             type: "post",
             data: {
+                "status" : $('#status').val(),
                 "startTime" : $('#startTime').val(),
                 "endTime" : $('#endTime').val(),
                 "spaceName" : $('#spaceName').val(),
@@ -204,6 +213,12 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
+                        var status = data.status;
+                        if (status == 0){
+                            html+='<td><input type="checkbox" name="love" value="'+data.statisticsId+'"/></td>';
+                        } else if (status == 1) {
+                            html+='<td><input type="checkbox" disabled/></td>';
+                        }
                         html+='<td> '+data.appName+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.appId+'</td>';
@@ -217,7 +232,6 @@
                         html+='<td> '+data.clickProbability+'%</td>';
                         html+='<td> '+data.income+'</td>';
                         html+='<td> '+data.ecmp+'</td>';
-                        var status = data.status;
                         if (status == 0){
                             html+='<td id="td'+data.statisticsId+'"><button type="button" class="btn btn-minier btn-success" onclick="changeStatus('+data.statisticsId+')">通过</button>&nbsp;' +
                                 '<button type="button" class="btn btn-minier btn-danger" onclick="deleteStatistics('+data.statisticsId+')">删除</button></td>';
@@ -334,6 +348,64 @@
             }
         });
     }
+
+    //全选/全不选操作
+    function setAllNo(){
+        var box = document.getElementById("boxid");
+        var loves = document.getElementsByName("love");
+        if(box.checked == false){
+            for (var i = 0; i < loves.length; i++) {
+                loves[i].checked = false;
+            }
+        }else{
+            for (var i = 0; i < loves.length; i++) {
+                loves[i].checked = true;
+            }
+        }
+    }
+
+    function examinationPassed(){
+        var num = 0;
+        var ids = [];
+        var loves = document.getElementsByName("love");
+        for (var i = 0; i < loves.length; i++) {
+            if(loves[i].checked == true){
+                ids.push(loves[i].value);
+                num = num + 1;
+            }
+        }
+        //提交数据
+        $.ajax({
+            url: path + "/app/examinationPassed",
+            type: "post",
+            data: {
+                "ids" : JSON.stringify(ids)
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    alert(obj.message);
+                    for (var i = 0; i < ids.length; i++) {
+                        $('#td'+ids[i]).empty();
+                        $('#td'+ids[i]).html("已通过");
+                    }
+
+                }else if(obj.code == 300){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+
+    }
+
+
 </script>
 
 </html>

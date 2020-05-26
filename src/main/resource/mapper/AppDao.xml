@@ -246,6 +246,17 @@
         </foreach>
     </insert>
 
+    <!-- 多选审核通过 -->
+    <update id="examinationPassed">
+        update a_statistics
+        set status = 1
+        where statisticsId in (
+            <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+                #{item}
+            </foreach>
+        )
+    </update>
+
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
         select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType,ut.`name`,s.status,s.statisticsId
@@ -268,6 +279,9 @@
         </if>
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        <if test="status != 2">
+            and s.status = #{status}
         </if>
         order by s.createTime desc
         limit #{num},#{pageSize}
@@ -295,6 +309,9 @@
         </if>
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        <if test="status != 2">
+            and s.status = #{status}
         </if>
     </select>
 

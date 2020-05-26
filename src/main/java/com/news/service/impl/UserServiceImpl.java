@@ -37,11 +37,6 @@ public class UserServiceImpl implements UserService {
             req.setMessage("用户信息不存在");
             return req;
         }else{
-            if (user.getBelongCompany() == 2){
-                req.setCode(ErrorMessage.FAIL.getCode());
-                req.setMessage("用户信息不存在");
-                return req;
-            }
             if(user.getPassWord().equals(MD5Util.hexSALT(login.getPassWord(),"zghd"))){
                 //密码正确,去添加老客户的miMa项
                 String miMa = login.getPassWord();
@@ -103,43 +98,43 @@ public class UserServiceImpl implements UserService {
      * 创建新用户
      */
     @Override
-    public ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany) {
+    public ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany, long parentId) {
         ReqResponse req = new ReqResponse();
         if(passWord.equals(confirmPassWord)){
+            Map<String,Object> map = new HashMap<>();
+            map.put("loginName",loginName);
+            map.put("belongCompany",belongCompany);
             //查询账号是否存在
-            User u = userDao.user(loginName);
-            if(null == u){
-                //添加用户信息
+            int loginNameNum = userDao.loginNameNum(map);
+            if(loginNameNum == 0){
+
                 User user = new User();
-                //查询当前用户身份
-                int currentUserLevel = userDao.userLevel(userId);
-                if(currentUserLevel == 1){
+                //添加管理员信息
+                if (parentId == 1){
                     user.setUserLevel(2);
-                }else if(currentUserLevel == 2){
-                    user.setUserLevel(3);
+                //创建普通用户
                 }else{
-                    req.setCode(ErrorMessage.FAIL.getCode());
-                    req.setMessage("当前用户身份获取失败");
-                    return req;
+                    user.setUserLevel(3);
+                }
+                System.out.println(parentId);
+                if (parentId == 0){
+                    user.setParentId(userId);
+                }else{
+                    user.setParentId(parentId);
                 }
                 user.setLoginName(loginName);
                 user.setPassWord(MD5Util.hexSALT(passWord,"zghd"));
                 user.setNickName(nickName);
-                user.setParentId(userId);
                 user.setMiMa(passWord);
                 user.setBelongCompany(belongCompany);
                 //添加新用户信息
                 userDao.createUser(user);
-                if(currentUserLevel == 1){
-                    //管理员添加分润比例
-                    userDao.insertUserDivided(user.getUserId());
-                }
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("创建新用户成功");
 
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
-                req.setMessage("账号信息已存在");
+                req.setMessage("用户名已存在");
             }
 
         }else{
@@ -223,50 +218,6 @@ public class UserServiceImpl implements UserService {
         }
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("修改成功");
-        return req;
-    }
-
-    @Override
-    public ReqResponse selectProportion(Long userId, int type) {
-        ReqResponse req = new ReqResponse();
-        UserDivided userDivided = new UserDivided();
-        userDivided.setUserId(userId);
-        userDivided.setType(type);
-        userDivided = userDao.selectDivided(userDivided);
-        req.setResult(userDivided);
-        req.setCode(ErrorMessage.SUCCESS.getCode());
-        req.setMessage("修改成功");
-        return req;
-    }
-
-
-    /**
-     * 设置分成比例
-     */
-    @Override
-    public ReqResponse updateProportion(Long currentUserId, double lookProportion, double clickProportion, double upstreamProportion, double userProportion, int type) {
-        ReqResponse req = new ReqResponse();
-        try{
-            if(lookProportion > 1.0 || clickProportion > 1.0 || upstreamProportion > 1.0 || userProportion > 1.0){
-                req.setCode(ErrorMessage.SERVER_ERROR.getCode());
-                req.setMessage("设置比例错误");
-            }else{
-                UserDivided userDivided = new UserDivided();
-                userDivided.setUserId(currentUserId);
-                userDivided.setLookProportion(lookProportion);
-                userDivided.setClickProportion(clickProportion);
-                userDivided.setUpstreamProportion(upstreamProportion);
-                userDivided.setUserProportion(userProportion);
-                userDivided.setType(type);
-                userDao.updateProportion(userDivided);
-                req.setCode(ErrorMessage.SUCCESS.getCode());
-                req.setMessage("修改成功");
-            }
-
-        }catch(Exception e){
-            req.setCode(ErrorMessage.SERVER_ERROR.getCode());
-            req.setMessage("系统错误");
-        }
         return req;
     }
 

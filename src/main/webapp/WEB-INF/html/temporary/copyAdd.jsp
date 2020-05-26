@@ -44,7 +44,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="${ctx}/index">Home</a>
                     </li>
-                    <li class="active">网盟推广-代码位报告(格式excel.xlsx)</li>
+                    <li class="active">内容联盟-标准合作报告(格式excel.xlsx)</li>
                 </ul><!-- /.breadcrumb -->
                 <div class="nav-search" id="nav-search">
                     <a class="btn btn-primary btn-xs">
@@ -70,11 +70,11 @@
                                     <th>选择</th>
                                     <th>日期</th>
                                     <th>代码位ID</th>
-                                    <th>代码位尺寸</th>
-                                    <th>媒体</th>
-                                    <th>计费名</th>
+                                    <th>代码位名称</th>
                                     <th>广告展现量</th>
                                     <th>预计收入</th>
+                                    <th>到访pv</th>
+                                    <th>详情pv</th>
                                     <th>点击量</th>
                                 </tr>
 
@@ -102,15 +102,15 @@
                 <input class="btn btn-sm btn-info no-radius" type="button" value="删除" onclick="delRow()">
 
 </body>
-            </div><!-- /.page-content -->
-        </div>
-    </div><!-- /.main-content -->
+</div><!-- /.page-content -->
+</div>
+</div><!-- /.main-content -->
 
-    <!-- 页面尾部 -->
-    <div class="footer" id ="footer"></div>
-    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-    </a>
+<!-- 页面尾部 -->
+<div class="footer" id ="footer"></div>
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+    <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+</a>
 </div><!-- /.main-container -->
 
 </body>
@@ -132,7 +132,7 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("temporaryAdd", $('#userName').val());
+    loading("copyAdd", $('#userName').val());
 
     /**
      * 动态添加行
@@ -154,15 +154,15 @@
         var td2=document.createElement("td");
         td2.innerHTML="<input type='text' name='adId'/>";
         var td3=document.createElement("td");
-        td3.innerHTML="<input type='text' name='adSize'/>";
+        td3.innerHTML="<input type='text' name='adName'/>";
         var td4=document.createElement("td");
-        td4.innerHTML="<input type='text' name='address'/>";
+        td4.innerHTML="<input type='text' name='lookPv'/>";
         var td5=document.createElement("td");
-        td5.innerHTML="<input type='text' name='adName'/>";
+        td5.innerHTML="<input type='text' name='income'/>";
         var td6=document.createElement("td");
-        td6.innerHTML="<input type='text' name='lookPv'/>";
+        td6.innerHTML="<input type='text' name='accessPv'/>";
         var td7=document.createElement("td");
-        td7.innerHTML="<input type='text' name='income'/>";
+        td7.innerHTML="<input type='text' name='detailPv'/>";
         var td8=document.createElement("td");
         td8.innerHTML="<input type='text' name='clickNum'/>";
         tr.appendChild(td0);
@@ -201,11 +201,11 @@
             var obj = {
                 createTime : $(val).find('input[name=createTime]').eq(0).val(),
                 adId : $(val).find('input[name=adId]').eq(0).val(),
-                adSize : $(val).find('input[name=adSize]').eq(0).val(),
-                address : $(val).find('input[name=address]').eq(0).val(),
                 adName : $(val).find('input[name=adName]').eq(0).val(),
                 lookPv : $(val).find('input[name=lookPv]').eq(0).val(),
                 income : $(val).find('input[name=income]').eq(0).val(),
+                accessPv : $(val).find('input[name=accessPv]').eq(0).val(),
+                detailPv : $(val).find('input[name=detailPv]').eq(0).val(),
                 clickNum : $(val).find('input[name=clickNum]').eq(0).val(),
                 ecpm : 0,
                 clickProbability : 0,
@@ -218,17 +218,17 @@
 
         //提交数据
         $.ajax({
-            url: path + "/temporary/addReport",
+            url: path + "/temporary/addCopy",
             type: "post",
             data: {
-                "reportList" : JSON.stringify(objs)
+                "copyList" : JSON.stringify(objs)
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    window.location = path+"/temporaryList";
+                    window.location = path+"/copyList";
                 }else if(obj.code == 300){
                     alert(obj.message);
                     window.location = path+"/login";
@@ -252,7 +252,7 @@
         }
 
         $.ajax({
-            url: path + "/temporary/uploadBDExcel",
+            url: path + "/temporary/uploadBDExcelCopy",
             type: "post",
             data: formData,
             contentType: false,

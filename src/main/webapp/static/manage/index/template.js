@@ -164,6 +164,8 @@ function navigationBar(path){
 	html += '		<ul class="submenu">';			
 	html += '			<li class="" id="temporaryAdd"><a href="'+path+'/temporaryAdd"><i class="menu-icon fa fa-caret-right"></i>添加</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="temporaryList"><a href="'+path+'/temporaryList"><i class="menu-icon fa fa-caret-right"></i>展示</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="copyAdd"><a href="'+path+'/copyAdd"><i class="menu-icon fa fa-caret-right"></i>标准合作添加</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="copyList"><a href="'+path+'/copyList"><i class="menu-icon fa fa-caret-right"></i>标准合作展示</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -326,6 +328,12 @@ function permission(pageSign){
     }else if (pageSign == "temporaryList"){
         $('#temporary').addClass('active open');
         $('#temporaryList').addClass('active');
+    }else if (pageSign == "copyAdd"){
+        $('#temporary').addClass('active open');
+        $('#copyAdd').addClass('active');
+    }else if (pageSign == "copyList"){
+        $('#temporary').addClass('active open');
+        $('#copyList').addClass('active');
     }
 }
 

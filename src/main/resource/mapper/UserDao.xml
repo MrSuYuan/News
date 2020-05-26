@@ -6,7 +6,12 @@
 
     <!-- 用户登录 -->
     <select id="user" parameterType="java.lang.String" resultType="com.news.entity.User">
-        select * from u_user where loginName = #{loginName}
+        select * from u_user where loginName = #{loginName} and belongCompany = 1
+    </select>
+
+    <!-- 查询用户名是否重复 -->
+    <select id="loginNameNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from u_user where loginName = #{loginName} and belongCompany = #{belongCompany}
     </select>
 
     <!-- 查询密码 -->
@@ -88,27 +93,6 @@
     <!-- 修改用户状态 -->
     <update id="userStatus" parameterType="java.util.Map">
         update u_user set userStatus = #{userStatus} where userId = #{userId}
-    </update>
-
-    <!-- 创建分成比例 -->
-    <insert id="insertUserDivided" parameterType="java.lang.Long">
-        insert into u_divided (userId, type) values (#{userId},1),(#{userId},2)
-    </insert>
-
-    <!-- 查看分成比例 -->
-    <select id="selectDivided" parameterType="com.news.entity.UserDivided" resultType="com.news.entity.UserDivided">
-        select * from u_divided
-        where userId = #{userId} and type = #{type}
-    </select>
-    
-    <!-- 修改分成比例 -->
-    <update id="updateProportion" parameterType="com.news.entity.UserDivided">
-        update u_divided set
-        lookProportion = #{lookProportion},
-        clickProportion = #{clickProportion},
-        upstreamProportion = #{upstreamProportion},
-        userProportion = #{userProportion}
-        where userId = #{userId} and type = #{type}
     </update>
 
     <!-- 为老客户添加密码项 -->

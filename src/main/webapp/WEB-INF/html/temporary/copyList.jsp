@@ -22,17 +22,16 @@
     <link rel="icon" href=https://mssp.baidu.com/bqt/favicon.ico>
     <link rel="stylesheet" href="https://mssp.baidu.com/bqt/nprogress/nprogress.css">
     <title>百青藤</title>
-    <link href="${ctx}/static/baidu/1.css" rel="prefetch">
-    <link href="${ctx}/static/baidu/2.js" rel="prefetch">
-    <link href="${ctx}/static/baidu/3.css" rel="preload" as="style">
-    <link href="${ctx}/static/baidu/4.css" rel="preload" as="style">
-    <link href="${ctx}/static/baidu/5.css" rel="preload" as="style">
-    <link href="${ctx}/static/baidu/6.js" rel="preload" as="script">
-    <link href="${ctx}/static/baidu/7.js" rel="preload" as="script">
-    <link href="${ctx}/static/baidu/8.js" rel="preload" as="script">
-    <link href="${ctx}/static/baidu/9.css" rel="stylesheet">
-    <link href="${ctx}/static/baidu/10.css" rel="stylesheet">
-    <link href="${ctx}/static/baidu/11.css" rel="stylesheet">
+    <link href="${ctx}/static/baidu/copy/1.css" rel="preload" as="style">
+    <link href="${ctx}/static/baidu/copy/2.css" rel="preload" as="style">
+    <link href="${ctx}/static/baidu/copy/3.css" rel="preload" as="style">
+    <link href="${ctx}/static/baidu/copy/1.js" rel="preload" as="script">
+    <link href="${ctx}/static/baidu/copy/2.js" rel="preload" as="script">
+    <link href="${ctx}/static/baidu/copy/3.js" rel="preload" as="script">
+    <link href="${ctx}/static/baidu/copy/1.css" rel="stylesheet">
+    <link href="${ctx}/static/baidu/copy/2.css" rel="stylesheet">
+    <link href="${ctx}/static/baidu/copy/3.css" rel="stylesheet">
+    <style type="text/css">  .echarts { width: 600px; height: 400px; } </style>
 </head>
 
 <body class="no-skin">
@@ -78,8 +77,7 @@
 
             <!-- 页面主体部分 -->
             <div class="page-content">
-                <div id="app" class="app-view">
-
+                <div id="app" class="app-view muses-co">
                     <div class="base-view list-view adp-report-view" style="top:80px">
                         <div class="list-header">
                             <div class="list-summary"></div>
@@ -92,9 +90,9 @@
                                     </select>--%>
                                     <input type="text" id="adId" placeholder="广告位ID" style="height: 34.2px">&nbsp;&nbsp;&nbsp;
                                     <input type="date" id="startTime">&nbsp;&nbsp;&nbsp;-<input type="date" id="endTime">
-                                        <a class="btn btn-primary btn-xs" onclick="selectReportList($('#currentPage').val())">
-                                            <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">查询</font></i>
-                                        </a>
+                                    <a class="btn btn-primary btn-xs" onclick="selectReportList($('#currentPage').val())">
+                                        <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">查询</font></i>
+                                    </a>
                                 </div>
                             </form>
                         </div>
@@ -103,9 +101,9 @@
                             <colgroup>
                                 <col width="190">
                                 <col width="150">
-                                <col width="180">
-                                <col width="130">
                                 <col width="160">
+                                <col width="120">
+                                <col width="120">
                                 <col width="120">
                                 <col width="130">
                                 <col width="120">
@@ -115,13 +113,7 @@
                             <thead>
                             <tr>
                                 <th scope="col" role="columnheader">
-                                    <div class="veui-table-cell">代码位</div>
-                                </th>
-                                <th scope="col" role="columnheader">
-                                    <div class="veui-table-cell">媒体</div>
-                                </th>
-                                <th scope="col" role="columnheader">
-                                    <div class="veui-table-cell">计费名</div>
+                                    <div class="veui-table-cell">应用</div>
                                 </th>
                                 <th scope="col" role="columnheader">
                                     <div class="veui-table-cell">广告展现量</div>
@@ -136,6 +128,28 @@
                                 </th>
                                 <th scope="col" role="columnheader">
                                     <div class="veui-table-cell">预计收入</div>
+                                    <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 16 16" class="fa-icon veui-icon veui-sorter veui-sorter-unordered">
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
+                                            <path d="M11.98 3.97l-.65.73L9 1.53V12H8V0h.99z"></path>
+                                        </svg>
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
+                                            <path d="M0 8.03l.65-.73 2.34 3.17V0h1v12h-1z"></path>
+                                        </svg>
+                                    </svg>
+                                </th>
+                                <th scope="col" role="columnheader">
+                                    <div class="veui-table-cell">到访PV</div>
+                                    <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 16 16" class="fa-icon veui-icon veui-sorter veui-sorter-unordered">
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
+                                            <path d="M11.98 3.97l-.65.73L9 1.53V12H8V0h.99z"></path>
+                                        </svg>
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
+                                            <path d="M0 8.03l.65-.73 2.34 3.17V0h1v12h-1z"></path>
+                                        </svg>
+                                    </svg>
+                                </th>
+                                <th scope="col" role="columnheader">
+                                    <div class="veui-table-cell">详情页PV</div>
                                     <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 16 16" class="fa-icon veui-icon veui-sorter veui-sorter-unordered">
                                         <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
                                             <path d="M11.98 3.97l-.65.73L9 1.53V12H8V0h.99z"></path>
@@ -258,7 +272,7 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("temporaryList", $('#userName').val());
+    loading("copyList", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
@@ -278,7 +292,7 @@
         var endTime = $('#endTime').val();
         var adId = $('#adId').val();
         $.ajax({
-            url: path + "/temporary/reportList",
+            url: path + "/temporary/copyList",
             type: "post",
             data: {
                 "currentPage" : currentPage,
@@ -296,11 +310,11 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr class>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div class="adposition"><div>'+data.adSize+'</div><div>'+data.adId+'</div></div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div class="app"><div>'+data.address+'</div></div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div class="app"><div>'+data.adName+'</div></div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div class="adposition"><div><a class="app-name-text">'+data.adName+'</a></div><div><a class="app-name-text">ID: '+data.adId+'</a></div></div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.lookPv).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.income+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.accessPv).toLocaleString()+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.detailPv).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.clickNum).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.ecpm2+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability2+'%</div></div></td>';

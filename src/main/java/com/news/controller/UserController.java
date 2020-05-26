@@ -52,20 +52,22 @@ public class UserController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "添加用户信息", notes = "添加用户信息", httpMethod = "POST")
     @ApiImplicitParams(value={
+            @ApiImplicitParam(name="belongCompany" , value="平台(1中关 2光粒)" ,required = true , paramType = "query" ,dataType = "int"),
+            @ApiImplicitParam(name="parentId" , value="父id" ,required = true , paramType = "query" ,dataType = "long"),
             @ApiImplicitParam(name="loginName" , value="登录账号" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="passWord" , value="登录密码" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="confirmPassWord" , value="确认密码" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="nickName" , value="昵称设置" ,required = true , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse createUser(String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany) {
+    public ReqResponse createUser(String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany, long parentId) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = userService.createUser((Long)userId, loginName, passWord, confirmPassWord, nickName, belongCompany);
+            req = userService.createUser((Long)userId, loginName, passWord, confirmPassWord, nickName, belongCompany, parentId);
         }
         return req;
     }
@@ -113,50 +115,5 @@ public class UserController extends BaseController {
         }
         return req;
     }
-
-
-    @RequestMapping(value = "/selectProportion",method=RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "查看分成比例", notes = "查看分成比例", httpMethod = "POST")
-    @ApiImplicitParams(value={
-            @ApiImplicitParam(name="type" , value="类型" ,required = false , paramType = "query" ,dataType = "int")
-    })
-    @CrossOrigin
-    public ReqResponse selectProportion(int type) {
-        ReqResponse req = new ReqResponse();
-        Object currentUserId = request.getSession().getAttribute("userId");
-        if(null == currentUserId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = userService.selectProportion((Long) currentUserId, type);
-        }
-        return req;
-    }
-
-
-    @RequestMapping(value = "/updateProportion",method=RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "设置分成比例", notes = "设置分成比例", httpMethod = "POST")
-    @ApiImplicitParams(value={
-            @ApiImplicitParam(name="lookProportion" , value="展现比例" ,required = false , paramType = "query" ,dataType = "double"),
-            @ApiImplicitParam(name="clickProportion" , value="点击比例" ,required = false , paramType = "query" ,dataType = "double"),
-            @ApiImplicitParam(name="upstreamProportion" , value="上游设置分润比例" ,required = false , paramType = "query" ,dataType = "double"),
-            @ApiImplicitParam(name="userProportion" , value="当前用户设置分润比例" ,required = false , paramType = "query" ,dataType = "double"),
-            @ApiImplicitParam(name="type" , value="类型 1app端 2web端" ,required = false , paramType = "query" ,dataType = "int")
-    })
-    @CrossOrigin
-    public ReqResponse updateProportion(double lookProportion, double clickProportion, double upstreamProportion, double userProportion, int type) {
-        ReqResponse req = new ReqResponse();
-        Object currentUserId = request.getSession().getAttribute("userId");
-        if(null == currentUserId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = userService.updateProportion((Long) currentUserId, lookProportion, clickProportion, upstreamProportion, userProportion, type);
-        }
-        return req;
-    }
-
 
 }

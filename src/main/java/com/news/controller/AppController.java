@@ -270,6 +270,7 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "统计列表-管理", notes = "统计列表-管理", httpMethod = "POST")
     @ApiImplicitParams(value={
+            @ApiImplicitParam(name="status" , value="审核状态" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
@@ -278,14 +279,14 @@ public class AppController extends BaseController {
             @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appStatisticsManage(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize){
+    public ReqResponse appStatisticsManage(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appStatisticsList(startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize);
+            req = appService.appStatisticsList(startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize, status);
         }
         return req;
     }
@@ -311,6 +312,25 @@ public class AppController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             req = appService.appStatisticsUserList((int)userLevel, startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize);
+        }
+        return req;
+    }
+
+    @RequestMapping(value="examinationPassed", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "多选通过", notes = "多选通过", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="ids" , value="id集合" ,required = false , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse examinationPassed(String ids){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.examinationPassed(ids);
         }
         return req;
     }

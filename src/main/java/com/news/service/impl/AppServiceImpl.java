@@ -1,6 +1,8 @@
 package com.news.service.impl;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.news.dao.AppDao;
 import com.news.dao.UserDao;
@@ -15,6 +17,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -278,7 +281,7 @@ public class AppServiceImpl implements AppService {
         ReqResponse req = new ReqResponse();
         //查看广告位所属app的上级id
         Map<String,Object> parent = appDao.adParentId(spaceId);
-        if(userId.longValue() == (Long)parent.get("parentId")){
+        if(userId.longValue() == (Long)parent.get("parentId") || userId.longValue() == 1){
             //查询此上游广告位id是否存在
             int upstreamIdNum = appDao.upstreamIdNum(upstreamId);
             if (upstreamIdNum > 0){
@@ -394,7 +397,7 @@ public class AppServiceImpl implements AppService {
      * 查看APP统计列表
      */
     @Override
-    public ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -411,6 +414,7 @@ public class AppServiceImpl implements AppService {
         map.put("parentId",userId);
         map.put("startTime",startTime);
         map.put("endTime",endTime);
+        map.put("status",status);
         //先查询当前用户身份
         int currentUserLevel = userDao.userLevel(userId);
         map.put("currentUserLevel",currentUserLevel);
@@ -492,6 +496,28 @@ public class AppServiceImpl implements AppService {
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("数据加载完成");
         req.setResult(result);
+        return req;
+    }
+
+    /**
+     * 多选通过
+     */
+    @Override
+    public ReqResponse examinationPassed(String ids) {
+        ReqResponse req = new ReqResponse();
+        //解析前端传过来的集合数据
+        ObjectMapper mapper = new ObjectMapper();
+        JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, String.class);
+        try{
+            List<String> list =  mapper.readValue(ids, jt);
+            appDao.examinationPassed(list);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("审核成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("审核失败");
+        }
         return req;
     }
 

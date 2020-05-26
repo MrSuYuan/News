@@ -20,6 +20,11 @@ public interface UserDao {
     User user(String loginName);
 
     /**
+     * 查询用户名是否重复
+     */
+    int loginNameNum(Map<String,Object> map);
+
+    /**
      * 查询密码
      */
     String passWord(Long userId);
@@ -58,21 +63,6 @@ public interface UserDao {
      * 修改用户状态
      */
     void userStatus(Map<String,Object> map);
-
-    /**
-     * 创建分成比例
-     */
-    void insertUserDivided(Long userId);
-
-    /**
-     * 查看分成比例
-     */
-    UserDivided selectDivided(UserDivided userDivided);
-
-    /**
-     * 修改分成比例
-     */
-    void updateProportion(UserDivided userDivided);
 
     /**
      * 为老客户添加密码项

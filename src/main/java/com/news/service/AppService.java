@@ -62,12 +62,17 @@ public interface AppService {
     /**
      * 查看APP统计列表-管理
      */
-    ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status);
 
     /**
      * 查看APP统计列表-用户
      */
     ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+
+    /**
+     * 多选通过
+     */
+    ReqResponse examinationPassed(String ids);
 
     /**
      * 上游列表

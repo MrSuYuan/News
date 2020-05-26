@@ -221,6 +221,32 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row" id="identityDiv">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right ">
+                                账号权限: </label>
+                            <div class="col-sm-8">
+                                <select id="identity" class="col-xs-10 col-sm-7" onchange="changeType()">
+                                    <option value="0">请选择</option>
+                                    <option value="2">管理员</option>
+                                    <option value="3">普通用户</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="parentIdDiv">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right ">
+                                上级管理: </label>
+                            <div class="col-sm-8">
+                                <span id="identitySpan">
+                                    <select id="parentIdSelect" class="col-xs-10 col-sm-7">
+                                        <option value="0">请选择</option>
+                                    </select>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right " for="newNickName">
@@ -228,6 +254,19 @@
                             <div class="col-sm-8">
                                 <input type="text" id="newNickName" placeholder="起一个好听的名字吧"
                                        class="col-xs-10 col-sm-7" name="newNickName">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label no-padding-right ">
+                                对接公司: </label>
+                            <div class="col-sm-8">
+                                <select class="col-xs-10 col-sm-7" id="belongCompany">
+                                    <option value="0">请选择</option>
+                                    <option value="1">中关互动</option>
+                                    <option value="2">光粒星辉</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -265,7 +304,40 @@
 
     //新增用户模态框
     function createUser() {
+        var currentUserLevel = $('#currentUserLevel').val();
+        if (currentUserLevel != 1){
+            $('#identityDiv').hide();
+            $('#parentIdDiv').hide();
+        }
+        $("#newLoginName").val("");
+        $("#newPassWord").val("");
         $("#createUser").modal("show");
+    }
+
+    //查看上级管理员
+    function changeType(){
+        var identity = $('#identity').val();
+        var html = "";
+        if (identity == 2){
+            html += '<select id="parentIdSelect" class="col-xs-10 col-sm-7">';
+            html += '<option value="0">请选择</option>';
+            html += '<option value="1">zghd(平台最高权限)</option>';
+            html += '</select>';
+            $('#identitySpan').html(html);
+        }else if(identity == 3){
+            html += '<select id="parentIdSelect" class="col-xs-10 col-sm-7">';
+            html += '<option value="0">请选择</option>';
+            html += '<option value="16">王悦</option>';
+            html += '<option value="23">王斯年</option>';
+            html += '<option value="25">Tony</option>';
+            html += '</select>';
+            $('#identitySpan').html(html);
+        }else{
+            html += '<select id="parentIdSelect" class="col-xs-10 col-sm-7">';
+            html += '<option value="0">请选择</option>';
+            html += '</select>';
+            $('#identitySpan').html(html);
+        }
     }
 
     //新增用户信息
@@ -274,14 +346,21 @@
         var newPassWord = $("#newPassWord").val();
         var confirmPassWord = $("#confirmPassWord").val();
         var newNickName = $("#newNickName").val();
+        var belongCompany = $('#belongCompany').val();
+        var parentId = $('#parentIdSelect').val();
+        if (parentId == "") {
+            parentId = 0;
+        }
 
         if(newLoginName == "" || newPassWord == "" || confirmPassWord == "" || newNickName == ""){
             alert("请完善信息再提交");
         }else{
             var user = {
+                parentId  : parentId,
                 loginName  : newLoginName,
                 passWord : newPassWord,
                 confirmPassWord : confirmPassWord,
+                belongCompany : belongCompany,
                 nickName : newNickName
             };
             $.ajax({
@@ -305,7 +384,7 @@
 
                 },
                 error: function () {
-                    $.alertModel("网络超时!获取失败!");
+                    alert("网络超时!获取失败!");
                 }
             });
 

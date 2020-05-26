@@ -134,6 +134,11 @@ public interface AppDao {
     void addAppStatistics(List<AppStatistics> list);
 
     /**
+     * 多选审核通过
+     */
+    void examinationPassed(List<String> ids);
+
+    /**
      * 查看数据统计信息列表
      */
     List<AppStatisticsListVo> appStatisticsList(Map<String,Object> map);

@@ -21,7 +21,7 @@ public interface UserService {
     /**
      * 创建新用户
      */
-    ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany);
+    ReqResponse createUser(Long userId, String loginName, String passWord, String confirmPassWord, String nickName, int belongCompany, long parentId);
 
     /**
      * 用户列表
@@ -33,13 +33,4 @@ public interface UserService {
      */
     ReqResponse userStatus(Long currentUserId, Long userId, Integer userStatus);
 
-    /**
-     * 查看分成比例
-     */
-    ReqResponse selectProportion(Long userId, int type);
-
-    /**
-     * 设置分成比例
-     */
-    ReqResponse updateProportion(Long currentUserId, double lookProportion, double clickProportion, double upstreamProportion, double userProportion, int type);
 }
