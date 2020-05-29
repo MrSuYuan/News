@@ -27,7 +27,7 @@ public interface AppService {
     /**
      * APP列表
      */
-    ReqResponse appList(Long currentUserId, String appId, String appName, Integer appStatus, String nickName, Integer currentPage, Integer pageSize);
+    ReqResponse appList(Long currentUserId, String loginName, String nickName, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize);
 
     /**
      * 修改app状态
@@ -42,7 +42,7 @@ public interface AppService {
     /**
      * 广告位列表
      */
-    ReqResponse appAdspaceList(Long userId,String nickName, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize);
+    ReqResponse appAdspaceList(Long userId, String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize);
 
     /**
      * 添加上游广告位信息

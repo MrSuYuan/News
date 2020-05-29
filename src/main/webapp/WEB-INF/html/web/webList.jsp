@@ -61,6 +61,10 @@
                 <form action="#" method="post">
                     <br>
                     <div align="center">
+                        <span id="nickNameSpan">
+                            登录账号：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                            公司名称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
                         WEBID：<input type="text" id="webId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         WEB名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         WEB状态：
@@ -181,6 +185,14 @@
     //进入页面直接请求数据
     $(document).ready(function(){
 
+        var selectUserId = sessionStorage.getItem("selectUserId");
+        if(selectUserId != null){
+            $('#loginName').val(sessionStorage.getItem("selectLoginName"));
+            $('#nickName').val(sessionStorage.getItem("selectNickName"));
+            sessionStorage.removeItem("selectLoginName");
+            sessionStorage.removeItem("selectNickName");
+        }
+
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
         if(currentUserLevel == 1){
@@ -190,6 +202,9 @@
             $('#adspace').show();
         }else{
             $('#adspace').hide();
+        }
+        if(currentUserLevel == 3){
+            $('#nickNameSpan').hide();
         }
         selectWebList(1);
     });
@@ -209,6 +224,8 @@
             url: path + "/web/webList",
             type: "post",
             data: {
+                "loginName" : $('#loginName').val(),
+                "nickName" : $('#nickName').val(),
                 "webId" : $('#webId').val(),
                 "webName" : $('#webName').val(),
                 "webStatus" :  $('#webStatus option:selected').val(),

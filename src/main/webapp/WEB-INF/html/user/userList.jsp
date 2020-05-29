@@ -72,8 +72,8 @@
                         <form action="#" method="post">
                             <br>
                             <div align="center">
-                                用户名：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                                用户昵称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                                登录账号：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                                公司名称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                                 <span id="userLevelSpan">
                                 用户权限：
                                 <select id="userLevel" style="width:100px;height:30px">
@@ -105,15 +105,15 @@
                                                class="table table-striped table-bordered table-hover">
                                             <thead>
                                             <tr style="height: 50px">
-                                                <th>用户id</th>
                                                 <th>登陆账号</th>
-                                                <th>用户昵称</th>
+                                                <th>公司名称</th>
                                                 <th id="parentId">上级管理员</th>
                                                 <th>用户等级</th>
                                                 <th>创建时间</th>
                                                 <th>用户状态</th>
                                                 <th>权限操作</th>
-                                                <th>APP/广告位</th>
+                                                <th>APP管理</th>
+                                                <th>WEB管理</th>
                                             </tr>
                                             </thead>
                                             <tbody id="coll_list_begin_body">
@@ -250,9 +250,9 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-sm-3 control-label no-padding-right " for="newNickName">
-                                昵称设置: </label>
+                                公司名称: </label>
                             <div class="col-sm-8">
-                                <input type="text" id="newNickName" placeholder="起一个好听的名字吧"
+                                <input type="text" id="newNickName" placeholder="公司全称"
                                        class="col-xs-10 col-sm-7" name="newNickName">
                             </div>
                         </div>
@@ -432,7 +432,6 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.userId+'</td>';
                         html+='<td> '+data.loginName+'</td>';
                         html+='<td> '+data.nickName+'</td>';
                         if(currentUserLevel == 1){
@@ -458,8 +457,12 @@
                             html+='<td><font color="red">状态错误</font></td>';
                         }
                         html+='<td>' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="toApp(\''+data.nickName+'\')">APP</button>&nbsp;&nbsp;' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="toAdspace(\''+data.nickName+'\')">广告位</button>' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="toApp('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">APP</button>&nbsp;&nbsp;' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="toAppAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
+                            '</td>';
+                        html+='<td>' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="toWeb('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">WEB</button>&nbsp;&nbsp;' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="toWebAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
                             '</td>';
                         html+='</tr>';
                     }
@@ -577,14 +580,32 @@
         });
     }
 
-    function toApp(nickName) {
-        sessionStorage.setItem("nickName",nickName);
+    function toApp(userId,loginName,nickName) {
+        sessionStorage.setItem("selectUserId",userId);
+        sessionStorage.setItem("selectLoginName",loginName);
+        sessionStorage.setItem("selectNickName",nickName);
         window.location = path+"/appList";
     }
 
-    function toAdspace(nickName) {
-        sessionStorage.setItem("nickName",nickName);
+    function toAppAdspace(userId,loginName,nickName) {
+        sessionStorage.setItem("selectUserId",userId);
+        sessionStorage.setItem("selectLoginName",loginName);
+        sessionStorage.setItem("selectNickName",nickName);
         window.location = path+"/appAdspaceList";
+    }
+
+    function toWeb(userId,loginName,nickName) {
+        sessionStorage.setItem("selectUserId",userId);
+        sessionStorage.setItem("selectLoginName",loginName);
+        sessionStorage.setItem("selectNickName",nickName);
+        window.location = path+"/webList";
+    }
+
+    function toWebAdspace(userId,loginName,nickName) {
+        sessionStorage.setItem("selectUserId",userId);
+        sessionStorage.setItem("selectLoginName",loginName);
+        sessionStorage.setItem("selectNickName",nickName);
+        window.location = path+"/webAdspaceList";
     }
 
 </script>

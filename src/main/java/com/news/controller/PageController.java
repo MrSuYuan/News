@@ -212,14 +212,6 @@ public class PageController extends BaseController {
         return "/html/app/appStatisticsUser.jsp";
     }
 
-    /**
-     * APP分润设置
-     */
-    @RequestMapping(value = "appDivided" , method= RequestMethod.GET)
-    @ApiOperation(value = "APP分润设置", notes = "APP分润设置", httpMethod = "GET")
-    public String appDivided(){
-        return "/html/app/appDivided.jsp";
-    }
 
     /**
      * APP上报统计列表
@@ -307,15 +299,6 @@ public class PageController extends BaseController {
     @RequestMapping(value = "webDetail" , method= RequestMethod.GET)
     @ApiOperation(value = "web详情页", notes = "web详情页", httpMethod = "GET")
     public String webDetail(){ return "/html/web/webDetail.jsp";}
-
-    /**
-     * WEB分润设置
-     */
-    @RequestMapping(value = "webDivided" , method= RequestMethod.GET)
-    @ApiOperation(value = "WEB分润设置", notes = "WEB分润设置", httpMethod = "GET")
-    public String webDivided(){
-        return "/html/web/webDivided.jsp";
-    }
 
     /**
      * WEB添加代码位信息

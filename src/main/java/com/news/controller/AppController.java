@@ -117,22 +117,23 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "app列表", notes = "app列表", httpMethod = "POST")
     @ApiImplicitParams(value={
+            @ApiImplicitParam(name="loginName" , value="筛选项登录账号" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="nickName" , value="筛选项公司名" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appId" , value="appId" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appStatus" , value="app状态" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="nickName" , value="用户id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appList(String appId, String appName, Integer appStatus, String nickName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(String loginName, String nickName, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object currentUserId = request.getSession().getAttribute("userId");
         if(null == currentUserId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appList((Long) currentUserId, appId, appName, appStatus, nickName, currentPage, pageSize);
+            req = appService.appList((Long) currentUserId, loginName, nickName, appId, appName, appStatus, currentPage, pageSize);
         }
         return req;
     }
@@ -184,21 +185,23 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "广告位列表", notes = "广告位列表", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="loginName" , value="筛选项登录账号" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="nickName" , value="筛选项公司名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="appId" , value="筛选项APPID" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="spaceId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appAdspaceList(String nickName, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse appAdspaceList(String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appAdspaceList((Long) userId, nickName, appName, spaceName, spaceType, currentPage, pageSize);
+            req = appService.appAdspaceList((Long) userId, loginName, nickName, appId, spaceId, spaceType, currentPage, pageSize);
         }
         return req;
     }

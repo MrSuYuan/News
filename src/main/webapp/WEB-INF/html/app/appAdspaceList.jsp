@@ -61,9 +61,12 @@
                 <form action="#" method="post">
                     <br>
                     <div align="center">
-                        <span id="nickNameSpan">用户：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                        APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span id="nickNameSpan">
+                            登录账号：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                            公司名称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                        APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        广告位ID：<input type="text" id="slotId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位类型：
                         <select id="spaceType" style="width:100px;height:30px">
                             <option value="0">请选择</option>
@@ -216,10 +219,12 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        var nickName = sessionStorage.getItem("nickName");
-        if(nickName != null){
-            $('#nickName').val(nickName);
-            sessionStorage.removeItem("nickName");
+        var selectUserId = sessionStorage.getItem("selectUserId");
+        if(selectUserId != null){
+            $('#loginName').val(sessionStorage.getItem("selectLoginName"));
+            $('#nickName').val(sessionStorage.getItem("selectNickName"));
+            sessionStorage.removeItem("selectLoginName");
+            sessionStorage.removeItem("selectNickName");
         }
 
         //根据权限隐藏特定的展示栏和搜索条件
@@ -241,7 +246,6 @@
     //点击搜索数据展示
     function appAdspaceList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
-        var nickName = $('#nickName').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -253,11 +257,12 @@
             url: path + "/app/appAdspaceList",
             type: "post",
             data: {
-                "nickName" : nickName,
+                "loginName" : $('#loginName').val(),
+                "nickName" : $('#nickName').val(),
+                "appId" : $('#appId').val(),
+                "spaceId" : $('#slotId').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize,
-                "appName" : $('#appName').val(),
-                "spaceName" : $('#spaceName').val(),
                 "spaceType" :  $('#spaceType option:selected').val(),
                 "upstreamType" : $('#upstreamType option:selected').val()
             },
@@ -310,8 +315,8 @@
                                 '<button type="button" class="btn btn-xs btn-default" title="分成" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-edit bigger-110"></i>' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-xs btn-danger" title="删除">' +
-                                '<i class="ace-icon glyphicon glyphicon-trash bigger-110"></i>' +
+                                // '<button type="button" class="btn btn-xs btn-danger" title="删除">' +
+                                // '<i class="ace-icon glyphicon glyphicon-trash bigger-110"></i>' +
                                 '</button>' +
                                 '</div>' +
                                 '</td>';

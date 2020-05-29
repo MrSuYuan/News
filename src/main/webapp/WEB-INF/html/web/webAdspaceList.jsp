@@ -61,8 +61,12 @@
                 <form action="#" method="post">
                     <br>
                     <div align="center">
-                        WEB名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
-                        广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span id="nickNameSpan">
+                            登录账号：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                            公司名称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        </span>
+                        WEBID：<input type="text" id="webId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        广告位ID：<input type="text" id="slotId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         终端：
                         <select id="terminal" style="width:100px;height:30px">
                             <option value="0">请选择</option>
@@ -220,6 +224,14 @@
     //进入页面直接请求数据
     $(document).ready(function(){
 
+        var selectUserId = sessionStorage.getItem("selectUserId");
+        if(selectUserId != null){
+            $('#loginName').val(sessionStorage.getItem("selectLoginName"));
+            $('#nickName').val(sessionStorage.getItem("selectNickName"));
+            sessionStorage.removeItem("selectLoginName");
+            sessionStorage.removeItem("selectNickName");
+        }
+
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
         if(currentUserLevel != 3){
@@ -227,6 +239,7 @@
             $('#operating').show();
             $('#updateTime').show();
         }else{
+            $('#nickNameSpan').hide();
             $('#statistics').hide();
             $('#operating').hide();
             $('#updateTime').hide();
@@ -248,10 +261,12 @@
             url: path + "/web/webAdspaceList",
             type: "post",
             data: {
+                "loginName" : $('#loginName').val(),
+                "nickName" : $('#nickName').val(),
+                "webId" : $('#webId').val(),
+                "slotId" : $('#slotId').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize,
-                "webName" : $('#webName').val(),
-                "spaceName" : $('#spaceName').val(),
                 "terminal" : $('#terminal').val(),
                 "spaceType" :  $('#spaceType option:selected').val()
             },

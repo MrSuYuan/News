@@ -63,7 +63,10 @@
                     <form action="#" method="post">
                         <br>
                         <div align="center">
-                            <span id="nickNameSpan">用户：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span id="nickNameSpan">
+                            登录账号：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                            公司名称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                            </span>
                             APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                             APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                             APP状态：
@@ -94,8 +97,8 @@
                                             <th>名称</th>
                                             <th>包名</th>
                                             <th>所属用户</th>
-                                            <th>适用系统</th>
-                                            <th>适用终端</th>
+                                            <%--<th>适用系统</th>--%>
+                                            <%--<th>适用终端</th>--%>
                                             <th>创建时间</th>
                                             <%--<th>下载地址</th>--%>
                                             <th>APP状态</th>
@@ -181,10 +184,12 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        var nickName = sessionStorage.getItem("nickName");
-        if(nickName != null){
-            $('#nickName').val(nickName);
-            sessionStorage.removeItem("nickName");
+        var selectUserId = sessionStorage.getItem("selectUserId");
+        if(selectUserId != null){
+            $('#loginName').val(sessionStorage.getItem("selectLoginName"));
+            $('#nickName').val(sessionStorage.getItem("selectNickName"));
+            sessionStorage.removeItem("selectLoginName");
+            sessionStorage.removeItem("selectNickName");
         }
 
         //根据权限隐藏特定的展示栏和搜索条件
@@ -206,7 +211,6 @@
     //点击搜索数据展示
     function selectAppList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
-        var nickName = $('#nickName').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
             pageSize = 20;
@@ -218,10 +222,11 @@
             url: path + "/app/appList",
             type: "post",
             data: {
+                "loginName" : $('#loginName').val(),
+                "nickName" : $('#nickName').val(),
                 "appId" : $('#appId').val(),
                 "appName" : $('#appName').val(),
                 "appStatus" :  $('#appStatus option:selected').val(),
-                "nickName" : nickName,
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
             },
@@ -238,22 +243,22 @@
                         html+='<td> '+data.appName+'</td>';
                         html+='<td> '+data.packageName+'</td>';
                         html+='<td> '+data.nickName+'</td>';
-                        var platform = data.platform;
-                        if (platform == 1) {
-                            html+='<td> Android </td>';
-                        }else if(platform == 2){
-                            html+='<td> IOS </td>';
-                        }else if(platform == 3){
-                            html+='<td> Windows </td>';
-                        }
-                        var terminal = data.terminal;
-                        if (terminal == 1) {
-                            html+='<td> 手机 </td>';
-                        }else if(terminal == 2){
-                            html+='<td> 平板 </td>';
-                        }else if(terminal == 3){
-                            html+='<td> 电脑 </td>';
-                        }
+                        // var platform = data.platform;
+                        // if (platform == 1) {
+                        //     html+='<td> Android </td>';
+                        // }else if(platform == 2){
+                        //     html+='<td> IOS </td>';
+                        // }else if(platform == 3){
+                        //     html+='<td> Windows </td>';
+                        // }
+                        // var terminal = data.terminal;
+                        // if (terminal == 1) {
+                        //     html+='<td> 手机 </td>';
+                        // }else if(terminal == 2){
+                        //     html+='<td> 平板 </td>';
+                        // }else if(terminal == 3){
+                        //     html+='<td> 电脑 </td>';
+                        // }
                         html+='<td> '+data.createTime+'</td>';
                         //html+='<td> '+data.downloadlink+'</td>';
                         var appStatus = data.appStatus;

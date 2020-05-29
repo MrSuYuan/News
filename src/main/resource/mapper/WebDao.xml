@@ -30,6 +30,12 @@
         SELECT w.webId,w.webName,u.nickName,w.webUrl,DATE_FORMAT(w.createTime,"%Y-%m-%d %H:%i:%s")as createTime,w.webStatus
         from w_web w,u_user u
         where w.userId = u.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
         <if test="webId != null and webId !=''">
             and w.webId = #{webId}
         </if>
@@ -54,6 +60,12 @@
         select count(0)
         from w_web w,u_user u
         where w.userId = u.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
         <if test="webId != null and webId !=''">
             and w.webId = #{webId}
         </if>
@@ -119,11 +131,17 @@
         select w.webName,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.terminal,s.upstreamId,s.status,s.dividedY,s.dividedZ,DATE_FORMAT(s.updateTime,"%Y-%m-%d %H:%i:%s") as updateTime
         from w_adspace s,w_web w,u_user u
         where s.webId = w.webId and w.userId = u.userId
-        <if test="webName != null and webName !=''">
-            and w.webName = #{webName}
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and s.spaceName = #{spaceName}
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
+        <if test="webId != null and webId !=''">
+            and w.webId = #{webId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and s.spaceId = #{slotId}
         </if>
         <if test="terminal != 0">
             and s.terminal = #{terminal}
@@ -146,11 +164,17 @@
         select count(0)
         from w_adspace s,w_web w,u_user u
         where s.webId = w.webId and w.userId = u.userId
-        <if test="webName != null and webName !=''">
-            and w.webName = #{webName}
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and s.spaceName = #{spaceName}
+        <if test="nickName != null and nickName !=''">
+            and u.nickName = #{nickName}
+        </if>
+        <if test="webId != null and webId !=''">
+            and w.webId = #{webId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and s.spaceId = #{slotId}
         </if>
         <if test="terminal != 0">
             and s.terminal = #{terminal}

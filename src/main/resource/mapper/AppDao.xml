@@ -39,6 +39,9 @@
         SELECT a.appId,a.appName,a.packageName,u.nickName,a.downloadlink,a.appStatus,a.platform,a.terminal,DATE_FORMAT(a.createTime,"%Y-%m-%d %H:%i:%s")as createTime
         from a_app a,u_user u
         where a.userId = u.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
         <if test="nickName != null and nickName !=''">
             and u.nickName = #{nickName}
         </if>
@@ -66,6 +69,9 @@
         select count(0)
         from a_app a,u_user u
         where a.userId = u.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
         <if test="nickName != null and nickName !=''">
             and u.nickName = #{nickName}
         </if>
@@ -132,14 +138,17 @@
         select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
         <if test="nickName != null and nickName !=''">
             and u.nickName = #{nickName}
         </if>
-        <if test="appName != null and appName !=''">
-            and a.appName = #{appName}
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and s.spaceName = #{spaceName}
+        <if test="spaceId != null and spaceId !=''">
+            and s.spaceId = #{spaceId}
         </if>
         <if test="spaceType != 0">
             and s.spaceType = #{spaceType}
@@ -159,14 +168,17 @@
         select count(0)
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
+        <if test="loginName != null and loginName !=''">
+            and u.loginName = #{loginName}
+        </if>
         <if test="nickName != null and nickName !=''">
             and u.nickName = #{nickName}
         </if>
-        <if test="appName != null and appName !=''">
-            and a.appName = #{appName}
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and s.spaceName = #{spaceName}
+        <if test="spaceId != null and spaceId !=''">
+            and s.spaceId = #{spaceId}
         </if>
         <if test="spaceType != 0">
             and s.spaceType = #{spaceType}

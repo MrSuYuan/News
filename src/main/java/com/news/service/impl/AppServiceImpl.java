@@ -112,7 +112,7 @@ public class AppServiceImpl implements AppService {
      * APP列表
      */
     @Override
-    public ReqResponse appList(Long currentUserId, String appId, String appName, Integer appStatus, String nickName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appList(Long currentUserId, String loginName, String nickName, String appId, String appName, Integer appStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -127,6 +127,7 @@ public class AppServiceImpl implements AppService {
         map.put("appId",appId);
         map.put("appName",appName);
         map.put("appStatus",appStatus);
+        map.put("loginName",loginName);
         map.put("nickName",nickName);
         //查看当前用户身份
         int userLevel = userDao.userLevel(currentUserId);
@@ -229,7 +230,7 @@ public class AppServiceImpl implements AppService {
      * 广告位列表
      */
     @Override
-    public ReqResponse appAdspaceList(Long userId, String nickName, String appName, String spaceName, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse appAdspaceList(Long userId, String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -241,10 +242,11 @@ public class AppServiceImpl implements AppService {
         }
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
-        map.put("appName",appName);
-        map.put("spaceName",spaceName);
         map.put("spaceType",spaceType);
+        map.put("loginName",loginName);
         map.put("nickName",nickName);
+        map.put("appId",appId);
+        map.put("spaceId",spaceId);
         //查看当前用户身份
         int userLevel = userDao.userLevel(userId);
         map.put("userLevel",userLevel);
