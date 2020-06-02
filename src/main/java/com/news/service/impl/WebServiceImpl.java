@@ -53,8 +53,8 @@ public class WebServiceImpl implements WebService {
             return req;
         }
 
-        //个人填写信息
-        if(currentUserLevel == 3){
+        //个人填写信息 和 最高权限填写
+        if(currentUserLevel == 3 || currentUserLevel == 1){
             webDao.insertWeb(web);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("添加成功");

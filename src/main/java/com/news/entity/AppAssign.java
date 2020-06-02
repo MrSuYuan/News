@@ -6,10 +6,6 @@ package com.news.entity;
 public class AppAssign {
 
     /**
-     * id
-     */
-    private Long id;
-    /**
      * 广告位id
      */
     private String spaceId;
@@ -21,10 +17,6 @@ public class AppAssign {
      * 概率
      */
     private int probability;
-    /**
-     * 类型 1测试 2正式
-     */
-    private int type;
     private String name;
     private String shortName;
 
@@ -52,14 +44,6 @@ public class AppAssign {
         this.spaceId = spaceId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public int getUpstreamType() {
         return upstreamType;
     }
@@ -76,11 +60,4 @@ public class AppAssign {
         this.probability = probability;
     }
 
-    public int getType() {
-        return type;
-    }
-
-    public void setType(int type) {
-        this.type = type;
-    }
 }

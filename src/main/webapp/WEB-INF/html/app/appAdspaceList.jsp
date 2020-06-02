@@ -226,6 +226,11 @@
             sessionStorage.removeItem("selectLoginName");
             sessionStorage.removeItem("selectNickName");
         }
+        var appId = sessionStorage.getItem("appId");
+        if(appId != null){
+            $('#appId').val(appId);
+            sessionStorage.removeItem("appId");
+        }
 
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();

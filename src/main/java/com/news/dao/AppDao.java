@@ -27,6 +27,7 @@ public interface AppDao {
      * 查询此管理下的用户
      */
     List<User> beLongUser(Long userId);
+    List<User> allUser();
 
     /**
      * 添加APP信息
@@ -166,7 +167,7 @@ public interface AppDao {
     /**
      * 正式服概率修改
      */
-    void updateAssignZ(List<AppAssign> list);
+    void updateAssignZ(List<AppUpstream> list);
 
     /**
      * 查看上游列表

@@ -59,7 +59,13 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse beLongUser(Long userId) {
         ReqResponse req = new ReqResponse();
-        List<User> userList = appDao.beLongUser(userId);
+        List<User> userList;
+        if (userId == 1){
+            userList = appDao.allUser();
+        }else{
+            userList = appDao.beLongUser(userId);
+        }
+
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("数据加载完成");
         req.setResult(userList);
@@ -85,7 +91,7 @@ public class AppServiceImpl implements AppService {
         //封装剩余信息
         app.setAccessMethod(1);
         //个人填写app信息
-        if(currentUserLevel == 3){
+        if(currentUserLevel == 3 || currentUserLevel == 1){
             appDao.createApp(app);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("添加成功");
@@ -193,8 +199,8 @@ public class AppServiceImpl implements AppService {
             Long appParentId = appDao.appParent(appId);
             //查看app所属用户id
             Long appUserId = appDao.appUserId(appId);
-            //自己和上级都有资格添加广告位
-            if(userId.longValue() == appParentId.longValue() || userId.longValue() == appUserId.longValue()){
+            //自己,最高权限和上级都有资格添加广告位
+            if(userId.longValue() == appParentId.longValue() || userId.longValue() == appUserId.longValue() || userId.longValue() == 1){
                 AppAdspace ad = new AppAdspace();
                 ad.setAppId(appId);
                 ad.setSpaceType(spaceType);
@@ -303,23 +309,15 @@ public class AppServiceImpl implements AppService {
             //查看此广告位有没有重复上游类型
             int appUpstreamNum = appDao.appUpstreamNum(appUpstream);
             if(appUpstreamNum == 0){
-                //添加广告位信息
-                appDao.insertAppUpstream(appUpstream);
                 //如果是第一家,就添加调度信息100%,其余家都是0
                 int assignNum = appDao.assignNum(spaceId);
                 if(assignNum == 0){
-                    AppAssign appAssign = new AppAssign();
-                    appAssign.setSpaceId(spaceId);
-                    appAssign.setProbability(100);
-                    appAssign.setUpstreamType(upstreamType);
-                    appDao.insertAssign(appAssign);
+                    appUpstream.setProbability(100);
                 }else{
-                    AppAssign appAssign = new AppAssign();
-                    appAssign.setSpaceId(spaceId);
-                    appAssign.setProbability(0);
-                    appAssign.setUpstreamType(upstreamType);
-                    appDao.insertAssign(appAssign);
+                    appUpstream.setProbability(0);
                 }
+                //添加广告位信息
+                appDao.insertAppUpstream(appUpstream);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("添加成功");
             }else{
@@ -736,52 +734,6 @@ public class AppServiceImpl implements AppService {
     public ReqResponse selectAppAssign(String spaceId) {
         ReqResponse req = new ReqResponse();
         List<AppAssign> list = appDao.selectAppAssign(spaceId);
-        Map<String,Object> map = new HashMap<>();
-        for(int i=0;i<list.size();i++){
-            AppAssign aa = list.get(i);
-            if(aa.getUpstreamType() == 1){
-                map.put("df",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 2){
-                map.put("wk",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 3){
-                map.put("jg",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 4){
-                map.put("yl",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 5){
-                map.put("ydt",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 6){
-                map.put("xz",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 7){
-                map.put("wm",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 8){
-                map.put("yq",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 9){
-                map.put("dk",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 10){
-                map.put("mjk",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 11){
-                map.put("jl",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 12){
-                map.put("zm",aa.getProbability());
-                continue;
-            }else if(aa.getUpstreamType() == 13){
-                map.put("hy",aa.getProbability());
-                continue;
-            }else{
-                continue;
-            }
-        }
         req.setResult(list);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         return req;
@@ -910,14 +862,14 @@ public class AppServiceImpl implements AppService {
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppAssignVo.class);
             List<AppAssignVo> assignList =  mapper.readValue(list, jt);
             int sumProbability = 0;
-            List<AppAssign> aList = new ArrayList<>();
+            List<AppUpstream> aList = new ArrayList<>();
             for (int i = 0; i < assignList.size(); i++){
                 sumProbability += assignList.get(i).getProbability();
-                AppAssign dfa = new AppAssign();
-                dfa.setUpstreamType(assignList.get(i).getUpstreamType());
-                dfa.setProbability(assignList.get(i).getProbability());
-                dfa.setSpaceId(spaceId);
-                aList.add(dfa);
+                AppUpstream au = new AppUpstream();
+                au.setUpstreamType(assignList.get(i).getUpstreamType());
+                au.setProbability(assignList.get(i).getProbability());
+                au.setSpaceId(spaceId);
+                aList.add(au);
             }
             if (sumProbability == 100){
                 //批量修改

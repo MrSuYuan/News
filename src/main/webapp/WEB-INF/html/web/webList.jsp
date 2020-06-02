@@ -98,8 +98,8 @@
                                         <th>所属用户</th>
                                         <th>域名</th>
                                         <th>创建时间</th>
-                                        <th>APP状态</th>
-                                        <th id="operating">操作</th>
+                                        <%--<th>APP状态</th>
+                                        <th id="operating">操作</th>--%>
                                         <th id="adspace">代码位</th>
                                     </tr>
                                     </thead>
@@ -195,10 +195,8 @@
 
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
-        if(currentUserLevel == 1){
-            $('#addWeb').hide();
-        }
-        if(currentUserLevel == 2){
+
+        if(currentUserLevel == 1 || currentUserLevel == 2){
             $('#adspace').show();
         }else{
             $('#adspace').hide();
@@ -246,37 +244,34 @@
                         html+='<td> '+data.nickName+'</td>';
                         html+='<td> '+data.webUrl+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        var webStatus = data.webStatus;
-                        if(webStatus == 1){
-                            html+='<td id="webStatus'+data.webId+'"><span class="label label-white middle">未审核</span></td>';
-                            html+='<td id="operating'+data.webId+'">' +
-                                '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+data.webId+','+4+')">通过</button>' +
-                                '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+data.webId+','+2+')">驳回</button>' +
-                                '</td>';
-                        }else if(webStatus == 2){
-                            html+='<td id="webStatus'+data.webId+'"><span class="label label-purple label-white middle">驳回</span></td>';
-                            html+='<td id="operating'+data.webId+'"><span class="label label-purple label-white middle">WEB未通过审核</span></td>';
-                        }else if(webStatus == 3){
-                            html+='<td id="webStatus'+data.webId+'"><span class="label label-success label-white middle">正常</span></td>';
-                            html+='<td id="operating'+data.webId+'">' +
-                                '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+data.webId+','+4+')">禁用</button>' +
-                                '</td>';
-                        }else if(webStatus == 4){
-                            html+='<td id="webStatus'+data.webId+'"><span class="label label-danger label-white middle">禁用</span></td>';
-                            html+='<td id="operating'+data.webId+'">' +
-                                '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+data.webId+','+3+')">启用</button>' +
-                                '</td>';
-                        }else{
-                            html+='<td><font color="red">状态错误</font></td>';
-                            html+='<td><font color="red">状态错误</font></td>';
-                        }
-                        if(currentUserLevel == 2){
+                        // var webStatus = data.webStatus;
+                        // if(webStatus == 1){
+                        //     html+='<td id="webStatus'+data.webId+'"><span class="label label-white middle">未审核</span></td>';
+                        //     html+='<td id="operating'+data.webId+'">' +
+                        //         '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+data.webId+','+4+')">通过</button>' +
+                        //         '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+data.webId+','+2+')">驳回</button>' +
+                        //         '</td>';
+                        // }else if(webStatus == 2){
+                        //     html+='<td id="webStatus'+data.webId+'"><span class="label label-purple label-white middle">驳回</span></td>';
+                        //     html+='<td id="operating'+data.webId+'"><span class="label label-purple label-white middle">WEB未通过审核</span></td>';
+                        // }else if(webStatus == 3){
+                        //     html+='<td id="webStatus'+data.webId+'"><span class="label label-success label-white middle">正常</span></td>';
+                        //     html+='<td id="operating'+data.webId+'">' +
+                        //         '<button type="button" class="btn btn-minier btn-danger" onclick="changeWebStatus('+data.webId+','+4+')">禁用</button>' +
+                        //         '</td>';
+                        // }else if(webStatus == 4){
+                        //     html+='<td id="webStatus'+data.webId+'"><span class="label label-danger label-white middle">禁用</span></td>';
+                        //     html+='<td id="operating'+data.webId+'">' +
+                        //         '<button type="button" class="btn btn-minier btn-success" onclick="changeWebStatus('+data.webId+','+3+')">启用</button>' +
+                        //         '</td>';
+                        // }else{
+                        //     html+='<td><font color="red">状态错误</font></td>';
+                        //     html+='<td><font color="red">状态错误</font></td>';
+                        // }
+                        if(currentUserLevel == 2 || currentUserLevel == 1){
                             html+='<td>' +
-                                '<div class="hidden-sm hidden-xs btn-group">' +
-                                '<button type="button" class="btn btn-xs btn-primary" onclick="addAdspace(\''+data.webId+'\')">' +
-                                '<i class="ace-icon fa bigger-110">添加广告位</i>' +
-                                '</button>' +
-                                '</div>' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="addAdspace(\''+data.webId+'\')">添加</button>&nbsp;&nbsp;' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="seeAdspace(\''+data.webId+'\')">查看</button>' +
                                 '</td>';
                         }
                         html+='</tr>';
@@ -382,6 +377,11 @@
     function addAdspace(webId){
         sessionStorage.setItem("webId",webId);
         window.location = path + "/webAdspaceAdd";
+    }
+
+    function seeAdspace(webId){
+        sessionStorage.setItem("webId",webId);
+        window.location = path+"/webAdspaceList";
     }
 
 </script>

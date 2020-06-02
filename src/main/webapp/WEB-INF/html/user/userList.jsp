@@ -456,14 +456,19 @@
                             html+='<td><font color="red">状态错误</font></td>';
                             html+='<td><font color="red">状态错误</font></td>';
                         }
-                        html+='<td>' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="toApp('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">APP</button>&nbsp;&nbsp;' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="toAppAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
-                            '</td>';
-                        html+='<td>' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="toWeb('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">WEB</button>&nbsp;&nbsp;' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="toWebAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
-                            '</td>';
+                        if(data.userLevel == 3){
+                            html+='<td>' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="toApp('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">APP</button>&nbsp;&nbsp;' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="toAppAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
+                                '</td>';
+                            html+='<td>' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="toWeb('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">WEB</button>&nbsp;&nbsp;' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="toWebAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
+                                '</td>';
+                        }else{
+                            html+='<td></td>';
+                            html+='<td></td>';
+                        }
                         html+='</tr>';
                     }
                     //添加数据

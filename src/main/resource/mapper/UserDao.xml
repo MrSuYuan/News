@@ -57,7 +57,7 @@
         <if test="currentUserLevel != 1">
             and u.parentId = #{parentId}
         </if>
-        order by u.userId asc
+        order by u.userLevel asc,u.createTime asc
         limit #{num},#{pageSize}
     </select>
 

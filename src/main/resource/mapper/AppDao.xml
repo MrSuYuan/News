@@ -18,6 +18,9 @@
     <select id="beLongUser" parameterType="java.lang.Long" resultType="com.news.entity.User">
         select userId,nickName from u_user where parentId = #{parentId}
     </select>
+    <select id="allUser" resultType="com.news.entity.User">
+        select userId,nickName from u_user where userLevel = 3
+    </select>
 
     <!-- 添加APP信息 -->
     <insert id="createApp" parameterType="com.news.entity.App">
@@ -222,15 +225,15 @@
     <!-- 添加上游信息 -->
     <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
         insert into a_upstream
-        (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime)
+        (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime, probability)
         values
-        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime})
+        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability})
     </insert>
 
     <!-- 查看此广告位划量分流次数 -->
     <select id="assignNum" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(0)
-        from a_assign
+        from a_upstream
         where spaceId = #{spaceId}
     </select>
     
@@ -378,15 +381,15 @@
 
     <!-- 调度分配展示 -->
     <select id="selectAppAssign" parameterType="java.lang.String" resultType="com.news.entity.AppAssign">
-        select a.*,u.`name`,u.shortName
-        from a_assign a,a_upstream_type u
+        select a.probability,a.upstreamType,u.`name`,u.shortName
+        from a_upstream a,a_upstream_type u
         where a.upstreamType = u.type and a.spaceId = #{spaceId}
     </select>
 
     <!-- 正式服概率修改 -->
     <update id="updateAssignZ">
         <foreach collection="list" index="index" item="item" open="" close="" separator=";">
-            update a_assign
+            update a_upstream
             set probability = #{item.probability}
             where spaceId = #{item.spaceId} and upstreamType = #{item.upstreamType}
         </foreach>
