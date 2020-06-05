@@ -115,6 +115,11 @@ public interface AppDao {
     void insertAppUpstream(AppUpstream appUpstream);
 
     /**
+     * 添加上游使用记录
+     */
+    void insertAppAdspaceUpstream(AppAdspaceUpstream appAdspaceUpstream);
+
+    /**
      * 查看此广告位划量分流次数
      */
     int assignNum(String spaceId);

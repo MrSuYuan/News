@@ -156,7 +156,7 @@ public class WebServiceImpl implements WebService {
     public ReqResponse createAdspace(Long userId, Long webId, int terminal, String spaceName, int spaceType, String remark, int width, int height, String upstreamId, int upstreamType) {
         ReqResponse req = new ReqResponse();
         Long webParentId = webDao.webParent(webId);
-        if(null != webParentId && userId.longValue() == webParentId.longValue()){
+        if(null != webParentId && userId.longValue() == webParentId.longValue() || userId == 1){
             //1查看此id有没有使用
             List<Integer> upstreamIdList = webDao.upstreamIdStatus(upstreamId);
             for (int i = 0; i < upstreamIdList.size(); i++){
@@ -407,9 +407,22 @@ public class WebServiceImpl implements WebService {
             Map<String,Object> map = new HashMap<>();
             map.put("spaceId",spaceId);
             map.put("status",status);
-            webDao.idStatus(map);
-            //修改w_adspace_upstream表
             WebAdspaceUpstream wau = webDao.selectAdspaceUpstream(spaceId);
+            if (status == 1){
+                //1查看此id有没有使用
+                List<Integer> upstreamIdList = webDao.upstreamIdStatus(wau.getUpstreamId());
+                for (int i = 0; i < upstreamIdList.size(); i++){
+                    int idStatus = upstreamIdList.get(i);
+                    if (idStatus == 1){
+                        req.setCode(ErrorMessage.FAIL.getCode());
+                        req.setMessage("该ID被其他用户使用");
+                        return req;
+                    }
+                }
+            }
+
+            webDao.idStatus(map);
+
             //停用和禁用时,如果结束时间为空,则添加结束时间
             if (status == 0 || status == 2){
                 if (null == wau.getEndTime()){

@@ -63,7 +63,7 @@
         <if test="userLevel == 3">
             and a.userId = #{currentUserId}
         </if>
-        order by a.appId asc
+        order by a.createTime desc
         limit #{num},#{pageSize}
     </select>
 
@@ -162,7 +162,7 @@
         <if test="userLevel == 3">
             and a.userId = #{userId}
         </if>
-        order by s.spaceId asc
+        order by s.createTime desc
         limit #{num},#{pageSize}
     </select>
 
@@ -228,6 +228,14 @@
         (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime, probability)
         values
         (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability})
+    </insert>
+
+    <!-- 添加上游使用记录 -->
+    <insert id="insertAppAdspaceUpstream" parameterType="com.news.entity.AppAdspaceUpstream">
+        insert into a_adspace_upstream
+        (spaceId, upstreamId, startTime)
+        values
+        (#{spaceId},#{upstreamId},now())
     </insert>
 
     <!-- 查看此广告位划量分流次数 -->

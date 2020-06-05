@@ -318,6 +318,11 @@ public class AppServiceImpl implements AppService {
                 }
                 //添加广告位信息
                 appDao.insertAppUpstream(appUpstream);
+                //添加广告位和上游的绑定信息
+                AppAdspaceUpstream appAdspaceUpstream = new AppAdspaceUpstream();
+                appAdspaceUpstream.setSpaceId(spaceId);
+                appAdspaceUpstream.setUpstreamId(upstreamId);
+                appDao.insertAppAdspaceUpstream(appAdspaceUpstream);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("添加成功");
             }else{

@@ -400,6 +400,7 @@ public class AppController extends BaseController {
             req = appService.appUpstreamReport(downstreamReportId);
         }
         return req;
+
     }
 
     @RequestMapping(value="appReportNewList", method= RequestMethod.POST)
