@@ -46,6 +46,15 @@ public class AppAdspaceListVo {
      */
     private double dividedY;
     private double dividedZ;
+    private int request;
+
+    public int getRequest() {
+        return request;
+    }
+
+    public void setRequest(int request) {
+        this.request = request;
+    }
 
     public double getDividedY() {
         return dividedY;

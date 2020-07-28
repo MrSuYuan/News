@@ -117,17 +117,12 @@ public interface AppDao {
     /**
      * 添加上游使用记录
      */
-    void insertAppAdspaceUpstream(AppAdspaceUpstream appAdspaceUpstream);
+    void insertAppAdspaceUpstream(AppAdspaceUpstream au);
 
     /**
      * 查看此广告位划量分流次数
      */
     int assignNum(String spaceId);
-
-    /**
-     * 添加划量分流详情
-     */
-    void insertAssign(AppAssign appAssign);
 
     /**
      * 广告位上游信息列表
@@ -211,14 +206,14 @@ public interface AppDao {
      */
     Map<String,Object> check(String upstreamId);
     void updateUpstream(Map<String,Object> map);
-    void updateAssign(Map<String,Object> map);
+
 
     /**
      * 删除上游ID
      */
     AppUpstream appUpstream(String upstreamId);
     void deleteUpstream(String upstreamId);
-    void deleteAssign(AppUpstream appUpstream);
+    void updateEndTime(AppAdspaceUpstream au);
 
     /**
      * 设置上游分成比例
@@ -258,11 +253,6 @@ public interface AppDao {
     void deleteStatistics(String statisticsId);
 
     /**
-     * 查询所有a_assign表数据
-     */
-    List<AppAssign> assignList();
-
-    /**
      * 修改a_upstream表assign概率数据
      */
     void upstreamAssign(List<AppAssign> list);
@@ -271,4 +261,9 @@ public interface AppDao {
      * 查询excel数据库对应数据
      */
     List<UCStatisticsList> queryExcel(List upstreamId);
+
+    /**
+     * 新Excel
+     */
+    List<UCStatisticsList> matchId(List upstreamId);
 }

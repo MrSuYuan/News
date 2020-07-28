@@ -81,13 +81,22 @@
                             <tr height = "50">
                                 <td align = "right">上游APPID:&nbsp;&nbsp;</td>
                                 <td width="300"><input type="text" size="35" id="upstreamAppId" name="upstreamAppId" placeholder="上游APPID"></td>
-                                </td>
+                            </tr>
+                            <tr height = "50">
+                                <td align = "right">上游APP名称:&nbsp;&nbsp;</td>
+                                <td width="300"><input type="text" size="35" id="upstreamAppName" name="upstreamAppName" placeholder="上游APP名称"></td>
                             </tr>
                             <tr height = "50">
                                 <td align = "right">上游包名:&nbsp;&nbsp;</td>
                                 <td width="300"><input type="text" size="35" id="upstreamPackageName" name="upstreamPackageName" placeholder="上游包名"></td>
-                                </td>
                             </tr>
+                            <tr height = "50">
+                                <td align = "right">上游广告位宽:&nbsp;&nbsp;</td>
+                                <td width="300"><input type="text" size="35" id="upstreamWidth" name="upstreamWidth" placeholder="广点通必填"></td>
+                            </tr>
+                            <tr height = "50">
+                                <td align = "right">上游广告位高:&nbsp;&nbsp;</td>
+                                <td width="300"><input type="text" size="35" id="upstreamHeight" name="upstreamHeight" placeholder="广点通必填"></td>
                             </tr>
                             <tr height = "50">
                                 <td align = "right">上游平台:&nbsp;&nbsp;</td>
@@ -215,6 +224,15 @@
         var upstreamAppId = $('#upstreamAppId').val();
         var upstreamType = $('#upstreamType').val();
         var upstreamPackageName = $('#upstreamPackageName').val();
+        var upstreamAppName = $('#upstreamAppName').val();
+        var upstreamWidth = $('#upstreamWidth').val();
+        if (upstreamWidth == ""){
+            upstreamWidth = 0;
+        }
+        var upstreamHeight = $('#upstreamHeight').val();
+        if (upstreamHeight == ""){
+            upstreamHeight = 0;
+        }
         if(""==upstreamId || 0==upstreamType){
             alert("请将信息填写完毕再提交");
         }else{
@@ -225,8 +243,11 @@
                     "spaceId" : spaceId,
                     "upstreamId" : upstreamId,
                     "upstreamAppId" : upstreamAppId,
-                    "upstreamType" : upstreamType,
-                    "upstreamPackageName" : upstreamPackageName
+                    "upstreamAppName" : upstreamAppName,
+                    "upstreamPackageName" : upstreamPackageName,
+                    "upstreamWidth" : upstreamWidth,
+                    "upstreamHeight" : upstreamHeight,
+                    "upstreamType" : upstreamType
                 },
                 type: "post",
                 dataType: 'json',

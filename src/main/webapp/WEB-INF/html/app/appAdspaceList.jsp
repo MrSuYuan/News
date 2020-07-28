@@ -99,6 +99,7 @@
                                         <th>高度</th>
                                         <th>创建时间</th>
                                         <th id="divided">分成</th>
+                                        <th id="fl">放量</th>
                                         <th id="operate">操作</th>
                                     </tr>
                                     </thead>
@@ -244,6 +245,7 @@
         if(currentUserLevel == 3){
             $('#nickNameSpan').hide();
             $('#nickNameTh').hide();
+            $('#fl').hide();
         }
         appAdspaceList(1);
     });
@@ -306,6 +308,13 @@
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2 || currentUserLevel == 1){
                             html+='<td> Y : '+data.dividedY+' , Z : '+data.dividedZ+'</td>';
+                            var request = data.request;
+                            if (request == 0){
+                                html+='<td> <font color="red">'+data.request+'</font></td>';
+                            }else{
+                                html+='<td> '+data.request+'</td>';
+                            }
+
                             html+='<td>' +
                                 '<div class="hidden-sm hidden-xs btn-group">' +
                                 '<button type="button" class="btn btn-xs btn-success" title="添加" onclick="addUpstream(\''+data.spaceId+'\')">' +
@@ -314,9 +323,9 @@
                                 '<button type="button" class="btn btn-xs btn-info" title="查看" onclick="checkUpstream(\''+data.spaceId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-align-justify bigger-110"></i>' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
-                                '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
-                                '</button>' +
+                                // '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
+                                // '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
+                                // '</button>' +
                                 '<button type="button" class="btn btn-xs btn-default" title="分成" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-edit bigger-110"></i>' +
                                 '</button>' +
@@ -386,10 +395,10 @@
     }
 
     //分流
-    function assign(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
-        window.location = path + "/appAssign";
-    }
+    // function assign(spaceId) {
+    //     sessionStorage.setItem("spaceId",spaceId);
+    //     window.location = path + "/appAssign";
+    // }
 
     //set
     function divided(data){

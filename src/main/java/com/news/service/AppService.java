@@ -47,7 +47,7 @@ public interface AppService {
     /**
      * 添加上游广告位信息
      */
-    ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamPackageName, int upstreamType);
+    ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, int upstreamWidth, int upstreamHeight, int upstreamType);
 
     /**
      * 上游广告位列表
@@ -120,9 +120,14 @@ public interface AppService {
     ReqResponse appUpstreamDivided(Integer upstreamType, double upstreamDivided);
 
     /**
-     * 调度分配展示
+     * 调度分配展示(分流)
      */
     ReqResponse selectAppAssign(String spaceId);
+
+    /**
+     * 修改调度数据(分流)
+     */
+    ReqResponse assignSubmit(String list, String spaceId);
 
     /**
      * 广告位统计
@@ -131,10 +136,7 @@ public interface AppService {
     ReqResponse appUpstreamReport(String downstreamReportId);
     ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize);
     ReqResponse appReportDetail(String appId, String slotId, String createTime);
-    /**
-     * 修改调度数据
-     */
-    ReqResponse assignSubmit(String list, String spaceId);
+
 
     /**
      * 广告位详情
@@ -152,19 +154,18 @@ public interface AppService {
     ReqResponse changeStatus(String statisticsId,int status);
 
     /**
-     * 填补upsteram表assign概率
-     */
-    ReqResponse assign();
-
-    /**
      * 读取表格数据
      */
-    ReqResponse readExcel(Sheet sheet);
+    ReqResponse readUCExcel(Sheet sheet);
 
     /**
      * 上传统计信息
      */
     ReqResponse addAppStatisticsUC(String statisticsList)throws Exception;
 
+    /**
+     * 新excel
+     */
+    ReqResponse readExcel(Sheet sheet);
 
 }

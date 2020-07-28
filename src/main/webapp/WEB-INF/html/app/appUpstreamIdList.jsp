@@ -208,8 +208,8 @@
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.appName+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
-                        html+='<td><input type="button" value="更换绑定" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">';
-                        html+='<input type="button" value="删除ID" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
+                        //html+='<td><input type="button" value="更换绑定" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">';
+                        html+='<td><input type="button" value="删除ID" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
                         html+='</tr>';
                     }
                     //添加数据

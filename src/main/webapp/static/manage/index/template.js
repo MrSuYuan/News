@@ -127,7 +127,8 @@ function navigationBar(path){
 	//html += '			<li class="" id="appDivided"><a href="'+path+'/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appUpstream"><a href="'+path+'/appUpstreamList"><i class="menu-icon fa fa-caret-right"></i>上游设置</a><b class="arrow"></b></li>';
     html += '			<li class="" id="httpRequest"><a href="'+path+'/httpRequest"><i class="menu-icon fa fa-caret-right"></i>广告请求</a><b class="arrow"></b></li>';
-    html += '			<li class="" id="appUploadExcel"><a href="'+path+'/appUploadExcel"><i class="menu-icon fa fa-caret-right"></i>上传excel</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="appUploadUCExcel"><a href="'+path+'/appUploadUCExcel"><i class="menu-icon fa fa-caret-right"></i>上传UCExcel</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="appUploadExcel"><a href="'+path+'/appUploadExcel"><i class="menu-icon fa fa-caret-right"></i>上传其他Excel</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -217,6 +218,7 @@ function permission(pageSign){
         $('#httpRequest').hide();
         $('#webUpstreamTypeList').hide();
         $('#webReadExcel').hide();
+        $('#appUploadUCExcel').hide();
         $('#appUploadExcel').hide();
 
 	}
@@ -285,6 +287,9 @@ function permission(pageSign){
     }else if (pageSign == "httpRequest"){
         $('#app').addClass('active open');
         $('#httpRequest').addClass('active');
+    }else if (pageSign == "appUploadUCExcel"){
+        $('#app').addClass('active open');
+        $('#appUploadUCExcel').addClass('active');
     }else if (pageSign == "appUploadExcel"){
         $('#app').addClass('active open');
         $('#appUploadExcel').addClass('active');

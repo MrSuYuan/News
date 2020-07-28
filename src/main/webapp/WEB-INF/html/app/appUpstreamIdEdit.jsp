@@ -316,8 +316,8 @@
         var newUpstreamId = $('#newUpstreamId').val();
         var newUpstreamAppId = $('#newUpstreamAppId').val();
         var newUpstreamType = $('#newUpstreamType option:selected').val();
-        if(null==upstreamId || null==newUpstreamId || null==newUpstreamAppId || 0==newUpstreamType ||
-            ""==upstreamId || ""==newUpstreamId || ""==newUpstreamAppId){
+        if(null==upstreamId || null==newUpstreamId || 0==newUpstreamType ||
+            ""==upstreamId || ""==newUpstreamId){
             alert("请将信息填写完毕再提交");
         }else{
 

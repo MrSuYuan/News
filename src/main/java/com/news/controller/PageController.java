@@ -259,12 +259,21 @@ public class PageController extends BaseController {
     }
 
     /**
-     * APP上游广告位编辑
+     * 上传其他Excel
      */
     @RequestMapping(value = "appUploadExcel" , method= RequestMethod.GET)
-    @ApiOperation(value = "上传excel", notes = "上传excel", httpMethod = "GET")
+    @ApiOperation(value = "上传其他Excel", notes = "上传其他Excel", httpMethod = "GET")
     public String appUploadExcel(){
         return "/html/app/appUploadExcel.jsp";
+    }
+
+    /**
+     * 上传UCExcel
+     */
+    @RequestMapping(value = "appUploadUCExcel" , method= RequestMethod.GET)
+    @ApiOperation(value = "上传UCExcel", notes = "上传UCExcel", httpMethod = "GET")
+    public String appUploadUCExcel(){
+        return "/html/app/appUploadUCExcel.jsp";
     }
 
     /**

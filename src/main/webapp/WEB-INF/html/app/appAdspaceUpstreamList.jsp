@@ -61,12 +61,13 @@
                 <input type="hidden" id="spaceId">
                 <form action="#" method="post">
                     <div>
-                        <table style="font-size: 14px">
-                            <tr height = "50">
-                                <td align = "right">APP名称:&nbsp;&nbsp;</td>
-                                <td width="300"><span id="appName"></span></td>
-                                <td align = "right">广告位名称:&nbsp;&nbsp;</td>
-                                <td width="300"><span id="spaceName"></span></td>
+                        <table width="100%" style="font-size: 14px">
+                            <tr width="100%" height = "50">
+                                <td width="5%">APP名称:&nbsp;&nbsp;</td>
+                                <td width="20%"><span id="appName"></span></td>
+                                <td width="5%">广告位名称:&nbsp;&nbsp;</td>
+                                <td width="20%"><span id="spaceName"></span></td>
+                                <td width="50%" align="right"><input type="button" id="submitZ" value="确定" onclick="updateAssign()"></td>
                             </tr>
                         </table>
                     </div>
@@ -82,6 +83,7 @@
                                         <th>上游广告位ID</th>
                                         <th>上游APPID</th>
                                         <th>上游平台</th>
+                                        <th>分流比例</th>
                                         <th>创建时间</th>
                                         <th id="statistics">收益统计</th>
                                         <th id="operating">操作</th>
@@ -193,15 +195,17 @@
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
-                        html+='<tr style="height: 40px">';
+                        html+='<tr  id="tr'+data.upstreamId+'" style="height: 40px" class = "uTr">';
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.upstreamId+'</td>';
                         html+='<td> '+data.upstreamAppId+'</td>';
-                        html+='<td> '+data.name+ '</td>';
+                        html+='<td> '+data.name+'<input type="hidden" size="5" name="upstreamType" value="'+data.upstreamType+'"></td>';
+                        html+='<td align="center"><input type="text" size="5" name="probability" value="'+data.probability+'"></td>';
                         html+='<td> '+data.create_Time+'</td>';
                         //if(currentUserLevel == 2){
                         html+='<td><button type="button" onclick="addAppStatistice(\''+data.upstreamId+'\')">添加收益统计</button></td>';
-                        html+='<td><button type="button" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">更换绑定</button></td>';
+                        html+='<td><button type="button" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">更换上游ID</button>&nbsp;';
+                        html+='<input type="button" value="解除绑定关系" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
                         //}
                         html+='</tr>';
                     }
@@ -221,15 +225,83 @@
         });
     }
 
+    //删除id
+    function deleteUpstreamId(upstreamId){
+
+        $.ajax({
+            url: path + "/app/deleteUpstreamId",
+            type: "post",
+            data: {
+                "upstreamId" : upstreamId
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    //将这一行隐藏
+                    $('#tr'+upstreamId).hide();
+
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
+    //正式服确认提交
+    function updateAssign(){
+
+        var objs = [];
+        $('.uTr').each(function(index,val){
+            var obj = {
+                upstreamType : $(val).find('input[name=upstreamType]').val(),
+                probability : $(val).find('input[name=probability]').val(),
+            }
+            objs.push(obj)
+        })
+        $.ajax({
+            url: path + "/app/assignSubmit",
+            type: "post",
+            data : {
+                "spaceId" : $('#spaceId').val(),
+                "list" : JSON.stringify(objs)
+            },
+            dataType: 'json',
+            async: false,
+            success: function (data) {
+                if(data.code == 200){
+                    alert(data.message);
+
+                }else if(data.code == "300"){
+                    alert(data.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(data.message);
+                }
+
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
     function addAppStatistice(upstreamId) {
         sessionStorage.setItem("upstreamId",upstreamId);
         window.location = path + "/appStatisticsAdd";
     }
 
-    function appUpstreamIdEdit(upstreamId){
+    function appUpstreamIdEdit(upstreamId) {
         sessionStorage.setItem("upstreamId",upstreamId);
-        window.location = path+"/appUpstreamIdEdit";
+        window.location = path + "/appUpstreamIdEdit";
     }
+
 </script>
 
 </html>

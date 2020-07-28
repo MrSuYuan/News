@@ -21,71 +21,71 @@
 
 <body class="no-skin">
 
-    <input type="hidden" id="userName" value="${sessionScope.nickName}"/>
-    <input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
-    <input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
-    <input type="hidden" id="ctx" value="${ctx}"/>
+<input type="hidden" id="userName" value="${sessionScope.nickName}"/>
+<input type="hidden" id="currentUserLevel" value="${sessionScope.userLevel}"/>
+<input type="hidden" id="currentUserId" value="${sessionScope.userId}"/>
+<input type="hidden" id="ctx" value="${ctx}"/>
 
-    <div class="main-container ace-save-state" id="main-container">
-        <script type="text/javascript">
-            try{ace.settings.loadState('main-container')}catch(e){}
-        </script>
+<div class="main-container ace-save-state" id="main-container">
+    <script type="text/javascript">
+        try{ace.settings.loadState('main-container')}catch(e){}
+    </script>
 
-        <!-- 次头部 -->
-        <div class="main-content">
-            <div class="main-content-inner">
-                <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                    <ul class="breadcrumb">
-                        <li>
-                            <i class="ace-icon fa fa-home home-icon"></i>
-                            <a href="${ctx}/index">Home</a>
-                        </li>
-                        <li class="active">上传Excel表格</li>
-                    </ul><!-- /.breadcrumb -->
-                    <div class="nav-search" id="nav-search">
-                        <a class="btn btn-primary btn-xs">
-                            <input type="file" id="file" onchange="uploadFile()" multiple>
-                        </a>
-                    </div><!-- /.nav-search -->
-                </div>
-
-                <!-- 页面主体部分 -->
-                <div class="page-content">
-                    <table id="dynamic-table"
-                           class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr style="height: 50px">
-                            <th><font color="red">时间</font></th>
-                            <th><font color="red">上游ID</font></th>
-                            <th><font color="red">展现</font></th>
-                            <th><font color="red">点击</font></th>
-                            <th><font color="red">收益</font></th>
-                            <th><font color="red">ECPM</font></th>
-                            <th width="60px">系数</th>
-                            <th><font color="green">下游</font></th>
-                            <th><font color="green">APP名称</font></th>
-                            <th><font color="green">APPID</font></th>
-                            <th><font color="green">广告位ID</font></th>
-                            <th><font color="green">分成</font></th>
-                            <th><font color="green">收益</font></th>
-                            <th><font color="green">ECPM</font></th>
-                        </tr>
-                        </thead>
-                        <tbody id="coll_list_begin_body">
-                        </tbody>
-                    </table>
-                    <input style="float:right" class="btn btn-sm btn-info no-radius" type="button" value="保存" onclick="submit()">
-                </div><!-- /.page-content -->
+    <!-- 次头部 -->
+    <div class="main-content">
+        <div class="main-content-inner">
+            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="ace-icon fa fa-home home-icon"></i>
+                        <a href="${ctx}/index">Home</a>
+                    </li>
+                    <li class="active">上传UCExcel表格</li>
+                </ul><!-- /.breadcrumb -->
+                <div class="nav-search" id="nav-search">
+                    <a class="btn btn-primary btn-xs">
+                        <input type="file" id="file" onchange="uploadFile()" multiple>
+                    </a>
+                </div><!-- /.nav-search -->
             </div>
 
-        </div><!-- /.main-content -->
+            <!-- 页面主体部分 -->
+            <div class="page-content">
+                <table id="dynamic-table"
+                       class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr style="height: 50px">
+                        <th><font color="red">时间</font></th>
+                        <th><font color="red">渠道</font></th>
+                        <th><font color="red">上游ID</font></th>
+                        <th><font color="red">展现</font></th>
+                        <th><font color="red">收益</font></th>
+                        <th><font color="red">ECPM</font></th>
+                        <th width="60px">系数</th>
+                        <th><font color="green">下游</font></th>
+                        <th><font color="green">APP名称</font></th>
+                        <th><font color="green">APPID</font></th>
+                        <th><font color="green">广告位ID</font></th>
+                        <th><font color="green">分成</font></th>
+                        <th><font color="green">收益</font></th>
+                        <th><font color="green">ECPM</font></th>
+                    </tr>
+                    </thead>
+                    <tbody id="coll_list_begin_body">
+                    </tbody>
+                </table>
+                <input style="float:right" class="btn btn-sm btn-info no-radius" type="button" value="保存" onclick="submit()">
+            </div><!-- /.page-content -->
+        </div>
 
-        <!-- 页面尾部 -->
-        <div class="footer" id ="footer"></div>
-        <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
-            <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-        </a>
-    </div><!-- /.main-container -->
+    </div><!-- /.main-content -->
+
+    <!-- 页面尾部 -->
+    <div class="footer" id ="footer"></div>
+    <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
+        <i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
+    </a>
+</div><!-- /.main-container -->
 
 </body>
 
@@ -117,7 +117,7 @@
         }
 
         $.ajax({
-            url: path + "/app/uploadExcel",
+            url: path + "/app/uploadUCExcel",
             type: "post",
             data: formData,
             contentType: false,
@@ -133,9 +133,9 @@
                         var data = list[i];
                         html+='<tr class="excelTr" style="height: 40px">';
                         html+='<td name="create_Time">'+data.create_Time+'</td>';
+                        html+='<td> '+data.upstreamName+'</td>';
                         html+='<td name="upstreamId">'+data.upstreamId+'</td>';
                         html+='<td name="beforeLookPV" id="beforeLookPV'+i+'">'+data.beforeLookPV+'</td>';
-                        html+='<td name="beforeClickNum" id="beforeClickNum'+i+'"> '+data.beforeClickNum+'</td>';
                         html+='<td name="beforeIncome" id="beforeIncome'+i+'">'+data.beforeIncome+'</td>';
                         html+='<td name="beforeEcpm">'+data.beforeEcpm+'</td>'
                         html+='<td> <input type="text" style="width:50px" value="1" id="input'+i+'" onchange="change(\''+i+'\')"></td>';

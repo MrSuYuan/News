@@ -138,6 +138,8 @@
 
     <!-- 广告位列表 -->
     <select id="appAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.AppAdspaceListVo">
+        select x.*,IFNULL(y.downstreamRequest,0) as request from
+        (
         select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
@@ -162,7 +164,10 @@
         <if test="userLevel == 3">
             and a.userId = #{userId}
         </if>
-        order by s.createTime desc
+        ) x
+        LEFT JOIN a_report_downstream y
+        on x.spaceId = y.slotId and TO_DAYS(y.createTime) = TO_DAYS(NOW())
+        order by x.createTime desc
         limit #{num},#{pageSize}
     </select>
 
@@ -225,17 +230,17 @@
     <!-- 添加上游信息 -->
     <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
         insert into a_upstream
-        (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime, probability)
+        (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime, probability, upstreamAppName, upstreamWidth, upstreamHeight)
         values
-        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability})
+        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability},#{upstreamAppName},#{upstreamWidth},#{upstreamHeight})
     </insert>
 
     <!-- 添加上游使用记录 -->
     <insert id="insertAppAdspaceUpstream" parameterType="com.news.entity.AppAdspaceUpstream">
         insert into a_adspace_upstream
-        (spaceId, upstreamId, startTime)
+        (spaceId, upstreamId, upstreamType, startTime)
         values
-        (#{spaceId},#{upstreamId},now())
+        (#{spaceId},#{upstreamId},#{upstreamType},now())
     </insert>
 
     <!-- 查看此广告位划量分流次数 -->
@@ -244,14 +249,6 @@
         from a_upstream
         where spaceId = #{spaceId}
     </select>
-    
-    <!-- 添加划量分流详情 -->
-    <insert id="insertAssign" parameterType="com.news.entity.AppAssign">
-      insert into a_assign
-      (spaceId, upstreamType, probability, type)
-      values
-      (#{spaceId},#{upstreamType},#{probability},1)
-    </insert>
 
     <!-- 广告位上游信息列表 -->
     <select id="appUpstreamList" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
@@ -306,7 +303,7 @@
         <if test="status != 2">
             and s.status = #{status}
         </if>
-        order by s.createTime desc
+        order by s.status asc,s.createTime desc
         limit #{num},#{pageSize}
     </select>
 
@@ -466,13 +463,12 @@
 
     <!-- 上游id对应详情 -->
     <select id="AppUpstreamIdMsg" parameterType="java.lang.String" resultType="com.news.vo.AppUpstreamIdList">
-        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.spaceId,d.spaceName,p.appName,s.probability,a.upstreamPackageName from
-        (SELECT u.upstreamId,u.upstreamAppId,t.name,u.upstreamType,u.spaceId,u.upstreamPackageName
+        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.spaceId,d.spaceName,p.appName,a.probability,a.upstreamPackageName from
+        (SELECT u.upstreamId,u.upstreamAppId,t.name,u.upstreamType,u.spaceId,u.upstreamPackageName,u.probability
         FROM a_upstream u,a_upstream_type t
         where u.upstreamType = t.type and u.upstreamId = #{upstreamId}) a
         LEFT JOIN a_adspace d on a.spaceId = d.spaceId
         LEFT JOIN a_app p on d.appId = p.appId
-        LEFT JOIN a_assign s on a.spaceId = s.spaceId and a.upstreamType = s.upstreamType
     </select>
 
     <!-- 此id对应的分润比例 -->
@@ -490,14 +486,9 @@
     </select>
     <update id="updateUpstream" parameterType="java.util.Map">
         update a_upstream
-        set upstreamId = #{newUpstreamId},upstreamAppId = #{newUpstreamAppId},
-        upstreamType = #{newUpstreamType},upstreamPackageName = #{newUpstreamPackageName}
+        set upstreamId = #{newUpstreamId},upstreamAppId = #{newUpstreamAppId},upstreamType = #{newUpstreamType},
+        createTime = now(),upstreamPackageName = #{newUpstreamPackageName}
         where upstreamId = #{upstreamId}
-    </update>
-    <update id="updateAssign" parameterType="java.util.Map">
-        update a_assign
-        set upstreamType = #{newUpstreamType}
-        where spaceId = #{spaceId} and upstreamType = #{upstreamType}
     </update>
 
     <!-- 删除上游ID -->
@@ -507,9 +498,11 @@
     <delete id="deleteUpstream" parameterType="java.lang.String">
         delete from a_upstream where upstreamId = #{upstreamId}
     </delete>
-    <delete id="deleteAssign" parameterType="com.news.entity.AppAssign">
-        delete from a_assign where spaceId = #{spaceId} and upstreamType = #{upstreamType}
-    </delete>
+    <update id="updateEndTime" parameterType="com.news.entity.AppAdspaceUpstream">
+        update a_adspace_upstream
+        set endTime = now()
+        where spaceId = #{spaceId} and upstreamId = #{upstreamId}
+    </update>
 
     <!-- 设置上游分成比例 -->
     <update id="appUpstreamDivided" parameterType="java.util.Map">
@@ -685,12 +678,7 @@
         delete from a_statistics where statisticsId = #{statisticsId}
     </select>
 
-    <!-- 查询所有a_assign表数据 -->
-    <select id="assignList" resultType="com.news.entity.AppAssign">
-        select * from a_assign
-    </select>
-
-    <!-- 修改a_upstream表assign概率数据 -->
+    <!-- 修改a_upstream表概率数据 -->
     <update id="upstreamAssign">
         <foreach collection="list" index="index" item="item" open="" close="" separator=";">
             update a_upstream set probability = #{item.probability}
@@ -700,13 +688,21 @@
 
     <!-- 查询excel数据库对应数据 -->
     <select id="queryExcel" resultType="com.news.entity.UCStatisticsList">
-        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId
-        from a_upstream au,a_adspace ad,a_app ap,u_user u
-        where au.upstreamId in
+        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
+        from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
+        where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
-        and au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId
+    </select>
+
+    <select id="matchId" resultType="com.news.entity.UCStatisticsList">
+        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,au.startTime,IFNULL(au.endTime,NOW()) as endTime
+        from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
+        where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
     </select>
 
 </mapper>

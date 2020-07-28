@@ -40,6 +40,33 @@ public class AppUpstream {
      * 概率
      */
     private int probability;
+    private String upstreamAppName;
+    private int upstreamWidth;
+    private int upstreamHeight;
+
+    public String getUpstreamAppName() {
+        return upstreamAppName;
+    }
+
+    public void setUpstreamAppName(String upstreamAppName) {
+        this.upstreamAppName = upstreamAppName;
+    }
+
+    public int getUpstreamWidth() {
+        return upstreamWidth;
+    }
+
+    public void setUpstreamWidth(int upstreamWidth) {
+        this.upstreamWidth = upstreamWidth;
+    }
+
+    public int getUpstreamHeight() {
+        return upstreamHeight;
+    }
+
+    public void setUpstreamHeight(int upstreamHeight) {
+        this.upstreamHeight = upstreamHeight;
+    }
 
     public int getProbability() {
         return probability;

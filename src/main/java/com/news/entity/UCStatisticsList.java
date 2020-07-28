@@ -29,6 +29,8 @@ public class UCStatisticsList {
      */
     private Date createTime;
     private String create_Time;
+    private Date startTime;
+    private Date endTime;
     /**
      * 展现量
      */
@@ -67,6 +69,22 @@ public class UCStatisticsList {
     private String nickName;
     private String appName;
     private double dividedY;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getBeforeEcpm() {
         return beforeEcpm;

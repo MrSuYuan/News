@@ -10,8 +10,17 @@ public class AppAdspaceUpstream {
     private int id;
     private String spaceId;
     private String upstreamId;
+    private int upstreamType;
     private Date startTime;
     private Date endTime;
+
+    public int getUpstreamType() {
+        return upstreamType;
+    }
+
+    public void setUpstreamType(int upstreamType) {
+        this.upstreamType = upstreamType;
+    }
 
     public int getId() {
         return id;
