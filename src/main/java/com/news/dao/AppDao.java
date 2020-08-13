@@ -90,9 +90,19 @@ public interface AppDao {
     int appAdspaceListNum(Map<String,Object> map);
 
     /**
+     * 放/停量
+     */
+    void updateFlowStatus(Map<String,Object> map);
+
+    /**
      * 查看平台广告位所属app的上级id
      */
     Map<String,Object> adParentId(String spaceId);
+
+    /**
+     * 查询此上游广告位id是否存在
+     */
+    AppUpstream queryUpstream(String upstreamId);
 
     /**
      * 查询此上游广告位id是否存在
@@ -113,6 +123,11 @@ public interface AppDao {
      * 添加上游信息
      */
     void insertAppUpstream(AppUpstream appUpstream);
+
+    /**
+     * 修改上游绑定的平台id
+     */
+    void updateAppUpstream(AppUpstream appUpstream);
 
     /**
      * 添加上游使用记录

@@ -178,6 +178,13 @@ public class PageController extends BaseController {
     public String appAdspaceUpstreamList(){ return "/html/app/appAdspaceUpstreamList.jsp";}
 
     /**
+     * APP广告位上报详情
+     */
+    @RequestMapping(value = "appAdspaceReport" , method= RequestMethod.GET)
+    @ApiOperation(value = "APP广告位上报详情", notes = "APP广告位上报详情", httpMethod = "GET")
+    public String appAdspaceReport(){ return "/html/app/appAdspaceReport.jsp";}
+
+    /**
      * APP激励视频调度分配
      */
     @RequestMapping(value = "appAssign" , method= RequestMethod.GET)

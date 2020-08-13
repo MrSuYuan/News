@@ -1,8 +1,6 @@
 package com.news.service.impl;
 
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.news.dao.AppDao;
 import com.news.dao.UserDao;
@@ -17,7 +15,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -282,6 +279,27 @@ public class AppServiceImpl implements AppService {
     }
 
     /**
+     * 放量
+     * @param flowStatus 0停量 1放量
+     */
+    @Override
+    public ReqResponse flowStatus(Long userId, String spaceId, int flowStatus) {
+        ReqResponse req = new ReqResponse();
+        try{
+            Map<String,Object> map = new HashMap<>();
+            map.put("spaceId",spaceId);
+            map.put("flowStatus",flowStatus);
+            appDao.updateFlowStatus(map);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("设置成功");
+        }catch(Exception e){
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("设置错误");
+        }
+        return req;
+    }
+
+    /**
      * 添加上游广告位信息
      */
     @Override
@@ -290,13 +308,6 @@ public class AppServiceImpl implements AppService {
         //查看广告位所属app的上级id
         Map<String,Object> parent = appDao.adParentId(spaceId);
         if(userId.longValue() == (Long)parent.get("parentId") || userId.longValue() == 1){
-            //查询此上游广告位id是否存在
-            int upstreamIdNum = appDao.upstreamIdNum(upstreamId);
-            if (upstreamIdNum > 0){
-                req.setCode(ErrorMessage.FAIL.getCode());
-                req.setMessage("此上游广告位ID已经存在");
-                return req;
-            }
 
             //添加上游广告位信息
             AppUpstream appUpstream = new AppUpstream();
@@ -312,6 +323,7 @@ public class AppServiceImpl implements AppService {
             //查看此广告位有没有重复上游类型
             int appUpstreamNum = appDao.appUpstreamNum(appUpstream);
             if(appUpstreamNum == 0){
+
                 //如果是第一家,就添加调度信息100%,其余家都是0
                 int assignNum = appDao.assignNum(spaceId);
                 if(assignNum == 0){
@@ -319,8 +331,27 @@ public class AppServiceImpl implements AppService {
                 }else{
                     appUpstream.setProbability(0);
                 }
-                //添加广告位信息
-                appDao.insertAppUpstream(appUpstream);
+
+                AppUpstream upstream = appDao.queryUpstream(upstreamId);
+                //如果此id不存在,那就直接添加
+                if (null == upstream){
+                    //添加广告位信息
+                    appDao.insertAppUpstream(appUpstream);
+                }
+                //id存在的时候分两种情况
+                else{
+                    //如果此id已经存在,但是没有绑定平台信息,那就直接修改
+                    if (null == upstream.getSpaceId() || "".equals(upstream.getSpaceId())){
+                        appDao.updateAppUpstream(appUpstream);
+                    }
+                    //如果此id已经存在,并且绑定了平台广告位,那就无法添加
+                    else{
+                        req.setCode(ErrorMessage.FAIL.getCode());
+                        req.setMessage("此上游广告位ID已经存在");
+                        return req;
+                    }
+                }
+
                 //添加广告位和上游的绑定信息(id使用记录)
                 AppAdspaceUpstream au = new AppAdspaceUpstream();
                 au.setSpaceId(spaceId);

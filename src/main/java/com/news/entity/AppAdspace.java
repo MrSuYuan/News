@@ -35,6 +35,18 @@ public class AppAdspace {
      * 高度
      */
     private int height;
+    /**
+     * 放量状态
+     */
+    private int flowStatus;
+
+    public int getFlowStatus() {
+        return flowStatus;
+    }
+
+    public void setFlowStatus(int flowStatus) {
+        this.flowStatus = flowStatus;
+    }
 
     public String getSpaceId() {
         return spaceId;

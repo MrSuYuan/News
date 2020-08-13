@@ -63,10 +63,8 @@
                     <div>
                         <table width="100%" style="font-size: 14px">
                             <tr width="100%" height = "50">
-                                <td width="5%">APP名称:&nbsp;&nbsp;</td>
-                                <td width="20%"><span id="appName"></span></td>
-                                <td width="5%">广告位名称:&nbsp;&nbsp;</td>
-                                <td width="20%"><span id="spaceName"></span></td>
+                                <td width="25%">APP名称:&nbsp;&nbsp;<span id="appName"></span></td>
+                                <td width="25%">广告位名称:&nbsp;&nbsp;<span id="spaceName"></span></td>
                                 <td width="50%" align="right"><input type="button" id="submitZ" value="确定" onclick="updateAssign()"></td>
                             </tr>
                         </table>

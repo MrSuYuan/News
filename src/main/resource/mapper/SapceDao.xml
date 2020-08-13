@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 广告位模块 -->
+<mapper namespace="com.news.dao.SpaceDao">
+
+    <!-- 广告位基本信息 -->
+    <select id="spaceMsg" parameterType="java.lang.String" resultType="com.news.vo.AppAdspaceListVo">
+        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
+        from a_adspace s,a_app a,u_user u
+        where s.spaceId = #{spaceId} and s.appId = a.appId and a.userId = u.userId
+    </select>
+
+    <!-- 平台分时统计查询 -->
+    <select id="platformStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.PlatformStatisticsListVo">
+        select u.*,d.downstreamRequest
+        from a_report_downstream d,
+        (select appId,slotId,hour,SUM(request) as request,SUM(response) as response,SUM(look) as look,SUM(click) as click,SUM(deeplink) as deeplink,createTime,SUM(t300) as t300,SUM(t400) as t400,SUM(t500) as t500,SUM(t1000) as t1000
+        from a_report_upstream
+        where slotId = #{slotId} and createTime = #{createTime}
+        GROUP BY hour) u
+        where d.appId = u.appId and d.slotId = u.slotId and d.`hour` = u.`hour` and d.createTime = u.createTime order by d.`hour` ASC
+    </select>
+
+    <!-- 渠道分时统计-求和 -->
+    <select id="ChannelStatisticsSumList" parameterType="java.util.Map" resultType="com.news.vo.ChannelStatisticsSumListVo">
+        select u.slotId,u.upstreamId,IFNULL(t.`name`,"平台") as name,u.upstreamType,sum(u.request) as request,SUM(u.response) as response,SUM(u.look) as look,SUM(u.click) as click, SUM(u.deeplink) as deeplink,SUM(u.t300) as t300,SUM(u.t400) as t400,SUM(u.t500) as t500,SUM(u.t1000) as t1000
+        from a_report_upstream u
+        left join a_upstream_type t
+        on  u.upstreamType = t.type
+        where u.slotId = #{slotId} and u.createTime = #{createTime}
+        GROUP BY u.upstreamId ORDER BY u.`hour` asc
+    </select>
+
+    <!-- 渠道分时统计-详细列表 -->
+    <select id="ChannelStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.ChannelStatisticsListVo">
+        select slotId,hour,upstreamId,upstreamType,request,response,look,click,deeplink
+        from a_report_upstream
+        where slotId = #{slotId} and createTime = #{createTime}
+        ORDER BY `hour` asc
+    </select>
+
+
+</mapper>

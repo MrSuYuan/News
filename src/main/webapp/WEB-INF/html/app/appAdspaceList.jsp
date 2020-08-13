@@ -95,12 +95,12 @@
                                         <th>APP名称</th>
                                         <th id="nickNameTh">所属用户</th>
                                         <th>广告类型</th>
-                                        <th>宽度</th>
-                                        <th>高度</th>
+                                        <%--<th>宽度</th>
+                                        <th>高度</th>--%>
                                         <th>创建时间</th>
                                         <th id="divided">分成</th>
-                                        <th id="fl">放量</th>
-                                        <th id="operate">操作</th>
+                                        <th id="fl">今日量级</th>
+                                        <th id="operate">添加&nbsp;&nbsp;/&nbsp;&nbsp;查看&nbsp;&nbsp;/&nbsp;&nbsp;分成&nbsp;&nbsp;/&nbsp;&nbsp;统计&nbsp;&nbsp;/&nbsp;&nbsp;放量</th>
                                     </tr>
                                     </thead>
                                     <tbody id="coll_list_begin_body">
@@ -303,10 +303,12 @@
                         }else{
                             html+='<td> <font color="red">信息错误</font> </td>';
                         }
-                        html+='<td> '+data.width+'</td>';
-                        html+='<td> '+data.height+'</td>';
+                        // html+='<td> '+data.width+'</td>';
+                        // html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2 || currentUserLevel == 1){
+
+
                             html+='<td> Y : '+data.dividedY+' , Z : '+data.dividedZ+'</td>';
                             var request = data.request;
                             if (request == 0){
@@ -315,25 +317,38 @@
                                 html+='<td> '+data.request+'</td>';
                             }
 
-                            html+='<td>' +
-                                '<div class="hidden-sm hidden-xs btn-group">' +
+                            html+='<td>';
+                            //放量
+                            var flowStatus = data.flowStatus;
+                            html+='<div class="widget-toolbar no-border">';
+                            if (flowStatus == 1) {
+                                html+='<input type="checkbox" class="ace ace-switch ace-switch-3" id="input'+data.spaceId+'" onclick="flowStatus(\''+data.spaceId+'\')" checked/>';
+                            }else{
+                                html+='<input type="checkbox" class="ace ace-switch ace-switch-3" id="input'+data.spaceId+'" onclick="flowStatus(\''+data.spaceId+'\')"/>';
+                            }
+                            html+='    <span class="lbl middle"></span>';
+                            html+='</div>';
+                            html+='<div class="hidden-sm hidden-xs btn-group">' +
                                 '<button type="button" class="btn btn-xs btn-success" title="添加" onclick="addUpstream(\''+data.spaceId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-plus bigger-110"></i>' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-xs btn-info" title="查看" onclick="checkUpstream(\''+data.spaceId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-align-justify bigger-110"></i>' +
                                 '</button>' +
-                                // '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
-                                // '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
-                                // '</button>' +
                                 '<button type="button" class="btn btn-xs btn-default" title="分成" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-edit bigger-110"></i>' +
                                 '</button>' +
+                                '<button type="button" class="btn btn-xs btn-warning" title="统计" onclick="report(\''+data.spaceId+'\')">' +
+                                '<i class="ace-icon glyphicon glyphicon-indent-right bigger-110"></i>' +
+                                '</button>' +
+                                // '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
+                                // '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
+                                // '</button>' +
                                 // '<button type="button" class="btn btn-xs btn-danger" title="删除">' +
                                 // '<i class="ace-icon glyphicon glyphicon-trash bigger-110"></i>' +
                                 '</button>' +
-                                '</div>' +
-                                '</td>';
+                                '</div>'+
+                            '</td>';
                         }
                         html+='</tr>';
                     }
@@ -382,6 +397,45 @@
         }
     }
 
+    //放量
+    function flowStatus(spaceId) {
+        var status = $('#input'+spaceId).is(":checked");
+        var flowStatus;
+        if (status == true){
+            flowStatus = 1;
+        } else {
+            flowStatus = 0;
+        }
+        $.ajax({
+            url: path + "/app/flowStatus",
+            type: "post",
+            data: {
+                "spaceId" : spaceId,
+                "flowStatus" : flowStatus
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    alert(obj.message);
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path+"/login";
+                }else{
+                    alert(obj.message);
+                    if (status == true){
+                        $('#input'+spaceId).prop("checked", false);
+                    } else {
+                        $('#input'+spaceId).prop("checked", true);
+                    }
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
     //添加
     function addUpstream(spaceId) {
         sessionStorage.setItem("spaceId",spaceId);
@@ -392,6 +446,12 @@
     function checkUpstream(spaceId) {
         sessionStorage.setItem("spaceId",spaceId);
         window.location = path + "/appAdspaceUpstreamList";
+    }
+
+    //查看
+    function report(spaceId) {
+        sessionStorage.setItem("spaceId",spaceId);
+        window.location = path + "/appAdspaceReport";
     }
 
     //分流

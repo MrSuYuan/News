@@ -207,6 +207,27 @@ public class AppController extends BaseController {
     }
 
 
+    @RequestMapping(value = "/flowStatus",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "广告位列表", notes = "广告位列表", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="flowStatus" , value="0停量 1放量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse flowStatus(String spaceId, int flowStatus) {
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.flowStatus((Long) userId, spaceId, flowStatus);
+        }
+        return req;
+    }
+
+
     @RequestMapping(value = "/appAdUpstream",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "广告位页面-添加上游", notes = "添加广告位上游信息", httpMethod = "POST")

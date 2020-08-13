@@ -47,6 +47,15 @@ public class AppAdspaceListVo {
     private double dividedY;
     private double dividedZ;
     private int request;
+    private int flowStatus;
+
+    public int getFlowStatus() {
+        return flowStatus;
+    }
+
+    public void setFlowStatus(int flowStatus) {
+        this.flowStatus = flowStatus;
+    }
 
     public int getRequest() {
         return request;

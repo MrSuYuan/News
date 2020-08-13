@@ -140,7 +140,7 @@
     <select id="appAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.AppAdspaceListVo">
         select x.*,IFNULL(y.downstreamRequest,0) as request from
         (
-        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName
+        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
         from a_adspace s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
         <if test="loginName != null and loginName !=''">
@@ -165,11 +165,19 @@
             and a.userId = #{userId}
         </if>
         ) x
-        LEFT JOIN a_report_downstream y
+        LEFT JOIN
+        (select slotId,SUM(downstreamRequest) as downstreamRequest,createTime from a_report_downstream where TO_DAYS(createTime) = TO_DAYS(NOW()) GROUP BY slotId)y
         on x.spaceId = y.slotId and TO_DAYS(y.createTime) = TO_DAYS(NOW())
         order by x.createTime desc
         limit #{num},#{pageSize}
     </select>
+
+    <!-- 放/停量 -->
+    <update id="updateFlowStatus" parameterType="java.util.Map">
+        update a_adspace
+        set flowStatus = #{flowStatus}
+        where spaceId = #{spaceId}
+    </update>
 
     <!-- 广告位列表数量 -->
     <select id="appAdspaceListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
@@ -206,6 +214,13 @@
         where d.spaceId = #{spaceId} and d.appId = a.appId and a.userId = u.userId
     </select>
 
+    <!-- 查询此上游广告位id的绑定信息 -->
+    <select id="queryUpstream" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
+        select *
+        from a_upstream
+        where upstreamId = #{upstreamId}
+    </select>
+
     <!-- 查询此上游广告位id是否存在 -->
     <select id="upstreamIdNum" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(0)
@@ -234,6 +249,15 @@
         values
         (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability},#{upstreamAppName},#{upstreamWidth},#{upstreamHeight})
     </insert>
+
+    <!-- 修改上游绑定的平台id -->
+    <update id="updateAppUpstream" parameterType="com.news.entity.AppUpstream">
+        update a_upstream
+        set spaceId = #{spaceId},upstreamAppId = #{upstreamAppId},upstreamAppName = #{upstreamAppName},upstreamPackageName = #{upstreamPackageName},
+            createTime = #{createTime},probability = #{probability},upstreamWidth = #{upstreamWidth},upstreamHeight = #{upstreamHeight}
+        where
+        upstreamId = #{upstreamId}
+    </update>
 
     <!-- 添加上游使用记录 -->
     <insert id="insertAppAdspaceUpstream" parameterType="com.news.entity.AppAdspaceUpstream">
@@ -495,9 +519,9 @@
     <select id="appUpstream" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
         select * from a_upstream where upstreamId = #{upstreamId}
     </select>
-    <delete id="deleteUpstream" parameterType="java.lang.String">
-        delete from a_upstream where upstreamId = #{upstreamId}
-    </delete>
+    <update id="deleteUpstream" parameterType="java.lang.String">
+        update a_upstream set spaceId = null where upstreamId = #{upstreamId}
+    </update>
     <update id="updateEndTime" parameterType="com.news.entity.AppAdspaceUpstream">
         update a_adspace_upstream
         set endTime = now()

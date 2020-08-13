@@ -293,6 +293,9 @@ function permission(pageSign){
     }else if (pageSign == "appUploadExcel"){
         $('#app').addClass('active open');
         $('#appUploadExcel').addClass('active');
+    }else if (pageSign == "appAdspaceReport"){
+        $('#app').addClass('active open');
+        $('#appAdspace').addClass('active');
 
 	//web页面
     }else if (pageSign == "webList"){

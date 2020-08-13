@@ -45,6 +45,11 @@ public interface AppService {
     ReqResponse appAdspaceList(Long userId, String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize);
 
     /**
+     * 放量
+     */
+    ReqResponse flowStatus(Long userId, String spaceId, int flowStatus);
+
+    /**
      * 添加上游广告位信息
      */
     ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, int upstreamWidth, int upstreamHeight, int upstreamType);
