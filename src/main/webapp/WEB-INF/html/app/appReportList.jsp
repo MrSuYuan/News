@@ -80,7 +80,7 @@
                                     <thead>
                                     <tr style="height: 50px">
                                         <th>APP</th>
-                                        <th>数量</th>
+                                        <th>详情</th>
                                         <th>APPID</th>
                                         <th>广告位ID</th>
                                         <th>日期</th>
@@ -181,7 +181,7 @@
             return false;
         }
         $.ajax({
-            url: path + "/app/appReportList",
+            url: path + "/space/appReportList",
             type: "post",
             data: {
                 "startTime" : $('#startTime').val(),
@@ -203,7 +203,7 @@
                         html+='<td> '+data.appName+'</td>';
                         html+='<td class="center"> '+
                             '<div class="action-buttons">'+
-                            '<a href="#" class="green bigger-140 show-details-btn" onclick="zhankai(\''+i+'\',\''+data.downstreamReportId+'\')">'+
+                            '<a href="#" class="green bigger-140 show-details-btn" onclick="zhankai(\''+i+'\',\''+data.createTime+'\',\''+data.slotId+'\')">'+
                             '<i class="ace-icon fa fa-angle-double-down"></i>'+
                             '</a>'+
                             '</div>'+
@@ -211,7 +211,7 @@
                         html+='<td> '+data.appId+'</td>';
                         html+='<td> '+data.slotId+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        html+='<td> '+format_number(data.downstreamRequest)+'</td>';
+                        html+='<td> '+format_number(data.request)+'</td>';
                         html+='<td> '+format_number(data.response)+'</td>';
                         html+='<td> '+format_number(data.look)+'</td>';
                         html+='<td> '+format_number(data.click)+'</td>';
@@ -284,12 +284,13 @@
     }
 
     //查询展开数据 id是行数从0开始
-    function zhankai(id, downstreamReportId){
+    function zhankai(id, createTime, slotId){
         $.ajax({
-            url: path + "/app/appUpstreamReport",
+            url: path + "/space/appUpstreamReport",
             type: "post",
             data: {
-                "downstreamReportId" : downstreamReportId
+                "createTime" : createTime,
+                "slotId" : slotId
             },
             dataType: 'json',
             async: false,

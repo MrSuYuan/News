@@ -223,15 +223,6 @@ public class PageController extends BaseController {
     /**
      * APP上报统计列表
      */
-    @RequestMapping(value = "appReportNewList" , method= RequestMethod.GET)
-    @ApiOperation(value = "APP上报统计列表", notes = "APP上报统计列表", httpMethod = "GET")
-    public String appReportNewList(){
-        return "/html/app/appReportNewList.jsp";
-    }
-
-    /**
-     * APP上报统计列表
-     */
     @RequestMapping(value = "appReportList" , method= RequestMethod.GET)
     @ApiOperation(value = "APP上报统计列表", notes = "APP上报统计列表", httpMethod = "GET")
     public String appReportList(){

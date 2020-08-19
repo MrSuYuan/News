@@ -24,4 +24,6 @@ public interface TemporaryDao {
 
     int copyListNum(Map<String,Object> map);
 
+    void deleteReport(long id);
+
 }

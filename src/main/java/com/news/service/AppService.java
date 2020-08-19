@@ -135,15 +135,6 @@ public interface AppService {
     ReqResponse assignSubmit(String list, String spaceId);
 
     /**
-     * 广告位统计
-     */
-    ReqResponse appReportList(String appId, String slotId, String startTime, String endTime, Integer currentPage, Integer pageSize);
-    ReqResponse appUpstreamReport(String downstreamReportId);
-    ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize);
-    ReqResponse appReportDetail(String appId, String slotId, String createTime);
-
-
-    /**
      * 广告位详情
      */
     ReqResponse adspaceDetail(String spaceId);

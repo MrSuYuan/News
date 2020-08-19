@@ -1,9 +1,6 @@
 package com.news.dao;
 
-import com.news.vo.AppAdspaceListVo;
-import com.news.vo.ChannelStatisticsListVo;
-import com.news.vo.ChannelStatisticsSumListVo;
-import com.news.vo.PlatformStatisticsListVo;
+import com.news.vo.*;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Map;
@@ -33,5 +30,13 @@ public interface SpaceDao {
      * 渠道分时统计-详细列表
      */
     List<ChannelStatisticsListVo> ChannelStatisticsList(Map<String,Object> map);
+
+    /**
+     * 广告位统计
+     */
+    List<AdStatisticsListVo> appReportList(Map<String,Object> map);
+    int appReportListNum(Map<String,Object> map);
+    List<AdReportUpstreamListVo> appUpstreamReport(Map<String,Object> map);
+
 
 }

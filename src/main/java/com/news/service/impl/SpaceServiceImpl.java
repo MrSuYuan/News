@@ -5,17 +5,8 @@ import com.news.service.SpaceService;
 import com.news.vo.*;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
-import net.sf.json.JSONObject;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.net.URLDecoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -130,70 +121,66 @@ public class SpaceServiceImpl implements SpaceService {
         return req;
     }
 
-    public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-        String data = "{\n" +
-                "\t\"requestId\": \"1119092016594257588754\",\n" +
-                "\t\"app\": {\n" +
-                "\t\t\"appId\": \"DJPVHA\",\n" +
-                "\t\t\"appName\": \"斗地主经典版\",\n" +
-                "\t\t\"appVersion\": \"1.1.3\",\n" +
-                "\t\t\"appPackage\": \"com.tencent.tmgp.zy.ddzjdb\"\n" +
-                "\t},\n" +
-                "\t\"slot\": {\n" +
-                "\t\t\"slotId\": \"28n0la4p\",\n" +
-                "\t\t\"slotheight\": \"480\",\n" +
-                "\t\t\"slotwidth\": \"320\",\n" +
-                "\t\t\"adtype\": 4\n" +
-                "\t},\n" +
-                "\t\"device\": {\n" +
-                "\t\t\"androidId\": \"4fd86c81fc8e2daa\",\n" +
-                "\t\t\"deviceType\": 1,\n" +
-                "\t\t\"idfa\": \"\",\n" +
-                "\t\t\"imei\": \"866333026939494\",\n" +
-                "\t\t\"mac\": \"18:59:36:16:47:59\",\n" +
-                "\t\t\"vendor\": \"Xiaomi\",\n" +
-                "\t\t\"model\": \"MI 4LTE\",\n" +
-                "\t\t\"osType\": 1,\n" +
-                "\t\t\"osVersion\": \"6.0.1\",\n" +
-                "\t\t\"screenHeight\": 1920,\n" +
-                "\t\t\"screenWidth\": 1080,\n" +
-                "\t\t\"ua\": \"Mozilla/5.0 (Linux; Android 6.0.1; MI 4LTE Build/MMB29M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/57.0.2987.132 Mobile Safari/537.36\",\n" +
-                "\t\t\"ppi\": 480,\n" +
-                "\t\t\"screenOrientation\": 1,\n" +
-                "\t\t\"imsi\": \"460021317195750\",\n" +
-                "\t\t\"brand\": \"Xiaomi\"\n" +
-                "\t},\n" +
-                "\t\"network\": {\n" +
-                "\t\t\"connectionType\": 100,\n" +
-                "\t\t\"ip\": \"117.150.189.133\",\n" +
-                "\t\t\"operatorType\": 1,\n" +
-                "\t\t\"lat\": \"0.0\",\n" +
-                "\t\t\"lon\": \"0.0\"\n" +
-                "\t},\n" +
-                "\t\"news\":{\n" +
-                "\t\t\"page\":1,\n" +
-                "\t\t\"title\":\"娱乐\"\n" +
-                "\t}\n" +
-                "}";
-        String url = "http://47.95.31.238/adx/ssp/dspAdVideo";
-        CloseableHttpClient httpClient = HttpClients.createDefault();
-        JSONObject jsonResult;
-        HttpPost method = new HttpPost(url);
-        method.setHeader("Content-Type","application/json");
-        try {
-            StringEntity entity = new StringEntity(data);
-            method.setEntity(entity);
-            HttpResponse result = httpClient.execute(method);
-            //url = URLDecoder.decode(url, "UTF-8");
-            String str = EntityUtils.toString(result.getEntity(), "utf-8");
-            jsonResult = JSONObject.fromObject(str);
-            System.out.println("post请求提交成功:" + jsonResult);
-            long endTime = System.currentTimeMillis();
-            System.out.println("time"+(endTime-startTime));
-        } catch (IOException e) {
-            System.out.println("post请求提交失败:" + url);
+
+    /**
+     * 上报统计列表
+     */
+    @Override
+    public ReqResponse appReportList(String appId, String slotId, String startTime, String endTime, Integer currentPage, Integer pageSize) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("appId",appId);
+        map.put("slotId",slotId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
+        //页码格式化
+        if(null == currentPage){
+            currentPage = 1;
         }
+        if(null == pageSize){
+            pageSize = 20;
+        }
+        map.put("num",(currentPage - 1) * pageSize);
+        map.put("pageSize",pageSize);
+        List<AdStatisticsListVo> list = spaceDao.appReportList(map);
+        int sumData = spaceDao.appReportListNum(map);
+
+        //总页数
+        int sumPage = 0;
+        if(sumData%Integer.valueOf(pageSize) == 0){
+            sumPage = (sumData/Integer.valueOf(pageSize));
+        }else{
+            sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
+        }
+
+        Map<String,Object> result = new HashMap<>();
+        result.put("list",list);
+        result.put("currentPage",currentPage);
+        result.put("pageSize",pageSize);
+        result.put("sumPage",sumPage);
+        result.put("sumData",sumData);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("数据加载完成");
+        req.setResult(result);
+        return req;
     }
+
+    /**
+     * 上报统计详情(展开)
+     */
+    @Override
+    public ReqResponse appUpstreamReport(String createTime, String slotId) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> map = new HashMap<>();
+        map.put("createTime",createTime);
+        map.put("slotId",slotId);
+        List<AdReportUpstreamListVo> appReportDetail = spaceDao.appUpstreamReport(map);
+        System.out.println(appReportDetail.size());
+        req.setMessage("数据加载完成");
+        req.setResult(appReportDetail);
+        req.setCode("200");
+        return req;
+    }
+
 
 }

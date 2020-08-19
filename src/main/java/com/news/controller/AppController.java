@@ -570,31 +570,6 @@ public class AppController extends BaseController {
         return req;
     }
 
-    @RequestMapping(value="appStatisticsManage", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "统计列表-管理", notes = "统计列表-管理", httpMethod = "POST")
-    @ApiImplicitParams(value={
-            @ApiImplicitParam(name="status" , value="审核状态" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
-    })
-    @CrossOrigin
-    public ReqResponse appStatisticsManage(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.appStatisticsList(startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize, status);
-        }
-        return req;
-    }
-
     @RequestMapping(value="appStatisticsUser", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "统计列表-用户", notes = "统计列表-用户", httpMethod = "POST")
@@ -620,6 +595,33 @@ public class AppController extends BaseController {
         return req;
     }
 
+
+    @RequestMapping(value="appStatisticsManage", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "统计列表-管理", notes = "统计列表-管理", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="status" , value="审核状态" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse appStatisticsManage(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = appService.appStatisticsList(startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize, status);
+        }
+        return req;
+    }
+
+
     @RequestMapping(value="examinationPassed", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "多选通过", notes = "多选通过", httpMethod = "POST")
@@ -638,73 +640,6 @@ public class AppController extends BaseController {
         }
         return req;
     }
-
-    @RequestMapping(value="appReportList", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "广告位统计列表", notes = "广告位统计列表", httpMethod = "POST")
-    @CrossOrigin
-    public ReqResponse appReportList(String appId, String slotId, String startTime, String endTime, Integer currentPage, Integer pageSize){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.appReportList(appId, slotId, startTime, endTime, currentPage, pageSize);
-        }
-        return req;
-    }
-
-    @RequestMapping(value="appUpstreamReport", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "广告位统计详情", notes = "广告位统计详情", httpMethod = "POST")
-    @CrossOrigin
-    public ReqResponse appUpstreamReport(String downstreamReportId){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.appUpstreamReport(downstreamReportId);
-        }
-        return req;
-
-    }
-
-    @RequestMapping(value="appReportNewList", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "广告位统计列表(旧)", notes = "广告位统计列表", httpMethod = "POST")
-    @CrossOrigin
-    public ReqResponse appReportNewList(String startTime, String endTime, String appId, String slotId, Integer currentPage, Integer pageSize){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.appReportNewList(startTime, endTime, appId, slotId, currentPage, pageSize);
-        }
-        return req;
-    }
-
-    @RequestMapping(value="appReportDetail", method= RequestMethod.POST)
-    @ResponseBody
-    @ApiOperation(value = "广告位统计详情(旧)", notes = "广告位统计详情", httpMethod = "POST")
-    @CrossOrigin
-    public ReqResponse appReportDetail(String appId, String slotId, String createTime){
-        ReqResponse req = new ReqResponse();
-        Object userId = request.getSession().getAttribute("userId");
-        if(null == userId){
-            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
-            req.setMessage("无效的登录");
-        }else{
-            req = appService.appReportDetail(appId, slotId, createTime);
-        }
-        return req;
-    }
-
-
 
 
     @RequestMapping(value = "/httpRequest", method = {RequestMethod.GET, RequestMethod.POST })

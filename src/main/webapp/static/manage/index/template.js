@@ -123,8 +123,6 @@ function navigationBar(path){
 	html += '			<li class="" id="appStatisticsManage"><a href="'+path+'/appStatisticsManage"><i class="menu-icon fa fa-caret-right"></i>收益统计(管理)</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="appStatisticsUser"><a href="'+path+'/appStatisticsUser"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计</a><b class="arrow"></b></li>';
-    //html += '			<li class="" id="appReportNew"><a href="'+path+'/appReportNewList"><i class="menu-icon fa fa-caret-right"></i>上报统计(旧)</a><b class="arrow"></b></li>';
-	//html += '			<li class="" id="appDivided"><a href="'+path+'/appDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appUpstream"><a href="'+path+'/appUpstreamList"><i class="menu-icon fa fa-caret-right"></i>上游设置</a><b class="arrow"></b></li>';
     html += '			<li class="" id="httpRequest"><a href="'+path+'/httpRequest"><i class="menu-icon fa fa-caret-right"></i>广告请求</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appUploadUCExcel"><a href="'+path+'/appUploadUCExcel"><i class="menu-icon fa fa-caret-right"></i>上传UCExcel</a><b class="arrow"></b></li>';
@@ -147,7 +145,6 @@ function navigationBar(path){
 	html += '			<li class="" id="webAdspace"><a href="'+path+'/webAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webStatistics"><a href="'+path+'/webStatistics"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webUpstreamTypeList"><a href="'+path+'/webUpstreamTypeList"><i class="menu-icon fa fa-caret-right"></i>上游信息</a><b class="arrow"></b></li>';
-	//html += '			<li class="" id="webDivided"><a href="'+path+'/webDivided"><i class="menu-icon fa fa-caret-right"></i>分润设置</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webReadExcel"><a href="'+path+'/webReadExcel"><i class="menu-icon fa fa-caret-right"></i>上传Excel</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
@@ -210,7 +207,6 @@ function permission(pageSign){
         $('#userList').hide();
         $('#appDivided').hide();
         $('#appReport').hide();
-        $('#appReportNew').hide();
         $('#appStatisticsManage').hide();
         $('#appUpstream').hide();
         $('#webDivided').hide();
@@ -269,9 +265,6 @@ function permission(pageSign){
     }else if (pageSign == "appReportList"){
         $('#app').addClass('active open');
         $('#appReport').addClass('active');
-    }else if (pageSign == "appReportNewList"){
-        $('#app').addClass('active open');
-        $('#appReportNew').addClass('active');
     }else if (pageSign == "appUpstreamList"){
         $('#app').addClass('active open');
         $('#appUpstream').addClass('active');

@@ -1,6 +1,5 @@
 package com.news.controller;
 
-import com.news.service.AppService;
 import com.news.service.TemporaryService;
 import com.utils.base.BaseController;
 import com.utils.response.ErrorMessage;
@@ -18,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
 import java.util.Iterator;
@@ -69,6 +67,23 @@ public class TemporaryController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             req = temporaryService.reportList(adId, startTime, endTime, currentPage, pageSize);
+        }
+        return req;
+    }
+
+
+    @RequestMapping(value="deleteReport", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "假-统计列表-删除", notes = "假-统计列表-删除", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse deleteReport(Long id){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = temporaryService.deleteReport(id);
         }
         return req;
     }

@@ -236,18 +236,6 @@ public interface AppDao {
     void appUpstreamDivided(Map<String,Object> map);
 
     /**
-     * 广告位统计
-     */
-    List<AdStatisticsListVo> appReportList(Map<String,Object> map);
-    int appReportListNum(Map<String,Object> map);
-    List<AdReportUpstreamListVo> appUpstreamReport(String downstreamReportId);
-    List<AdStatisticsListVo> appReportNewList(Map<String,Object> map);
-    int appReportNewListNum(Map<String,Object> map);
-    List<AdReportUpstreamListVo> appReportDetail(Map<String,Object> map);
-
-
-
-    /**
      * 广告位详情
      */
     Map<String,Object> adspaceDetail(String spaceId);

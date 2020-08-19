@@ -22,5 +22,15 @@ public interface SpaceService {
      */
     ReqResponse channelStatistics(String spaceId, String date);
 
+    /**
+     * 上报统计列表
+     */
+    ReqResponse appReportList(String appId, String slotId, String startTime, String endTime, Integer currentPage, Integer pageSize);
+
+    /**
+     * 上报统计详情(展开)
+     */
+    ReqResponse appUpstreamReport(String createTime, String slotId);
+
 
 }

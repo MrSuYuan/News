@@ -37,36 +37,6 @@ public class AdStatisticsListVo {
      * 点击
      */
     private int click;
-    /**
-     * 上游数量
-     */
-    private int upstreamNum;
-    private int downstreamRequest;
-    private String downstreamReportId;
-
-    public int getDownstreamRequest() {
-        return downstreamRequest;
-    }
-
-    public void setDownstreamRequest(int downstreamRequest) {
-        this.downstreamRequest = downstreamRequest;
-    }
-
-    public String getDownstreamReportId() {
-        return downstreamReportId;
-    }
-
-    public void setDownstreamReportId(String downstreamReportId) {
-        this.downstreamReportId = downstreamReportId;
-    }
-
-    public int getUpstreamNum() {
-        return upstreamNum;
-    }
-
-    public void setUpstreamNum(int upstreamNum) {
-        this.upstreamNum = upstreamNum;
-    }
 
     public String getAppName() {
         return appName;

@@ -14,7 +14,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -109,6 +108,15 @@ public class TemporaryServiceImpl implements TemporaryService {
 
 
         req.setResult(result);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    @Override
+    public ReqResponse deleteReport(long id) {
+        ReqResponse req = new ReqResponse();
+        temporaryDao.deleteReport(id);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;

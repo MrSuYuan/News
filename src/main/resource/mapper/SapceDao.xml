@@ -40,5 +40,60 @@
         ORDER BY `hour` asc
     </select>
 
+    <!-- 广告位统计 -->
+    <select id="appReportList" parameterType="java.util.Map" resultType="com.news.vo.AdStatisticsListVo">
+        select d.appName,d.appId,d.slotId,d.createTime,d.request,SUM(u.response) as response,SUM(u.look) as look,SUM(u.click) as click from
+        (select a.appName,a.appId,r.slotId,r.createTime,SUM(r.downstreamRequest) as request
+        from a_report_downstream r,a_app a
+        where r.appId = a.appId
+        <if test="appId != null and appId !=''">
+            and r.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and r.slotId = #{slotId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(r.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(r.createTime)
+        </if>
+        GROUP BY r.slotId,r.createTime
+        ORDER BY r.createTime desc,r.slotId asc
+        limit #{num},#{pageSize}) d
+        LEFT JOIN a_report_upstream u
+        on d.slotId = u.slotId and d.createTime = u.createTime
+        GROUP BY d.slotId,d.createTime
+        ORDER BY d.createTime desc,d.slotId asc
+        limit 0,#{pageSize}
+    </select>
+
+    <!-- 广告位统计数量 -->
+    <select id="appReportListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0) from (select r.slotId,r.createTime
+        from a_report_downstream r,a_app a
+        where r.appId = a.appId
+        <if test="appId != null and appId !=''">
+            and r.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and r.slotId = #{slotId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(r.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(r.createTime)
+        </if>
+        GROUP BY r.slotId,r.createTime) x
+    </select>
+
+    <!-- 展开详情 -->
+    <select id="appUpstreamReport" parameterType="java.util.Map" resultType="com.news.vo.AdReportUpstreamListVo">
+        select u.upstreamId,u.appId,u.slotId,u.createTime,u.id,SUM(u.request) as request,SUM(u.response) as response,SUM(u.look) as look,SUM(u.click) as click,t.`name` as upstreamName
+        from a_report_upstream u,a_upstream_type t
+        where u.slotId = #{slotId} and u.createTime = #{createTime} and u.upstreamType = t.type
+		GROUP BY u.createTime
+    </select>
 
 </mapper>

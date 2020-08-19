@@ -9,10 +9,16 @@ public interface TemporaryService {
      * 上传统计信息
      */
     ReqResponse addReport(String reportList)throws Exception;
+
     /**
      * 查看APP统计列表-管理
      */
     ReqResponse reportList(String adId, String startTime, String endTime,Integer currentPage, Integer pageSize);
+
+    /**
+     * 删除
+     */
+    ReqResponse deleteReport(long id);
 
     /**
      * 读取百度表格数据
