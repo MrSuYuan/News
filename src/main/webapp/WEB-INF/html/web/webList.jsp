@@ -65,7 +65,6 @@
                             登录账号：<input type="text" id="loginName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                             公司名称：<input type="text" id="nickName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                             </span>
-                        WEBID：<input type="text" id="webId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         WEB名称：<input type="text" id="webName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         WEB状态：
                         <select id="webStatus" style="width:100px;height:30px">
@@ -224,7 +223,6 @@
             data: {
                 "loginName" : $('#loginName').val(),
                 "nickName" : $('#nickName').val(),
-                "webId" : $('#webId').val(),
                 "webName" : $('#webName').val(),
                 "webStatus" :  $('#webStatus option:selected').val(),
                 "currentPage" : currentPage,

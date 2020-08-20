@@ -36,9 +36,6 @@
         <if test="nickName != null and nickName !=''">
             and u.nickName = #{nickName}
         </if>
-        <if test="webId != null and webId !=''">
-            and w.webId = #{webId}
-        </if>
         <if test="webName != null and webName !=''">
             and w.webName = #{webName}
         </if>
@@ -65,9 +62,6 @@
         </if>
         <if test="nickName != null and nickName !=''">
             and u.nickName = #{nickName}
-        </if>
-        <if test="webId != null and webId !=''">
-            and w.webId = #{webId}
         </if>
         <if test="webName != null and webName !=''">
             and w.webName = #{webName}
@@ -140,8 +134,11 @@
         <if test="webId != null and webId !=''">
             and w.webId = #{webId}
         </if>
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
         <if test="slotId != null and slotId !=''">
-            and s.spaceId = #{slotId}
+            and s.upstreamId = #{slotId}
         </if>
         <if test="terminal != 0">
             and s.terminal = #{terminal}
@@ -173,8 +170,11 @@
         <if test="webId != null and webId !=''">
             and w.webId = #{webId}
         </if>
+        <if test="webName != null and webName !=''">
+            and w.webName = #{webName}
+        </if>
         <if test="slotId != null and slotId !=''">
-            and s.spaceId = #{slotId}
+            and s.upstreamId = #{slotId}
         </if>
         <if test="terminal != 0">
             and s.terminal = #{terminal}

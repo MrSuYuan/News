@@ -961,7 +961,14 @@ public class AppServiceImpl implements AppService {
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, AppStatistics.class);
             List<AppStatistics> list =  mapper.readValue(statisticsList, jt);
-            System.out.println(list.size());
+            for (AppStatistics a : list){
+                if (a.getBeforeLookPV() != 0){
+                    double d = a.getBeforeClickNum();
+                    a.setClickProbability(d/a.getBeforeLookPV());
+                }else{
+                    a.setClickProbability(0);
+                }
+            }
             appDao.addAppStatistics(list);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("添加成功");

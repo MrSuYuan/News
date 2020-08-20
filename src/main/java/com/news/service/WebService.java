@@ -17,7 +17,7 @@ public interface WebService {
     /**
      * WEB列表
      */
-    ReqResponse webList(Long userId, String loginName, String nickName, Long webId, String webName, Integer webStatus, Integer currentPage, Integer pageSize);
+    ReqResponse webList(Long userId, String loginName, String nickName, String webName, Integer webStatus, Integer currentPage, Integer pageSize);
 
     /**
      * 修改web状态
@@ -32,7 +32,7 @@ public interface WebService {
     /**
      * 广告位列表
      */
-    ReqResponse webAdspaceList(Long userId, String loginName, String nickName, String webId, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize);
+    ReqResponse webAdspaceList(Long userId, String loginName, String nickName, String webId, String webName, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize);
 
     /**
      * 上传统计信息

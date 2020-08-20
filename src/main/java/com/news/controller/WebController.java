@@ -77,21 +77,20 @@ public class WebController extends BaseController {
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="loginName" , value="登录账号" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="nickName" , value="公司名称" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="webId" , value="webId" ,required = false , paramType = "query" ,dataType = "Long"),
             @ApiImplicitParam(name="webName" , value="web名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="webStatus" , value="web状态" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse webList(String loginName, String nickName, Long webId, String webName, Integer webStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse webList(String loginName, String nickName, String webName, Integer webStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = webService.webList((Long) userId, loginName, nickName, webId, webName, webStatus, currentPage, pageSize);
+            req = webService.webList((Long) userId, loginName, nickName, webName, webStatus, currentPage, pageSize);
         }
         return req;
     }
@@ -150,6 +149,7 @@ public class WebController extends BaseController {
             @ApiImplicitParam(name="loginName" , value="登录名" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="nickName" , value="公司名" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="webId" , value="webId" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="webName" , value="webName" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="slotId" , value="广告位ID" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="terminal" , value="终端" ,required = false , paramType = "query" ,dataType = "Integer"),
@@ -157,14 +157,14 @@ public class WebController extends BaseController {
             @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse webAdspaceList(String loginName, String nickName, String webId, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse webAdspaceList(String loginName, String nickName, String webId, String webName, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = webService.webAdspaceList((Long) userId, loginName, nickName, webId, slotId, terminal, spaceType, currentPage, pageSize);
+            req = webService.webAdspaceList((Long) userId, loginName, nickName, webId, webName, slotId, terminal, spaceType, currentPage, pageSize);
         }
         return req;
     }

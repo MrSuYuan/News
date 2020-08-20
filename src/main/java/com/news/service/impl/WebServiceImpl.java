@@ -81,7 +81,7 @@ public class WebServiceImpl implements WebService {
      * WEB列表
      */
     @Override
-    public ReqResponse webList(Long userId, String loginName, String nickName, Long webId, String webName, Integer webStatus, Integer currentPage, Integer pageSize) {
+    public ReqResponse webList(Long userId, String loginName, String nickName, String webName, Integer webStatus, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -95,7 +95,6 @@ public class WebServiceImpl implements WebService {
         map.put("pageSize",pageSize);
         map.put("loginName",loginName);
         map.put("nickName",nickName);
-        map.put("webId",webId);
         map.put("webName",webName);
         map.put("webStatus",webStatus);
         //查看当前用户身份
@@ -210,7 +209,7 @@ public class WebServiceImpl implements WebService {
      * 广告位列表
      */
     @Override
-    public ReqResponse webAdspaceList(Long userId, String loginName, String nickName, String webId, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse webAdspaceList(Long userId, String loginName, String nickName, String webId, String webName, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -225,6 +224,8 @@ public class WebServiceImpl implements WebService {
         map.put("loginName",loginName);
         map.put("nickName",nickName);
         map.put("webId",webId);
+        map.put("webName",webName);
+        System.out.println(slotId);
         map.put("slotId",slotId);
         map.put("terminal",terminal);
         map.put("spaceType",spaceType);

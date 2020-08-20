@@ -209,7 +209,7 @@ public class AppController extends BaseController {
 
     @RequestMapping(value = "/flowStatus",method=RequestMethod.POST)
     @ResponseBody
-    @ApiOperation(value = "广告位列表", notes = "广告位列表", httpMethod = "POST")
+    @ApiOperation(value = "停量 放量", notes = "停量 放量", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="spaceId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="flowStatus" , value="0停量 1放量" ,required = false , paramType = "query" ,dataType = "Integer")
