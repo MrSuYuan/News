@@ -822,6 +822,47 @@ public class AppController extends BaseController {
     }
 
 
+    /**
+     * 上传其他_excel-平台广告位维度
+     */
+    @RequestMapping(value = "/uploadOtherExcel", method = RequestMethod.POST)
+    @ResponseBody
+    public ReqResponse uploadOtherExcel(HttpServletRequest request) throws Exception {
+        ReqResponse req = new ReqResponse();
+        // 创建一个通用的多部分解析器
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver( request.getSession().getServletContext());
+        // 判断 request 是否有文件上传,即多部分请求
+        if (multipartResolver.isMultipart(request)) {
+            // 转换成多部分request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            // 取得request中的所有文件名
+            Iterator<String> iter = multiRequest.getFileNames();
+            while (iter.hasNext()) {
+                // 取得上传文件
+                MultipartFile file = multiRequest.getFile(iter.next());
+                InputStream inputStream = file.getInputStream(); // 获取文件的输入流
+                Workbook workbook = WorkbookFactory.create(inputStream);
+                int numberOfSheets = workbook.getNumberOfSheets();
+                if (numberOfSheets > 0){
+                    // sheet工作表
+                    Sheet sheet = workbook.getSheetAt(0);
+                    req = appService.readOtherExcel(sheet);
+                    req.setCode("200");
+                    req.setMessage("成功");
+                }else{
+                    req.setCode("300");
+                    req.setMessage("表格数据错误");
+                }
+            }
+
+        }else{
+            req.setCode("300");
+            req.setMessage("检测不到文件");
+        }
+        return req;
+    }
+
+
 
 
 }

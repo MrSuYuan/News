@@ -1,6 +1,6 @@
 <%--
   Date: 2020/8/21 11:54
-  上游UC数据
+  平台广告位ID上传数据
 --%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -44,7 +44,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="${ctx}/index">Home</a>
                     </li>
-                    <li class="active">上传UCExcel表格</li>
+                    <li class="active">上传Excel表格</li>
                 </ul><!-- /.breadcrumb -->
                 <div class="nav-search" id="nav-search">
                     <a class="btn btn-primary btn-xs">
@@ -60,9 +60,9 @@
                     <thead>
                     <tr style="height: 50px">
                         <th><font color="red">时间</font></th>
-                        <th><font color="red">渠道</font></th>
                         <th><font color="red">上游ID</font></th>
                         <th><font color="red">展现</font></th>
+                        <th><font color="red">点击</font></th>
                         <th><font color="red">收益</font></th>
                         <th><font color="red">ECPM</font></th>
                         <th width="60px">系数</th>
@@ -121,7 +121,7 @@
         }
 
         $.ajax({
-            url: path + "/app/uploadUCExcel",
+            url: path + "/app/uploadOtherExcel",
             type: "post",
             data: formData,
             contentType: false,
@@ -137,9 +137,9 @@
                         var data = list[i];
                         html+='<tr class="excelTr" style="height: 40px">';
                         html+='<td name="create_Time">'+data.create_Time+'</td>';
-                        html+='<td> '+data.upstreamName+'</td>';
                         html+='<td name="upstreamId">'+data.upstreamId+'</td>';
                         html+='<td name="beforeLookPV" id="beforeLookPV'+i+'">'+data.beforeLookPV+'</td>';
+                        html+='<td name="beforeClickNum" id="beforeClickNum'+i+'"> '+data.beforeClickNum+'</td>';
                         html+='<td name="beforeIncome" id="beforeIncome'+i+'">'+data.beforeIncome+'</td>';
                         html+='<td name="beforeEcpm">'+data.beforeEcpm+'</td>'
                         html+='<td> <input type="text" style="width:50px" value="1" id="input'+i+'" onchange="change(\''+i+'\')"></td>';
@@ -194,10 +194,10 @@
                 appId : format_text($(val).find('td[name=appId]')),
                 createTime : format_text($(val).find('td[name=create_Time]')),
                 beforeLookPV : format_text($(val).find('td[name=beforeLookPV]')),
-                beforeClickNum : 0,
+                beforeClickNum : format_text($(val).find('td[name=beforeClickNum]')),
                 beforeIncome : format_text($(val).find('td[name=beforeIncome]')),
                 lookPV : format_text($(val).find('td[name=beforeLookPV]')),
-                clickNum : 0,
+                clickNum : format_text($(val).find('td[name=beforeClickNum]')),
                 income : format_text($(val).find('td[name=income]')),
                 clickProbability : 0,
                 ecmp : format_text($(val).find('td[name=ecpm]')),

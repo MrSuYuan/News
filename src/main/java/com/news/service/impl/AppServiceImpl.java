@@ -1048,4 +1048,74 @@ public class AppServiceImpl implements AppService {
     }
 
 
+    /**
+     * 读取表格数据
+     */
+    @Override
+    public ReqResponse readOtherExcel(Sheet sheet) {
+        ReqResponse req = new ReqResponse();
+        DecimalFormat df = new DecimalFormat("######0.00");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int rowsOfSheet = sheet.getPhysicalNumberOfRows();
+        List<UCStatisticsList> list = new ArrayList<>();
+        List spaceIds = new ArrayList();
+        // 第2行+--数据行
+        for (int r = 1; r < rowsOfSheet; r++) {
+            Row row = sheet.getRow(r);
+            if (row == null) {
+                continue;
+            } else {
+                int rowNum = row.getRowNum() + 1;//行数
+                row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+                Date c1 = row.getCell(0).getDateCellValue();      //日期
+                if (null == c1){
+                    break;
+                }
+                String c2 = row.getCell(1).getStringCellValue();  //平台id
+                int c3 = Integer.valueOf(row.getCell(2).getStringCellValue());  //曝光
+                int c4 = Integer.valueOf(row.getCell(3).getStringCellValue());  //点击
+                double c5 = Double.parseDouble(row.getCell(4).getStringCellValue());  //结算金额
+                UCStatisticsList uc = new UCStatisticsList();
+                uc.setCreate_Time(sdf.format(c1));
+                uc.setCreateTime(c1);
+                System.out.println(c2.trim());
+                uc.setSpaceId(c2.trim());
+                uc.setBeforeLookPV(c3);
+                uc.setBeforeClickNum(c4);
+                uc.setBeforeIncome(c5);
+                double beforeEcpm = uc.getBeforeIncome()*1000/uc.getBeforeLookPV();
+                uc.setBeforeEcpm(df.format(beforeEcpm));
+                list.add(uc);
+                spaceIds.add(c2);
+            }
+        }
+        //去数据库匹配数据
+        List<UCStatisticsList> appList = appDao.AsSpaceId(spaceIds);
+        for(int i = 0; i < list.size(); i++){
+            UCStatisticsList uc = list.get(i);
+            for (int j = 0; j < appList.size(); j++){
+                UCStatisticsList app = appList.get(j);
+                if (uc.getSpaceId().equals(app.getSpaceId()) && uc.getCreateTime().getTime() >= app.getStartTime().getTime() && uc.getCreateTime().getTime() <= app.getEndTime().getTime()){
+                    uc.setNickName(app.getNickName());
+                    uc.setAppId(app.getAppId());
+                    uc.setAppName(app.getAppName());
+                    uc.setUpstreamId(app.getUpstreamId());
+                    uc.setDividedY(app.getDividedY());
+                    double afterIncome = Double.parseDouble(df.format(uc.getBeforeIncome() * app.getDividedY()));
+                    uc.setIncome(afterIncome);
+                    double afterEcpm = afterIncome * 1000 / uc.getBeforeLookPV();
+                    uc.setAfterEcpm(df.format(afterEcpm));
+                    break;
+                }
+            }
+        }
+
+        req.setResult(list);
+        return req;
+    }
+
+
 }

@@ -275,6 +275,15 @@ public class PageController extends BaseController {
     }
 
     /**
+     * 上传UCExcel
+     */
+    @RequestMapping(value = "appUploadOtherExcel" , method= RequestMethod.GET)
+    @ApiOperation(value = "上传UCExcel", notes = "上传UCExcel", httpMethod = "GET")
+    public String appUploadOtherExcel(){
+        return "/html/app/appUploadOtherExcel.jsp";
+    }
+
+    /**
      * APP上游广告位编辑
      */
     @RequestMapping(value = "appUpstreamIdEdit" , method= RequestMethod.GET)

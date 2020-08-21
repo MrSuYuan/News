@@ -164,4 +164,9 @@ public interface AppService {
      */
     ReqResponse readExcel(Sheet sheet);
 
+    /**
+     * 新excel
+     */
+    ReqResponse readOtherExcel(Sheet sheet);
+
 }

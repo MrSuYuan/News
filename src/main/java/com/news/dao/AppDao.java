@@ -269,4 +269,9 @@ public interface AppDao {
      * 新Excel
      */
     List<UCStatisticsList> matchId(List upstreamId);
+
+    /**
+     * 新Excel
+     */
+    List<UCStatisticsList> AsSpaceId(List spaceId);
 }
