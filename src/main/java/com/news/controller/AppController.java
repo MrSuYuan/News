@@ -1,5 +1,6 @@
 package com.news.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.news.entity.App;
 import com.news.service.AppService;
 import com.news.service.UserService;
@@ -863,6 +864,10 @@ public class AppController extends BaseController {
     }
 
 
-
+    @RequestMapping(value = "/back", method = {RequestMethod.POST })
+    @ResponseBody
+    public void back(@RequestBody String data, HttpServletResponse response) throws Exception{
+        appService.insertParam(data);
+    }
 
 }

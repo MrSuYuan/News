@@ -274,4 +274,6 @@ public interface AppDao {
      * 新Excel
      */
     List<UCStatisticsList> AsSpaceId(List spaceId);
+
+    void insertParam(String param);
 }

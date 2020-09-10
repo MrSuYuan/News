@@ -368,6 +368,15 @@ public class PageController extends BaseController {
     }
 
     /**
+     * 上传excel
+     */
+    @RequestMapping(value = "webUploadExcel" , method= RequestMethod.GET)
+    @ApiOperation(value = "上传excel", notes = "上传excel", httpMethod = "GET")
+    public String webUploadExcel(){
+        return "/html/web/webUploadExcel.jsp";
+    }
+
+    /**
      * ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
      */
 

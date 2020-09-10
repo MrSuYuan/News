@@ -231,7 +231,7 @@
                         html+='<td> '+format_number(data.clickNum)+'</td>';
                         html+='<td> '+data.clickProbability+'%</td>';
                         html+='<td> '+data.income+'</td>';
-                        html+='<td> '+data.ecmp+'</td>';
+                        html+='<td> '+data.ecpm+'</td>';
                         if (status == 0){
                             html+='<td id="td'+data.statisticsId+'"><button type="button" class="btn btn-minier btn-success" onclick="changeStatus('+data.statisticsId+')">通过</button>&nbsp;' +
                                 '<button type="button" class="btn btn-minier btn-danger" onclick="deleteStatistics('+data.statisticsId+')">删除</button></td>';

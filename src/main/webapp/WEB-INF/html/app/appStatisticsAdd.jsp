@@ -259,7 +259,7 @@
                 clickNum : 0,
                 income : 0,
                 clickProbability : 0,
-                ecmp : 0,
+                ecpm : 0,
             }
             objs.push(obj)
         })

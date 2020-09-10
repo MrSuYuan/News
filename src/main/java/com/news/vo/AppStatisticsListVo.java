@@ -16,7 +16,7 @@ public class AppStatisticsListVo {
     private int clickNum;
     private double clickProbability;
     private double income;
-    private double ecmp;
+    private double ecpm;
     private int upstreamType;
     private String name;
     private int status;
@@ -141,11 +141,11 @@ public class AppStatisticsListVo {
         this.income = income;
     }
 
-    public double getEcmp() {
-        return ecmp;
+    public double getEcpm() {
+        return ecpm;
     }
 
-    public void setEcmp(double ecmp) {
-        this.ecmp = ecmp;
+    public void setEcpm(double ecpm) {
+        this.ecpm = ecpm;
     }
 }

@@ -35,6 +35,11 @@ public interface WebService {
     ReqResponse webAdspaceList(Long userId, String loginName, String nickName, String webId, String webName, String slotId, int terminal, int spaceType, Integer currentPage, Integer pageSize);
 
     /**
+     * 分成比例
+     */
+    ReqResponse webDivided(int spaceId);
+
+    /**
      * 上传统计信息
      */
     ReqResponse addWebStatistics(Long userId, String statisticsList)throws Exception;
@@ -83,12 +88,18 @@ public interface WebService {
      * 修改数据
      */
     ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability,
-                                 double ecmp, Integer spaceId, Integer statisticsId);
+                                 double ecpm, Integer spaceId, Integer statisticsId);
 
     /**
      * 百度Excel
      */
     ReqResponse baiDuExcel(Sheet sheetAt);
+    ReqResponse webUploadExcel(Sheet sheetAt);
+
+    /**
+     * 上传统计信息
+     */
+    ReqResponse addExcelWebStatistics(String statisticsList)throws Exception;
 
     /**
      * 消息

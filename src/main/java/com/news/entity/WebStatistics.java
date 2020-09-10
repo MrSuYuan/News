@@ -36,9 +36,9 @@ public class WebStatistics {
      */
     private double income;
     /**
-     * ecmp
+     * ecpm
      */
-    private double ecmp;
+    private double ecpm;
     /**
      * 初始展现量
      */
@@ -132,11 +132,11 @@ public class WebStatistics {
         this.income = income;
     }
 
-    public double getEcmp() {
-        return ecmp;
+    public double getEcpm() {
+        return ecpm;
     }
 
-    public void setEcmp(double ecmp) {
-        this.ecmp = ecmp;
+    public void setEcpm(double ecpm) {
+        this.ecpm = ecpm;
     }
 }

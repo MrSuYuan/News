@@ -210,7 +210,7 @@
                         html+='<td> '+format_number(data.clickNum)+'</td>';
                         html+='<td> '+data.clickProbability+'%</td>';
                         html+='<td> '+data.income+'</td>';
-                        html+='<td> '+data.ecmp+'</td>';
+                        html+='<td> '+data.ecpm+'</td>';
                         html+='</tr>';
                     }
                     //添加数据

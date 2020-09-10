@@ -93,7 +93,7 @@
         select u.upstreamId,u.appId,u.slotId,u.createTime,u.id,SUM(u.request) as request,SUM(u.response) as response,SUM(u.look) as look,SUM(u.click) as click,t.`name` as upstreamName
         from a_report_upstream u,a_upstream_type t
         where u.slotId = #{slotId} and u.createTime = #{createTime} and u.upstreamType = t.type
-		GROUP BY u.createTime
+		GROUP BY u.createTime,u.upstreamId
     </select>
 
 </mapper>

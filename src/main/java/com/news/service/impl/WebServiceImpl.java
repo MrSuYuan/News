@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -225,7 +226,6 @@ public class WebServiceImpl implements WebService {
         map.put("nickName",nickName);
         map.put("webId",webId);
         map.put("webName",webName);
-        System.out.println(slotId);
         map.put("slotId",slotId);
         map.put("terminal",terminal);
         map.put("spaceType",spaceType);
@@ -257,6 +257,16 @@ public class WebServiceImpl implements WebService {
         return req;
     }
 
+    @Override
+    public ReqResponse webDivided(int spaceId) {
+        ReqResponse req = new ReqResponse();
+        Map<String,Object> webDivided = webDao.webDivided(spaceId);
+        req.setResult(webDivided);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
     /**
      * 上传统计信息
      */
@@ -273,16 +283,21 @@ public class WebServiceImpl implements WebService {
             //查看广告位所属app的上级id
             Long parentId = webDao.adParentId(spaceId);
             if(userId.longValue() == parentId.longValue() || userId.longValue() == 1){
+                //先查询分润比例
+                Map<String,Object> webDivided = webDao.webDivided(spaceId);
+                double x = Double.parseDouble(webDivided.get("dividedX").toString());
+                double y = Double.parseDouble(webDivided.get("dividedY").toString());
+                double z = Double.parseDouble(webDivided.get("dividedZ").toString());
                 //计算点击率和ecmp
                 //点击率=点击数/展现pv（以百分数形式呈现）
                 //ecpm=收益*1000/展现pv
                 for(int i = 0; i < list.size(); i++){
                     WebStatistics as = list.get(i);
-                    as.setLookPV((int)(as.getBeforeLookPV()));
-                    as.setClickNum((int)(as.getBeforeClickNum()));
-                    as.setIncome(as.getBeforeIncome());
+                    as.setLookPV((int)(as.getBeforeLookPV() * z));
+                    as.setClickNum((int)(as.getBeforeClickNum() * z));
+                    as.setIncome(as.getBeforeIncome() * x * y);
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
-                    as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                    as.setEcpm(as.getIncome()*1000/(double)as.getLookPV());
                 }
                 webDao.addWebStatistics(list);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
@@ -563,7 +578,7 @@ public class WebServiceImpl implements WebService {
      * 修改数据
      */
     @Override
-    public ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability, double ecmp, Integer spaceId, Integer statisticsId) {
+    public ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability, double ecpm, Integer spaceId, Integer statisticsId) {
         ReqResponse req = new ReqResponse();
 
         //1改yx
@@ -579,7 +594,7 @@ public class WebServiceImpl implements WebService {
         m.put("clickNum",clickNum);
         m.put("income",income);
         m.put("clickProbability",clickProbability);
-        m.put("ecmp",ecmp);
+        m.put("ecpm",ecpm);
         m.put("statisticsId",statisticsId);
         webDao.updateStatistics(m);
 
@@ -654,9 +669,9 @@ public class WebServiceImpl implements WebService {
                         as.setBeforeIncome(income);
                         as.setLookPV((int)(as.getBeforeLookPV() * dividedZ));
                         as.setClickNum((int)(as.getBeforeClickNum() * dividedZ));
-                        as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY * dividedZ);
+                        as.setIncome(as.getBeforeIncome() * upstreamDivided * dividedY);
                         as.setClickProbability((double)as.getClickNum()*100/(double)as.getLookPV());
-                        as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                        as.setEcpm(as.getIncome()*1000/(double)as.getLookPV());
                         list.add(as);
                     }
                     //有数据,跳过无操作
@@ -670,6 +685,96 @@ public class WebServiceImpl implements WebService {
             webDao.addWebStatistics(list);
         }
         return null;
+    }
+
+    /**
+     * 百度Excel
+     */
+    @Override
+    public ReqResponse webUploadExcel(Sheet sheet) {
+        ReqResponse req = new ReqResponse();
+        DecimalFormat df = new DecimalFormat("######0.00");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        int rowsOfSheet = sheet.getPhysicalNumberOfRows();
+        List<WebStatisticsManage> list = new ArrayList<>();
+        List upstreamIds = new ArrayList();
+        // 第2行+--数据行
+        for (int r = 1; r < rowsOfSheet; r++) {
+            Row row = sheet.getRow(r);
+            if (row == null) {
+                continue;
+            } else {
+                int rowNum = row.getRowNum() + 1;//行数
+                row.getCell(1).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(2).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(3).setCellType(Cell.CELL_TYPE_STRING);
+                row.getCell(4).setCellType(Cell.CELL_TYPE_STRING);
+                Date c1 = row.getCell(0).getDateCellValue();      //日期
+                if (null == c1){
+                    break;
+                }
+                String c2 = row.getCell(1).getStringCellValue();  //媒体id-上游id
+                int c3 = Integer.valueOf(row.getCell(2).getStringCellValue());  //曝光
+                int c4 = Integer.valueOf(row.getCell(3).getStringCellValue());  //点击
+                double c5 = Double.parseDouble(row.getCell(4).getStringCellValue());  //结算金额
+                double income = (double)(Math.round(c5*100)/100.0);
+                System.out.println(c5);
+                WebStatisticsManage ws = new WebStatisticsManage();
+                ws.setCreate_Time(sdf.format(c1));
+                ws.setCreateTime(c1);
+                ws.setUpstreamId(c2);
+                ws.setBeforeLookPV(c3);
+                ws.setBeforeClickNum(c4);
+                ws.setBeforeIncome(income);
+                double beforeEcpm = (Math.round(ws.getBeforeIncome()*1000/ws.getBeforeLookPV()*100)/100.0);
+                ws.setBeforeEcpm(beforeEcpm);
+                list.add(ws);
+                upstreamIds.add(c2);
+            }
+        }
+        //去数据库匹配数据
+        List<WebStatisticsManage> webList = webDao.matchId(upstreamIds);
+        for(int i = 0; i < list.size(); i++){
+            WebStatisticsManage el = list.get(i);
+            for (int j = 0; j < webList.size(); j++){
+                WebStatisticsManage web = webList.get(j);
+                if (el.getUpstreamId().equals(web.getUpstreamId()) && el.getCreateTime().getTime() >= web.getStartTime().getTime() && el.getCreateTime().getTime() <= web.getEndTime().getTime()){
+                    el.setSpaceName(web.getSpaceName());
+                    el.setSpaceId(web.getSpaceId());
+                    el.setDividedX(web.getDividedX());
+                    el.setDividedY(web.getDividedY());
+                    double income = Double.parseDouble(df.format(el.getBeforeIncome() * web.getDividedY() * web.getDividedX()));
+                    el.setIncome(income);
+                    double ecpm = (Math.round(income * 1000 / el.getBeforeLookPV()*100)/100.0);
+                    el.setEcpm(ecpm);
+                    break;
+                }
+            }
+        }
+
+        req.setResult(list);
+        return req;
+    }
+
+    /**
+     * 上传统计信息
+     */
+    @Override
+    public ReqResponse addExcelWebStatistics(String statisticsList) throws Exception {
+        ReqResponse req = new ReqResponse();
+        if(null != statisticsList && !"".equals(statisticsList)){
+            //解析前端传过来的集合数据
+            ObjectMapper mapper = new ObjectMapper();
+            JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, WebStatistics.class);
+            List<WebStatistics> list =  mapper.readValue(statisticsList, jt);
+            webDao.addWebStatistics(list);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("添加成功");
+        }else{
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("参数错误");
+        }
+        return req;
     }
 
     /**

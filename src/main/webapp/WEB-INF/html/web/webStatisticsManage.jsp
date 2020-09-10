@@ -170,7 +170,7 @@
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label no-padding-right "> X : </label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="col-xs-10 col-sm-7" id="upstreamDivided" disabled>
+                                                <input type="text" class="col-xs-10 col-sm-7" id="dividedX" disabled>
                                             </div>
                                             <label class="col-sm-3 control-label no-padding-right "> Y : </label>
                                             <div class="col-sm-8">
@@ -204,7 +204,7 @@
                                             </div>
                                             <label class="col-sm-3 control-label no-padding-right "> 下游ecpm : </label>
                                             <div class="col-sm-8">
-                                                <input type="text" class="col-xs-10 col-sm-7" id="ecmp" disabled>
+                                                <input type="text" class="col-xs-10 col-sm-7" id="ecpm" disabled>
                                             </div>
                                         </div>
                                     </div>
@@ -290,7 +290,7 @@
                         html+='<td title="Y:'+data.dividedY+'&nbsp;,&nbsp;Z:'+data.dividedZ+'"> '+data.spaceId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.webName+'</td>';
-                        html+='<td> '+data.createTime+'</td>';
+                        html+='<td> '+data.create_Time+'</td>';
                         html+='<td> '+format_number(data.beforeLookPV)+'</td>';
                         html+='<td> '+format_number(data.beforeClickNum)+'</td>';
                         html+='<td> '+data.beforeIncome+'</td>';
@@ -298,7 +298,7 @@
                         html+='<td> '+format_number(data.clickNum)+'</td>';
                         html+='<td> '+data.income+'</td>';
                         html+='<td> '+data.clickProbability+'%</td>';
-                        html+='<td> '+data.ecmp+'</td>';
+                        html+='<td> '+data.ecpm+'</td>';
                         var status = data.status;
                         if (status == 0){
                             html+='<td id="td'+data.statisticsId+'"><button type="button" class="btn btn-minier btn-success" onclick="changeStatus('+data.statisticsId+')">通过</button>&nbsp;' +
@@ -407,14 +407,14 @@
                     $('#beforeLookPV').val(data.beforeLookPV);
                     $('#beforeClickNum').val(data.beforeClickNum);
                     $('#beforeIncome').val(data.beforeIncome);
-                    $('#upstreamDivided').val(data.upstreamDivided);
+                    $('#dividedX').val(data.dividedX);
                     $('#dividedY').val(data.dividedY);
                     $('#dividedZ').val(data.dividedZ);
                     $('#lookPV').val(data.lookPV);
                     $('#clickNum').val(data.clickNum);
                     $('#income').val(data.income);
                     $('#clickProbability').val(data.clickProbability);
-                    $('#ecmp').val(data.ecmp);
+                    $('#ecpm').val(data.ecpm);
                     $('#spaceId').val(data.spaceId);
                     $('#statisticsId').val(data.statisticsId);
                 }else if(obj.code == "300"){
@@ -448,19 +448,19 @@
         var beforeLookPV = $('#beforeLookPV').val();
         var beforeClickNum = $('#beforeClickNum').val();
         var beforeIncome = $('#beforeIncome').val();
-        var dividedX = $('#upstreamDivided').val();
+        var dividedX = $('#dividedX').val();
 
         var lookPV = beforeLookPV * dividedZ;
         var clickNum = beforeClickNum * dividedZ;
         var income = beforeIncome * dividedX * dividedY * dividedZ;
         var clickProbability = clickNum * 100 / lookPV;
-        var ecmp = income * 1000 / lookPV;
+        var ecpm = income * 1000 / lookPV;
 
         $('#lookPV').val(lookPV.toFixed(0));
         $('#clickNum').val(clickNum.toFixed(0));
         $('#income').val(income.toFixed(2));
         $('#clickProbability').val(clickProbability.toFixed(2));
-        $('#ecmp').val(ecmp.toFixed(2));
+        $('#ecpm').val(ecpm.toFixed(2));
     }
 
     //修改
@@ -471,7 +471,7 @@
         var clickNum = $('#clickNum').val();
         var income = $('#income').val();
         var clickProbability = $('#clickProbability').val();
-        var ecmp = $('#ecmp').val();
+        var ecpm = $('#ecpm').val();
         var spaceId = $('#spaceId').val();
         var statisticsId = $('#statisticsId').val();
         $.ajax({
@@ -485,7 +485,7 @@
                 "clickNum" : clickNum,
                 "income" : income,
                 "clickProbability" : clickProbability,
-                "ecmp" : ecmp,
+                "ecpm" : ecpm,
                 "spaceId" : spaceId
             },
             dataType: 'json',

@@ -8,12 +8,12 @@ public class WebStatisticsUser {
     private String spaceId;
     private String spaceName;
     private String webName;
-    private String createTime;
+    private String create_Time;
     private int lookPV;
     private int clickNum;
     private double clickProbability;
     private double income;
-    private double ecmp;
+    private double ecpm;
 
     public String getSpaceId() {
         return spaceId;
@@ -39,12 +39,12 @@ public class WebStatisticsUser {
         this.webName = webName;
     }
 
-    public String getCreateTime() {
-        return createTime;
+    public String getCreate_Time() {
+        return create_Time;
     }
 
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setCreate_Time(String create_Time) {
+        this.create_Time = create_Time;
     }
 
     public int getLookPV() {
@@ -79,11 +79,11 @@ public class WebStatisticsUser {
         this.income = income;
     }
 
-    public double getEcmp() {
-        return ecmp;
+    public double getEcpm() {
+        return ecpm;
     }
 
-    public void setEcmp(double ecmp) {
-        this.ecmp = ecmp;
+    public void setEcpm(double ecpm) {
+        this.ecpm = ecpm;
     }
 }

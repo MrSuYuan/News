@@ -414,7 +414,7 @@ public class AppServiceImpl implements AppService {
                     as.setClickNum((int)(as.getBeforeClickNum() * z));
                     as.setIncome(as.getBeforeIncome() * x * y);
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
-                    as.setEcmp(as.getIncome()*1000/(double)as.getLookPV());
+                    as.setEcpm(as.getIncome()*1000/(double)as.getLookPV());
                     as.setAppId(appId);
                     as.setSpaceId(parent.get("spaceId").toString());
                     as.setUpstreamId(upstreamId);
@@ -515,7 +515,7 @@ public class AppServiceImpl implements AppService {
             AppStatisticsListVo as = statisticsList.get(i);
             DecimalFormat df = new DecimalFormat("######0.00");
             as.setClickProbability(Double.parseDouble(df.format((double)as.getClickNum()/(double)as.getLookPV()*100)));
-            as.setEcmp(Double.parseDouble(df.format(as.getIncome()*1000/(double)as.getLookPV())));
+            as.setEcpm(Double.parseDouble(df.format(as.getIncome()*1000/(double)as.getLookPV())));
         }
         //总数量
         int sumData = appDao.appStatisticsUserListNum(map);
@@ -964,7 +964,7 @@ public class AppServiceImpl implements AppService {
             for (AppStatistics a : list){
                 if (a.getBeforeLookPV() != 0){
                     double d = a.getBeforeClickNum();
-                    a.setClickProbability(d/a.getBeforeLookPV());
+                    a.setClickProbability(d*100/a.getBeforeLookPV());
                 }else{
                     a.setClickProbability(0);
                 }
@@ -1117,5 +1117,8 @@ public class AppServiceImpl implements AppService {
         return req;
     }
 
-
+    @Override
+    public void insertParam(String data){
+        appDao.insertParam(data);
+    }
 }

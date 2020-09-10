@@ -169,6 +169,27 @@ public class WebController extends BaseController {
         return req;
     }
 
+
+    @RequestMapping(value="webDivided", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上传统计信息页面分成比例", notes = "上传统计信息页面分成比例", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = true , paramType = "query" ,dataType = "Integer")
+    })
+    @CrossOrigin
+    public ReqResponse webDivided(int spaceId){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = webService.webDivided(spaceId);
+        }
+        return req;
+    }
+
+
     @RequestMapping(value="addWebStatistics", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "上传统计信息", notes = "上传统计信息", httpMethod = "POST")
@@ -397,13 +418,13 @@ public class WebController extends BaseController {
             @ApiImplicitParam(name="clickNum" , value="点击" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="income" , value="收入" ,required = false , paramType = "query" ,dataType = "Double"),
             @ApiImplicitParam(name="clickProbability" , value="点击率" ,required = false , paramType = "query" ,dataType = "Double"),
-            @ApiImplicitParam(name="ecmp" , value="ecpm" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="ecpm" , value="ecpm" ,required = false , paramType = "query" ,dataType = "Double"),
             @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="statisticsId" , value="数据id" ,required = false , paramType = "query" ,dataType = "Integer"),
     })
     @CrossOrigin
     public ReqResponse updateStatistics(double dividedY, double dividedZ, Integer lookPV, Integer clickNum, double income, double clickProbability,
-                                        double ecmp, Integer spaceId, Integer statisticsId){
+                                        double ecpm, Integer spaceId, Integer statisticsId){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         Object userLevel = request.getSession().getAttribute("userLevel");
@@ -412,7 +433,7 @@ public class WebController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             if ((int)userLevel == 1 || (int)userLevel == 2){
-                req = webService.updateStatistics(dividedY, dividedZ, lookPV, clickNum, income, clickProbability, ecmp, spaceId, statisticsId);
+                req = webService.updateStatistics(dividedY, dividedZ, lookPV, clickNum, income, clickProbability, ecpm, spaceId, statisticsId);
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("您没有权限");
@@ -457,6 +478,70 @@ public class WebController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="webUploadExcel", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "上传Excel", notes = "上传Excel", httpMethod = "POST")
+    @CrossOrigin
+    public ReqResponse webUploadExcel(HttpServletRequest request) throws Exception {
+        ReqResponse req = new ReqResponse();
+        Workbook workBook;
+        // 创建一个通用的多部分解析器
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver( request.getSession().getServletContext());
+        // 判断 request 是否有文件上传,即多部分请求
+        if (multipartResolver.isMultipart(request)) {
+            // 转换成多部分request
+            MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+            // 取得request中的所有文件名
+            Iterator<String> iter = multiRequest.getFileNames();
+            while (iter.hasNext()) {
+                // 取得上传文件\
+                MultipartFile file = multiRequest.getFile(iter.next());
+                InputStream fis =  file.getInputStream();
+                workBook = WorkbookFactory.create(fis);
+                int numberOfSheets = workBook.getNumberOfSheets();
+                // sheet工作表
+                if (numberOfSheets > 0){
+                    Sheet sheetAt = workBook.getSheetAt(0);
+                    req = webService.webUploadExcel(sheetAt);
+                    req.setCode("200");
+                    req.setMessage("成功");
+                }else{
+                    req.setCode("300");
+                    req.setMessage("表格数据错误");
+                }
+            }
+        }else{
+            req.setCode("300");
+            req.setMessage("检测不到文件");
+        }
+        return req;
+    }
+
+    @RequestMapping(value="addExcelWebStatistics", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "保存Excel数据", notes = "保存Excel数据", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="statisticsList" , value="参数集合" ,required = true , paramType = "query" ,dataType = "List")
+    })
+    @CrossOrigin
+    public ReqResponse addExcelWebStatistics(@RequestParam("statisticsList")String statisticsList)throws Exception{
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            int userLevel = (int)request.getSession().getAttribute("userLevel");
+            if (userLevel == 0 || userLevel == 1 || userLevel == 2){
+                req = webService.addExcelWebStatistics(statisticsList);
+            }else{
+                req.setCode(ErrorMessage.FAIL.getCode());
+                req.setMessage("无权限操作");
+            }
+        }
+        return req;
+    }
+
     @RequestMapping(value="message", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "管理员消息", notes = "管理员消息", httpMethod = "POST")
@@ -493,7 +578,6 @@ public class WebController extends BaseController {
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("您没有权限");
             }
-
         }
         return req;
     }

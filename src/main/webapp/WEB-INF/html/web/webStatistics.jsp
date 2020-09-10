@@ -166,7 +166,6 @@
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        alert("..."+currentUserLevel);
         //加载数据
         selectStatisticsList(1);
         //加载消息
@@ -215,7 +214,7 @@
                         html+='<td> '+format_number(data.clickNum)+'</td>';
                         html+='<td> '+data.clickProbability+'%</td>';
                         html+='<td> '+data.income+'</td>';
-                        html+='<td> '+data.ecmp+'</td>';
+                        html+='<td> '+data.ecpm+'</td>';
                         html+='</tr>';
                     }
                     //添加数据

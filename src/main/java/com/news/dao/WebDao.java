@@ -84,6 +84,11 @@ public interface WebDao {
     Long adParentId(int spaceId);
 
     /**
+     * 查询广告位的分成比例
+     */
+    Map<String,Object> webDivided(int spaceId);
+
+    /**
      * 批量添加广告位数据统计信息
      */
     void addWebStatistics(List<WebStatistics> list);
@@ -168,6 +173,11 @@ public interface WebDao {
      * 修改数据
      */
     void updateStatistics(Map<String,Object> map);
+
+    /**
+     * 去数据库匹配数据
+     */
+    List<WebStatisticsManage> matchId(List<String> upstreamIds);
 
     /**
      * 查看有没有消息

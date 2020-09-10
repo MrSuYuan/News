@@ -200,7 +200,7 @@
                 clickNum : format_text($(val).find('td[name=beforeClickNum]')),
                 income : format_text($(val).find('td[name=income]')),
                 clickProbability : 0,
-                ecmp : format_text($(val).find('td[name=ecpm]')),
+                ecpm : format_text($(val).find('td[name=ecpm]')),
             }
             objs.push(obj)
         })

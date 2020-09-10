@@ -147,6 +147,7 @@ function navigationBar(path){
 	html += '			<li class="" id="webStatistics"><a href="'+path+'/webStatistics"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webUpstreamTypeList"><a href="'+path+'/webUpstreamTypeList"><i class="menu-icon fa fa-caret-right"></i>上游信息</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="webReadExcel"><a href="'+path+'/webReadExcel"><i class="menu-icon fa fa-caret-right"></i>上传Excel</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="webUploadExcel"><a href="'+path+'/webUploadExcel"><i class="menu-icon fa fa-caret-right"></i>上传Excel(新)</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
 	
@@ -218,6 +219,7 @@ function permission(pageSign){
         $('#appUploadUCExcel').hide();
         $('#appUploadExcel').hide();
         $('#appUploadOtherExcel').hide();
+        $('#webUploadExcel').hide();
 
 	}
 
@@ -326,6 +328,9 @@ function permission(pageSign){
     }else if (pageSign == "webReadExcel"){
         $('#web').addClass('active open');
         $('#webReadExcel').addClass('active');
+    }else if (pageSign == "webUploadExcel"){
+        $('#web').addClass('active open');
+        $('#webUploadExcel').addClass('active');
 
     //临时
     }else if (pageSign == "temporaryAdd"){

@@ -1,7 +1,3 @@
-<%--
-  Date: 2020/8/21 11:54
-  平台广告位ID上传数据
---%>
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="ctx" value="${pageContext.request.contextPath}" />
@@ -44,7 +40,7 @@
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="${ctx}/index">Home</a>
                     </li>
-                    <li class="active">上传Excel表格</li>
+                    <li class="active">WEB上传Excel表格</li>
                 </ul><!-- /.breadcrumb -->
                 <div class="nav-search" id="nav-search">
                     <a class="btn btn-primary btn-xs">
@@ -60,17 +56,16 @@
                     <thead>
                     <tr style="height: 50px">
                         <th><font color="red">时间</font></th>
-                        <th><font color="red">上游ID</font></th>
+                        <th><font color="red">ID</font></th>
                         <th><font color="red">展现</font></th>
                         <th><font color="red">点击</font></th>
                         <th><font color="red">收益</font></th>
                         <th><font color="red">ECPM</font></th>
                         <th width="60px">系数</th>
-                        <th><font color="green">下游</font></th>
-                        <th><font color="green">APP名称</font></th>
-                        <th><font color="green">APPID</font></th>
-                        <th><font color="green">广告位ID</font></th>
-                        <th><font color="green">分成</font></th>
+                        <th><font color="green">平台ID</font></th>
+                        <th><font color="green">广告位名称</font></th>
+                        <th><font color="green">分成X</font></th>
+                        <th><font color="green">分成Y</font></th>
                         <th><font color="green">收益</font></th>
                         <th><font color="green">ECPM</font></th>
                     </tr>
@@ -121,7 +116,7 @@
         }
 
         $.ajax({
-            url: path + "/app/uploadOtherExcel",
+            url: path + "/web/webUploadExcel",
             type: "post",
             data: formData,
             contentType: false,
@@ -143,13 +138,12 @@
                         html+='<td name="beforeIncome" id="beforeIncome'+i+'">'+data.beforeIncome+'</td>';
                         html+='<td name="beforeEcpm">'+data.beforeEcpm+'</td>'
                         html+='<td> <input type="text" style="width:50px" value="1" id="input'+i+'" onchange="change(\''+i+'\')"></td>';
-                        html+='<td>'+data.nickName+'</td>'
-                        html+='<td>'+data.appName+'</td>'
-                        html+='<td name="appId">'+data.appId+'</td>'
                         html+='<td name="spaceId">'+data.spaceId+'</td>'
-                        html+='<td id="divided'+i+'">'+data.dividedY+'</td>'
+                        html+='<td>'+data.spaceName+'</td>'
+                        html+='<td id="dividedX'+i+'">'+data.dividedX+'</td>'
+                        html+='<td id="dividedY'+i+'">'+data.dividedY+'</td>'
                         html+='<td name="income" id="income'+i+'">'+data.income+'</td>'
-                        html+='<td name="ecpm" id="ecpm'+i+'">'+data.afterEcpm+'</td>'
+                        html+='<td name="ecpm" id="ecpm'+i+'">'+data.ecpm+'</td>'
                         html+='</tr>';
                     }
                     //添加数据
@@ -172,10 +166,10 @@
         }else{
             var beforeLookPV = $('#beforeLookPV'+i).text();//展现
             var beforeIncome = $('#beforeIncome'+i).text();//收益
-            var divided = $('#divided'+i).text();//分成
-
-            var income = xs * beforeIncome * divided;
-            var ecpm = xs * beforeIncome * divided * 1000 / beforeLookPV;
+            var dividedX = $('#dividedX'+i).text();//分成
+            var dividedY = $('#dividedY'+i).text();//分成
+            var income = xs * beforeIncome * dividedX * dividedY;
+            var ecpm = xs * beforeIncome * dividedX * dividedY * 1000 / beforeLookPV;
 
             $('#income'+i).html(income.toFixed(2));//新收益
             $('#ecpm'+i).html(ecpm.toFixed(2));//新ecpm
@@ -189,9 +183,7 @@
         var objs = [];
         $('.excelTr').each(function(index,val){
             var obj = {
-                upstreamId : format_text($(val).find('td[name=upstreamId]')),
                 spaceId : format_text($(val).find('td[name=spaceId]')),
-                appId : format_text($(val).find('td[name=appId]')),
                 createTime : format_text($(val).find('td[name=create_Time]')),
                 beforeLookPV : format_text($(val).find('td[name=beforeLookPV]')),
                 beforeClickNum : format_text($(val).find('td[name=beforeClickNum]')),
@@ -208,7 +200,7 @@
 
         //提交数据
         $.ajax({
-            url: path + "/app/addAppStatisticsUC",
+            url: path + "/web/addExcelWebStatistics",
             type: "post",
             data: {
                 "statisticsList" : JSON.stringify(objs)
@@ -218,7 +210,7 @@
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    window.location = path + "/appAdspaceList";
+                    window.location = path + "/webStatistics";
                 }else if(obj.code == 300){
                     alert(obj.message);
                     window.location = path + "/login";

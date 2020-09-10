@@ -103,10 +103,10 @@
                                         <th>宽度</th>
                                         <th>高度</th>
                                         <th>创建时间</th>
-                                        <th id="updateTime">更新时间</th>
+                                        <%--<th id="updateTime">更新时间</th>--%>
                                         <th>ID状态</th>
-                                        <th id="operating">操作</th>
-                                        <th id="statistics" style="width: 140px">数据统计</th>
+                                        <th id="operating" style="width: 100px">操作</th>
+                                        <th id="statistics" style="width: 100px">数据统计</th>
                                     </tr>
                                     </thead>
                                     <tbody id="coll_list_begin_body">
@@ -243,12 +243,12 @@
         if(currentUserLevel != 3){
             $('#statistics').show();
             $('#operating').show();
-            $('#updateTime').show();
+            //$('#updateTime').show();
         }else{
             $('#nickNameSpan').hide();
             $('#statistics').hide();
             $('#operating').hide();
-            $('#updateTime').hide();
+            //$('#updateTime').hide();
         }
         webAdspaceList(1);
     });
@@ -310,9 +310,9 @@
                         html+='<td> '+data.width+'</td>';
                         html+='<td> '+data.height+'</td>';
                         html+='<td> '+data.createTime+'</td>';
-                        if (currentUserLevel != 3) {
+                        /*if (currentUserLevel != 3) {
                             html+='<td> '+data.updateTime+'</td>';
-                        }
+                        }*/
                         var status = data.status;
                         if(status == 0){
                             html+='<td id="status'+data.spaceId+'"><span class="label label-purple label-white middle">停用</span></td>';
@@ -339,13 +339,13 @@
                             //封禁
                             }else if(status == 2){
                                 html+='<td id="operating'+data.spaceId+'">' +
-                                    '<font color="red">此ID已被封禁</font>' +
+                                    '<font color="red">ID已被封禁</font>' +
                                     '</td>';
                             }
                         }
                         if(currentUserLevel != 3){
                             html+='<td><button type=button class="btn btn-minier" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">分成</button>&nbsp;' +
-                                '<button type=button class="btn btn-minier" onclick="addWebStatistice(\''+data.spaceId+'!'+data.spaceName+'!'+data.webName+'!'+data.upstreamId+'\')">添加数据统计</button></td>';
+                                '<button type=button class="btn btn-minier" onclick="addWebStatistice(\''+data.spaceId+'!'+data.spaceName+'!'+data.webName+'!'+data.upstreamId+'\')">返数</button></td>';
                         }
                         html+='</tr>';
                     }

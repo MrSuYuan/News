@@ -284,9 +284,9 @@
     <!-- 添加广告位数据统计信息 -->
     <insert id="addAppStatistics">
         insert into a_statistics
-        (spaceId, appId, upstreamId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecmp) values
+        (spaceId, appId, upstreamId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecpm) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp})
+            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecpm})
         </foreach>
     </insert>
 
@@ -303,9 +303,9 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,t.upstreamType,ut.`name`,s.status,s.statisticsId
+        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecpm,s.income,s.lookPV,t.upstreamType,ut.`name`,s.status,s.statisticsId
         from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
+        where s.upstreamId = t.upstreamId and s.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -335,7 +335,7 @@
     <select id="appStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(0)
         from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
+        where s.upstreamId = t.upstreamId and s.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
@@ -362,8 +362,8 @@
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
         select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
-        from a_statistics s,a_upstream t,a_adspace d,a_app a
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
+        from a_statistics s,a_adspace d,a_app a
+        where s.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
         <if test="parentId != null and parentId !=''">
             and a.userId = #{parentId}
         </if>
@@ -388,8 +388,8 @@
     <select id="appStatisticsUserListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0) from
         (SELECT count(0)
-        from a_statistics s,a_upstream t,a_adspace d,a_app a
-        where s.upstreamId = t.upstreamId and t.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
+        from a_statistics s,a_adspace d,a_app a
+        where s.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
         <if test="parentId != null and parentId !=''">
             and a.userId = #{parentId}
         </if>
@@ -596,5 +596,12 @@
             #{item}
         </foreach>
     </select>
+
+    <insert id="insertParam" parameterType="java.lang.String">
+        insert into a_param
+        (appId,param)
+        values
+        ("1234",#{param})
+    </insert>
 
 </mapper>

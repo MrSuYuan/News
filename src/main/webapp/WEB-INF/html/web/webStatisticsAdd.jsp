@@ -162,30 +162,26 @@
         $('#space').html(str[3]);
         $('#spaceName').html(str[1]);
         $('#webName').html(str[2]);
+        webDivided(str[0]);
         //sessionStorage.removeItem("spaceId");
     })
 
     //展示
-    function upstreamIdMsg(upstreamId) {
+    function webDivided(spaceId) {
         $.ajax({
-            url: path + "/app/appUpstreamIdMsg",
+            url: path + "/web/webDivided",
             type: "post",
             data: {
-                "upstreamId" : upstreamId
+                "spaceId" : spaceId
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var msg = obj.result.msg;
-                    $('#appName').html(msg.appName);
-                    $('#spaceName').html(msg.spaceName);
-                    $('#upstreamName').html(msg.name);
-                    $('#upstreamIdSpan').html(msg.upstreamId);
-                    var divided = obj.result.divided;
-                    $('#dividedX').html(divided.dividedX);
-                    $('#dividedY').html(divided.dividedY);
-                    $('#dividedZ').html(divided.dividedZ);
+                    var d = obj.result;
+                    $('#dividedX').html(d.dividedX);
+                    $('#dividedY').html(d.dividedY);
+                    $('#dividedZ').html(d.dividedZ);
                 }else if(obj.code == "300"){
                     alert(obj.message);
                     window.location = path + "/login";
@@ -262,7 +258,7 @@
                 clickNum : 0,
                 income : 0,
                 clickProbability : 0,
-                ecmp : 0,
+                ecpm : 0,
             }
             objs.push(obj)
         })

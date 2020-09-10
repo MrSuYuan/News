@@ -169,4 +169,9 @@ public interface AppService {
      */
     ReqResponse readOtherExcel(Sheet sheet);
 
+    /**
+     * 文章测试
+     */
+    void insertParam(String data);
+
 }

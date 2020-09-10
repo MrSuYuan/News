@@ -152,7 +152,7 @@
         <if test="userLevel == 3">
             and w.userId = #{userId}
         </if>
-        order by s.spaceId asc
+        order by s.createTime desc
         limit #{num},#{pageSize}
     </select>
 
@@ -196,13 +196,19 @@
         from w_adspace d,w_web w,u_user u
         where d.spaceId = #{spaceId} and d.webId = w.webId and w.userId = u.userId
     </select>
-
+    
+    <!--  -->
+    <select id="webDivided" parameterType="java.lang.Integer"  resultType="java.util.Map">
+        select t.upstreamDivided as dividedX,a.dividedY,a.dividedZ
+        from w_adspace a,w_upstream_type t
+        where a.spaceId = #{spaceId} and a.upstreamType = t.upstreamType
+    </select>
     <!-- 添加广告位数据统计信息 -->
     <insert id="addWebStatistics">
         insert into w_statistics
-        (spaceId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecmp, status) values
+        (spaceId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecpm, status) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecmp},0)
+            (#{item.spaceId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecpm},0)
         </foreach>
     </insert>
 
@@ -230,7 +236,7 @@
 
     <!-- 查询数据统计信息列表-用户 -->
     <select id="webStatisticsUser" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsUser">
-        select w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV
+        select w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as create_Time,s.clickNum,s.clickProbability,s.ecpm,s.income,s.lookPV
         from w_statistics s,w_adspace d,w_web w,u_user u
         where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId and s.status = 1
         <if test="webName != null and webName !=''">
@@ -282,8 +288,8 @@
 
     <!-- 查询数据统计信息列表-管理 -->
     <select id="webStatisticsManage" parameterType="java.util.Map" resultType="com.news.vo.WebStatisticsManage">
-        select s.statisticsId,w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,d.dividedY,d.dividedZ,
-          s.clickNum,s.clickProbability,s.ecmp,s.income,s.lookPV,s.status,s.beforeLookPV,s.beforeClickNum,s.beforeIncome
+        select s.statisticsId,w.webName,d.upstreamId as spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as create_Time,d.dividedY,d.dividedZ,
+          s.clickNum,s.clickProbability,s.ecpm,s.income,s.lookPV,s.status,s.beforeLookPV,s.beforeClickNum,s.beforeIncome
         from w_statistics s,w_adspace d,w_web w,u_user u
         where s.spaceId = d.spaceId and d.webId = w.webId and w.userId = u.userId
         <if test="webName != null and webName !=''">
@@ -387,8 +393,8 @@
 
     <!-- 查询数据 -->
     <select id="webStatisticsOne" parameterType="java.lang.Integer" resultType="com.news.vo.WebStatisticsManage">
-        select s.statisticsId,d.spaceId,t.upstreamDivided,d.dividedY,d.dividedZ,s.beforeLookPV,s.beforeClickNum,s.beforeIncome,
-        s.lookPV,s.clickNum,s.income,s.clickProbability,s.ecmp
+        select s.statisticsId,d.spaceId,t.upstreamDivided as dividedX,d.dividedY,d.dividedZ,s.beforeLookPV,s.beforeClickNum,s.beforeIncome,
+        s.lookPV,s.clickNum,s.income,s.clickProbability,s.ecpm
         from w_statistics s,w_adspace d,w_upstream_type t
         where s.statisticsId = #{statisticsId} and s.spaceId = d.spaceId and d.upstreamType = t.upstreamType
     </select>
@@ -396,9 +402,19 @@
     <!-- 修改数据 -->
     <update id="updateStatistics" parameterType="java.util.Map">
         update w_statistics
-        set lookPV = #{lookPV}, clickNum = #{clickNum}, income = #{income}, clickProbability = #{clickProbability}, ecmp = #{ecmp}
+        set lookPV = #{lookPV}, clickNum = #{clickNum}, income = #{income}, clickProbability = #{clickProbability}, ecpm = #{ecpm}
         where statisticsId = #{statisticsId}
     </update>
+
+    <!-- 去数据库匹配数据 -->
+    <select id="matchId" resultType="com.news.vo.WebStatisticsManage">
+        select u.upstreamId,a.spaceId,a.spaceName,t.upstreamDivided as dividedX,a.dividedY,a.dividedZ,w.startTime,IFNULL(w.endTime,NOW()) as endTime
+        from w_upstream u,w_adspace a,w_upstream_type t,w_adspace_upstream w
+        where u.upstreamId = w.upstreamId and w.spaceId = a.spaceId and u.upstreamType = t.upstreamType and u.upstreamId in
+        <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+    </select>
 
     <!-- 查看有没有消息 -->
     <select id="messageNum" resultType="java.util.Map">
