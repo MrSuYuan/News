@@ -767,6 +767,9 @@ public class WebServiceImpl implements WebService {
             ObjectMapper mapper = new ObjectMapper();
             JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, WebStatistics.class);
             List<WebStatistics> list =  mapper.readValue(statisticsList, jt);
+            for (WebStatistics w : list){
+                w.setClickProbability((double)(w.getClickNum()*100)/w.getLookPV());
+            }
             webDao.addWebStatistics(list);
             req.setCode(ErrorMessage.SUCCESS.getCode());
             req.setMessage("添加成功");
@@ -818,6 +821,28 @@ public class WebServiceImpl implements WebService {
         req.setResult(result);
         req.setMessage("完成");
         req.setCode(ErrorMessage.SUCCESS.getCode());
+        return req;
+    }
+
+    /**
+     * 多选通过
+     */
+    @Override
+    public ReqResponse examinationPassed(String ids) {
+        ReqResponse req = new ReqResponse();
+        //解析前端传过来的集合数据
+        ObjectMapper mapper = new ObjectMapper();
+        JavaType jt = mapper.getTypeFactory().constructParametricType(ArrayList.class, String.class);
+        try{
+            List<String> list =  mapper.readValue(ids, jt);
+            webDao.examinationPassed(list);
+            req.setCode(ErrorMessage.SUCCESS.getCode());
+            req.setMessage("审核成功");
+        } catch (Exception e) {
+            e.printStackTrace();
+            req.setCode(ErrorMessage.FAIL.getCode());
+            req.setMessage("审核失败");
+        }
         return req;
     }
 

@@ -198,4 +198,11 @@ public interface WebDao {
      * 此id对应的分润比例
      */
     Map<String,Object> divided(String upstreamId);
+
+    /**
+     * 多选审核通过
+     */
+    void examinationPassed(List<String> ids);
+
+
 }

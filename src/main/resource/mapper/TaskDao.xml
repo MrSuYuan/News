@@ -45,4 +45,17 @@
         (#{message},now())
     </insert>
 
+    <!-- 查询所有三星鹏泰的广告 -->
+    <select id="ptId" resultType="com.news.entity.AppUpstream">
+        SELECT *
+        FROM `a_upstream`
+        where upstreamType = 29 and probability > 0
+    </select>
+
+    <update id="updateAppPKG" parameterType="com.news.entity.AppUpstream">
+        update `a_upstream`
+        set upstreamAppName = #{upstreamAppName}
+        where upstreamId = #{upstreamId}
+    </update>
+
 </mapper>

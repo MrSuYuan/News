@@ -1,5 +1,6 @@
 package com.news.dao;
 
+import com.news.entity.AppUpstream;
 import com.news.vo.DividedVo;
 import org.springframework.stereotype.Repository;
 
@@ -33,5 +34,15 @@ public interface TaskDao {
      * 添加消息
      */
     void insertMessage(String message);
+
+    /**
+     * 查询所有三星鹏泰的广告
+     */
+    List<AppUpstream> ptId();
+
+    /**
+     * 修改APP名称,当请求参数里面的app拼接字符串的包名
+     */
+    void updateAppPKG(AppUpstream map);
 
 }

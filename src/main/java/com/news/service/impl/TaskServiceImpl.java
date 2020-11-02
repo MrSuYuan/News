@@ -1,13 +1,20 @@
 package com.news.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.news.dao.TaskDao;
 import com.news.dao.WebDao;
+import com.news.entity.AppUpstream;
 import com.news.entity.WebStatistics;
+import com.news.entity.pengtai.*;
 import com.news.service.TaskService;
 import com.news.vo.DividedVo;
+import com.utils.MD5.MD5;
+import com.utils.MD5.MD5Util;
+import com.utils.http.TestConnectionPool;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import javax.swing.*;
@@ -156,31 +163,66 @@ public class TaskServiceImpl implements TaskService {
         }
     }
 
-    public static void main(String[] args) {
-        List l1 = new ArrayList();
-        l1.add(1);
-        l1.add(5);
-        l1.add(3);
-        l1.add(6);
-        l1.add(8);
-        List l2 = new ArrayList();
-        l2.add(5);
-        l2.add(3);
-        l2.add(6);
-        for (int i = 0; i < l1.size(); i++){
-            for (int j = 0; j < l2.size(); j++){
-                if (l1.get(i) == l2.get(j)){
-                    l1.set(i,0);
-                    continue;
-                }
-            }
-        }
-        for (int i = 0; i < l1.size(); i++){
-            if ((int)l1.get(i) != 0){
-                System.out.println(l1.get(i));
-            }
+    /**
+     * 三星鹏泰CPD
+     */
+    @Override
+    public void pengTai(){
+        //查询数据库所有三星鹏泰的广告位
+        List<AppUpstream> ptIds = taskDao.ptId();
+        //循环请求offer接口查询价格
+        for (AppUpstream id : ptIds){
+            if (null != id && !"".equals(id) && !"734".equals(id.getUpstreamId())){
+                String upstreamId = id.getUpstreamId();
+                //拿到id去请求offer接口
+                PtRequest ptr = new PtRequest();
+                ptr.setToken(MD5.md5("samsung:"+id.getUpstreamPackageName()));
+                //ptr.setToken("25b99c58ab03bdeb63ba51b5fb1974fb");
+                PtApp app = new PtApp();
+                app.setBundle(id.getUpstreamPackageName());
+                app.setVer("1.0");
+                app.setSid(upstreamId);
+                ptr.setApp(app);
+                PtDevice device = new PtDevice();
+                device.setDb("samsung");
+                ptr.setDevice(device);
+                String data = JSONObject.fromObject(ptr).toString();
+                String url = "https://adxadmin.ad-survey.com/api/strategy/app/offer";
+                String str = "";
+                try{
+                    str = TestConnectionPool.post(url, data,null);
+                    System.out.println(upstreamId+"...返回参数"+str);
+                }catch(Exception e){
 
+                }
+
+                str = str.replaceAll("package","pkg");
+                //解析返回参数
+                PtResponse resp = JSON.parseObject(str,PtResponse.class);
+                if (resp.getResultCode() == 200){
+
+                    String pkg = "";
+                    List<PtApps> apps = resp.getApps();
+                    for (PtApps pa : apps){
+                        pkg = pkg + pa.getPkg();
+                    }
+                    System.out.println(pkg);
+                    //修改数据库
+                    AppUpstream au = new AppUpstream();
+                    au.setUpstreamId(upstreamId);
+                    au.setUpstreamAppName(pkg);
+                    taskDao.updateAppPKG(au);
+                    System.out.println(upstreamId+"...炒年糕个");
+                }else{
+                    System.out.println(upstreamId+"...返回失败");
+                }
+
+
+
+
+            }
         }
+
     }
 
 }

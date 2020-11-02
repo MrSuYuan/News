@@ -408,5 +408,12 @@ public class PageController extends BaseController {
     @ApiOperation(value = "添加报表", notes = "添加报表", httpMethod = "GET")
     public String copyAdd(){ return "/html/temporary/copyAdd.jsp";}
 
+    /**
+     * 隐私协议
+     */
+    @RequestMapping(value = "privacy" , method= RequestMethod.GET)
+    @ApiOperation(value = "添加报表", notes = "添加报表", httpMethod = "GET")
+    public String privacy(){ return "/html/user/privacy.jsp";}
+
 
 }

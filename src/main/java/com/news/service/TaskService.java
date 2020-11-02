@@ -16,4 +16,9 @@ public interface TaskService {
      * 广告位消息
      */
     void xiaoxi();
+
+    /**
+     * 三星cpd广告
+     */
+    void pengTai();
 }

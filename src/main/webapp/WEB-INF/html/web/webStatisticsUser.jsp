@@ -203,7 +203,7 @@
                         html+='<td> '+data.spaceId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.webName+'</td>';
-                        html+='<td> '+data.createTime+'</td>';
+                        html+='<td> '+data.create_Time+'</td>';
                         html+='<td> '+format_number(data.lookPV)+'</td>';
                         html+='<td> '+format_number(data.clickNum)+'</td>';
                         html+='<td> '+data.clickProbability+'%</td>';

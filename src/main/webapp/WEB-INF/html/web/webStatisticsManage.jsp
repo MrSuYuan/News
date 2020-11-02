@@ -68,7 +68,9 @@
                         <a class="btn btn-primary btn-xs" onclick="webStatisticsManage($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
-
+                        <a class="btn btn-primary btn-xs" onclick="examinationPassed()">
+                            <i class="ace-icon glyphicon glyphicon-ok bigger-110"><font size="3">通过</font></i>
+                        </a>
                     </div>
                     <br>
                     <div class="row">
@@ -79,6 +81,7 @@
                                        class="table table-striped table-bordered table-hover">
                                     <thead>
                                     <tr style="height: 50px">
+                                        <th><input type="checkbox" id="boxid" onclick="setAllNo()"/>全选</th>
                                         <th>广告位ID</th>
                                         <th>广告位名称</th>
                                         <th>网站名称</th>
@@ -287,6 +290,12 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px" id="tr'+data.statisticsId+'">';
+                        var status = data.status;
+                        if (status == 0){
+                            html+='<td><input type="checkbox" name="love" value="'+data.statisticsId+'"/></td>';
+                        } else if (status == 1) {
+                            html+='<td><input type="checkbox" disabled/></td>';
+                        }
                         html+='<td title="Y:'+data.dividedY+'&nbsp;,&nbsp;Z:'+data.dividedZ+'"> '+data.spaceId+'</td>';
                         html+='<td> '+data.spaceName+'</td>';
                         html+='<td> '+data.webName+'</td>';
@@ -524,6 +533,62 @@
                 alert("请求异常");
             }
         });
+    }
+
+    //全选/全不选操作
+    function setAllNo(){
+        var box = document.getElementById("boxid");
+        var loves = document.getElementsByName("love");
+        if(box.checked == false){
+            for (var i = 0; i < loves.length; i++) {
+                loves[i].checked = false;
+            }
+        }else{
+            for (var i = 0; i < loves.length; i++) {
+                loves[i].checked = true;
+            }
+        }
+    }
+
+    function examinationPassed(){
+        var num = 0;
+        var ids = [];
+        var loves = document.getElementsByName("love");
+        for (var i = 0; i < loves.length; i++) {
+            if(loves[i].checked == true){
+                ids.push(loves[i].value);
+                num = num + 1;
+            }
+        }
+        //提交数据
+        $.ajax({
+            url: path + "/web/examinationPassed",
+            type: "post",
+            data: {
+                "ids" : JSON.stringify(ids)
+            },
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    alert(obj.message);
+                    for (var i = 0; i < ids.length; i++) {
+                        $('#td'+ids[i]).empty();
+                        $('#td'+ids[i]).html("已通过");
+                    }
+
+                }else if(obj.code == 300){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+
     }
 </script>
 

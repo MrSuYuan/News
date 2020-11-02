@@ -582,4 +582,23 @@ public class WebController extends BaseController {
         return req;
     }
 
+    @RequestMapping(value="examinationPassed", method= RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "多选通过", notes = "多选通过", httpMethod = "POST")
+    @ApiImplicitParams(value={
+            @ApiImplicitParam(name="ids" , value="id集合" ,required = false , paramType = "query" ,dataType = "String")
+    })
+    @CrossOrigin
+    public ReqResponse examinationPassed(String ids){
+        ReqResponse req = new ReqResponse();
+        Object userId = request.getSession().getAttribute("userId");
+        if(null == userId){
+            req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
+            req.setMessage("无效的登录");
+        }else{
+            req = webService.examinationPassed(ids);
+        }
+        return req;
+    }
+
 }

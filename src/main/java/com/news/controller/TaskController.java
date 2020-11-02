@@ -112,4 +112,18 @@ public class TaskController extends BaseController {
     }
 
 
+    /**
+     * 三星cpd业务
+     */
+    @RequestMapping(value = "/pengTai",method=RequestMethod.POST)
+    @ResponseBody
+    @ApiOperation(value = "三星鹏泰", notes = "星辰", httpMethod = "POST")
+    @CrossOrigin
+    public void pengTai(){
+        logger.error("++++++++++++++三星鹏泰CPD开始+++++++++++++++++++");
+        taskService.pengTai();
+        logger.error("++++++++++++++三星鹏泰CPD结束+++++++++++++++++++");
+    }
+
+
 }

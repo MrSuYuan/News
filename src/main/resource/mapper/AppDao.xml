@@ -580,7 +580,7 @@
     </select>
 
     <select id="matchId" resultType="com.news.entity.UCStatisticsList">
-        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,au.startTime,IFNULL(au.endTime,NOW()) as endTime
+        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
         from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
         where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
@@ -589,7 +589,7 @@
     </select>
 
     <select id="AsSpaceId" resultType="com.news.entity.UCStatisticsList">
-        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,au.startTime,IFNULL(au.endTime,NOW()) as endTime
+        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
         from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
         where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.spaceId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">

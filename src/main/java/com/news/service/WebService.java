@@ -110,4 +110,9 @@ public interface WebService {
      * 上游id对应详细信息
      */
     ReqResponse webUpstreamIdMsg(String upstreamId);
+
+    /**
+     * 多选通过
+     */
+    ReqResponse examinationPassed(String ids);
 }

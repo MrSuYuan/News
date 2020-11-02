@@ -408,7 +408,7 @@
 
     <!-- 去数据库匹配数据 -->
     <select id="matchId" resultType="com.news.vo.WebStatisticsManage">
-        select u.upstreamId,a.spaceId,a.spaceName,t.upstreamDivided as dividedX,a.dividedY,a.dividedZ,w.startTime,IFNULL(w.endTime,NOW()) as endTime
+        select u.upstreamId,a.spaceId,a.spaceName,t.upstreamDivided as dividedX,a.dividedY,a.dividedZ,DATE_FORMAT(w.startTime,"%Y-%m-%d")as startTime,IFNULL(w.endTime,NOW()) as endTime
         from w_upstream u,w_adspace a,w_upstream_type t,w_adspace_upstream w
         where u.upstreamId = w.upstreamId and w.spaceId = a.spaceId and u.upstreamType = t.upstreamType and u.upstreamId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
@@ -443,5 +443,16 @@
         from a_upstream u,a_adspace a,a_upstream_type t
         where u.upstreamId = #{upstreamId} and u.spaceId = a.spaceId and u.upstreamType = t.type
     </select>
+
+    <!-- 多选审核通过 -->
+    <update id="examinationPassed">
+        update w_statistics
+        set status = 1
+        where statisticsId in (
+        <foreach collection="list" index="index" item="item" open="" close="" separator=",">
+            #{item}
+        </foreach>
+        )
+    </update>
 
 </mapper>
