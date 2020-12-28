@@ -4,6 +4,15 @@ public class AppAssignVo {
 
     private int upstreamType;
     private int probability;
+    private String vendorDivision;
+
+    public String getVendorDivision() {
+        return vendorDivision;
+    }
+
+    public void setVendorDivision(String vendorDivision) {
+        this.vendorDivision = vendorDivision;
+    }
 
     public int getUpstreamType() {
         return upstreamType;

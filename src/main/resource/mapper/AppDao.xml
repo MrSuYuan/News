@@ -115,33 +115,33 @@
     </update>
 
     <!-- 查看此app是否拥有同类型广告位(app每一种广告位只能有一种) -->
-    <select id="appSpaceNum" parameterType="com.news.entity.AppAdspace" resultType="java.lang.Integer">
+    <select id="appSlotNum" parameterType="com.news.entity.AppSlot" resultType="java.lang.Integer">
         select count(0)
-        from a_adspace
-        where appId = #{appId} and spaceType = #{spaceType}
+        from a_slot
+        where appId = #{appId} and slotType = #{slotType}
     </select>
 
     <!-- 广告位名称验重 -->
-    <select id="spaceNameNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="slotNameNum" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(0)
-        from a_adspace
-        where spaceName = #{spaceName}
+        from a_slot
+        where slotName = #{slotName}
     </select>
 
     <!-- 创建广告位信息 -->
-    <insert id="createAdspace" parameterType="com.news.entity.AppAdspace">
-        insert into a_adspace
-        (spaceId, appId, spaceType, createTime, spaceName, width, height)
+    <insert id="createSlot" parameterType="com.news.entity.AppSlot">
+        insert into a_slot
+        (slotId, appId, slotType, createTime, slotName, width, height)
         values
-        (#{spaceId},#{appId},#{spaceType},now(),#{spaceName},#{width},#{height})
+        (#{slotId},#{appId},#{slotType},now(),#{slotName},#{width},#{height})
     </insert>
 
     <!-- 广告位列表 -->
-    <select id="appAdspaceList" parameterType="java.util.Map" resultType="com.news.vo.AppAdspaceListVo">
+    <select id="appSlotList" parameterType="java.util.Map" resultType="com.news.vo.AppSlotListVo">
         select x.*,IFNULL(y.downstreamRequest,0) as request from
         (
-        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
-        from a_adspace s,a_app a,u_user u
+        select a.appName,a.appId,s.slotId,s.slotName,s.slotType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
+        from a_slot s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
         <if test="loginName != null and loginName !=''">
             and u.loginName = #{loginName}
@@ -152,11 +152,11 @@
         <if test="appId != null and appId !=''">
             and a.appId = #{appId}
         </if>
-        <if test="spaceId != null and spaceId !=''">
-            and s.spaceId = #{spaceId}
+        <if test="slotId != null and slotId !=''">
+            and s.slotId = #{slotId}
         </if>
-        <if test="spaceType != 0">
-            and s.spaceType = #{spaceType}
+        <if test="slotType != 0">
+            and s.slotType = #{slotType}
         </if>
         <if test="userLevel == 2">
             and u.parentId = #{userId}
@@ -167,22 +167,22 @@
         ) x
         LEFT JOIN
         (select slotId,SUM(downstreamRequest) as downstreamRequest,createTime from a_report_downstream where TO_DAYS(createTime) = TO_DAYS(NOW()) GROUP BY slotId)y
-        on x.spaceId = y.slotId and TO_DAYS(y.createTime) = TO_DAYS(NOW())
+        on x.slotId = y.slotId and TO_DAYS(y.createTime) = TO_DAYS(NOW())
         order by x.createTime desc
         limit #{num},#{pageSize}
     </select>
 
     <!-- 放/停量 -->
     <update id="updateFlowStatus" parameterType="java.util.Map">
-        update a_adspace
+        update a_slot
         set flowStatus = #{flowStatus}
-        where spaceId = #{spaceId}
+        where slotId = #{slotId}
     </update>
 
     <!-- 广告位列表数量 -->
-    <select id="appAdspaceListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+    <select id="appSlotListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0)
-        from a_adspace s,a_app a,u_user u
+        from a_slot s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
         <if test="loginName != null and loginName !=''">
             and u.loginName = #{loginName}
@@ -193,11 +193,11 @@
         <if test="appId != null and appId !=''">
             and a.appId = #{appId}
         </if>
-        <if test="spaceId != null and spaceId !=''">
-            and s.spaceId = #{spaceId}
+        <if test="slotId != null and slotId !=''">
+            and s.slotId = #{slotId}
         </if>
-        <if test="spaceType != 0">
-            and s.spaceType = #{spaceType}
+        <if test="slotType != 0">
+            and s.slotType = #{slotType}
         </if>
         <if test="userLevel == 2">
             and u.parentId = #{userId}
@@ -210,8 +210,8 @@
     <!-- 查看平台广告位所属app的上级id -->
     <select id="adParentId" parameterType="java.lang.String" resultType="java.util.Map">
         select u.parentId,a.appId
-        from a_adspace d,a_app a,u_user u
-        where d.spaceId = #{spaceId} and d.appId = a.appId and a.userId = u.userId
+        from a_slot d,a_app a,u_user u
+        where d.slotId = #{slotId} and d.appId = a.appId and a.userId = u.userId
     </select>
 
     <!-- 查询此上游广告位id的绑定信息 -->
@@ -230,63 +230,77 @@
 
     <!-- 查看上游广告位所属app的相关信息 -->
     <select id="adParent" parameterType="java.lang.String" resultType="java.util.Map">
-        select u.parentId,a.appId,d.spaceId,t.upstreamAppId
-        from a_adspace d,a_app a,u_user u,a_upstream t
-        where t.upstreamId = #{upstreamId} and t.spaceId = d.spaceId and d.appId = a.appId and a.userId = u.userId
+        select u.parentId,a.appId,d.slotId,t.upstreamAppId
+        from a_slot d,a_app a,u_user u,a_upstream t
+        where t.upstreamId = #{upstreamId} and t.slotId = d.slotId and d.appId = a.appId and a.userId = u.userId
     </select>
 
     <!-- 查看此广告位有没有重复上游类型 -->
     <select id="appUpstreamNum" parameterType="com.news.entity.AppUpstream" resultType="java.lang.Integer">
         select count(0)
         from a_upstream
-        where spaceId = #{spaceId} and upstreamType = #{upstreamType}
+        where slotId = #{slotId} and upstreamType = #{upstreamType}
     </select>
 
     <!-- 添加上游信息 -->
     <insert id="insertAppUpstream" parameterType="com.news.entity.AppUpstream">
         insert into a_upstream
-        (upstreamId, spaceId, upstreamType, upstreamAppId, upstreamPackageName, createTime, probability, upstreamAppName, upstreamWidth, upstreamHeight)
+        (upstreamId, slotId, upstreamType, upstreamAppId, upstreamPackageName, createTime, probability, upstreamAppName, upstreamWidth, upstreamHeight, vendorDivision)
         values
-        (#{upstreamId},#{spaceId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability},#{upstreamAppName},#{upstreamWidth},#{upstreamHeight})
+        (#{upstreamId},#{slotId},#{upstreamType},#{upstreamAppId},#{upstreamPackageName},#{createTime},#{probability},#{upstreamAppName},#{upstreamWidth},#{upstreamHeight},#{vendorDivision})
     </insert>
 
     <!-- 修改上游绑定的平台id -->
     <update id="updateAppUpstream" parameterType="com.news.entity.AppUpstream">
         update a_upstream
-        set spaceId = #{spaceId},upstreamAppId = #{upstreamAppId},upstreamAppName = #{upstreamAppName},upstreamPackageName = #{upstreamPackageName},
-            createTime = #{createTime},probability = #{probability},upstreamWidth = #{upstreamWidth},upstreamHeight = #{upstreamHeight}
+        set slotId = #{slotId},upstreamAppId = #{upstreamAppId},upstreamAppName = #{upstreamAppName},upstreamPackageName = #{upstreamPackageName},
+            createTime = #{createTime},probability = #{probability},upstreamWidth = #{upstreamWidth},upstreamHeight = #{upstreamHeight},vendorDivision = #{vendorDivision}
         where
         upstreamId = #{upstreamId}
     </update>
 
+    <!-- 查看此id有没有已经定向了这个机型 -->
+    <select id="slotVendor" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from a_upstream
+        where slotId = #{slotId} and vendorDivision = #{vendorDivision}
+    </select>
+
+    <!-- 修改广告位机型区分的状态 -->
+    <update id="updateVendorStatus" parameterType="java.util.Map">
+        update a_slot
+        set vendorStatus = #{vendorStatus}
+        where slotId = #{slotId}
+    </update>
+
     <!-- 添加上游使用记录 -->
-    <insert id="insertAppAdspaceUpstream" parameterType="com.news.entity.AppAdspaceUpstream">
-        insert into a_adspace_upstream
-        (spaceId, upstreamId, upstreamType, startTime)
+    <insert id="insertAppSlotUpstream" parameterType="com.news.entity.AppSlotUpstream">
+        insert into a_slot_upstream
+        (slotId, upstreamId, upstreamType, startTime)
         values
-        (#{spaceId},#{upstreamId},#{upstreamType},now())
+        (#{slotId},#{upstreamId},#{upstreamType},now())
     </insert>
 
     <!-- 查看此广告位划量分流次数 -->
     <select id="assignNum" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(0)
         from a_upstream
-        where spaceId = #{spaceId}
+        where slotId = #{slotId} and vendorDivision is null
     </select>
 
     <!-- 广告位上游信息列表 -->
     <select id="appUpstreamList" parameterType="java.lang.String" resultType="com.news.entity.AppUpstream">
         select u.*,DATE_FORMAT(u.createTime,"%Y-%m-%d %H:%i:%s") as create_Time,t.`name`
         from a_upstream u,a_upstream_type t
-		where u.spaceId = #{spaceId} and u.upstreamType = t.type
+		where u.slotId = #{slotId} and u.upstreamType = t.type
     </select>
 
     <!-- 添加广告位数据统计信息 -->
     <insert id="addAppStatistics">
         insert into a_statistics
-        (spaceId, appId, upstreamId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecpm) values
+        (slotId, appId, upstreamId, createTime, beforeLookPV, beforeClickNum, beforeIncome, lookPV, clickNum, clickProbability, income, ecpm) values
         <foreach collection="list" index="index" item="item" open="" close="" separator=",">
-            (#{item.spaceId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecpm})
+            (#{item.slotId},#{item.appId},#{item.upstreamId},#{item.createTime},#{item.beforeLookPV},#{item.beforeClickNum},#{item.beforeIncome},#{item.lookPV},#{item.clickNum},#{item.clickProbability},#{item.income},#{item.ecpm})
         </foreach>
     </insert>
 
@@ -303,20 +317,14 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,a.appId,s.spaceId,d.spaceName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecpm,s.income,s.lookPV,t.upstreamType,ut.`name`,s.status,s.statisticsId
-        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
-        where s.upstreamId = t.upstreamId and s.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
+        select a.appName,a.appId,s.slotId,d.slotName,t.upstreamAppId,t.upstreamId,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,s.clickNum,s.clickProbability,s.ecpm,s.income,s.lookPV,t.upstreamType,s.status,s.statisticsId
+        from a_statistics s,a_upstream t,a_slot d,a_app a
+        where s.upstreamId = t.upstreamId and s.slotId = d.slotId and s.appId = a.appId
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and d.spaceName = #{spaceName}
-        </if>
-        <if test="currentUserLevel == 2">
-            and u.parentId = #{parentId}
-        </if>
-        <if test="currentUserLevel == 3">
-            and a.userId = #{parentId}
+        <if test="slotName != null and slotName !=''">
+            and d.slotName = #{slotName}
         </if>
         <if test="startTime != null and startTime !=''">
             and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
@@ -334,19 +342,13 @@
     <!-- 查询数据统计信息列表数量 -->
     <select id="appStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT count(0)
-        from a_statistics s,a_upstream t,a_adspace d,a_app a,u_user u,a_upstream_type ut
-        where s.upstreamId = t.upstreamId and s.spaceId = d.spaceId and s.appId = a.appId and a.userId = u.userId and t.upstreamType = ut.type
+        from a_statistics s,a_upstream t,a_slot d,a_app a
+        where s.upstreamId = t.upstreamId and s.slotId = d.slotId and s.appId = a.appId
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and d.spaceName = #{spaceName}
-        </if>
-        <if test="currentUserLevel == 2">
-            and u.parentId = #{parentId}
-        </if>
-        <if test="currentUserLevel == 3">
-            and a.userId = #{parentId}
+        <if test="slotName != null and slotName !=''">
+            and d.slotName = #{slotName}
         </if>
         <if test="startTime != null and startTime !=''">
             and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
@@ -361,17 +363,17 @@
 
     <!-- 查询数据统计信息列表 -->
     <select id="appStatisticsUserList" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
-        select a.appName,a.appId,s.spaceId,d.spaceName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
-        from a_statistics s,a_adspace d,a_app a
-        where s.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
+        select a.appName,a.appId,s.slotId,d.slotName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
+        from a_statistics s,a_slot d,a_app a
+        where s.slotId = d.slotId and s.appId = a.appId and s.status = 1
         <if test="parentId != null and parentId !=''">
             and a.userId = #{parentId}
         </if>
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and d.spaceName = #{spaceName}
+        <if test="slotName != null and slotName !=''">
+            and d.slotName = #{slotName}
         </if>
         <if test="startTime != null and startTime !=''">
             and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
@@ -379,25 +381,46 @@
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
-        GROUP BY s.spaceId,s.createTime
-        order by s.createTime desc,d.spaceId asc
+        GROUP BY s.slotId,s.createTime
+        order by s.createTime desc,d.slotId asc
         limit #{num},#{pageSize}
+    </select>
+
+    <!--倒出Excel-->
+    <select id="excel" parameterType="java.util.Map" resultType="com.news.vo.AppStatisticsListVo">
+        select a.appName,a.appId,s.slotId,d.slotName,DATE_FORMAT(s.createTime,"%Y-%m-%d") as createTime,SUM(s.clickNum) as clickNum,SUM(s.income) as income,SUM(s.lookPV) as lookPV
+        from a_statistics s,a_upstream t,a_slot d,a_app a
+        where s.upstreamId = t.upstreamId and s.slotId = d.slotId and s.appId = a.appId and s.status = 1 and a.userId = #{userId}
+        <if test="appId != null and appId !=''">
+            and a.appId = #{appId}
+        </if>
+        <if test="slotId != null and slotId !=''">
+            and d.slotId = #{slotId}
+        </if>
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        GROUP BY s.slotId,s.createTime
+        order by s.createTime desc,d.slotId asc
     </select>
 
     <!-- 查询数据统计信息列表数量 -->
     <select id="appStatisticsUserListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0) from
         (SELECT count(0)
-        from a_statistics s,a_adspace d,a_app a
-        where s.spaceId = d.spaceId and s.appId = a.appId and s.status = 1
+        from a_statistics s,a_slot d,a_app a
+        where s.slotId = d.slotId and s.appId = a.appId and s.status = 1
         <if test="parentId != null and parentId !=''">
             and a.userId = #{parentId}
         </if>
         <if test="appName != null and appName !=''">
             and a.appName = #{appName}
         </if>
-        <if test="spaceName != null and spaceName !=''">
-            and d.spaceName = #{spaceName}
+        <if test="slotName != null and slotName !=''">
+            and d.slotName = #{slotName}
         </if>
         <if test="startTime != null and startTime !=''">
             and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
@@ -405,14 +428,14 @@
         <if test="endTime != null and endTime !=''">
             and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
         </if>
-        GROUP BY s.spaceId,s.createTime) c
+        GROUP BY s.slotId,s.createTime) c
     </select>
 
     <!-- 调度分配展示 -->
     <select id="selectAppAssign" parameterType="java.lang.String" resultType="com.news.entity.AppAssign">
         select a.probability,a.upstreamType,u.`name`,u.shortName
         from a_upstream a,a_upstream_type u
-        where a.upstreamType = u.type and a.spaceId = #{spaceId}
+        where a.upstreamType = u.type and a.slotId = #{slotId}
     </select>
 
     <!-- 正式服概率修改 -->
@@ -420,7 +443,7 @@
         <foreach collection="list" index="index" item="item" open="" close="" separator=";">
             update a_upstream
             set probability = #{item.probability}
-            where spaceId = #{item.spaceId} and upstreamType = #{item.upstreamType}
+            where slotId = #{item.slotId} and upstreamType = #{item.upstreamType}
         </foreach>
     </update>
 
@@ -452,9 +475,9 @@
 
     <!-- 上游广告位 -->
     <select id="appUpstreamIdList" parameterType="java.util.Map" resultType="com.news.vo.AppUpstreamIdList">
-        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.spaceId,d.spaceName,p.appName from
+        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.slotId,d.slotName,p.appName,a.vendorDivision from
         (
-            SELECT u.upstreamId,u.upstreamAppId,t.name,u.spaceId
+            SELECT u.upstreamId,u.upstreamAppId,t.name,u.slotId,u.vendorDivision
             FROM a_upstream u,a_upstream_type t
             where u.upstreamType = t.type
             <if test="type != null and type !=''">
@@ -464,14 +487,14 @@
                 and u.upstreamId = #{upstreamId}
             </if>
         ) a
-        LEFT JOIN a_adspace d on a.spaceId = d.spaceId
+        LEFT JOIN a_slot d on a.slotId = d.slotId
         LEFT JOIN a_app p on d.appId = p.appId
         limit #{num},#{pageSize}
     </select>
     <select id="appUpstreamIdListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
         select count(0) from
         (
-        SELECT u.upstreamId,u.upstreamAppId,t.name,u.spaceId
+        SELECT u.upstreamId,u.upstreamAppId,t.name,u.slotId
         FROM a_upstream u,a_upstream_type t
         where u.upstreamType = t.type
         <if test="type != null and type !=''">
@@ -481,30 +504,30 @@
             and u.upstreamId = #{upstreamId}
         </if>
         ) a
-        LEFT JOIN a_adspace d on a.spaceId = d.spaceId
+        LEFT JOIN a_slot d on a.slotId = d.slotId
         LEFT JOIN a_app p on d.appId = p.appId
     </select>
 
     <!-- 上游id对应详情 -->
     <select id="AppUpstreamIdMsg" parameterType="java.lang.String" resultType="com.news.vo.AppUpstreamIdList">
-        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.spaceId,d.spaceName,p.appName,a.probability,a.upstreamPackageName from
-        (SELECT u.upstreamId,u.upstreamAppId,t.name,u.upstreamType,u.spaceId,u.upstreamPackageName,u.probability
+        select a.upstreamId,a.upstreamAppId,a.name,p.appId,d.slotId,d.slotName,p.appName,a.probability,a.upstreamPackageName from
+        (SELECT u.upstreamId,u.upstreamAppId,t.name,u.upstreamType,u.slotId,u.upstreamPackageName,u.probability
         FROM a_upstream u,a_upstream_type t
         where u.upstreamType = t.type and u.upstreamId = #{upstreamId}) a
-        LEFT JOIN a_adspace d on a.spaceId = d.spaceId
+        LEFT JOIN a_slot d on a.slotId = d.slotId
         LEFT JOIN a_app p on d.appId = p.appId
     </select>
 
     <!-- 此id对应的分润比例 -->
     <select id="divided" parameterType="java.lang.String" resultType="java.util.Map">
         select t.upstreamDivided as dividedX,a.dividedY,a.dividedZ
-        from a_upstream u,a_adspace a,a_upstream_type t
-        where u.upstreamId = #{upstreamId} and u.spaceId = a.spaceId and u.upstreamType = t.type
+        from a_upstream u,a_slot a,a_upstream_type t
+        where u.upstreamId = #{upstreamId} and u.slotId = a.slotId and u.upstreamType = t.type
     </select>
 
     <!-- 更换上游 -->
     <select id="check" parameterType="java.lang.String" resultType="java.util.Map">
-        SELECT spaceId,upstreamType
+        SELECT slotId,upstreamType
         FROM `a_upstream`
         where upstreamId = #{upstreamId}
     </select>
@@ -520,13 +543,20 @@
         select * from a_upstream where upstreamId = #{upstreamId}
     </select>
     <update id="deleteUpstream" parameterType="java.lang.String">
-        update a_upstream set spaceId = null where upstreamId = #{upstreamId}
+        update a_upstream set slotId = null where upstreamId = #{upstreamId}
     </update>
-    <update id="updateEndTime" parameterType="com.news.entity.AppAdspaceUpstream">
-        update a_adspace_upstream
+    <update id="updateEndTime" parameterType="com.news.entity.AppSlotUpstream">
+        update a_slot_upstream
         set endTime = now()
-        where spaceId = #{spaceId} and upstreamId = #{upstreamId}
+        where slotId = #{slotId} and upstreamId = #{upstreamId}
     </update>
+
+    <!--查看广告位有几个机型区分id-->
+    <select id="vendorIdNum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(0)
+        from a_upstream
+        where slotId = #{slotId} and vendorDivision is not null
+    </select>
 
     <!-- 设置上游分成比例 -->
     <update id="appUpstreamDivided" parameterType="java.util.Map">
@@ -536,17 +566,17 @@
     </update>
 
     <!-- 广告位详情 -->
-    <select id="adspaceDetail" parameterType="java.lang.String" resultType="java.util.Map">
-        select a.appName,d.spaceName
-        from a_adspace d,a_app a
-        where d.spaceId = #{spaceId} and d.appId = a.appId
+    <select id="slotDetail" parameterType="java.lang.String" resultType="java.util.Map">
+        select a.appName,d.slotName
+        from a_slot d,a_app a
+        where d.slotId = #{slotId} and d.appId = a.appId
     </select>
 
     <!-- 设置广告位divided -->
-    <update id="updateSpaceDivided" parameterType="java.util.Map">
-        update a_adspace
+    <update id="updateSlotDivided" parameterType="java.util.Map">
+        update a_slot
         set dividedY = #{dividedY}, dividedZ = #{dividedZ}
-        where spaceId = #{spaceId}
+        where slotId = #{slotId}
     </update>
 
     <!-- 改变统计数据 -->
@@ -565,33 +595,33 @@
     <update id="upstreamAssign">
         <foreach collection="list" index="index" item="item" open="" close="" separator=";">
             update a_upstream set probability = #{item.probability}
-            where spaceId = #{item.spaceId} and upstreamType = #{item.upstreamType}
+            where slotId = #{item.slotId} and upstreamType = #{item.upstreamType}
         </foreach>
     </update>
 
     <!-- 查询excel数据库对应数据 -->
     <select id="queryExcel" resultType="com.news.entity.UCStatisticsList">
-        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
-        from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
-        where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
+        select u.nickName,ap.appId,ap.appName,ad.slotId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
+        from a_slot_upstream au,a_slot ad,a_app ap,u_user u
+        where au.slotId = ad.slotId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
     </select>
 
     <select id="matchId" resultType="com.news.entity.UCStatisticsList">
-        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
-        from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
-        where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
+        select u.nickName,ap.appId,ap.appName,ad.slotId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
+        from a_slot_upstream au,a_slot ad,a_app ap,u_user u
+        where au.slotId = ad.slotId and ad.appId = ap.appId and ap.userId = u.userId and au.upstreamId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>
     </select>
 
-    <select id="AsSpaceId" resultType="com.news.entity.UCStatisticsList">
-        select u.nickName,ap.appId,ap.appName,ad.spaceId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
-        from a_adspace_upstream au,a_adspace ad,a_app ap,u_user u
-        where au.spaceId = ad.spaceId and ad.appId = ap.appId and ap.userId = u.userId and au.spaceId in
+    <select id="AsSlotId" resultType="com.news.entity.UCStatisticsList">
+        select u.nickName,ap.appId,ap.appName,ad.slotId,ad.dividedY,au.upstreamId,DATE_FORMAT(au.startTime,'%Y-%m-%d') as startTime,IFNULL(au.endTime,NOW()) as endTime
+        from a_slot_upstream au,a_slot ad,a_app ap,u_user u
+        where au.slotId = ad.slotId and ad.appId = ap.appId and ap.userId = u.userId and au.slotId in
         <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
             #{item}
         </foreach>

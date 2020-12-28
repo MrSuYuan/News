@@ -61,14 +61,16 @@
                 <br>
                 <form action="#" method="post">
                     <div align="center">
-                        广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        广告位名称：<input type="text" id="slotName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         日期：<input type="date" id="startTime" style="width:150px;height:30px">
                             - <input type="date" id="endTime" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         <a class="btn btn-primary btn-xs" onclick="selectStatisticsList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
+                        </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a class="btn btn-primary btn-xs" onclick="exportToExcel()">
+                            <i class="ace-icon glyphicon bigger-110"><font size="3">导出数据</font></i>
                         </a>
-
                     </div>
                     <br>
                     <div class="row">
@@ -187,7 +189,7 @@
             data: {
                 "startTime" : $('#startTime').val(),
                 "endTime" : $('#endTime').val(),
-                "spaceName" : $('#spaceName').val(),
+                "slotName" : $('#slotName').val(),
                 "appName" : $('#appName').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
@@ -202,9 +204,9 @@
                         var data = list[i];
                         html+='<tr style="height: 40px">';
                         html+='<td> '+data.appName+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
+                        html+='<td> '+data.slotName+'</td>';
                         html+='<td> '+data.appId+'</td>';
-                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.slotId+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         html+='<td> '+format_number(data.lookPV)+'</td>';
                         html+='<td> '+format_number(data.clickNum)+'</td>';
@@ -264,6 +266,18 @@
         if (len <= 3) { return b; }
         var r = len % 3;
         return r > 0 ? b.slice(0, r) + "," + b.slice(r, len).match(/\d{3}/g).join(",") : b.slice(r, len).match(/\d{3}/g).join(",");
+    }
+
+    //Excel导出
+    function exportToExcel() {
+        var startTime = $('#startTime').val();
+        var endTime = $('#endTime').val();
+        if (startTime == "" || endTime == ""){
+            alert("请选择日期区间")
+        }else{
+            window.location = path + "/app/excel?startTime="+startTime+"&endTime="+endTime;
+        }
+
     }
 </script>
 

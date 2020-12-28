@@ -1,6 +1,6 @@
 package com.news.controller;
 
-import com.news.service.SpaceService;
+import com.news.service.SlotService;
 import com.utils.base.BaseController;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("space")
-@Api(value = "/space", tags = "广告位模块")
-public class SpaceController extends BaseController {
+@RequestMapping("slot")
+@Api(value = "/slot", tags = "广告位模块")
+public class SlotController extends BaseController {
 
     @Autowired
-    SpaceService spaceService;
+    SlotService slotService;
 
-    @RequestMapping(value = "/spaceMsg",method=RequestMethod.POST)
+    @RequestMapping(value = "/slotMsg",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "查看广告位基本信息", notes = "查看广告位基本信息", httpMethod = "POST")
     @CrossOrigin
-    public ReqResponse spaceMsg(String spaceId) {
-        ReqResponse req = spaceService.spaceMsg(spaceId);
+    public ReqResponse slotMsg(String slotId) {
+        ReqResponse req = slotService.slotMsg(slotId);
         return req;
     }
 
@@ -35,8 +35,8 @@ public class SpaceController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "平台分时统计", notes = "平台统计", httpMethod = "POST")
     @CrossOrigin
-    public ReqResponse platformStatistics(String spaceId, String date) {
-        ReqResponse req = spaceService.platformStatistics(spaceId, date);
+    public ReqResponse platformStatistics(String slotId, String date) {
+        ReqResponse req = slotService.platformStatistics(slotId, date);
         return req;
     }
 
@@ -45,8 +45,8 @@ public class SpaceController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "渠道分时统计", notes = "渠道统计", httpMethod = "POST")
     @CrossOrigin
-    public ReqResponse channelStatistics(String spaceId, String date) {
-        ReqResponse req = spaceService.channelStatistics(spaceId, date);
+    public ReqResponse channelStatistics(String slotId, String date) {
+        ReqResponse req = slotService.channelStatistics(slotId, date);
         return req;
     }
 
@@ -61,7 +61,7 @@ public class SpaceController extends BaseController {
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = spaceService.appReportList(appId, slotId, startTime, endTime, currentPage, pageSize);
+            req = slotService.appReportList(appId, slotId, startTime, endTime, currentPage, pageSize);
         }
         return req;
     }
@@ -77,7 +77,7 @@ public class SpaceController extends BaseController {
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = spaceService.appUpstreamReport(createTime, slotId);
+            req = slotService.appUpstreamReport(createTime, slotId);
         }
         return req;
 

@@ -16,6 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -304,6 +305,23 @@ public class TemporaryServiceImpl implements TemporaryService {
                 r.setCpc2(df.format(r.getCpc()));
             }
             r.setClickProbability2(df.format(r.getClickProbability()));
+            //计算星期几
+            String datetime = r.getCreateTime2();
+            SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+            String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+            Calendar cal = Calendar.getInstance(); // 获得一个日历
+            Date datet = null;
+            try {
+                datet = f.parse(datetime);
+                cal.setTime(datet);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
+            if (w < 0)
+                w = 0;
+            r.setWeekTime(weekDays[w]);
+
         }
 
         //总和
@@ -328,4 +346,9 @@ public class TemporaryServiceImpl implements TemporaryService {
         req.setMessage("成功");
         return req;
     }
+
+    public static void main(String[] args) {
+
+    }
+
 }

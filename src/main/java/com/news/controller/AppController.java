@@ -1,6 +1,5 @@
 package com.news.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.news.entity.App;
 import com.news.service.AppService;
 import com.news.service.UserService;
@@ -159,50 +158,50 @@ public class AppController extends BaseController {
         return req;
     }
 
-    @RequestMapping(value = "/createAdspace",method=RequestMethod.POST)
+    @RequestMapping(value = "/createSlot",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "创建广告位信息", notes = "创建广告位信息", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="appId" , value="appId" ,required = true , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = true , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = true , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotType" , value="广告位类型" ,required = true , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="slotName" , value="广告位名称" ,required = true , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="width" , value="宽度" ,required = true , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="height" , value="高度" ,required = true , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse createAdspace(String appId, int spaceType, String spaceName, int width, int height) {
+    public ReqResponse createSlot(String appId, int slotType, String slotName, int width, int height) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.createAdspace((Long)userId, appId, spaceType, spaceName, width, height);
+            req = appService.createSlot((Long)userId, appId, slotType, slotName, width, height);
         }
         return req;
     }
 
-    @RequestMapping(value = "/appAdspaceList",method=RequestMethod.POST)
+    @RequestMapping(value = "/appSlotList",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "广告位列表", notes = "广告位列表", httpMethod = "POST")
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="loginName" , value="筛选项登录账号" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="nickName" , value="筛选项公司名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appId" , value="筛选项APPID" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceType" , value="广告位类型" ,required = false , paramType = "query" ,dataType = "Integer"),
+            @ApiImplicitParam(name="slotId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotType" , value="广告位类型" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页码容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appAdspaceList(String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse appSlotList(String loginName, String nickName, String appId, String slotId, int slotType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appAdspaceList((Long) userId, loginName, nickName, appId, spaceId, spaceType, currentPage, pageSize);
+            req = appService.appSlotList((Long) userId, loginName, nickName, appId, slotId, slotType, currentPage, pageSize);
         }
         return req;
     }
@@ -212,35 +211,36 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "停量 放量", notes = "停量 放量", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="spaceId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotId" , value="筛选项广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="flowStatus" , value="0停量 1放量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse flowStatus(String spaceId, int flowStatus) {
+    public ReqResponse flowStatus(String slotId, int flowStatus) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.flowStatus((Long) userId, spaceId, flowStatus);
+            req = appService.flowStatus((Long) userId, slotId, flowStatus);
         }
         return req;
     }
 
 
-    @RequestMapping(value = "/appAdUpstream",method=RequestMethod.POST)
+    @RequestMapping(value = "/appAddUpstream",method=RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "广告位页面-添加上游", notes = "添加广告位上游信息", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="upstreamId" , value="上游广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="upstreamAppId" , value="上游appId" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="upstreamType" , value="上游平台类型" ,required = false , paramType = "query" ,dataType = "Integer"),
-            @ApiImplicitParam(name="upstreamPackageName" , value="上游包名" ,required = false , paramType = "query" ,dataType = "String")
+            @ApiImplicitParam(name="upstreamPackageName" , value="上游包名" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="vendorDivision" , value="机型区分" ,required = false , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse appAdUpstream(String spaceId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, Integer upstreamWidth, Integer upstreamHeight, int upstreamType) {
+    public ReqResponse appAddUpstream(String slotId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, Integer upstreamWidth, Integer upstreamHeight, int upstreamType, String vendorDivision) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
@@ -248,7 +248,7 @@ public class AppController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             System.out.println();
-            req = appService.appAdUpstream((Long) userId, spaceId, upstreamId, upstreamAppId, upstreamAppName, upstreamPackageName, upstreamWidth, upstreamHeight, upstreamType);
+            req = appService.appAddUpstream((Long) userId, slotId, upstreamId, upstreamAppId, upstreamAppName, upstreamPackageName, upstreamWidth, upstreamHeight, upstreamType, vendorDivision);
         }
         return req;
     }
@@ -258,17 +258,17 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "广告位页面-查看上游", notes = "广告位上游信息列表详情", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String")
+            @ApiImplicitParam(name="slotId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse appUpstreamList(String spaceId) {
+    public ReqResponse appUpstreamList(String slotId) {
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appUpstreamList(spaceId);
+            req = appService.appUpstreamList(slotId);
         }
         return req;
     }
@@ -278,14 +278,14 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "广告位页面-查看分流", notes = "查看分流", httpMethod = "POST")
     @CrossOrigin
-    public ReqResponse selectAppAssign(String spaceId){
+    public ReqResponse selectAppAssign(String slotId){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.selectAppAssign(spaceId);
+            req = appService.selectAppAssign(slotId);
         }
         return req;
     }
@@ -294,28 +294,28 @@ public class AppController extends BaseController {
     @ResponseBody
     @ApiOperation(value = "修改分流比例", notes = "修改分流比例", httpMethod = "POST")
     @CrossOrigin
-    public ReqResponse assignSubmit(@RequestParam("list")String list, String spaceId){
+    public ReqResponse assignSubmit(@RequestParam("list")String list, String slotId){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.assignSubmit(list, spaceId);
+            req = appService.assignSubmit(list, slotId);
         }
         return req;
     }
 
-    @RequestMapping(value="updateSpaceDivided", method= RequestMethod.POST)
+    @RequestMapping(value="updateSlotDivided", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "广告位页面-修改分成", notes = "分成", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="spaceId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="dividedY" , value="Y" ,required = false , paramType = "query" ,dataType = "Double"),
             @ApiImplicitParam(name="dividedZ" , value="Z" ,required = false , paramType = "query" ,dataType = "Double")
     })
     @CrossOrigin
-    public ReqResponse updateSpaceDivided(String spaceId, double dividedY, double dividedZ){
+    public ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         Object userLevel = request.getSession().getAttribute("userLevel");
@@ -324,7 +324,7 @@ public class AppController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             if ((int)userLevel == 1 || (int)userLevel == 2){
-                req = appService.updateSpaceDivided(spaceId, dividedY, dividedZ);
+                req = appService.updateSlotDivided(slotId, dividedY, dividedZ);
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("您没有权限");
@@ -577,13 +577,13 @@ public class AppController extends BaseController {
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appStatisticsUser(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize){
+    public ReqResponse appStatisticsUser(String startTime, String endTime, String slotName, String appName, Integer currentPage, Integer pageSize){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         Object userLevel = request.getSession().getAttribute("userLevel");
@@ -591,7 +591,7 @@ public class AppController extends BaseController {
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appStatisticsUserList((int)userLevel, startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize);
+            req = appService.appStatisticsUserList((int)userLevel, startTime, endTime, (Long)userId, slotName, appName, currentPage, pageSize);
         }
         return req;
     }
@@ -604,20 +604,20 @@ public class AppController extends BaseController {
             @ApiImplicitParam(name="status" , value="审核状态" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="startTime" , value="起始时间" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="endTime" , value="结束时间" ,required = false , paramType = "query" ,dataType = "String"),
-            @ApiImplicitParam(name="spaceName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
+            @ApiImplicitParam(name="slotName" , value="广告位名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="appName" , value="app名称" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="currentPage" , value="当前页" ,required = false , paramType = "query" ,dataType = "Integer"),
             @ApiImplicitParam(name="pageSize" , value="页面容量" ,required = false , paramType = "query" ,dataType = "Integer")
     })
     @CrossOrigin
-    public ReqResponse appStatisticsManage(String startTime, String endTime, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status){
+    public ReqResponse appStatisticsManage(String startTime, String endTime, String slotName, String appName, Integer currentPage, Integer pageSize, Integer status){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.appStatisticsList(startTime, endTime, (Long)userId, spaceName, appName, currentPage, pageSize, status);
+            req = appService.appStatisticsList(startTime, endTime, (Long)userId, slotName, appName, currentPage, pageSize, status);
         }
         return req;
     }
@@ -671,21 +671,21 @@ public class AppController extends BaseController {
         return req;
     }
 
-    @RequestMapping(value="adspaceDetail", method= RequestMethod.POST)
+    @RequestMapping(value="slotDetail", method= RequestMethod.POST)
     @ResponseBody
     @ApiOperation(value = "广告位详情", notes = "广告位详情", httpMethod = "POST")
     @ApiImplicitParams(value={
-            @ApiImplicitParam(name="spaceId" , value="广告位ID" ,required = true , paramType = "query" ,dataType = "String")
+            @ApiImplicitParam(name="slotId" , value="广告位ID" ,required = true , paramType = "query" ,dataType = "String")
     })
     @CrossOrigin
-    public ReqResponse adspaceDetail(String spaceId){
+    public ReqResponse slotDetail(String slotId){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         if(null == userId){
             req.setCode(ErrorMessage.INVALID_LOGIN.getCode());
             req.setMessage("无效的登录");
         }else{
-            req = appService.adspaceDetail(spaceId);
+            req = appService.slotDetail(slotId);
         }
         return req;
     }
@@ -868,6 +868,22 @@ public class AppController extends BaseController {
     @ResponseBody
     public void back(@RequestBody String data, HttpServletResponse response) throws Exception{
         appService.insertParam(data);
+    }
+
+
+    @RequestMapping(value = "excel" , method= RequestMethod.GET)
+    @ApiOperation(value = "数据统计列表", notes = "数据统计列表", httpMethod = "GET")
+    public void excel(HttpServletResponse response)throws Exception{
+
+        Object userId = request.getSession().getAttribute("userId");
+        String startTime = request.getParameter("startTime");
+        String endTime = request.getParameter("endTime");
+        String excelName = startTime+"-"+endTime;
+        OutputStream out = response.getOutputStream();
+        response.reset();
+        response.addHeader("Content-Disposition", "filename="+new String(excelName.getBytes("gb2312"), "utf-8" )+".xls");
+        response.setContentType("application/octet-stream; charset=utf-8");
+        appService.excel((long)userId, startTime, endTime, null, out);
     }
 
 }

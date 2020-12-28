@@ -61,7 +61,7 @@
                 <br>
                 <form action="#" method="post">
                     <div align="center">
-                        广告位名称：<input type="text" id="spaceName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
+                        广告位名称：<input type="text" id="slotName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         APP名称：<input type="text" id="appName" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         日期：<input type="date" id="startTime" style="width:120px;height:30px">
                         - <input type="date" id="endTime" style="width:120px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -93,7 +93,7 @@
                                         <th>广告位ID</th>
                                         <%--<th>上游APPID</th>--%>
                                         <th>上游广告位ID</th>
-                                        <th>上游平台</th>
+                                        <%--<th>上游平台</th>--%>
                                         <th>日期</th>
                                         <th>展现pv</th>
                                         <th>点击数</th>
@@ -199,7 +199,7 @@
                 "status" : $('#status').val(),
                 "startTime" : $('#startTime').val(),
                 "endTime" : $('#endTime').val(),
-                "spaceName" : $('#spaceName').val(),
+                "slotName" : $('#slotName').val(),
                 "appName" : $('#appName').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize
@@ -220,12 +220,12 @@
                             html+='<td><input type="checkbox" disabled/></td>';
                         }
                         html+='<td> '+data.appName+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
+                        html+='<td> '+data.slotName+'</td>';
                         html+='<td> '+data.appId+'</td>';
-                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.slotId+'</td>';
                         /*html+='<td> '+data.upstreamAppId+'</td>';*/
                         html+='<td> '+data.upstreamId+'</td>';
-                        html+='<td> '+data.name+'</td>';
+                        //html+='<td> '+data.name+'</td>';
                         html+='<td> '+data.createTime+'</td>';
                         html+='<td> '+format_number(data.lookPV)+'</td>';
                         html+='<td> '+format_number(data.clickNum)+'</td>';
@@ -236,7 +236,7 @@
                             html+='<td id="td'+data.statisticsId+'"><button type="button" class="btn btn-minier btn-success" onclick="changeStatus('+data.statisticsId+')">通过</button>&nbsp;' +
                                 '<button type="button" class="btn btn-minier btn-danger" onclick="deleteStatistics('+data.statisticsId+')">删除</button></td>';
                         } else if (status == 1) {
-                            html+='<td>已通过</td>';
+                            html+='<td>已通过&nbsp;&nbsp;<button type="button" class="btn btn-minier btn-danger" onclick="deleteStatistics('+data.statisticsId+')">删除</button></td></td>';
                         }
                         html+='</tr>';
                     }

@@ -19,7 +19,7 @@ public class UCStatisticsList {
     /**
      * 平台广告位id
      */
-    private String spaceId;
+    private String slotId;
     /**
      * appid
      */
@@ -150,12 +150,12 @@ public class UCStatisticsList {
         this.upstreamName = upstreamName;
     }
 
-    public String getSpaceId() {
-        return spaceId;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
     public String getAppId() {

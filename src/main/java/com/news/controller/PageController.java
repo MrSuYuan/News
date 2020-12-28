@@ -152,37 +152,37 @@ public class PageController extends BaseController {
     /**
      * APP广告位列表
      */
-    @RequestMapping(value = "appAdspaceList" , method= RequestMethod.GET)
+    @RequestMapping(value = "appSlotList" , method= RequestMethod.GET)
     @ApiOperation(value = "APP广告位列表", notes = "APP广告位列表", httpMethod = "GET")
-    public String appAdspaceList(){ return "/html/app/appAdspaceList.jsp";}
+    public String appSlotList(){ return "html/app/appSlotList.jsp";}
 
     /**
      * APP添加代码位信息
      */
-    @RequestMapping(value = "appAdspaceAdd" , method= RequestMethod.GET)
+    @RequestMapping(value = "appSlotAdd" , method= RequestMethod.GET)
     @ApiOperation(value = "添加APP代码位信息", notes = "添加APP代码位信息", httpMethod = "GET")
-    public String appAdspaceAdd(){ return "/html/app/appAdspaceAdd.jsp";}
+    public String appSlotAdd(){ return "html/app/appSlotAdd.jsp";}
 
     /**
      * APP编辑上游信息
      */
-    @RequestMapping(value = "appAdspaceAddUpstream" , method= RequestMethod.GET)
+    @RequestMapping(value = "appSlotAddUpstream" , method= RequestMethod.GET)
     @ApiOperation(value = "APP编辑上游信息", notes = "APP编辑上游信息", httpMethod = "GET")
-    public String appAdspaceAddUpstream(){ return "/html/app/appAdspaceAddUpstream.jsp";}
+    public String appSlotAddUpstream(){ return "html/app/appSlotAddUpstream.jsp";}
 
     /**
      * APP上游信息列表
      */
-    @RequestMapping(value = "appAdspaceUpstreamList" , method= RequestMethod.GET)
+    @RequestMapping(value = "appSlotUpstreamList" , method= RequestMethod.GET)
     @ApiOperation(value = "APP上游信息列表", notes = "APP上游信息列表", httpMethod = "GET")
-    public String appAdspaceUpstreamList(){ return "/html/app/appAdspaceUpstreamList.jsp";}
+    public String appSlotUpstreamList(){ return "html/app/appSlotUpstreamList.jsp";}
 
     /**
      * APP广告位上报详情
      */
-    @RequestMapping(value = "appAdspaceReport" , method= RequestMethod.GET)
+    @RequestMapping(value = "appSlotReport" , method= RequestMethod.GET)
     @ApiOperation(value = "APP广告位上报详情", notes = "APP广告位上报详情", httpMethod = "GET")
-    public String appAdspaceReport(){ return "/html/app/appAdspaceReport.jsp";}
+    public String appSlotReport(){ return "html/app/appSlotReport.jsp";}
 
     /**
      * APP激励视频调度分配

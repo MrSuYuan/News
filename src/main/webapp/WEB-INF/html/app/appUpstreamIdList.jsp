@@ -86,6 +86,7 @@
                                                 <th>平台广告位ID</th>
                                                 <th>app名称</th>
                                                 <th>广告位名称</th>
+                                                <th>机型定向</th>
                                                 <th>操作</th>
                                             </tr>
                                             </thead>
@@ -204,12 +205,24 @@
                         html+='<td> '+data.upstreamId+'</td>';
                         html+='<td> '+data.upstreamAppId+'</td>';
                         html+='<td> '+data.name+'</td>';
-                        html+='<td> '+data.appId+'</td>';
-                        html+='<td> '+data.spaceId+'</td>';
-                        html+='<td> '+data.appName+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
+                        if(data.appId==null || data.appId==""){
+                            html+='<td><font color="red">暂未使用</font></td>';
+                            html+='<td> </td>';
+                            html+='<td> </td>';
+                            html+='<td> </td>';
+                        }else{
+                            html+='<td> '+data.appId+'</td>';
+                            html+='<td> '+data.slotId+'</td>';
+                            html+='<td> '+data.appName+'</td>';
+                            html+='<td> '+data.slotName+'</td>';
+                        }
+                        if (data.vendorDivision != null && data.vendorDivision != "") {
+                            html+='<td> '+data.vendorDivision+'</td>';
+                        }else{
+                            html+='<td> 否</td>';
+                        }
                         //html+='<td><input type="button" value="更换绑定" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">';
-                        html+='<td><input type="button" value="删除ID" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
+                        html+='<td><input type="button" value="解除绑定关系" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
                         html+='</tr>';
                     }
                     //添加数据

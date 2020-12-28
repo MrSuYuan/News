@@ -181,7 +181,7 @@
             return false;
         }
         $.ajax({
-            url: path + "/space/appReportList",
+            url: path + "/slot/appReportList",
             type: "post",
             data: {
                 "startTime" : $('#startTime').val(),
@@ -286,7 +286,7 @@
     //查询展开数据 id是行数从0开始
     function zhankai(id, createTime, slotId){
         $.ajax({
-            url: path + "/space/appUpstreamReport",
+            url: path + "/slot/appUpstreamReport",
             type: "post",
             data: {
                 "createTime" : createTime,

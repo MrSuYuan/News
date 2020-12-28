@@ -3,12 +3,12 @@ package com.news.vo;
 /**
  * 广告位返回信息
  */
-public class AppAdspaceListVo {
+public class AppSlotListVo {
 
     /**
      * 广告位id
      */
-    private String spaceId;
+    private String slotId;
     /**
      * appId
      */
@@ -16,7 +16,7 @@ public class AppAdspaceListVo {
     /**
      * 广告位类型(1横幅 2开屏 3插屏 4信息流 5激励视频)
      */
-    private int spaceType;
+    private int slotType;
     /**
      * 创建时间
      */
@@ -24,7 +24,7 @@ public class AppAdspaceListVo {
     /**
      * 广告位名称
      */
-    private String spaceName;
+    private String slotName;
     /**
      * 宽度
      */
@@ -77,16 +77,12 @@ public class AppAdspaceListVo {
         return dividedZ;
     }
 
-    public void setDividedZ(double dividedZ) {
-        this.dividedZ = dividedZ;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public String getSpaceId() {
-        return spaceId;
-    }
-
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
     public String getAppId() {
@@ -97,12 +93,12 @@ public class AppAdspaceListVo {
         this.appId = appId;
     }
 
-    public int getSpaceType() {
-        return spaceType;
+    public int getSlotType() {
+        return slotType;
     }
 
-    public void setSpaceType(int spaceType) {
-        this.spaceType = spaceType;
+    public void setSlotType(int slotType) {
+        this.slotType = slotType;
     }
 
     public String getCreateTime() {
@@ -113,12 +109,16 @@ public class AppAdspaceListVo {
         this.createTime = createTime;
     }
 
-    public String getSpaceName() {
-        return spaceName;
+    public String getSlotName() {
+        return slotName;
     }
 
-    public void setSpaceName(String spaceName) {
-        this.spaceName = spaceName;
+    public void setSlotName(String slotName) {
+        this.slotName = slotName;
+    }
+
+    public void setDividedZ(double dividedZ) {
+        this.dividedZ = dividedZ;
     }
 
     public int getWidth() {

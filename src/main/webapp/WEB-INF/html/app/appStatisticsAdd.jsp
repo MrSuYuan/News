@@ -66,7 +66,7 @@
                                 <td align = "right">APP名称&nbsp;:&nbsp;</td>
                                 <td width="300"><span id="appName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td align = "right">广告位名称&nbsp;:&nbsp;</td>
-                                <td width="300"><span id="spaceName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                <td width="300"><span id="slotName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td align = "right">上游类型&nbsp;:&nbsp;</td>
                                 <td width="300"><span id="upstreamName"></span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                 <td align = "right">上游ID&nbsp;:&nbsp;</td>
@@ -153,7 +153,7 @@
     loading("appStatisticsAdd", $('#userName').val());
 
     /**
-     * 页面加载完毕,取出session的spaceId
+     * 页面加载完毕,取出session的slotId
      */
     $(document).ready(function(){
         var upstreamId =  sessionStorage.getItem("upstreamId");
@@ -176,7 +176,7 @@
                 if(obj.code == 200){
                     var msg = obj.result.msg;
                     $('#appName').html(msg.appName);
-                    $('#spaceName').html(msg.spaceName);
+                    $('#slotName').html(msg.slotName);
                     $('#upstreamName').html(msg.name);
                     $('#upstreamIdSpan').html(msg.upstreamId);
                     var divided = obj.result.divided;
@@ -278,7 +278,7 @@
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    window.location = path + "/appAdspaceList";
+                    window.location = path + "/appSlotList";
                 }else if(obj.code == 300){
                     alert(obj.message);
                     window.location = path + "/login";

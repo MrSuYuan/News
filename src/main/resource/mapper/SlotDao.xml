@@ -2,20 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <!-- 广告位模块 -->
-<mapper namespace="com.news.dao.SpaceDao">
+<mapper namespace="com.news.dao.SlotDao">
 
     <!-- 广告位基本信息 -->
-    <select id="spaceMsg" parameterType="java.lang.String" resultType="com.news.vo.AppAdspaceListVo">
-        select a.appName,a.appId,s.spaceId,s.spaceName,s.spaceType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
-        from a_adspace s,a_app a,u_user u
-        where s.spaceId = #{spaceId} and s.appId = a.appId and a.userId = u.userId
+    <select id="slotMsg" parameterType="java.lang.String" resultType="com.news.vo.AppSlotListVo">
+        select a.appName,a.appId,s.slotId,s.slotName,s.slotType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
+        from a_slot s,a_app a,u_user u
+        where s.slotId = #{slotId} and s.appId = a.appId and a.userId = u.userId
     </select>
 
     <!-- 平台分时统计查询 -->
     <select id="platformStatisticsList" parameterType="java.util.Map" resultType="com.news.vo.PlatformStatisticsListVo">
-        select u.*,d.downstreamRequest
+        select u.*,t200,t250,t300,t400,t500,t1000,d.downstreamRequest
         from a_report_downstream d,
-        (select appId,slotId,hour,SUM(request) as request,SUM(response) as response,SUM(look) as look,SUM(click) as click,SUM(deeplink) as deeplink,createTime,SUM(t300) as t300,SUM(t400) as t400,SUM(t500) as t500,SUM(t1000) as t1000
+        (select appId,slotId,hour,SUM(request) as request,SUM(response) as response,SUM(look) as look,SUM(click) as click,SUM(deeplink) as deeplink,createTime
         from a_report_upstream
         where slotId = #{slotId} and createTime = #{createTime}
         GROUP BY hour) u
@@ -24,7 +24,7 @@
 
     <!-- 渠道分时统计-求和 -->
     <select id="ChannelStatisticsSumList" parameterType="java.util.Map" resultType="com.news.vo.ChannelStatisticsSumListVo">
-        select u.slotId,u.upstreamId,IFNULL(t.`name`,"平台") as name,u.upstreamType,sum(u.request) as request,SUM(u.response) as response,SUM(u.look) as look,SUM(u.click) as click, SUM(u.deeplink) as deeplink,SUM(u.t300) as t300,SUM(u.t400) as t400,SUM(u.t500) as t500,SUM(u.t1000) as t1000
+        select u.slotId,u.upstreamId,IFNULL(t.`name`,"平台") as name,u.upstreamType,sum(u.request) as request,SUM(u.response) as response,SUM(u.look) as look,SUM(u.click) as click, SUM(u.deeplink) as deeplink
         from a_report_upstream u
         left join a_upstream_type t
         on  u.upstreamType = t.type

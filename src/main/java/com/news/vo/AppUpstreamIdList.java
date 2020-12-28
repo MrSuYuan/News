@@ -24,17 +24,26 @@ public class AppUpstreamIdList {
     /**
      *
      */
-    private String spaceId;
+    private String slotId;
     /**
      *
      */
-    private String spaceName;
+    private String slotName;
     /**
      *
      */
     private String appName;
     private int probability;
     private String upstreamPackageName;
+    private String vendorDivision;
+
+    public String getVendorDivision() {
+        return vendorDivision;
+    }
+
+    public void setVendorDivision(String vendorDivision) {
+        this.vendorDivision = vendorDivision;
+    }
 
     public String getUpstreamPackageName() {
         return upstreamPackageName;
@@ -84,20 +93,20 @@ public class AppUpstreamIdList {
         this.appId = appId;
     }
 
-    public String getSpaceId() {
-        return spaceId;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
-    public String getSpaceName() {
-        return spaceName;
+    public String getSlotName() {
+        return slotName;
     }
 
-    public void setSpaceName(String spaceName) {
-        this.spaceName = spaceName;
+    public void setSlotName(String slotName) {
+        this.slotName = slotName;
     }
 
     public String getAppName() {

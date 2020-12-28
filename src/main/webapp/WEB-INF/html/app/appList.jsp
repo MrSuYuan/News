@@ -280,8 +280,8 @@
                         //     html+='<td><font color="red">状态错误</font></td>';
                         // }
                         html+='<td>' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="addAdspace(\''+data.appId+'\')">添加</button>&nbsp;&nbsp;' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="seeAdspace(\''+data.appId+'\')">查看</button>' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="addSlot(\''+data.appId+'\')">添加</button>&nbsp;&nbsp;' +
+                            '<button type=button class="btn btn-minier btn-success" onclick="seeSlot(\''+data.appId+'\')">查看</button>' +
                             '</td>';
                         html+='</tr>';
                     }
@@ -383,14 +383,14 @@
         });
     }
 
-    function addAdspace(appId){
+    function addSlot(appId){
         sessionStorage.setItem("appId",appId);
-        window.location = path+"/appAdspaceAdd";
+        window.location = path+"/appSlotAdd";
     }
 
-    function seeAdspace(appId){
+    function seeSlot(appId){
         sessionStorage.setItem("appId",appId);
-        window.location = path+"/appAdspaceList";
+        window.location = path+"/appSlotList";
     }
 
 </script>

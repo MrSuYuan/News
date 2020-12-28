@@ -22,7 +22,7 @@ public class AppIdUtil {
         return linkNo;
     }
 
-    public static String getSpaceId() {
+    public static String getSlotId() {
         String linkNo = "";
         // 用字符数组的方式随机
         String model = "0123456789abcdefghijklmnopqrstuvwxyz";

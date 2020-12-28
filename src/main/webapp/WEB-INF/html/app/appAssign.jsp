@@ -58,7 +58,7 @@
 
             <!-- 页面主体部分 -->
             <div class="page-content">
-                <input type="hidden" id="spaceId">
+                <input type="hidden" id="slotId">
                 <div style="width: 100%">
                     <form action="#" method="post">
                         <div style="display:inline;width: 50%">
@@ -70,7 +70,7 @@
                                 <tr height = "50">
                                     <td></td>
                                     <td>
-                                        <%--<input type="button" id="editZ" value="编辑" onclick="createAdspace()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
+                                        <%--<input type="button" id="editZ" value="编辑" onclick="createSlot()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;--%>
                                         <input type="button" id="submitZ" value="确定" onclick="updateAssign()">
                                     </td>
                                 </tr>
@@ -115,8 +115,8 @@
     $(document).ready(function(){
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
-        var spaceId = sessionStorage.getItem("spaceId");
-        $('#spaceId').val(spaceId);
+        var slotId = sessionStorage.getItem("slotId");
+        $('#slotId').val(slotId);
         selectAppAssign();
     });
 
@@ -127,7 +127,7 @@
             url: path + "/app/selectAppAssign",
             type: "post",
             data:{
-                "spaceId" : $('#spaceId').val()
+                "slotId" : $('#slotId').val()
             },
             dataType: 'json',
             async: false,
@@ -174,7 +174,7 @@
             url: path + "/app/assignSubmit",
             type: "post",
             data : {
-                "spaceId" : $('#spaceId').val(),
+                "slotId" : $('#slotId').val(),
                 "list" : JSON.stringify(objs)
             },
             dataType: 'json',

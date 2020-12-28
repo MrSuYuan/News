@@ -91,7 +91,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label no-padding-right">广告位名称</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" id="adspaceName" value="" disabled/>
+                                                            <input type="text" id="slotName" value="" disabled/>
                                                         </div>
                                                     </div>
                                                     <div class="form-group">
@@ -104,7 +104,7 @@
                                                     <div class="form-group">
                                                         <label class="col-sm-3 control-label no-padding-right">广告位ID</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" id="adspaceId" value="" disabled/>
+                                                            <input type="text" id="slotId" value="" disabled/>
                                                         </div>
                                                     </div>
                                                     <div class="space-4"></div>
@@ -289,9 +289,9 @@
                 if(obj.code == 200){
                     var msg = obj.result.msg;
                     $('#appName').val(msg.appName);
-                    $('#adspaceName').val(msg.spaceName);
+                    $('#slotName').val(msg.slotName);
                     $('#appId').val(msg.appId);
-                    $('#adspaceId').val(msg.spaceId);
+                    $('#slotId').val(msg.slotId);
                     $('#probability').val(msg.probability);
                     $('#oldUpstreamId').val(msg.upstreamId);
                     $('#oldUpstreamAppId').val(msg.upstreamAppId);

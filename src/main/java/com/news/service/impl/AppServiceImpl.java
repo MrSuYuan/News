@@ -10,11 +10,13 @@ import com.news.vo.*;
 import com.utils.id.AppIdUtil;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -187,31 +189,31 @@ public class AppServiceImpl implements AppService {
      * 创建代码位信息
      */
     @Override
-    public ReqResponse createAdspace(Long userId, String appId, int spaceType, String spaceName, int width, int height) {
+    public ReqResponse createSlot(Long userId, String appId, int slotType, String slotName, int width, int height) {
         ReqResponse req = new ReqResponse();
         //广告位名称验重
-        int spaceNameNum = appDao.spaceNameNum(spaceName);
-        if(spaceNameNum == 0){
+        int slotNameNum = appDao.slotNameNum(slotName);
+        if(slotNameNum == 0){
             //查看app上级id
             Long appParentId = appDao.appParent(appId);
             //查看app所属用户id
             Long appUserId = appDao.appUserId(appId);
             //自己,最高权限和上级都有资格添加广告位
             if(userId.longValue() == appParentId.longValue() || userId.longValue() == appUserId.longValue() || userId.longValue() == 1){
-                AppAdspace ad = new AppAdspace();
+                AppSlot ad = new AppSlot();
                 ad.setAppId(appId);
-                ad.setSpaceType(spaceType);
-                ad.setSpaceName(spaceName);
+                ad.setSlotType(slotType);
+                ad.setSlotName(slotName);
                 ad.setWidth(width);
                 ad.setHeight(height);
-                ad.setSpaceId(AppIdUtil.getSpaceId());
-                appDao.createAdspace(ad);
+                ad.setSlotId(AppIdUtil.getSlotId());
+                appDao.createSlot(ad);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("创建成功");
 
                 /*//查看此app是否拥有同类型广告位(app每一种广告位只能有一种)
-                int appSpaceNum = appDao.appSpaceNum(ad);
-                if(appSpaceNum == 0){
+                int appSlotNum = appDao.appSlotNum(ad);
+                if(appSlotNum == 0){
 
                 }else{
                     req.setCode(ErrorMessage.FAIL.getCode());
@@ -233,7 +235,7 @@ public class AppServiceImpl implements AppService {
      * 广告位列表
      */
     @Override
-    public ReqResponse appAdspaceList(Long userId, String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize) {
+    public ReqResponse appSlotList(Long userId, String loginName, String nickName, String appId, String slotId, int slotType, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -245,20 +247,20 @@ public class AppServiceImpl implements AppService {
         }
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
-        map.put("spaceType",spaceType);
+        map.put("slotType",slotType);
         map.put("loginName",loginName);
         map.put("nickName",nickName);
         map.put("appId",appId);
-        map.put("spaceId",spaceId);
+        map.put("slotId",slotId);
         //查看当前用户身份
         int userLevel = userDao.userLevel(userId);
         map.put("userLevel",userLevel);
         map.put("userId",userId);
         //最高权限能看到所有的app信息,管理只能看到自己下级,普通用户只能看到自己的
         //app列表
-        List<AppAdspaceListVo> adspaceList = appDao.appAdspaceList(map);
+        List<AppSlotListVo> slotList = appDao.appSlotList(map);
         //app数量
-        int sumData = appDao.appAdspaceListNum(map);
+        int sumData = appDao.appSlotListNum(map);
         //总页数
         int sumPage = 0;
         if(sumData%Integer.valueOf(pageSize) == 0){
@@ -267,7 +269,7 @@ public class AppServiceImpl implements AppService {
             sumPage = (sumData/Integer.valueOf(pageSize)) + 1;
         }
         Map<String,Object> result = new HashMap<>();
-        result.put("adspaceList",adspaceList);
+        result.put("slotList",slotList);
         result.put("currentPage",currentPage);
         result.put("pageSize",pageSize);
         result.put("sumPage",sumPage);
@@ -283,11 +285,11 @@ public class AppServiceImpl implements AppService {
      * @param flowStatus 0停量 1放量
      */
     @Override
-    public ReqResponse flowStatus(Long userId, String spaceId, int flowStatus) {
+    public ReqResponse flowStatus(Long userId, String slotId, int flowStatus) {
         ReqResponse req = new ReqResponse();
         try{
             Map<String,Object> map = new HashMap<>();
-            map.put("spaceId",spaceId);
+            map.put("slotId",slotId);
             map.put("flowStatus",flowStatus);
             appDao.updateFlowStatus(map);
             req.setCode(ErrorMessage.SUCCESS.getCode());
@@ -303,16 +305,16 @@ public class AppServiceImpl implements AppService {
      * 添加上游广告位信息
      */
     @Override
-    public ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, int upstreamWidth, int upstreamHeight, int upstreamType) {
+    public ReqResponse appAddUpstream(Long userId, String slotId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, int upstreamWidth, int upstreamHeight, int upstreamType, String vendorDivision) {
         ReqResponse req = new ReqResponse();
-        //查看广告位所属app的上级id
-        Map<String,Object> parent = appDao.adParentId(spaceId);
+        //1.操作人员权限--查看广告位所属app的上级id
+        Map<String,Object> parent = appDao.adParentId(slotId);
         if(userId.longValue() == (Long)parent.get("parentId") || userId.longValue() == 1){
 
             //添加上游广告位信息
             AppUpstream appUpstream = new AppUpstream();
             appUpstream.setCreateTime(new Date());
-            appUpstream.setSpaceId(spaceId);
+            appUpstream.setSlotId(slotId);
             appUpstream.setUpstreamId(upstreamId);
             appUpstream.setUpstreamAppId(upstreamAppId);
             appUpstream.setUpstreamType(upstreamType);
@@ -320,46 +322,112 @@ public class AppServiceImpl implements AppService {
             appUpstream.setUpstreamAppName(upstreamAppName);
             appUpstream.setUpstreamWidth(upstreamWidth);
             appUpstream.setUpstreamHeight(upstreamHeight);
-            //查看此广告位有没有重复上游类型
+            //2.重复上游检测--查看此广告位有没有重复上游类型
             int appUpstreamNum = appDao.appUpstreamNum(appUpstream);
             if(appUpstreamNum == 0){
 
-                //如果是第一家,就添加调度信息100%,其余家都是0
-                int assignNum = appDao.assignNum(spaceId);
-                if(assignNum == 0){
-                    appUpstream.setProbability(100);
-                }else{
-                    appUpstream.setProbability(0);
-                }
-
+                //3.查看此上游id存不存在,有没有使用
                 AppUpstream upstream = appDao.queryUpstream(upstreamId);
                 //如果此id不存在,那就直接添加
                 if (null == upstream){
-                    //添加广告位信息
-                    appDao.insertAppUpstream(appUpstream);
+
+                    //4-1.查看是不是划分机型的id,分机型
+                    if (null != vendorDivision && !"".equals(vendorDivision)){
+
+                        Map<String,Object> map = new HashMap<>();
+                        map.put("slotId",slotId);
+                        //查看有没有已经存在定向vendorDivision
+                        map.put("vendorDivision",vendorDivision);
+                        int slotVendorNum = appDao.slotVendor(map);
+                        if (slotVendorNum > 0){
+                            //比如已经存在了oppo定向id了,驳回新的oppo定向id申请
+                            req.setCode(ErrorMessage.FAIL.getCode());
+                            req.setMessage("此广告位已经包含指定机型定向ID");
+                            return req;
+                        }
+                        appUpstream.setProbability(100);
+                        appUpstream.setVendorDivision(vendorDivision);
+                        //添加广告位信息
+                        appDao.insertAppUpstream(appUpstream);
+                        //将广告位改为分机型类型
+                        map.put("vendorStatus",1);
+                        appDao.updateVendorStatus(map);
+                    }
+                    //4-2.不分机型
+                    else{
+                        //如果是第一家(去除机型定向的id后),就添加调度信息100%,其余家都是0
+                        int assignNum = appDao.assignNum(slotId);
+                        if(assignNum == 0){
+                            appUpstream.setProbability(100);
+                        }else{
+                            appUpstream.setProbability(0);
+                        }
+                        appUpstream.setVendorDivision(null);
+                        //添加广告位信息
+                        appDao.insertAppUpstream(appUpstream);
+
+                    }
+
                 }
                 //id存在的时候分两种情况
                 else{
-                    //如果此id已经存在,但是没有绑定平台信息,那就直接修改
-                    if (null == upstream.getSpaceId() || "".equals(upstream.getSpaceId())){
-                        appDao.updateAppUpstream(appUpstream);
+                    //id存在未使用(如果此id已经存在,但是没有绑定平台信息,那就直接修改)
+                    if (null == upstream.getSlotId() || "".equals(upstream.getSlotId())){
+
+                        //4-1.查看是不是划分机型的id,分机型
+                        if (null != vendorDivision && !"".equals(vendorDivision)){
+                            Map<String,Object> map = new HashMap<>();
+                            map.put("slotId",slotId);
+                            //查看有没有已经存在定向vendorDivision
+                            map.put("vendorDivision",vendorDivision);
+                            int slotVendorNum = appDao.slotVendor(map);
+                            if (slotVendorNum > 0){
+                                //比如已经存在了oppo定向id了,驳回新的oppo定向id申请
+                                req.setCode(ErrorMessage.FAIL.getCode());
+                                req.setMessage("此广告位已经包含指定机型定向ID");
+                                return req;
+                            }
+                            appUpstream.setProbability(100);
+                            appUpstream.setVendorDivision(vendorDivision);
+                            //修改广告位上游信息
+                            appDao.updateAppUpstream(appUpstream);
+                            //将广告位改为分机型类型
+                            map.put("vendorStatus",1);
+                            appDao.updateVendorStatus(map);
+                        }
+                        //4-2.不分机型
+                        else{
+                            //如果是第一家(去除机型定向的id后),就添加调度信息100%,其余家都是0
+                            int assignNum = appDao.assignNum(slotId);
+                            if(assignNum == 0){
+                                appUpstream.setProbability(100);
+                            }else{
+                                appUpstream.setProbability(0);
+                            }
+                            appUpstream.setVendorDivision(null);
+                            //修改广告位上游信息
+                            appDao.updateAppUpstream(appUpstream);
+
+                        }
+
                     }
-                    //如果此id已经存在,并且绑定了平台广告位,那就无法添加
+                    //id存在已使用(如果此id已经存在,并且绑定了平台广告位,那就无法添加)
                     else{
                         req.setCode(ErrorMessage.FAIL.getCode());
-                        req.setMessage("此上游广告位ID已经存在");
+                        req.setMessage("此上游广告位ID已经使用");
                         return req;
                     }
                 }
 
                 //添加广告位和上游的绑定信息(id使用记录)
-                AppAdspaceUpstream au = new AppAdspaceUpstream();
-                au.setSpaceId(spaceId);
+                AppSlotUpstream au = new AppSlotUpstream();
+                au.setSlotId(slotId);
                 au.setUpstreamId(upstreamId);
                 au.setUpstreamType(upstreamType);
-                appDao.insertAppAdspaceUpstream(au);
+                appDao.insertAppSlotUpstream(au);
                 req.setCode(ErrorMessage.SUCCESS.getCode());
                 req.setMessage("添加成功");
+
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("该上游信息已经存在");
@@ -376,9 +444,9 @@ public class AppServiceImpl implements AppService {
      * 上游广告位列表
      */
     @Override
-    public ReqResponse appUpstreamList(String spaceId) {
+    public ReqResponse appUpstreamList(String slotId) {
         ReqResponse req = new ReqResponse();
-        List<AppUpstream> list = appDao.appUpstreamList(spaceId);
+        List<AppUpstream> list = appDao.appUpstreamList(slotId);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setResult(list);
         return req;
@@ -416,7 +484,7 @@ public class AppServiceImpl implements AppService {
                     as.setClickProbability((double)as.getClickNum()/(double)as.getLookPV()*100);
                     as.setEcpm(as.getIncome()*1000/(double)as.getLookPV());
                     as.setAppId(appId);
-                    as.setSpaceId(parent.get("spaceId").toString());
+                    as.setSlotId(parent.get("slotId").toString());
                     as.setUpstreamId(upstreamId);
                 }
                 appDao.addAppStatistics(list);
@@ -437,7 +505,7 @@ public class AppServiceImpl implements AppService {
      * 查看APP统计列表
      */
     @Override
-    public ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status) {
+    public ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String slotName, String appName, Integer currentPage, Integer pageSize, Integer status) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -449,9 +517,9 @@ public class AppServiceImpl implements AppService {
         }
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
-        map.put("spaceName",spaceName);
+        map.put("slotName",slotName);
         map.put("appName",appName);
-        map.put("parentId",userId);
+        //map.put("parentId",userId);
         map.put("startTime",startTime);
         map.put("endTime",endTime);
         map.put("status",status);
@@ -487,7 +555,7 @@ public class AppServiceImpl implements AppService {
      * 查看APP统计列表-用户
      */
     @Override
-    public ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize) {
+    public ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String slotName, String appName, Integer currentPage, Integer pageSize) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         //页码格式化
@@ -499,7 +567,7 @@ public class AppServiceImpl implements AppService {
         }
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
-        map.put("spaceName",spaceName);
+        map.put("slotName",slotName);
         map.put("appName",appName);
         if (userLevel == 1 || userLevel == 2){
             map.put("parentId",null);
@@ -720,8 +788,8 @@ public class AppServiceImpl implements AppService {
             //修改a_upstream表
             //修改a_ssign表
             Map<String,Object> map = appDao.check(upstreamId);
-            String spaceId = map.get("spaceId").toString();
-            map.put("spaceId",spaceId);
+            String slotId = map.get("slotId").toString();
+            map.put("slotId",slotId);
             map.put("upstreamId",upstreamId);
             map.put("upstreamType",map.get("upstreamType"));
             map.put("newUpstreamId",newUpstreamId);
@@ -730,16 +798,16 @@ public class AppServiceImpl implements AppService {
             map.put("newUpstreamPackageName",newUpstreamPackageName);
             appDao.updateUpstream(map);
             //更新id结束的使用时间
-            AppAdspaceUpstream au = new AppAdspaceUpstream();
-            au.setSpaceId(spaceId);
+            AppSlotUpstream au = new AppSlotUpstream();
+            au.setSlotId(slotId);
             au.setUpstreamId(upstreamId);
             appDao.updateEndTime(au);
             //添加广告位和上游的绑定信息(id使用记录)
-            AppAdspaceUpstream aau = new AppAdspaceUpstream();
-            aau.setSpaceId(spaceId);
+            AppSlotUpstream aau = new AppSlotUpstream();
+            aau.setSlotId(slotId);
             aau.setUpstreamId(newUpstreamId);
             aau.setUpstreamType(newUpstreamType);
-            appDao.insertAppAdspaceUpstream(aau);
+            appDao.insertAppSlotUpstream(aau);
             req.setMessage("更换成功");
             req.setCode(ErrorMessage.SUCCESS.getCode());
         }catch(Exception e){
@@ -755,12 +823,26 @@ public class AppServiceImpl implements AppService {
     @Override
     public ReqResponse deleteUpstreamId(String upstreamId) {
         ReqResponse req = new ReqResponse();
-        //删除上游id
+        //删除上游id,假删除,解除绑定关系
         AppUpstream appUpstream = appDao.appUpstream(upstreamId);
+        String vendorDivision = appUpstream.getVendorDivision();
         appDao.deleteUpstream(upstreamId);
+        if (null != vendorDivision && !"".equals(vendorDivision)){
+            String slotId = appUpstream.getSlotId();
+            //解除绑定后看看这个id还没有绑定区分机型的id,没有就改变slot的机型区分状态
+            System.out.println(slotId);
+            int vendorIdNum = appDao.vendorIdNum(slotId);
+            if (vendorIdNum == 0){
+                //修改广告位机型区分的状态
+                Map<String,Object> map = new HashMap<>();
+                map.put("slotId",slotId);
+                map.put("vendorStatus",0);
+                appDao.updateVendorStatus(map);
+            }
+        }
         //更新id结束的使用时间
-        AppAdspaceUpstream au = new AppAdspaceUpstream();
-        au.setSpaceId(appUpstream.getSpaceId());
+        AppSlotUpstream au = new AppSlotUpstream();
+        au.setSlotId(appUpstream.getSlotId());
         au.setUpstreamId(upstreamId);
         appDao.updateEndTime(au);
         req.setMessage("删除成功");
@@ -787,9 +869,9 @@ public class AppServiceImpl implements AppService {
      * 调度分配展示(分流)
      */
     @Override
-    public ReqResponse selectAppAssign(String spaceId) {
+    public ReqResponse selectAppAssign(String slotId) {
         ReqResponse req = new ReqResponse();
-        List<AppAssign> list = appDao.selectAppAssign(spaceId);
+        List<AppAssign> list = appDao.selectAppAssign(slotId);
         req.setResult(list);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         return req;
@@ -799,7 +881,7 @@ public class AppServiceImpl implements AppService {
      * 修改调度数据(分流)
      */
     @Override
-    public ReqResponse assignSubmit(String list, String spaceId){
+    public ReqResponse assignSubmit(String list, String slotId){
         ReqResponse req = new ReqResponse();
         try{
             //解析前端传过来的集合数据
@@ -809,12 +891,15 @@ public class AppServiceImpl implements AppService {
             int sumProbability = 0;
             List<AppUpstream> aList = new ArrayList<>();
             for (int i = 0; i < assignList.size(); i++){
-                sumProbability += assignList.get(i).getProbability();
-                AppUpstream au = new AppUpstream();
-                au.setUpstreamType(assignList.get(i).getUpstreamType());
-                au.setProbability(assignList.get(i).getProbability());
-                au.setSpaceId(spaceId);
-                aList.add(au);
+                System.out.println(assignList.get(i).getVendorDivision());
+                if (null == assignList.get(i).getVendorDivision() || "".equals(assignList.get(i).getVendorDivision())){
+                    sumProbability += assignList.get(i).getProbability();
+                    AppUpstream au = new AppUpstream();
+                    au.setUpstreamType(assignList.get(i).getUpstreamType());
+                    au.setProbability(assignList.get(i).getProbability());
+                    au.setSlotId(slotId);
+                    aList.add(au);
+                }
             }
             if (sumProbability == 100){
                 //批量修改
@@ -836,9 +921,9 @@ public class AppServiceImpl implements AppService {
      * 广告位详情
      */
     @Override
-    public ReqResponse adspaceDetail(String spaceId) {
+    public ReqResponse slotDetail(String slotId) {
         ReqResponse req = new ReqResponse();
-        Map<String,Object> map = appDao.adspaceDetail(spaceId);
+        Map<String,Object> map = appDao.slotDetail(slotId);
         req.setResult(map);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
@@ -849,13 +934,13 @@ public class AppServiceImpl implements AppService {
      * 广告位divided
      */
     @Override
-    public ReqResponse updateSpaceDivided(String spaceId, double dividedY, double dividedZ) {
+    public ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
-        map.put("spaceId",spaceId);
+        map.put("slotId",slotId);
         map.put("dividedY",dividedY);
         map.put("dividedZ",dividedZ);
-        appDao.updateSpaceDivided(map);
+        appDao.updateSlotDivided(map);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");
         return req;
@@ -934,7 +1019,7 @@ public class AppServiceImpl implements AppService {
                     uc.setNickName(app.getNickName());
                     uc.setAppId(app.getAppId());
                     uc.setAppName(app.getAppName());
-                    uc.setSpaceId(app.getSpaceId());
+                    uc.setSlotId(app.getSlotId());
                     uc.setDividedY(app.getDividedY());
                     double afterIncome = Double.parseDouble(df.format(uc.getBeforeIncome() * app.getDividedY()));
                     uc.setIncome(afterIncome);
@@ -1032,7 +1117,7 @@ public class AppServiceImpl implements AppService {
                     uc.setNickName(app.getNickName());
                     uc.setAppId(app.getAppId());
                     uc.setAppName(app.getAppName());
-                    uc.setSpaceId(app.getSpaceId());
+                    uc.setSlotId(app.getSlotId());
                     uc.setDividedY(app.getDividedY());
                     double afterIncome = Double.parseDouble(df.format(uc.getBeforeIncome() * app.getDividedY()));
                     uc.setIncome(afterIncome);
@@ -1058,7 +1143,7 @@ public class AppServiceImpl implements AppService {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         int rowsOfSheet = sheet.getPhysicalNumberOfRows();
         List<UCStatisticsList> list = new ArrayList<>();
-        List spaceIds = new ArrayList();
+        List slotIds = new ArrayList();
         // 第2行+--数据行
         for (int r = 1; r < rowsOfSheet; r++) {
             Row row = sheet.getRow(r);
@@ -1082,23 +1167,23 @@ public class AppServiceImpl implements AppService {
                 uc.setCreate_Time(sdf.format(c1));
                 uc.setCreateTime(c1);
                 System.out.println(c2.trim());
-                uc.setSpaceId(c2.trim());
+                uc.setSlotId(c2.trim());
                 uc.setBeforeLookPV(c3);
                 uc.setBeforeClickNum(c4);
                 uc.setBeforeIncome(c5);
                 double beforeEcpm = uc.getBeforeIncome()*1000/uc.getBeforeLookPV();
                 uc.setBeforeEcpm(df.format(beforeEcpm));
                 list.add(uc);
-                spaceIds.add(c2);
+                slotIds.add(c2);
             }
         }
         //去数据库匹配数据
-        List<UCStatisticsList> appList = appDao.AsSpaceId(spaceIds);
+        List<UCStatisticsList> appList = appDao.AsSlotId(slotIds);
         for(int i = 0; i < list.size(); i++){
             UCStatisticsList uc = list.get(i);
             for (int j = 0; j < appList.size(); j++){
                 UCStatisticsList app = appList.get(j);
-                if (uc.getSpaceId().equals(app.getSpaceId()) && uc.getCreateTime().getTime() >= app.getStartTime().getTime() && uc.getCreateTime().getTime() <= app.getEndTime().getTime()){
+                if (uc.getSlotId().equals(app.getSlotId()) && uc.getCreateTime().getTime() >= app.getStartTime().getTime() && uc.getCreateTime().getTime() <= app.getEndTime().getTime()){
                     uc.setNickName(app.getNickName());
                     uc.setAppId(app.getAppId());
                     uc.setAppName(app.getAppName());
@@ -1120,5 +1205,96 @@ public class AppServiceImpl implements AppService {
     @Override
     public void insertParam(String data){
         appDao.insertParam(data);
+    }
+
+    @Override
+    public void excel(long userId, String startTime, String endTime, Integer currentPage, OutputStream out) {
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId",userId);
+        map.put("startTime",startTime);
+        map.put("endTime",endTime);
+        List<AppStatisticsListVo> list = appDao.excel(map);
+        /**
+         * 以下为生成Excel操作
+         */
+        // 1.创建一个workbook，对应一个Excel文件
+        HSSFWorkbook wb = new HSSFWorkbook();
+        // 2.在workbook中添加一个sheet，对应Excel中的一个sheet
+        HSSFSheet sheet = wb.createSheet("XXX表");
+        // 3.在sheet中添加表头第0行，老版本poi对excel行数列数有限制short
+        HSSFRow row = sheet.createRow((int) 0);
+        // 4.创建单元格，设置值表头，设置表头居中
+        HSSFCellStyle style = wb.createCellStyle();
+        // 居中格式
+        //style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+
+        // 设置表头
+        HSSFCell cell = row.createCell(0);
+        cell.setCellValue("时间");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(1);
+        cell.setCellValue("APPID");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(2);
+        cell.setCellValue("广告位ID");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(3);
+        cell.setCellValue("APP名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(4);
+        cell.setCellValue("广告位名称");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(5);
+        cell.setCellValue("展现");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(6);
+        cell.setCellValue("点击");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(7);
+        cell.setCellValue("收益");
+        cell.setCellStyle(style);
+
+        cell = row.createCell(8);
+        cell.setCellValue("ecpm");
+        cell.setCellStyle(style);
+
+        // 循环将数据写入Excel
+        for (int i = 0; i < list.size(); i++) {
+            row = sheet.createRow(i + 1);
+            AppStatisticsListVo alv= list.get(i);
+            // 创建单元格，设置值
+            row.createCell(0).setCellValue(alv.getCreateTime());
+            row.createCell(1).setCellValue(alv.getAppId());
+            row.createCell(2).setCellValue(alv.getSlotId());
+            row.createCell(3).setCellValue(alv.getAppName());
+            row.createCell(4).setCellValue(alv.getSlotName());
+            row.createCell(5).setCellValue(alv.getLookPV());
+            row.createCell(6).setCellValue(alv.getClickNum());
+            row.createCell(7).setCellValue(alv.getIncome());
+            DecimalFormat df = new DecimalFormat("######0.00");
+            String ecpm = df.format(alv.getIncome()*1000/alv.getLookPV());
+            row.createCell(8).setCellValue(ecpm);
+        }
+
+        /*FileOutputStream out =new FileOutputStream("E:/XXX.xls");
+        wb.write(out);
+        out.close();*/
+        try{
+            wb.write(out);//保存Excel文件
+            out.flush();
+            out.close();//关闭文件流
+            out.close();//关闭工作薄对象
+            System.out.println("OK!");
+        }catch (Exception e){
+            System.out.println("NO!");
+        }
+
     }
 }

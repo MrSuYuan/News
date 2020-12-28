@@ -20,6 +20,15 @@ public class CopyVo {
     private String clickProbability2;
     private String cpc2;
     private String createTime2;
+    private String weekTime;
+
+    public String getWeekTime() {
+        return weekTime;
+    }
+
+    public void setWeekTime(String weekTime) {
+        this.weekTime = weekTime;
+    }
 
     public Long getId() {
         return id;

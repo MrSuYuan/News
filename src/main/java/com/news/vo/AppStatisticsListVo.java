@@ -7,8 +7,8 @@ public class AppStatisticsListVo {
     private long statisticsId;
     private String appName;
     private String appId;
-    private String spaceId;
-    private String spaceName;
+    private String slotId;
+    private String slotName;
     private String upstreamAppId;
     private String upstreamId;
     private String createTime;
@@ -77,20 +77,20 @@ public class AppStatisticsListVo {
         this.upstreamType = upstreamType;
     }
 
-    public String getSpaceId() {
-        return spaceId;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
-    public String getSpaceName() {
-        return spaceName;
+    public String getSlotName() {
+        return slotName;
     }
 
-    public void setSpaceName(String spaceName) {
-        this.spaceName = spaceName;
+    public void setSlotName(String slotName) {
+        this.slotName = slotName;
     }
 
     public String getAppName() {

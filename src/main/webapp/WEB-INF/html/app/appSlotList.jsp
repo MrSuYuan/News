@@ -68,7 +68,7 @@
                         APPID：<input type="text" id="appId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位ID：<input type="text" id="slotId" style="width:150px;height:30px">&nbsp;&nbsp;&nbsp;&nbsp;
                         广告位类型：
-                        <select id="spaceType" style="width:100px;height:30px">
+                        <select id="slotType" style="width:100px;height:30px">
                             <option value="0">请选择</option>
                             <option value="1">横幅</option>
                             <option value="2">开屏</option>
@@ -76,7 +76,7 @@
                             <option value="4">信息流</option>
                             <option value="5">激励视频</option>
                         </select>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <a class="btn btn-primary btn-xs" onclick="appAdspaceList($('#currentPage').val())">
+                        <a class="btn btn-primary btn-xs" onclick="appSlotList($('#currentPage').val())">
                             <i class="ace-icon glyphicon glyphicon-search bigger-110"><font size="3">搜索</font></i>
                         </a>
                     </div>
@@ -98,7 +98,7 @@
                                         <%--<th>宽度</th>
                                         <th>高度</th>--%>
                                         <th>创建时间</th>
-                                        <th id="divided">分成</th>
+                                        <%--<th id="divided">分成</th>--%>
                                         <th id="fl">今日量级</th>
                                         <th id="operate">添加&nbsp;&nbsp;/&nbsp;&nbsp;查看&nbsp;&nbsp;/&nbsp;&nbsp;分成&nbsp;&nbsp;/&nbsp;&nbsp;统计&nbsp;&nbsp;/&nbsp;&nbsp;放量</th>
                                     </tr>
@@ -151,7 +151,7 @@
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                                                     aria-hidden="true">&times;</span></button>
-                                            <h4 class="modal-title">设置YZ<input type="hidden" id="spaceId"></h4>
+                                            <h4 class="modal-title">设置YZ<input type="hidden" id="dividedSlotId"></h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
@@ -216,7 +216,7 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("appAdspaceList", $('#userName').val());
+    loading("appSlotList", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
@@ -247,11 +247,11 @@
             $('#nickNameTh').hide();
             $('#fl').hide();
         }
-        appAdspaceList(1);
+        appSlotList(1);
     });
 
     //点击搜索数据展示
-    function appAdspaceList(currentPage) {
+    function appSlotList(currentPage) {
         var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
@@ -261,44 +261,44 @@
             return false;
         }
         $.ajax({
-            url: path + "/app/appAdspaceList",
+            url: path + "/app/appSlotList",
             type: "post",
             data: {
                 "loginName" : $('#loginName').val(),
                 "nickName" : $('#nickName').val(),
                 "appId" : $('#appId').val(),
-                "spaceId" : $('#slotId').val(),
+                "slotId" : $('#slotId').val(),
                 "currentPage" : currentPage,
                 "pageSize" : pageSize,
-                "spaceType" :  $('#spaceType option:selected').val(),
+                "slotType" :  $('#slotType option:selected').val(),
                 "upstreamType" : $('#upstreamType option:selected').val()
             },
             dataType: 'json',
             async: false,
             success: function (obj) {
                 if(obj.code == 200){
-                    var list = obj.result.adspaceList;
+                    var list = obj.result.slotList;
                     var html="";
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr style="height: 40px">';
-                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.slotId+'</td>';
                         html+='<td> '+data.appId+'</td>';
-                        html+='<td> '+data.spaceName+'</td>';
+                        html+='<td> '+data.slotName+'</td>';
                         html+='<td> '+data.appName+'</td>';
                         if (currentUserLevel != 3){
                             html+='<td> '+data.nickName+'</td>';
                         }
-                        var spaceType = data.spaceType;
-                        if(spaceType == 1){
+                        var slotType = data.slotType;
+                        if(slotType == 1){
                             html+='<td> 横幅 </td>';
-                        }else if(spaceType == 2){
+                        }else if(slotType == 2){
                             html+='<td> 开屏 </td>';
-                        }else if(spaceType == 3){
+                        }else if(slotType == 3){
                             html+='<td> 插屏 </td>';
-                        }else if(spaceType == 4){
+                        }else if(slotType == 4){
                             html+='<td> 信息流 </td>';
-                        }else if(spaceType == 5){
+                        }else if(slotType == 5){
                             html+='<td> 激励视频 </td>';
                         }else{
                             html+='<td> <font color="red">信息错误</font> </td>';
@@ -308,8 +308,7 @@
                         html+='<td> '+data.createTime+'</td>';
                         if(currentUserLevel == 2 || currentUserLevel == 1){
 
-
-                            html+='<td> Y : '+data.dividedY+' , Z : '+data.dividedZ+'</td>';
+                            //html+='<td> Y : '+data.dividedY+' , Z : '+data.dividedZ+'</td>';
                             var request = data.request;
                             if (request == 0){
                                 html+='<td> <font color="red">'+data.request+'</font></td>';
@@ -322,26 +321,26 @@
                             var flowStatus = data.flowStatus;
                             html+='<div class="widget-toolbar no-border">';
                             if (flowStatus == 1) {
-                                html+='<input type="checkbox" class="ace ace-switch ace-switch-3" id="input'+data.spaceId+'" onclick="flowStatus(\''+data.spaceId+'\')" checked/>';
+                                html+='<input type="checkbox" class="ace ace-switch ace-switch-3" id="input'+data.slotId+'" onclick="flowStatus(\''+data.slotId+'\')" checked/>';
                             }else{
-                                html+='<input type="checkbox" class="ace ace-switch ace-switch-3" id="input'+data.spaceId+'" onclick="flowStatus(\''+data.spaceId+'\')"/>';
+                                html+='<input type="checkbox" class="ace ace-switch ace-switch-3" id="input'+data.slotId+'" onclick="flowStatus(\''+data.slotId+'\')"/>';
                             }
                             html+='    <span class="lbl middle"></span>';
                             html+='</div>';
                             html+='<div class="hidden-sm hidden-xs btn-group">' +
-                                '<button type="button" class="btn btn-xs btn-success" title="添加" onclick="addUpstream(\''+data.spaceId+'\')">' +
+                                '<button type="button" class="btn btn-xs btn-success" title="添加" onclick="addUpstream(\''+data.slotId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-plus bigger-110"></i>' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-xs btn-info" title="查看" onclick="checkUpstream(\''+data.spaceId+'\')">' +
+                                '<button type="button" class="btn btn-xs btn-info" title="查看" onclick="checkUpstream(\''+data.slotId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-align-justify bigger-110"></i>' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-xs btn-default" title="分成" onclick="divided(\''+data.spaceId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
+                                '<button type="button" class="btn btn-xs btn-default" title="分成 X:'+data.dividedY+' , Y:'+data.dividedZ+'" onclick="divided(\''+data.slotId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-edit bigger-110"></i>' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-xs btn-warning" title="统计" onclick="report(\''+data.spaceId+'\')">' +
+                                '<button type="button" class="btn btn-xs btn-warning" title="统计" onclick="report(\''+data.slotId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-indent-right bigger-110"></i>' +
                                 '</button>' +
-                                // '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.spaceId+'\')">' +
+                                // '<button type="button" class="btn btn-xs btn-warning" title="分流" onclick="assign(\''+data.slotId+'\')">' +
                                 // '<i class="ace-icon glyphicon glyphicon-pencil bigger-110"></i>' +
                                 // '</button>' +
                                 // '<button type="button" class="btn btn-xs btn-danger" title="删除">' +
@@ -381,7 +380,7 @@
             alert("当前是第一页");
         }else{
             page = page - 1;
-            appAdspaceList(page);
+            appSlotList(page);
         }
     }
 
@@ -393,13 +392,13 @@
             alert("当前是最后一页");
         }else{
             var page = page + 1;
-            appAdspaceList(page);
+            appSlotList(page);
         }
     }
 
     //放量
-    function flowStatus(spaceId) {
-        var status = $('#input'+spaceId).is(":checked");
+    function flowStatus(slotId) {
+        var status = $('#input'+slotId).is(":checked");
         var flowStatus;
         if (status == true){
             flowStatus = 1;
@@ -410,7 +409,7 @@
             url: path + "/app/flowStatus",
             type: "post",
             data: {
-                "spaceId" : spaceId,
+                "slotId" : slotId,
                 "flowStatus" : flowStatus
             },
             dataType: 'json',
@@ -424,9 +423,9 @@
                 }else{
                     alert(obj.message);
                     if (status == true){
-                        $('#input'+spaceId).prop("checked", false);
+                        $('#input'+slotId).prop("checked", false);
                     } else {
-                        $('#input'+spaceId).prop("checked", true);
+                        $('#input'+slotId).prop("checked", true);
                     }
                 }
             },
@@ -437,33 +436,33 @@
     }
 
     //添加
-    function addUpstream(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
-        window.location = path + "/appAdspaceAddUpstream";
+    function addUpstream(slotId) {
+        sessionStorage.setItem("slotId",slotId);
+        window.location = path + "/appSlotAddUpstream";
     }
 
     //查看
-    function checkUpstream(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
-        window.location = path + "/appAdspaceUpstreamList";
+    function checkUpstream(slotId) {
+        sessionStorage.setItem("slotId",slotId);
+        window.location = path + "/appSlotUpstreamList";
     }
 
     //查看
-    function report(spaceId) {
-        sessionStorage.setItem("spaceId",spaceId);
-        window.location = path + "/appAdspaceReport";
+    function report(slotId) {
+        sessionStorage.setItem("slotId",slotId);
+        window.location = path + "/appSlotReport";
     }
 
     //分流
-    // function assign(spaceId) {
-    //     sessionStorage.setItem("spaceId",spaceId);
+    // function assign(slotId) {
+    //     sessionStorage.setItem("slotId",slotId);
     //     window.location = path + "/appAssign";
     // }
 
     //set
     function divided(data){
         var str = data.split('!');
-        $('#spaceId').val(str[0]);
+        $('#dividedSlotId').val(str[0]);
         $('#dividedY').val(str[1]);
         $('#dividedZ').val(str[2]);
         $("#app_divided_set").modal("show");
@@ -471,17 +470,17 @@
 
     //update
     function updateProportion() {
-        var spaceId = $('#spaceId').val();
+        var slotId = $('#dividedSlotId').val();
         var dividedY = $('#dividedY').val();
         var dividedZ = $('#dividedZ').val();
         if (dividedY > 1 || dividedZ > 1) {
             alert("参数错误");
         }else{
             $.ajax({
-                url: path + "/app/updateSpaceDivided",
+                url: path + "/app/updateSlotDivided",
                 type: "post",
                 data: {
-                    "spaceId" : spaceId,
+                    "slotId" : slotId,
                     "dividedY" : dividedY,
                     "dividedZ" : dividedZ
                 },
@@ -491,7 +490,7 @@
                     if(obj.code == 200){
                         $("#app_divided_set").modal("hide");
                         var page = parseInt($('#currentPage').text());
-                        appAdspaceList(page);
+                        appSlotList(page);
                     }else if(obj.code == "300"){
                         alert(obj.message);
                         window.location = path+"/login";

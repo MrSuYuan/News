@@ -67,27 +67,27 @@ public interface AppDao {
     /**
      * 查看此app是否拥有同类型广告位(app每一种广告位只能有一种)
      */
-    int appSpaceNum(AppAdspace ad);
+    int appSlotNum(AppSlot ad);
 
     /**
      * 广告位名称验重
      */
-    int spaceNameNum(String spaceName);
+    int slotNameNum(String slotName);
 
     /**
      * 创建广告位信息
      */
-    void createAdspace(AppAdspace ad);
+    void createSlot(AppSlot ad);
 
     /**
      * 广告位列表
      */
-    List<AppAdspaceListVo> appAdspaceList(Map<String,Object> map);
+    List<AppSlotListVo> appSlotList(Map<String,Object> map);
 
     /**
      * 广告位列表数量
      */
-    int appAdspaceListNum(Map<String,Object> map);
+    int appSlotListNum(Map<String,Object> map);
 
     /**
      * 放/停量
@@ -97,7 +97,7 @@ public interface AppDao {
     /**
      * 查看平台广告位所属app的上级id
      */
-    Map<String,Object> adParentId(String spaceId);
+    Map<String,Object> adParentId(String slotId);
 
     /**
      * 查询此上游广告位id是否存在
@@ -130,19 +130,29 @@ public interface AppDao {
     void updateAppUpstream(AppUpstream appUpstream);
 
     /**
+     * 查看此id有没有已经定向了这个机型
+     */
+    int slotVendor(Map<String,Object> map);
+
+    /**
+     * 修改广告位机型区分的状态
+     */
+    void updateVendorStatus(Map<String,Object> map);
+
+    /**
      * 添加上游使用记录
      */
-    void insertAppAdspaceUpstream(AppAdspaceUpstream au);
+    void insertAppSlotUpstream(AppSlotUpstream au);
 
     /**
      * 查看此广告位划量分流次数
      */
-    int assignNum(String spaceId);
+    int assignNum(String slotId);
 
     /**
      * 广告位上游信息列表
      */
-    List<AppUpstream> appUpstreamList(String spaceId);
+    List<AppUpstream> appUpstreamList(String slotId);
 
     /**
      * 批量添加广告位数据统计信息
@@ -170,6 +180,13 @@ public interface AppDao {
     List<AppStatisticsListVo> appStatisticsUserList(Map<String,Object> map);
 
     /**
+     * 查看数据统计信息列表
+     */
+    List<AppStatisticsListVo> excel(Map<String,Object> map);
+
+
+
+    /**
      * 查看数据统计信息列表数量
      */
     int appStatisticsUserListNum(Map<String,Object> map);
@@ -177,7 +194,7 @@ public interface AppDao {
     /**
      * 调度分配展示
      */
-    List<AppAssign> selectAppAssign(String spaceId);
+    List<AppAssign> selectAppAssign(String slotId);
 
     /**
      * 正式服概率修改
@@ -228,7 +245,12 @@ public interface AppDao {
      */
     AppUpstream appUpstream(String upstreamId);
     void deleteUpstream(String upstreamId);
-    void updateEndTime(AppAdspaceUpstream au);
+    void updateEndTime(AppSlotUpstream au);
+
+    /**
+     * 查看广告位有几个机型区分id
+     */
+    int vendorIdNum(String slotId);
 
     /**
      * 设置上游分成比例
@@ -238,12 +260,12 @@ public interface AppDao {
     /**
      * 广告位详情
      */
-    Map<String,Object> adspaceDetail(String spaceId);
+    Map<String,Object> slotDetail(String slotId);
 
     /**
      * 设置广告位divided
      */
-    void updateSpaceDivided(Map<String,Object> map);
+    void updateSlotDivided(Map<String,Object> map);
 
     /**
      * 改变统计数据
@@ -273,7 +295,7 @@ public interface AppDao {
     /**
      * 新Excel
      */
-    List<UCStatisticsList> AsSpaceId(List spaceId);
+    List<UCStatisticsList> AsSlotId(List slotId);
 
     void insertParam(String param);
 }

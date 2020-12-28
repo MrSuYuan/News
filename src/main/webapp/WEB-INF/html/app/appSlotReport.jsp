@@ -71,8 +71,8 @@
                                 <div class="profile-info-row">
                                     <div class="profile-info-name"> 广告位信息 </div>
                                     <div class="profile-info-value">
-                                        <span class="editable" id="spaceId">spaceId</span>
-                                        <span class="editable" id="spaceName">spaceName</span>
+                                        <span class="editable" id="slotId">slotId</span>
+                                        <span class="editable" id="slotName">slotName</span>
                                     </div>
                                 </div>
                                 <div class="profile-info-row">
@@ -154,7 +154,9 @@
                                     <th>返回</th>
                                     <th>曝光</th>
                                     <th>点击</th>
-                                    <th>DeepLink</th>
+                                    <th>DP</th>
+                                    <th>200</th>
+                                    <th>250</th>
                                     <th>300</th>
                                     <th>400</th>
                                     <th>500</th>
@@ -167,6 +169,8 @@
                                     <th id="sumLook">0</th>
                                     <th id="sumClick">0</th>
                                     <th id="sumDeeplink">0</th>
+                                    <th id="t200">0</th>
+                                    <th id="t250">0</th>
                                     <th id="t300">0</th>
                                     <th id="t400">0</th>
                                     <th id="t500">0</th>
@@ -200,11 +204,7 @@
                                         <th>返回</th>
                                         <th>曝光</th>
                                         <th>点击</th>
-                                        <th>DeepLink</th>
-                                        <th>300</th>
-                                        <th>400</th>
-                                        <th>500</th>
-                                        <th>500+</th>
+                                        <th>DP</th>
                                     </tr>
                                     </thead>
 
@@ -249,29 +249,29 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("appAdspaceReport", $('#userName').val());
+    loading("appSlotReport", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        var spaceId = sessionStorage.getItem("spaceId");
-        spaceMsg(spaceId);
-        platformStatistics(spaceId);
-        channelStatistics(spaceId);
+        var slotId = sessionStorage.getItem("slotId");
+        slotMsg(slotId);
+        platformStatistics(slotId);
+        channelStatistics(slotId);
     });
 
     function checkForDate(){
-        var spaceId = sessionStorage.getItem("spaceId");
-        platformStatistics(spaceId);
-        channelStatistics(spaceId);
+        var slotId = sessionStorage.getItem("slotId");
+        platformStatistics(slotId);
+        channelStatistics(slotId);
     }
 
     //广告位基本信息
-    function spaceMsg(spaceId){
+    function slotMsg(slotId){
         $.ajax({
-            url: path + "/space/spaceMsg",
+            url: path + "/slot/slotMsg",
             type: "post",
             data: {
-                "spaceId" : spaceId
+                "slotId" : slotId
             },
             dataType: 'json',
             async: false,
@@ -281,8 +281,8 @@
                     //$('#pageSize').val(obj.result.pageSize);
                     $('#appId').html(data.appId);
                     $('#appName').html(data.appName);
-                    $('#spaceId').html(data.spaceId);
-                    $('#spaceName').html(data.spaceName);
+                    $('#slotId').html(data.slotId);
+                    $('#slotName').html(data.slotName);
                     $('#company').html(data.nickName);
                     $('#createTime').html(data.createTime);
                     $('#width').html(data.width);
@@ -298,12 +298,12 @@
     }
 
     //平台分时统计
-    function platformStatistics(spaceId){
+    function platformStatistics(slotId){
         $.ajax({
-            url: path + "/space/platformStatistics",
+            url: path + "/slot/platformStatistics",
             type: "post",
             data: {
-                "spaceId" : spaceId,
+                "slotId" : slotId,
                 "date" : $('#date').val()
             },
             dataType: 'json',
@@ -317,6 +317,8 @@
                     $('#sumLook').html(data.sumLook);
                     $('#sumClick').html(data.sumClick);
                     $('#sumDeeplink').html(data.sumDeeplink);
+                    $('#t200').html(data.t200);
+                    $('#t250').html(data.t250);
                     $('#t300').html(data.t300);
                     $('#t400').html(data.t400);
                     $('#t500').html(data.t500);
@@ -332,6 +334,8 @@
                         html += '<td>'+l.look+'</td>';
                         html += '<td>'+l.click+'</td>';
                         html += '<td>'+l.deeplink+'</td>';
+                        html += '<td>'+l.t200+'</td>';
+                        html += '<td>'+l.t250+'</td>';
                         html += '<td>'+l.t300+'</td>';
                         html += '<td>'+l.t400+'</td>';
                         html += '<td>'+l.t500+'</td>';
@@ -350,12 +354,12 @@
     }
 
     //渠道分时统计
-    function channelStatistics(spaceId){
+    function channelStatistics(slotId){
         $.ajax({
-            url: path + "/space/channelStatistics",
+            url: path + "/slot/channelStatistics",
             type: "post",
             data: {
-                "spaceId" : spaceId,
+                "slotId" : slotId,
                 "date" : $('#date').val()
             },
             dataType: 'json',
@@ -382,10 +386,6 @@
                         html += '<td>'+l.look+'</td>';
                         html += '<td>'+l.click+'</td>';
                         html += '<td>'+l.deeplink+'</td>';
-                        html += '<td>'+l.t300+'</td>';
-                        html += '<td>'+l.t400+'</td>';
-                        html += '<td>'+l.t500+'</td>';
-                        html += '<td>'+l.t1000+'</td>';
                         html += '</tr>';
                         //二级表格
                         html += '<tr class="detail-row">';

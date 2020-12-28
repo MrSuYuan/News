@@ -459,7 +459,7 @@
                         if(data.userLevel == 3){
                             html+='<td>' +
                                 '<button type=button class="btn btn-minier btn-success" onclick="toApp('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">APP</button>&nbsp;&nbsp;' +
-                                '<button type=button class="btn btn-minier btn-success" onclick="toAppAdspace('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="toAppSlot('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">广告位</button>' +
                                 '</td>';
                             html+='<td>' +
                                 '<button type=button class="btn btn-minier btn-success" onclick="toWeb('+data.userId+',\''+data.loginName+'\',\''+data.nickName+'\')">WEB</button>&nbsp;&nbsp;' +
@@ -592,11 +592,11 @@
         window.location = path+"/appList";
     }
 
-    function toAppAdspace(userId,loginName,nickName) {
+    function toAppSlot(userId,loginName,nickName) {
         sessionStorage.setItem("selectUserId",userId);
         sessionStorage.setItem("selectLoginName",loginName);
         sessionStorage.setItem("selectNickName",nickName);
-        window.location = path+"/appAdspaceList";
+        window.location = path+"/appSlotList";
     }
 
     function toWeb(userId,loginName,nickName) {

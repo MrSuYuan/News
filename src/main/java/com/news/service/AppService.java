@@ -4,6 +4,8 @@ import com.news.entity.App;
 import com.utils.response.ReqResponse;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import java.io.OutputStream;
+
 /**
  * APP模块
  */
@@ -37,27 +39,27 @@ public interface AppService {
     /**
      * 创建代码位信息
      */
-    ReqResponse createAdspace(Long userId, String appId, int spaceType, String spaceName, int width, int height);
+    ReqResponse createSlot(Long userId, String appId, int slotType, String slotName, int width, int height);
 
     /**
      * 广告位列表
      */
-    ReqResponse appAdspaceList(Long userId, String loginName, String nickName, String appId, String spaceId, int spaceType, Integer currentPage, Integer pageSize);
+    ReqResponse appSlotList(Long userId, String loginName, String nickName, String appId, String slotId, int slotType, Integer currentPage, Integer pageSize);
 
     /**
      * 放量
      */
-    ReqResponse flowStatus(Long userId, String spaceId, int flowStatus);
+    ReqResponse flowStatus(Long userId, String slotId, int flowStatus);
 
     /**
      * 添加上游广告位信息
      */
-    ReqResponse appAdUpstream(Long userId, String spaceId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, int upstreamWidth, int upstreamHeight, int upstreamType);
+    ReqResponse appAddUpstream(Long userId, String slotId, String upstreamId, String upstreamAppId, String upstreamAppName, String upstreamPackageName, int upstreamWidth, int upstreamHeight, int upstreamType, String vendorDivision);
 
     /**
      * 上游广告位列表
      */
-    ReqResponse appUpstreamList(String spaceId);
+    ReqResponse appUpstreamList(String slotId);
 
     /**
      * 上传统计信息
@@ -67,12 +69,12 @@ public interface AppService {
     /**
      * 查看APP统计列表-管理
      */
-    ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize, Integer status);
+    ReqResponse appStatisticsList(String startTime, String endTime, Long userId, String slotName, String appName, Integer currentPage, Integer pageSize, Integer status);
 
     /**
      * 查看APP统计列表-用户
      */
-    ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String spaceName, String appName, Integer currentPage, Integer pageSize);
+    ReqResponse appStatisticsUserList(int userLevel, String startTime, String endTime, Long userId, String slotName, String appName, Integer currentPage, Integer pageSize);
 
     /**
      * 多选通过
@@ -127,22 +129,22 @@ public interface AppService {
     /**
      * 调度分配展示(分流)
      */
-    ReqResponse selectAppAssign(String spaceId);
+    ReqResponse selectAppAssign(String slotId);
 
     /**
      * 修改调度数据(分流)
      */
-    ReqResponse assignSubmit(String list, String spaceId);
+    ReqResponse assignSubmit(String list, String slotId);
 
     /**
      * 广告位详情
      */
-    ReqResponse adspaceDetail(String spaceId);
+    ReqResponse slotDetail(String slotId);
 
     /**
      * 广告位divided
      */
-    ReqResponse updateSpaceDivided(String spaceId, double dividedY, double dividedZ);
+    ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ);
 
     /**
      * 数据统计状态修改 0删除 1通过
@@ -173,5 +175,11 @@ public interface AppService {
      * 文章测试
      */
     void insertParam(String data);
+
+    /**
+     * excel
+     */
+    void excel(long userId, String startTime, String endTime, Integer currentPage, OutputStream out) ;
+
 
 }

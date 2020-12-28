@@ -5,10 +5,10 @@ import java.util.Date;
 /**
  * 上游id使用记录表
  */
-public class AppAdspaceUpstream {
+public class AppSlotUpstream {
 
     private int id;
-    private String spaceId;
+    private String slotId;
     private String upstreamId;
     private int upstreamType;
     private Date startTime;
@@ -30,12 +30,12 @@ public class AppAdspaceUpstream {
         this.id = id;
     }
 
-    public String getSpaceId() {
-        return spaceId;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
     public String getUpstreamId() {

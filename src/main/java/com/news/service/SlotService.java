@@ -5,22 +5,22 @@ import com.utils.response.ReqResponse;
 /**
  * 广告位逻辑层
  */
-public interface SpaceService {
+public interface SlotService {
 
     /**
      * 查看广告位基本信息
      */
-    ReqResponse spaceMsg(String spaceId);
+    ReqResponse slotMsg(String slotId);
 
     /**
      * 平台统计
      */
-    ReqResponse platformStatistics(String spaceId, String date);
+    ReqResponse platformStatistics(String slotId, String date);
 
     /**
      * 渠道统计
      */
-    ReqResponse channelStatistics(String spaceId, String date);
+    ReqResponse channelStatistics(String slotId, String date);
 
     /**
      * 上报统计列表

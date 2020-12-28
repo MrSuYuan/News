@@ -62,17 +62,17 @@
                     <input type="hidden" id="appId">
                     <div>
                         <table style="font-size: 14px">
-                            <tr height = "50" id="spaceIdT">
+                            <tr height = "50" id="slotIdT">
                                 <td align = "right">广告位ID:&nbsp;&nbsp;</td>
-                                <td width="300"><span id="spaceId"></span></td>
+                                <td width="300"><span id="slotId"></span></td>
                             </tr>
                             <tr height = "50" id="appNameT">
                                 <td align = "right">APP名称:&nbsp;&nbsp;</td>
                                 <td width="300"><span id="appName"></span></td>
                             </tr>
-                            <tr height = "50" id="spaceNameT">
+                            <tr height = "50" id="slotNameT">
                                 <td align = "right">广告位名称:&nbsp;&nbsp;</td>
-                                <td width="300"><span id="spaceName"></span></td>
+                                <td width="300"><span id="slotName"></span></td>
                             </tr>
                             <tr height = "50">
                                 <td align = "right">上游广告位ID:&nbsp;&nbsp;</td>
@@ -103,6 +103,14 @@
                                 <td width="300">
                                     <span id="upstreamTypeList"></span>
                                     <font color="red">&nbsp;&nbsp;*</font>
+                                </td>
+                            </tr>
+                            <tr height = "50">
+                                <td align = "right">限定机型:&nbsp;&nbsp;</td>
+                                <td width="300">
+                                    <input type="radio" name="vendorDivision" value="oppo">OPPO&nbsp;&nbsp;
+                                    <input type="radio" name="vendorDivision" value="vivo">VIVO&nbsp;&nbsp;
+                                    <input type="radio" name="vendorDivision" value="">不区分
                                 </td>
                             </tr>
                             <tr height = "50">
@@ -145,23 +153,23 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("appAdspaceAddUpstream", $('#userName').val());
+    loading("appSlotAddUpstream", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
-        var spaceId =  sessionStorage.getItem("spaceId");
-        $('#spaceId').html(spaceId);
-        //sessionStorage.removeItem("spaceId");
+        var slotId =  sessionStorage.getItem("slotId");
+        $('#slotId').html(slotId);
+        //sessionStorage.removeItem("slotId");
         upstreamType();
-        adspace(spaceId);
+        slot(slotId);
     });
 
     //广告位基础信息
-    function adspace(spaceId){
+    function slot(slotId){
         $.ajax({
-            url: path + "/app/adspaceDetail",
+            url: path + "/app/slotDetail",
             data:{
-                "spaceId" : spaceId
+                "slotId" : slotId
             },
             type: "post",
             dataType: 'json',
@@ -170,7 +178,7 @@
                 if(data.code == 200){
                     var result = data.result;
                     $('#appName').html(result.appName);
-                    $('#spaceName').html(result.spaceName);
+                    $('#slotName').html(result.slotName);
                 }else{
                     alert(data.message);
                 }
@@ -218,8 +226,10 @@
 
     //提交广告位上游信息
     function createAdUpstream(){
+
+        var vendorDivision = $("input[name='vendorDivision']:checked").val();
         //收集参数
-        var spaceId = document.getElementById("spaceId").innerHTML;
+        var slotId = document.getElementById("slotId").innerHTML;
         var upstreamId = $('#upstreamId').val();
         var upstreamAppId = $('#upstreamAppId').val();
         var upstreamType = $('#upstreamType').val();
@@ -238,25 +248,26 @@
         }else{
             //保存代码位信息
             $.ajax({
-                url: path + "/app/appAdUpstream",
+                url: path + "/app/appAddUpstream",
                 data:{
-                    "spaceId" : spaceId,
+                    "slotId" : slotId,
                     "upstreamId" : upstreamId,
                     "upstreamAppId" : upstreamAppId,
                     "upstreamAppName" : upstreamAppName,
                     "upstreamPackageName" : upstreamPackageName,
                     "upstreamWidth" : upstreamWidth,
                     "upstreamHeight" : upstreamHeight,
-                    "upstreamType" : upstreamType
+                    "upstreamType" : upstreamType,
+                    "vendorDivision" : vendorDivision
                 },
                 type: "post",
                 dataType: 'json',
                 async: false,
                 success: function (data) {
                     if(data.code == 200){
-                        sessionStorage.setItem("spaceId",spaceId);
+                        sessionStorage.setItem("slotId",slotId);
                         alert(data.message);
-                        window.location = path + "/appAdspaceUpstreamList";
+                        window.location = path + "/appSlotUpstreamList";
                     }else if(data.code == 300){
                         alert(data.message);
                         window.location = path + "/login";

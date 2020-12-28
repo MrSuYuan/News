@@ -17,11 +17,29 @@ public class PlatformStatisticsVo {
     private int sumClick;
     //总deepLink
     private int sumDeeplink;
+    private int t200;
+    private int t250;
     private int t300;
     private int t400;
     private int t500;
     private int t1000;
     private List<PlatformStatisticsListVo> list;
+
+    public int getT200() {
+        return t200;
+    }
+
+    public void setT200(int t200) {
+        this.t200 = t200;
+    }
+
+    public int getT250() {
+        return t250;
+    }
+
+    public void setT250(int t250) {
+        this.t250 = t250;
+    }
 
     public int getT300() {
         return t300;

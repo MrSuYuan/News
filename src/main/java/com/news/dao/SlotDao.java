@@ -8,13 +8,13 @@ import java.util.Map;
 /**
  * 广告位模块
  */
-@Repository("spaceDao")
-public interface SpaceDao {
+@Repository("slotDao")
+public interface SlotDao {
 
     /**
      * 广告位基本信息
      */
-    AppAdspaceListVo spaceMsg(String spaceId);
+    AppSlotListVo slotMsg(String slotId);
 
     /**
      * 平台分时统计查询

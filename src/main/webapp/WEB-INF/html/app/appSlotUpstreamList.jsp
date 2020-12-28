@@ -58,14 +58,15 @@
 
             <!-- 页面主体部分 -->
             <div class="page-content">
-                <input type="hidden" id="spaceId">
+                <input type="hidden" id="slotId">
                 <form action="#" method="post">
                     <div>
                         <table width="100%" style="font-size: 14px">
                             <tr width="100%" height = "50">
                                 <td width="25%">APP名称:&nbsp;&nbsp;<span id="appName"></span></td>
-                                <td width="25%">广告位名称:&nbsp;&nbsp;<span id="spaceName"></span></td>
-                                <td width="50%" align="right"><input type="button" id="submitZ" value="确定" onclick="updateAssign()"></td>
+                                <td width="25%">广告位名称:&nbsp;&nbsp;<span id="slotName"></span></td>
+                                <td width="25%"><font color="red">区分机型的ID分流比例固定0或100,其他ID加起来和为100</font></td>
+                                <td width="25%" align="right"><input type="button" id="submitZ" value="确定" onclick="updateAssign()"></td>
                             </tr>
                         </table>
                     </div>
@@ -80,10 +81,11 @@
                                         <th>广告位ID</th>
                                         <th>上游广告位ID</th>
                                         <th>上游APPID</th>
+                                        <th>机型区分</th>
                                         <th>上游平台</th>
                                         <th>分流比例</th>
                                         <th>创建时间</th>
-                                        <th id="statistics">收益统计</th>
+                                       <%-- <th id="statistics">收益统计</th>--%>
                                         <th id="operating">操作</th>
                                     </tr>
                                     </thead>
@@ -125,16 +127,16 @@
 </script>
 <!-- 加载预加载部分,头部和左导航栏 -->
 <script type="text/javascript">
-    loading("appAdspaceUpstreamList", $('#userName').val());
+    loading("appSlotUpstreamList", $('#userName').val());
 
     //进入页面直接请求数据
     $(document).ready(function(){
         //根据权限隐藏特定的展示栏和搜索条件
         var currentUserLevel = $('#currentUserLevel').val();
 
-        var spaceId =  sessionStorage.getItem("spaceId");
-        $('#spaceId').val(spaceId);
-        //sessionStorage.removeItem("spaceId");
+        var slotId =  sessionStorage.getItem("slotId");
+        $('#slotId').val(slotId);
+        //sessionStorage.removeItem("slotId");
 
         if(currentUserLevel == 3){
             alert("权限不足");
@@ -142,20 +144,20 @@
             // $('#statistics').hide();
             // $('#operating').hide();
             appUpstreamList();
-            adspace(spaceId);
+            slot(slotId);
         }else{
             appUpstreamList();
-            adspace(spaceId);
+            slot(slotId);
         }
 
     });
 
     //广告位基础信息
-    function adspace(spaceId){
+    function slot(slotId){
         $.ajax({
-            url: path + "/app/adspaceDetail",
+            url: path + "/app/slotDetail",
             data:{
-                "spaceId" : spaceId
+                "slotId" : slotId
             },
             type: "post",
             dataType: 'json',
@@ -164,7 +166,7 @@
                 if(data.code == 200){
                     var result = data.result;
                     $('#appName').html(result.appName);
-                    $('#spaceName').html(result.spaceName);
+                    $('#slotName').html(result.slotName);
                 }else{
                     alert(data.message);
                 }
@@ -183,7 +185,7 @@
             url: path + "/app/appUpstreamList",
             type: "post",
             data: {
-                "spaceId" : $('#spaceId').val()
+                "slotId" : $('#slotId').val()
             },
             dataType: 'json',
             async: false,
@@ -194,15 +196,20 @@
                     for (var i=0;i<list.length;i++){
                         var data = list[i];
                         html+='<tr  id="tr'+data.upstreamId+'" style="height: 40px" class = "uTr">';
-                        html+='<td> '+data.spaceId+'</td>';
+                        html+='<td> '+data.slotId+'</td>';
                         html+='<td> '+data.upstreamId+'</td>';
-                        html+='<td> '+data.upstreamAppId+'</td>';
+                        html+='<td style="word-break:break-all;word-break:break-word;width: 20%"> '+data.upstreamAppId+'</td>';
+                        if (data.vendorDivision != null && data.vendorDivision != "") {
+                            html+='<td> '+data.vendorDivision+'<input type="hidden" name="vendorDivision" value="'+data.vendorDivision+'"></td>';
+                        }else{
+                            html+='<td> 否</td>';
+                        }
                         html+='<td> '+data.name+'<input type="hidden" size="5" name="upstreamType" value="'+data.upstreamType+'"></td>';
                         html+='<td align="center"><input type="text" size="5" name="probability" value="'+data.probability+'"></td>';
                         html+='<td> '+data.create_Time+'</td>';
                         //if(currentUserLevel == 2){
-                        html+='<td><button type="button" onclick="addAppStatistice(\''+data.upstreamId+'\')">添加收益统计</button></td>';
-                        html+='<td><button type="button" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">更换上游ID</button>&nbsp;';
+                        html+='<td><button type="button" onclick="addAppStatistics(\''+data.upstreamId+'\')">添加收益统计</button>&nbsp;&nbsp;';
+                        //html+='<button type="button" onclick="appUpstreamIdEdit(\''+data.upstreamId+'\')">更换上游ID</button>&nbsp;';
                         html+='<input type="button" value="解除绑定关系" onclick="deleteUpstreamId(\''+data.upstreamId+'\')"></td>';
                         //}
                         html+='</tr>';
@@ -260,6 +267,7 @@
             var obj = {
                 upstreamType : $(val).find('input[name=upstreamType]').val(),
                 probability : $(val).find('input[name=probability]').val(),
+                vendorDivision : $(val).find('input[name=vendorDivision]').val(),
             }
             objs.push(obj)
         })
@@ -267,7 +275,7 @@
             url: path + "/app/assignSubmit",
             type: "post",
             data : {
-                "spaceId" : $('#spaceId').val(),
+                "slotId" : $('#slotId').val(),
                 "list" : JSON.stringify(objs)
             },
             dataType: 'json',
@@ -290,7 +298,7 @@
         });
     }
 
-    function addAppStatistice(upstreamId) {
+    function addAppStatistics(upstreamId) {
         sessionStorage.setItem("upstreamId",upstreamId);
         window.location = path + "/appStatisticsAdd";
     }

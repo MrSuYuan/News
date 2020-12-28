@@ -53,7 +53,7 @@
     </insert>
 
     <select id="copyList" parameterType="java.util.Map" resultType="com.news.vo.CopyVo">
-        select *,DATE_FORMAT(createTime,"%m-%d") as createTime2
+        select *,DATE_FORMAT(createTime,"%Y-%m-%d") as createTime2
         from b_copy
         where 1=1
         <if test="adId != null and adId !=''">

@@ -1,7 +1,7 @@
 package com.news.service.impl;
 
-import com.news.dao.SpaceDao;
-import com.news.service.SpaceService;
+import com.news.dao.SlotDao;
+import com.news.service.SlotService;
 import com.news.vo.*;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
@@ -13,20 +13,20 @@ import java.util.*;
 /**
  * 广告位业务实现
  */
-@Service("spaceService")
-public class SpaceServiceImpl implements SpaceService {
+@Service("slotService")
+public class SlotServiceImpl implements SlotService {
 
     @Resource
-    private SpaceDao spaceDao;
+    private SlotDao slotDao;
 
     /**
      * 广告位基本信息
      */
     @Override
-    public ReqResponse spaceMsg(String spaceId) {
+    public ReqResponse slotMsg(String slotId) {
         ReqResponse req = new ReqResponse();
-        AppAdspaceListVo space = spaceDao.spaceMsg(spaceId);
-        req.setResult(space);
+        AppSlotListVo slot = slotDao.slotMsg(slotId);
+        req.setResult(slot);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         return req;
     }
@@ -35,7 +35,7 @@ public class SpaceServiceImpl implements SpaceService {
      * 平台统计
      */
     @Override
-    public ReqResponse platformStatistics(String spaceId, String date) {
+    public ReqResponse platformStatistics(String slotId, String date) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         if (null == date || "".equals(date)){
@@ -45,7 +45,7 @@ public class SpaceServiceImpl implements SpaceService {
         }else{
             map.put("createTime",date);
         }
-        map.put("slotId",spaceId);
+        map.put("slotId",slotId);
         //总请求
         int sumRequest = 0;
         //总返回
@@ -56,17 +56,21 @@ public class SpaceServiceImpl implements SpaceService {
         int sumClick = 0;
         //总deepLink
         int sumDeeplink = 0;
+        int t200 = 0;
+        int t250 = 0;
         int t300 = 0;
         int t400 = 0;
         int t500 = 0;
         int t1000 = 0;
-        List<PlatformStatisticsListVo> list = spaceDao.platformStatisticsList(map);
+        List<PlatformStatisticsListVo> list = slotDao.platformStatisticsList(map);
         for (PlatformStatisticsListVo vo : list){
             sumRequest = sumRequest + vo.getDownstreamRequest();
             sumResponse = sumResponse + vo.getResponse();
             sumLook = sumLook + vo.getLook();
             sumClick = sumClick + vo.getClick();
             sumDeeplink = sumDeeplink + vo.getDeeplink();
+            t200 = t200 + vo.getT200();
+            t250 = t250 + vo.getT250();
             t300 = t300 + vo.getT300();
             t400 = t400 + vo.getT400();
             t500 = t500 + vo.getT500();
@@ -78,6 +82,8 @@ public class SpaceServiceImpl implements SpaceService {
         psv.setSumClick(sumClick);
         psv.setSumLook(sumLook);
         psv.setSumDeeplink(sumDeeplink);
+        psv.setT200(t200);
+        psv.setT250(t250);
         psv.setT300(t300);
         psv.setT400(t400);
         psv.setT500(t500);
@@ -92,7 +98,7 @@ public class SpaceServiceImpl implements SpaceService {
      * 渠道统计
      */
     @Override
-    public ReqResponse channelStatistics(String spaceId, String date) {
+    public ReqResponse channelStatistics(String slotId, String date) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         if (null == date || "".equals(date)){
@@ -102,11 +108,11 @@ public class SpaceServiceImpl implements SpaceService {
         }else{
             map.put("createTime",date);
         }
-        map.put("slotId",spaceId);
+        map.put("slotId",slotId);
         //和
-        List<ChannelStatisticsSumListVo> sumList = spaceDao.ChannelStatisticsSumList(map);
+        List<ChannelStatisticsSumListVo> sumList = slotDao.ChannelStatisticsSumList(map);
         //详细
-        List<ChannelStatisticsListVo> list = spaceDao.ChannelStatisticsList(map);
+        List<ChannelStatisticsListVo> list = slotDao.ChannelStatisticsList(map);
         for (ChannelStatisticsSumListVo cssv : sumList){
             List<ChannelStatisticsListVo> sList = new ArrayList<>();
             for (ChannelStatisticsListVo cslv : list){
@@ -142,8 +148,8 @@ public class SpaceServiceImpl implements SpaceService {
         }
         map.put("num",(currentPage - 1) * pageSize);
         map.put("pageSize",pageSize);
-        List<AdStatisticsListVo> list = spaceDao.appReportList(map);
-        int sumData = spaceDao.appReportListNum(map);
+        List<AdStatisticsListVo> list = slotDao.appReportList(map);
+        int sumData = slotDao.appReportListNum(map);
 
         //总页数
         int sumPage = 0;
@@ -174,7 +180,7 @@ public class SpaceServiceImpl implements SpaceService {
         Map<String,Object> map = new HashMap<>();
         map.put("createTime",createTime);
         map.put("slotId",slotId);
-        List<AdReportUpstreamListVo> appReportDetail = spaceDao.appUpstreamReport(map);
+        List<AdReportUpstreamListVo> appReportDetail = slotDao.appUpstreamReport(map);
         System.out.println(appReportDetail.size());
         req.setMessage("数据加载完成");
         req.setResult(appReportDetail);

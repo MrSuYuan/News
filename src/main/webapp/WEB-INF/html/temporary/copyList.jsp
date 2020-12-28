@@ -99,7 +99,8 @@
                         <table ui="slim alt" class="veui-table">
 
                             <colgroup>
-                                <col width="190">
+                                <col width="150">
+                                <col width="150">
                                 <col width="150">
                                 <col width="160">
                                 <col width="120">
@@ -114,6 +115,17 @@
                             <tr>
                                 <th scope="col" role="columnheader">
                                     <div class="veui-table-cell">应用</div>
+                                </th>
+                                <th scope="col" role="columnheader">
+                                    <div class="veui-table-cell">日期</div>
+                                    <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 16 16" class="fa-icon veui-icon veui-sorter veui-sorter-unordered">
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
+                                            <path d="M11.98 3.97l-.65.73L9 1.53V12H8V0h.99z"></path>
+                                        </svg>
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon veui-sorter-active" x="0" y="0">
+                                            <path d="M0 8.03l.65-.73 2.34 3.17V0h1v12h-1z"></path>
+                                        </svg>
+                                    </svg>
                                 </th>
                                 <th scope="col" role="columnheader">
                                     <div class="veui-table-cell">广告展现量</div>
@@ -202,9 +214,6 @@
                                             <path d="M0 8.03l.65-.73 2.34 3.17V0h1v12h-1z"></path>
                                         </svg>
                                     </svg>
-                                </th>
-                                <th width="100px">
-                                    <div>日期</div>
                                 </th>
                             </tr>
                             </thead>
@@ -311,15 +320,15 @@
                         var data = list[i];
                         html+='<tr class>';
                         html+='<td role="cell"><div class="veui-table-cell"><div class="adposition"><div><a class="app-name-text">'+data.adName+'</a></div><div><a class="app-name-text">ID: '+data.adId+'</a></div></div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.lookPv).toLocaleString()+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+data.income+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.accessPv).toLocaleString()+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.detailPv).toLocaleString()+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.clickNum).toLocaleString()+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+data.ecpm2+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability2+'%</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+data.cpc2+'</div></div></td>';
-                        html+='<td role="cell" width="100px"><div>'+data.createTime2+'</div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.createTime2+' '+data.weekTime+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.lookPv).toLocaleString()+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.income+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.accessPv).toLocaleString()+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.detailPv).toLocaleString()+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.clickNum).toLocaleString()+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.ecpm2+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.clickProbability2+'%</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.cpc2+'</div></div></td>';
                         html+='</tr>';
                     }
                     //添加数据

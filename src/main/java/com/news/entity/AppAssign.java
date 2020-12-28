@@ -8,7 +8,7 @@ public class AppAssign {
     /**
      * 广告位id
      */
-    private String spaceId;
+    private String slotId;
     /**
      * 上游类型 1东方 2万咖 3极光 4余梁 5一点通
      */
@@ -36,12 +36,12 @@ public class AppAssign {
         this.shortName = shortName;
     }
 
-    public String getSpaceId() {
-        return spaceId;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
     public int getUpstreamType() {

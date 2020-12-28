@@ -119,7 +119,7 @@ function navigationBar(path){
 	html += '		<b class="arrow"></b>';	
 	html += '		<ul class="submenu">';			
 	html += '			<li class="" id="appList"><a href="'+path+'/appList"><i class="menu-icon fa fa-caret-right"></i>APP</a><b class="arrow"></b></li>';
-	html += '			<li class="" id="appAdspace"><a href="'+path+'/appAdspaceList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
+	html += '			<li class="" id="appSlot"><a href="'+path+'/appSlotList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="appStatisticsManage"><a href="'+path+'/appStatisticsManage"><i class="menu-icon fa fa-caret-right"></i>收益统计(管理)</a><b class="arrow"></b></li>';
 	html += '			<li class="" id="appStatisticsUser"><a href="'+path+'/appStatisticsUser"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
     html += '			<li class="" id="appReport"><a href="'+path+'/appReportList"><i class="menu-icon fa fa-caret-right"></i>上报统计</a><b class="arrow"></b></li>';
@@ -239,21 +239,21 @@ function permission(pageSign){
     }else if (pageSign == "appDetail"){
         $('#app').addClass('active open');
         $('#appList').addClass('active');
-    }else if (pageSign == "appAdspaceList"){
+    }else if (pageSign == "appSlotList"){
         $('#app').addClass('active open');
-        $('#appAdspace').addClass('active');
-    }else if (pageSign == "appAdspaceAdd"){
+        $('#appSlot').addClass('active');
+    }else if (pageSign == "appSlotAdd"){
         $('#app').addClass('active open');
-        $('#appAdspace').addClass('active');
-    }else if (pageSign == "appAdspaceUpstreamList"){
+        $('#appSlot').addClass('active');
+    }else if (pageSign == "appSlotUpstreamList"){
         $('#app').addClass('active open');
-        $('#appAdspace').addClass('active');
-    }else if (pageSign == "appAdspaceAddUpstream"){
+        $('#appSlot').addClass('active');
+    }else if (pageSign == "appSlotAddUpstream"){
         $('#app').addClass('active open');
-        $('#appAdspace').addClass('active');
+        $('#appSlot').addClass('active');
     }else if (pageSign == "appAssign"){
         $('#app').addClass('active open');
-        $('#appAdspace').addClass('active');
+        $('#appSlot').addClass('active');
     }else if (pageSign == "appStatisticsAdd"){
         $('#app').addClass('active open');
         $('#appStatistics').addClass('active');
@@ -293,9 +293,9 @@ function permission(pageSign){
     }else if (pageSign == "appUploadOtherExcel"){
         $('#app').addClass('active open');
         $('#appUploadOtherExcel').addClass('active');
-    }else if (pageSign == "appAdspaceReport"){
+    }else if (pageSign == "appSlotReport"){
         $('#app').addClass('active open');
-        $('#appAdspace').addClass('active');
+        $('#appSlot').addClass('active');
 
 	//web页面
     }else if (pageSign == "webList"){

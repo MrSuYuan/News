@@ -1,7 +1,7 @@
 package com.news.vo;
 
 /**
- * 分润参数
+ * web分润参数
  */
 public class DividedVo {
 

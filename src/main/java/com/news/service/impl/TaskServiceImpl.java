@@ -200,29 +200,21 @@ public class TaskServiceImpl implements TaskService {
                 //解析返回参数
                 PtResponse resp = JSON.parseObject(str,PtResponse.class);
                 if (resp.getResultCode() == 200){
-
                     String pkg = "";
                     List<PtApps> apps = resp.getApps();
                     for (PtApps pa : apps){
-                        pkg = pkg + pa.getPkg();
+                        pkg = pkg + pa.getPkg() + ",";
                     }
-                    System.out.println(pkg);
                     //修改数据库
                     AppUpstream au = new AppUpstream();
                     au.setUpstreamId(upstreamId);
                     au.setUpstreamAppName(pkg);
                     taskDao.updateAppPKG(au);
-                    System.out.println(upstreamId+"...炒年糕个");
                 }else{
                     System.out.println(upstreamId+"...返回失败");
                 }
-
-
-
-
             }
         }
-
     }
 
 }

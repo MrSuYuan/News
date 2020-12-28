@@ -139,7 +139,7 @@
                                         <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
                                             <path d="M11.98 3.97l-.65.73L9 1.53V12H8V0h.99z"></path>
                                         </svg>
-                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon" x="0" y="0">
+                                        <svg version="1.1" role="presentation" width="16" height="16" viewBox="0 0 12 12" class="fa-icon veui-icon veui-sorter-active" x="0" y="0">
                                             <path d="M0 8.03l.65-.73 2.34 3.17V0h1v12h-1z"></path>
                                         </svg>
                                     </svg>

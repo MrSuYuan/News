@@ -14,7 +14,7 @@ public class AppUpstream {
     /**
      * 平台广告位ID
      */
-    private String spaceId;
+    private String slotId;
     /**
      * 上游类型(1东方 2万咖 3极光 4余梁 5一点通)
      */
@@ -43,6 +43,15 @@ public class AppUpstream {
     private String upstreamAppName;
     private int upstreamWidth;
     private int upstreamHeight;
+    private String vendorDivision;
+
+    public String getVendorDivision() {
+        return vendorDivision;
+    }
+
+    public void setVendorDivision(String vendorDivision) {
+        this.vendorDivision = vendorDivision;
+    }
 
     public String getUpstreamAppName() {
         return upstreamAppName;
@@ -108,12 +117,12 @@ public class AppUpstream {
         this.upstreamId = upstreamId;
     }
 
-    public String getSpaceId() {
-        return spaceId;
+    public String getSlotId() {
+        return slotId;
     }
 
-    public void setSpaceId(String spaceId) {
-        this.spaceId = spaceId;
+    public void setSlotId(String slotId) {
+        this.slotId = slotId;
     }
 
     public int getUpstreamType() {

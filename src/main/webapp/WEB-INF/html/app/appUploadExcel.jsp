@@ -146,7 +146,7 @@
                         html+='<td>'+data.nickName+'</td>'
                         html+='<td>'+data.appName+'</td>'
                         html+='<td name="appId">'+data.appId+'</td>'
-                        html+='<td name="spaceId">'+data.spaceId+'</td>'
+                        html+='<td name="slotId">'+data.slotId+'</td>'
                         html+='<td id="divided'+i+'">'+data.dividedY+'</td>'
                         html+='<td name="income" id="income'+i+'">'+data.income+'</td>'
                         html+='<td name="ecpm" id="ecpm'+i+'">'+data.afterEcpm+'</td>'
@@ -190,7 +190,7 @@
         $('.excelTr').each(function(index,val){
             var obj = {
                 upstreamId : format_text($(val).find('td[name=upstreamId]')),
-                spaceId : format_text($(val).find('td[name=spaceId]')),
+                slotId : format_text($(val).find('td[name=slotId]')),
                 appId : format_text($(val).find('td[name=appId]')),
                 createTime : format_text($(val).find('td[name=create_Time]')),
                 beforeLookPV : format_text($(val).find('td[name=beforeLookPV]')),
@@ -218,7 +218,7 @@
             success: function (obj) {
                 if(obj.code == 200){
                     alert(obj.message);
-                    window.location = path + "/appAdspaceList";
+                    window.location = path + "/appSlotList";
                 }else if(obj.code == 300){
                     alert(obj.message);
                     window.location = path + "/login";
