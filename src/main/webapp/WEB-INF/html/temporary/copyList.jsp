@@ -322,7 +322,7 @@
                         html+='<td role="cell"><div class="veui-table-cell"><div class="adposition"><div><a class="app-name-text">'+data.adName+'</a></div><div><a class="app-name-text">ID: '+data.adId+'</a></div></div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.createTime2+' '+data.weekTime+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.lookPv).toLocaleString()+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+data.income+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.income).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.accessPv).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.detailPv).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div data-v-c8d709e4>'+parseFloat(data.clickNum).toLocaleString()+'</div></div></td>';

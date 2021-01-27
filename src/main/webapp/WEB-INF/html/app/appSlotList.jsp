@@ -173,6 +173,16 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right "> RTB底价 : </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="col-xs-10 col-sm-7" id="rtbPrice">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                                             <button type="button" class="btn btn-primary" onclick="updateProportion()">确定</button>
@@ -334,7 +344,8 @@
                                 '<button type="button" class="btn btn-xs btn-info" title="查看" onclick="checkUpstream(\''+data.slotId+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-align-justify bigger-110"></i>' +
                                 '</button>' +
-                                '<button type="button" class="btn btn-xs btn-default" title="分成 X:'+data.dividedY+' , Y:'+data.dividedZ+'" onclick="divided(\''+data.slotId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
+                                //'<button type="button" class="btn btn-xs btn-default" title="分成 X:'+data.dividedY+' , Y:'+data.dividedZ+'" onclick="divided(\''+data.slotId+'!'+data.dividedY+'!'+data.dividedZ+'\')">' +
+                                '<button type="button" class="btn btn-xs btn-default" title="分成 X:'+data.dividedY+' , Y:'+data.dividedZ+'" onclick="divided(\''+data.slotId+'!'+data.dividedY+'!'+data.dividedZ+'!'+data.rtbPrice+'\')">' +
                                 '<i class="ace-icon glyphicon glyphicon-edit bigger-110"></i>' +
                                 '</button>' +
                                 '<button type="button" class="btn btn-xs btn-warning" title="统计" onclick="report(\''+data.slotId+'\')">' +
@@ -465,6 +476,7 @@
         $('#dividedSlotId').val(str[0]);
         $('#dividedY').val(str[1]);
         $('#dividedZ').val(str[2]);
+        $('#rtbPrice').val(str[3]);
         $("#app_divided_set").modal("show");
     }
 
@@ -473,6 +485,7 @@
         var slotId = $('#dividedSlotId').val();
         var dividedY = $('#dividedY').val();
         var dividedZ = $('#dividedZ').val();
+        var rtbPrice = $('#rtbPrice').val();
         if (dividedY > 1 || dividedZ > 1) {
             alert("参数错误");
         }else{
@@ -482,7 +495,8 @@
                 data: {
                     "slotId" : slotId,
                     "dividedY" : dividedY,
-                    "dividedZ" : dividedZ
+                    "dividedZ" : dividedZ,
+                    "rtbPrice" : rtbPrice
                 },
                 dataType: 'json',
                 async: false,

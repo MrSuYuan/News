@@ -312,10 +312,11 @@ public class AppController extends BaseController {
     @ApiImplicitParams(value={
             @ApiImplicitParam(name="slotId" , value="广告位id" ,required = false , paramType = "query" ,dataType = "String"),
             @ApiImplicitParam(name="dividedY" , value="Y" ,required = false , paramType = "query" ,dataType = "Double"),
-            @ApiImplicitParam(name="dividedZ" , value="Z" ,required = false , paramType = "query" ,dataType = "Double")
+            @ApiImplicitParam(name="dividedZ" , value="Z" ,required = false , paramType = "query" ,dataType = "Double"),
+            @ApiImplicitParam(name="rtbPrice" , value="rtbPrice" ,required = false , paramType = "query" ,dataType = "Double")
     })
     @CrossOrigin
-    public ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ){
+    public ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ, double rtbPrice){
         ReqResponse req = new ReqResponse();
         Object userId = request.getSession().getAttribute("userId");
         Object userLevel = request.getSession().getAttribute("userLevel");
@@ -324,7 +325,7 @@ public class AppController extends BaseController {
             req.setMessage("无效的登录");
         }else{
             if ((int)userLevel == 1 || (int)userLevel == 2){
-                req = appService.updateSlotDivided(slotId, dividedY, dividedZ);
+                req = appService.updateSlotDivided(slotId, dividedY, dividedZ, rtbPrice);
             }else{
                 req.setCode(ErrorMessage.FAIL.getCode());
                 req.setMessage("您没有权限");

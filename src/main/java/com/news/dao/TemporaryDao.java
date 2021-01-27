@@ -2,6 +2,8 @@ package com.news.dao;
 
 import com.news.entity.Copy;
 import com.news.entity.Report;
+import com.news.entity.YKAd;
+import com.news.entity.YKAdvertiser;
 import com.news.vo.CopyVo;
 import com.news.vo.ReportVo;
 import org.springframework.stereotype.Repository;
@@ -25,5 +27,19 @@ public interface TemporaryDao {
     int copyListNum(Map<String,Object> map);
 
     void deleteReport(long id);
+
+    List<YKAdvertiser> ykAdvertiserList();
+
+    void deleteAdvertiser(int id);
+
+    void addAdvertiser(YKAdvertiser advertiser);
+
+    YKAdvertiser ykAdvertiser(int id);
+
+    List<YKAd> ykAdList();
+
+    void addYKAd(YKAd ykAd);
+
+    void deleteAd(int id);
 
 }

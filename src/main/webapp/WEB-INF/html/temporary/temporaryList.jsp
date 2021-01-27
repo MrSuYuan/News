@@ -302,7 +302,7 @@
                         html+='<td role="cell"><div class="veui-table-cell"><div class="app"><div>'+data.address+'</div></div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div class="app"><div>'+data.adName+'</div></div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.lookPv).toLocaleString()+'</div></div></td>';
-                        html+='<td role="cell"><div class="veui-table-cell"><div>'+data.income+'</div></div></td>';
+                        html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.income).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+parseFloat(data.clickNum).toLocaleString()+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.ecpm2+'</div></div></td>';
                         html+='<td role="cell"><div class="veui-table-cell"><div>'+data.clickProbability2+'%</div></div></td>';

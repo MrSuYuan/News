@@ -934,12 +934,13 @@ public class AppServiceImpl implements AppService {
      * 广告位divided
      */
     @Override
-    public ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ) {
+    public ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ, double rtbPrice) {
         ReqResponse req = new ReqResponse();
         Map<String,Object> map = new HashMap<>();
         map.put("slotId",slotId);
         map.put("dividedY",dividedY);
         map.put("dividedZ",dividedZ);
+        map.put("rtbPrice",rtbPrice);
         appDao.updateSlotDivided(map);
         req.setCode(ErrorMessage.SUCCESS.getCode());
         req.setMessage("成功");

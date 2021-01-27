@@ -415,5 +415,17 @@ public class PageController extends BaseController {
     @ApiOperation(value = "添加报表", notes = "添加报表", httpMethod = "GET")
     public String privacy(){ return "/html/user/privacy.jsp";}
 
+    /**
+     * 优酷
+     */
+    @RequestMapping(value = "ykAdvertiser" , method= RequestMethod.GET)
+    @ApiOperation(value = "优酷", notes = "优酷", httpMethod = "GET")
+    public String ykAdvertiser(){ return "html/yk/ykAdvertiser.jsp";}
+
+
+    @RequestMapping(value = "ykAd" , method= RequestMethod.GET)
+    @ApiOperation(value = "优酷", notes = "优酷", httpMethod = "GET")
+    public String ykAd(){ return "/html/yk/ykAd.jsp";}
+
 
 }

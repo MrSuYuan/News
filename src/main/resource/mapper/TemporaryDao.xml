@@ -88,4 +88,38 @@
         delete from b_report where id = #{id}
     </delete>
 
+    <select id="ykAdvertiserList" resultType="com.news.entity.YKAdvertiser">
+        select * from y_advertiser
+    </select>
+
+    <select id="ykAdvertiser" parameterType="java.lang.Integer" resultType="com.news.entity.YKAdvertiser">
+        select * from y_advertiser where id = #{id}
+    </select>
+
+    <update id="deleteAdvertiser" parameterType="java.lang.Integer">
+        update y_advertiser set status = 0 where id = #{id}
+    </update>
+    
+    <insert id="addAdvertiser" parameterType="com.news.entity.YKAdvertiser">
+        insert into y_advertiser
+        (name, brand, address, user, tel, certificate, certificateImage, certificateUrl)
+        values
+        (#{name},#{brand},#{address},#{user},#{tel},#{certificate},null,#{certificateUrl})
+    </insert>
+
+    <select id="ykAdList" resultType="com.news.entity.YKAd">
+        select * from y_ad
+    </select>
+
+    <insert id="addYKAd" parameterType="com.news.entity.YKAd">
+        insert into y_ad
+        (crid, title, advertiser, brand, landingpage, deeplink, image_url, video_url, logo_url, adType, startdate, enddate)
+        values
+        (#{crid},#{title},#{advertiser},#{brand},#{landingpage},#{deeplink},#{image_url},#{video_url},#{logo_url},#{adType},#{startdate},#{enddate})
+    </insert>
+
+    <update id="deleteAd" parameterType="java.lang.Integer">
+        update y_ad set status = 0 where crid = #{id}
+    </update>
+
 </mapper>

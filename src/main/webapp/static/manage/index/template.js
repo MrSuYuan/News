@@ -150,6 +150,22 @@ function navigationBar(path){
 	html += '			<li class="" id="webUploadExcel"><a href="'+path+'/webUploadExcel"><i class="menu-icon fa fa-caret-right"></i>上传Excel(新)</a><b class="arrow"></b></li>';
 	html += '		</ul>';
 	html += '	</li>';
+
+    //优酷
+    html += '	<li class="" id="yk">';
+    html += '		<a href="#" class="dropdown-toggle">';
+    html += '			<i class="menu-icon fa fa-coffee"></i>';
+    html += '			<span class="menu-text">';
+    html += '				优酷管理';
+    html += '			</span>';
+    html += '			<b class="arrow fa fa-angle-down"></b>';
+    html += '		</a>';
+    html += '		<b class="arrow"></b>';
+    html += '		<ul class="submenu">';
+    html += '			<li class="" id="ykAdvertiser"><a href="'+path+'/ykAdvertiser"><i class="menu-icon fa fa-caret-right"></i>广告主信息</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="ykAd"><a href="'+path+'/ykAd"><i class="menu-icon fa fa-caret-right"></i>广告素材</a><b class="arrow"></b></li>';
+    html += '		</ul>';
+    html += '	</li>';
 	
 	//临时
 	html += '	<li class="" id="temporary">';
@@ -213,6 +229,7 @@ function permission(pageSign){
         $('#appUpstream').hide();
         $('#webDivided').hide();
         $('#temporary').hide();
+        $('#yk').hide();
         $('#httpRequest').hide();
         $('#webUpstreamTypeList').hide();
         $('#webReadExcel').hide();
@@ -331,6 +348,14 @@ function permission(pageSign){
     }else if (pageSign == "webUploadExcel"){
         $('#web').addClass('active open');
         $('#webUploadExcel').addClass('active');
+
+    //优酷
+    }else if (pageSign == "ykAdvertiser"){
+        $('#yk').addClass('active open');
+        $('#ykAdvertiser').addClass('active');
+    }else if (pageSign == "ykAd"){
+        $('#yk').addClass('active open');
+        $('#ykAd').addClass('active');
 
     //临时
     }else if (pageSign == "temporaryAdd"){

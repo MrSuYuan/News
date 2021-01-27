@@ -48,6 +48,15 @@ public class AppSlotListVo {
     private double dividedZ;
     private int request;
     private int flowStatus;
+    private double rtbPrice;
+
+    public double getRtbPrice() {
+        return rtbPrice;
+    }
+
+    public void setRtbPrice(double rtbPrice) {
+        this.rtbPrice = rtbPrice;
+    }
 
     public int getFlowStatus() {
         return flowStatus;

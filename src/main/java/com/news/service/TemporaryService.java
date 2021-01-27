@@ -1,7 +1,11 @@
 package com.news.service;
 
+import com.news.entity.YKAd;
+import com.news.entity.YKAdvertiser;
 import com.utils.response.ReqResponse;
 import org.apache.poi.ss.usermodel.Sheet;
+
+import java.util.List;
 
 public interface TemporaryService {
 
@@ -40,4 +44,33 @@ public interface TemporaryService {
      */
     ReqResponse copyList(String adId, String startTime, String endTime,Integer currentPage, Integer pageSize);
 
+    /**
+     * 展示所有广告主信息
+     */
+    ReqResponse ykAdvertiserList();
+
+    /**
+     * 添加新广告主信息
+     */
+    ReqResponse addAdvertiser(YKAdvertiser advertiser) throws Exception ;
+
+    /**
+     * 删除新广告主信息
+     */
+    ReqResponse deleteAdvertiser(int id) throws Exception;
+
+    /**
+     * 展示所有广告信息
+     */
+    ReqResponse ykAdList();
+
+    /**
+     * 添加新广告信息
+     */
+    ReqResponse addYKAd(YKAd ykAd) throws Exception ;
+
+    /**
+     * 删除新广告信息
+     */
+    ReqResponse deleteAd(int crid);
 }

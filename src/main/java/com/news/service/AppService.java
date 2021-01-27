@@ -144,7 +144,7 @@ public interface AppService {
     /**
      * 广告位divided
      */
-    ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ);
+    ReqResponse updateSlotDivided(String slotId, double dividedY, double dividedZ, double rtbPrice);
 
     /**
      * 数据统计状态修改 0删除 1通过

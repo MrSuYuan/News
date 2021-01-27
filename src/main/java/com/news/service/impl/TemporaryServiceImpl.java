@@ -5,16 +5,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.news.dao.TemporaryDao;
 import com.news.entity.Copy;
 import com.news.entity.Report;
+import com.news.entity.YKAd;
+import com.news.entity.YKAdvertiser;
+import com.news.entity.youku.uploadad.Material;
+import com.news.entity.youku.uploadad.Native;
+import com.news.entity.youku.uploadad.UploadAdData;
+import com.news.entity.youku.uploadadvertiser.Advertiser;
+import com.news.entity.youku.uploadadvertiser.Qualifications;
+import com.news.entity.youku.uploadadvertiser.UploadAdvertiserData;
 import com.news.service.TemporaryService;
 import com.news.vo.CopyVo;
 import com.news.vo.ReportVo;
 import com.utils.response.ErrorMessage;
 import com.utils.response.ReqResponse;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
+import javax.swing.plaf.metal.MetalRadioButtonUI;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -347,8 +363,216 @@ public class TemporaryServiceImpl implements TemporaryService {
         return req;
     }
 
-    public static void main(String[] args) {
-
+    @Override
+    public ReqResponse ykAdvertiserList() {
+        ReqResponse req = new ReqResponse();
+        List<YKAdvertiser> list = temporaryDao.ykAdvertiserList();
+        req.setResult(list);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
     }
+
+    @Override
+    public ReqResponse addAdvertiser(YKAdvertiser adver) throws Exception {
+        ReqResponse req = new ReqResponse();
+
+        /**
+         * 向优酷提交
+         */
+        UploadAdvertiserData data = new UploadAdvertiserData();
+        data.setDspid("11299");
+        data.setToken("dd330ad07f3348638d9c4bad6540eeba");
+        data.setType("RTB");
+        //基本信息
+        Advertiser advertiser = new Advertiser();
+        advertiser.setName(adver.getName());//广告主名称
+        advertiser.setBrand(adver.getBrand());//品牌名称
+        advertiser.setAddress(adver.getAddress());//广告主公司地址
+        advertiser.setContacts(adver.getUser());//广告主联系人
+        advertiser.setTel(adver.getTel());//广告主联系电话
+        advertiser.setFirstindustry(0);//一级统计行业--查询填写
+        advertiser.setSecondindustry(0);//二级统计行业--查询填写
+        //资质信息
+        Qualifications qualifications = new Qualifications();
+        qualifications.setName(adver.getCertificate());//资质证书名称（全名）-营业执照
+        qualifications.setUrl(adver.getCertificateUrl());//资质文件的URL地址，由DSP提供可访问的资质文件URL地址
+        qualifications.setMd5("");//资质文件内容的MD5值，即对图片二进制内容求md5值，MD5值采用32位小写格式
+        qualifications.setOperation("add");//针对资质文件的操作(add/update/delete)
+        List<Qualifications> qList = new ArrayList<>();
+        qList.add(qualifications);
+        advertiser.setQualifications(qList);
+        data.setAdvertiser(advertiser);
+
+        //向优酷提交信息
+        String request = net.sf.json.JSONObject.fromObject(data).toString();
+        String url = "http://api.yes.youku.com/dsp/api/uploadadvertiser";
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader("Content-Type","application/json");
+        httpPost.addHeader("Host","api.yes.youku.com");
+        StringEntity entity = new StringEntity(request,"utf-8");
+        httpPost.setEntity(entity);
+        CloseableHttpResponse resp = httpClient.execute(httpPost);
+        HttpEntity result = resp.getEntity();
+        String str = EntityUtils.toString(result, "utf-8");
+        System.out.println(str);
+
+        /**
+         * 本地数据库
+         */
+        temporaryDao.addAdvertiser(adver);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    @Override
+    public ReqResponse deleteAdvertiser(int id) throws Exception {
+        ReqResponse req = new ReqResponse();
+
+        YKAdvertiser adver = temporaryDao.ykAdvertiser(id);
+
+        /**
+         * 向优酷提交
+         */
+        UploadAdvertiserData data = new UploadAdvertiserData();
+        data.setType("RTB");
+        //基本信息
+        Advertiser advertiser = new Advertiser();
+        advertiser.setName(adver.getName());//广告主名称
+        advertiser.setBrand(adver.getBrand());//品牌名称
+        advertiser.setAddress(adver.getAddress());//广告主公司地址
+        advertiser.setContacts(adver.getUser());//广告主联系人
+        advertiser.setTel(adver.getTel());//广告主联系电话
+        advertiser.setFirstindustry(0);//一级统计行业--查询填写
+        advertiser.setSecondindustry(0);//二级统计行业--查询填写
+        //资质信息
+        Qualifications qualifications = new Qualifications();
+        qualifications.setName(adver.getCertificate());//资质证书名称（全名）-营业执照
+        qualifications.setUrl(adver.getCertificateUrl());//资质文件的URL地址，由DSP提供可访问的资质文件URL地址
+        qualifications.setMd5("");//资质文件内容的MD5值，即对图片二进制内容求md5值，MD5值采用32位小写格式
+        qualifications.setOperation("delete");//针对资质文件的操作(add/update/delete)
+        List<Qualifications> qList = new ArrayList<>();
+        qList.add(qualifications);
+        advertiser.setQualifications(qList);
+        data.setAdvertiser(advertiser);
+
+        //向优酷提交信息
+        String request = net.sf.json.JSONObject.fromObject(data).toString();
+        String url = "http://api.yes.youku.com/dsp/api/uploadadvertiser";
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader("Content-Type","application/json");
+        StringEntity entity = new StringEntity(request,"utf-8");
+        httpPost.setEntity(entity);
+        CloseableHttpResponse resp = httpClient.execute(httpPost);
+        HttpEntity result = resp.getEntity();
+        String str = EntityUtils.toString(result, "utf-8");
+        System.out.println(str);
+
+        temporaryDao.deleteAdvertiser(id);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    @Override
+    public ReqResponse ykAdList() {
+        ReqResponse req = new ReqResponse();
+        List<YKAd> list = temporaryDao.ykAdList();
+        req.setResult(list);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    @Override
+    public ReqResponse addYKAd(YKAd ykAd) throws Exception {
+        ReqResponse req = new ReqResponse();
+
+        List<YKAd> list = temporaryDao.ykAdList();
+        int crid = list.size() + 1;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date sDate = new Date();
+        ykAd.setCrid(crid);
+        ykAd.setStartdate(sdf.format(sDate));
+        Calendar calendar =Calendar.getInstance();
+        calendar.setTime(sDate);
+        calendar.add(calendar.YEAR, 1);//把日期往后增加一年.整数往后推,负数往前移动
+        Date eDate = calendar.getTime();
+        ykAd.setEnddate(sdf.format(eDate));
+
+        /**
+         * 向优酷提交
+         */
+        UploadAdData data = new UploadAdData();
+        data.setType("RTB");
+
+        int adType = ykAd.getAdType();
+        if (adType == 1){
+            //banner
+            List<Material> material = new ArrayList<>();
+            Material m = new Material();
+            m.setCrid(crid+"");
+            m.setUrl(ykAd.getImage_url());
+            m.setLandingpage(ykAd.getLandingpage());
+            m.setDeeplink(ykAd.getDeeplink());
+            m.setAdvertiser(ykAd.getAdvertiser());
+            m.setStartdate(sdf.format(sDate));
+            m.setEnddate(sdf.format(eDate));
+            material.add(m);
+            data.setMaterial(material);
+        }
+
+        else {
+            //信息流
+            List<Native> aNative = new ArrayList<>();
+            Native n = new Native();
+            n.setCrid(crid+"");
+            n.setTitle(ykAd.getTitle());
+            n.setImage_url(ykAd.getImage_url());
+            n.setVideo_url(ykAd.getVideo_url());
+            n.setLogo_url(ykAd.getLogo_url());
+            n.setBrand(ykAd.getBrand());
+            n.setAdvertiser(ykAd.getAdvertiser());
+            n.setStartdate(sdf.format(sDate));
+            n.setEnddate(sdf.format(eDate));
+            n.setLandingpage(ykAd.getLandingpage());
+            aNative.add(n);
+            data.setaNative(aNative);
+        }
+
+        //向优酷提交信息
+        String request = net.sf.json.JSONObject.fromObject(data).toString();
+        String url = "http://api.yes.youku.com/dsp/api/upload";
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        httpPost.addHeader("Content-Type","application/json");
+        StringEntity entity = new StringEntity(request,"utf-8");
+        httpPost.setEntity(entity);
+        CloseableHttpResponse resp = httpClient.execute(httpPost);
+        HttpEntity result = resp.getEntity();
+        String str = EntityUtils.toString(result, "utf-8");
+        System.out.println(str);
+
+        /**
+         * 本地数据库
+         */
+        temporaryDao.addYKAd(ykAd);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
+    @Override
+    public ReqResponse deleteAd(int crid) {
+        ReqResponse req = new ReqResponse();
+        temporaryDao.deleteAd(crid);
+        req.setCode(ErrorMessage.SUCCESS.getCode());
+        req.setMessage("成功");
+        return req;
+    }
+
 
 }

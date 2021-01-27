@@ -140,7 +140,7 @@
     <select id="appSlotList" parameterType="java.util.Map" resultType="com.news.vo.AppSlotListVo">
         select x.*,IFNULL(y.downstreamRequest,0) as request from
         (
-        select a.appName,a.appId,s.slotId,s.slotName,s.slotType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus
+        select a.appName,a.appId,s.slotId,s.slotName,s.slotType,s.width,s.height,DATE_FORMAT(s.createTime,"%Y-%m-%d %H:%i:%s") as createTime,s.dividedY,s.dividedZ,u.nickName,s.flowStatus,s.rtbPrice
         from a_slot s,a_app a,u_user u
         where s.appId = a.appId and a.userId = u.userId
         <if test="loginName != null and loginName !=''">
@@ -575,7 +575,7 @@
     <!-- 设置广告位divided -->
     <update id="updateSlotDivided" parameterType="java.util.Map">
         update a_slot
-        set dividedY = #{dividedY}, dividedZ = #{dividedZ}
+        set dividedY = #{dividedY}, dividedZ = #{dividedZ}, rtbPrice = #{rtbPrice}
         where slotId = #{slotId}
     </update>
 
