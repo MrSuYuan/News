@@ -151,6 +151,22 @@ function navigationBar(path){
 	html += '		</ul>';
 	html += '	</li>';
 
+    //微信分享
+    html += '	<li class="" id="article">';
+    html += '		<a href="#" class="dropdown-toggle">';
+    html += '			<i class="menu-icon fa fa-bookmark"></i>';
+    html += '			<span class="menu-text">';
+    html += '				文章分享';
+    html += '			</span>';
+    html += '			<b class="arrow fa fa-angle-down"></b>';
+    html += '		</a>';
+    html += '		<b class="arrow"></b>';
+    html += '		<ul class="submenu">';
+    html += '			<li class="" id="articleList"><a href="'+path+'/articleList"><i class="menu-icon fa fa-caret-right"></i>广告位</a><b class="arrow"></b></li>';
+    html += '			<li class="" id="articleStatisticsList"><a href="'+path+'/articleStatisticsList"><i class="menu-icon fa fa-caret-right"></i>收益统计</a><b class="arrow"></b></li>';
+    html += '		</ul>';
+    html += '	</li>';
+
     //优酷
     html += '	<li class="" id="yk">';
     html += '		<a href="#" class="dropdown-toggle">';
@@ -166,7 +182,7 @@ function navigationBar(path){
     html += '			<li class="" id="ykAd"><a href="'+path+'/ykAd"><i class="menu-icon fa fa-caret-right"></i>广告素材</a><b class="arrow"></b></li>';
     html += '		</ul>';
     html += '	</li>';
-	
+
 	//临时
 	html += '	<li class="" id="temporary">';
 	html += '		<a href="#" class="dropdown-toggle">';
@@ -348,6 +364,14 @@ function permission(pageSign){
     }else if (pageSign == "webUploadExcel"){
         $('#web').addClass('active open');
         $('#webUploadExcel').addClass('active');
+
+    //文章分享
+    }else if (pageSign == "articleList"){
+        $('#article').addClass('active open');
+        $('#articleList').addClass('active');
+    }else if (pageSign == "articleStatisticsList"){
+        $('#article').addClass('active open');
+        $('#articleStatisticsList').addClass('active');
 
     //优酷
     }else if (pageSign == "ykAdvertiser"){

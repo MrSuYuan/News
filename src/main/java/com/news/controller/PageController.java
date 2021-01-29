@@ -428,4 +428,15 @@ public class PageController extends BaseController {
     public String ykAd(){ return "/html/yk/ykAd.jsp";}
 
 
+    /**
+     * 文章分享页面
+     */
+    @RequestMapping(value = "articleList" , method= RequestMethod.GET)
+    @ApiOperation(value = "文章id列表", notes = "文章id列表", httpMethod = "GET")
+    public String articleList(){ return "/html/article/articleList.jsp";}
+
+    @RequestMapping(value = "articleStatisticsList" , method= RequestMethod.GET)
+    @ApiOperation(value = "文章收益列表", notes = "文章收益列表", httpMethod = "GET")
+    public String articleStatisticsList(){ return "/html/article/articleStatisticsList.jsp";}
+
 }

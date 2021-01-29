@@ -148,6 +148,47 @@
                         </div>
 
                     </form>
+
+                        <!-- 设置模态框 -->
+                        <div class="modal" id="article_model" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form class="form-horizontal" role="form">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                            <h2 class="modal-title">添加广告位信息<input id="articleAppId" type="hidden"></h2>
+                                        </div>
+
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right "> 广告位名称 </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="col-xs-10 col-sm-10" id="articleName">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label no-padding-right "> 回调地址 </label>
+                                                    <div class="col-sm-8">
+                                                        <input type="text" class="col-xs-10 col-sm-10" id="backUrl">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                            <button type="button" class="btn btn-primary" onclick="addArticleId()">确定</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div><!-- /.page-content -->
@@ -202,6 +243,7 @@
 
     //点击搜索数据展示
     function selectAppList(currentPage) {
+        var uId = $('#currentUserId').val();
         var currentUserLevel = $('#currentUserLevel').val();
         var pageSize = $('#pageSize').val();
         if(pageSize == ""){
@@ -279,11 +321,19 @@
                         //     html+='<td><font color="red">状态错误</font></td>';
                         //     html+='<td><font color="red">状态错误</font></td>';
                         // }
-                        html+='<td>' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="addSlot(\''+data.appId+'\')">添加</button>&nbsp;&nbsp;' +
-                            '<button type=button class="btn btn-minier btn-success" onclick="seeSlot(\''+data.appId+'\')">查看</button>' +
-                            '</td>';
-                        html+='</tr>';
+                        if (uId == 82){
+                            html+='<td>' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="addArticle(\''+data.appId+'\')">添加</button>&nbsp;&nbsp;' +
+                                '</td>';
+                            html+='</tr>';
+                        } else {
+                            html+='<td>' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="addSlot(\''+data.appId+'\')">添加</button>&nbsp;&nbsp;' +
+                                '<button type=button class="btn btn-minier btn-success" onclick="seeSlot(\''+data.appId+'\')">查看</button>' +
+                                '</td>';
+                            html+='</tr>';
+                        }
+
                     }
                     //添加数据
                     $("#coll_list_begin_body").html(html);
@@ -392,6 +442,44 @@
         sessionStorage.setItem("appId",appId);
         window.location = path+"/appSlotList";
     }
+
+    function addArticle(appId){
+        $("#articleAppId").val(appId);
+        $("#article_model").modal("show");
+    }
+
+    //添加新的广告位
+    function addArticleId() {
+        var article = {
+            "appId" : $("#articleAppId").val(),
+            "articleName" : $('#articleName').val(),
+            "backUrl" : $('#backUrl').val()
+        }
+
+        $.ajax({
+            url: path + "/article/addArticle",
+            type: "post",
+            data: article,
+            dataType: 'json',
+            async: false,
+            success: function (obj) {
+                if(obj.code == 200){
+                    $("#article_model").modal("hide");
+                    window.location = path + "/articleList";
+                }else if(obj.code == "300"){
+                    alert(obj.message);
+                    window.location = path + "/login";
+                }else{
+                    alert(obj.message);
+                }
+
+            },
+            error: function () {
+                alert("请求异常");
+            }
+        });
+    }
+
 
 </script>
 

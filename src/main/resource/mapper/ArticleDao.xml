@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- 文章微信分享模块 -->
+<mapper namespace="com.news.dao.ArticleDao">
+
+    <!-- 广告位数量 -->
+    <select id="articleNum" resultType="java.lang.Integer">
+        select count(0) from a_article
+        where DATE_FORMAT( createTime, '%Y%m' ) = DATE_FORMAT( CURDATE() , '%Y%m' )
+    </select>
+
+    <!-- 添加新的广告位 -->
+    <insert id="insertArticle" parameterType="com.news.entity.article.Article">
+        insert into a_article
+        (articleId, articleName, appId, backUrl, createTime)
+        values
+        (#{articleId},#{articleName},#{appId},#{backUrl},now())
+    </insert>
+
+    <!-- 广告位列表 -->
+    <select id="articleList" parameterType="java.util.Map" resultType="com.news.entity.article.ArticleVo">
+        SELECT r.appId,r.articleId,r.articleName,r.backUrl,DATE_FORMAT(r.createTime,"%Y-%m-%d %H:%i:%s")as createTime
+        from a_article r,a_app a
+        where r.appId = a.appId and a.userId = #{currentUserId}
+        order by a.createTime desc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 广告位列表 -->
+    <select id="articleListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from a_article r,a_app a
+        where r.appId = a.appId and a.userId = #{currentUserId}
+    </select>
+
+    <!-- 收益列表 -->
+    <select id="articleStatisticsList" parameterType="java.util.Map" resultType="com.news.entity.article.ArticleStatisticsVo">
+        select r.articleId,r.articleName,s.shareUser,s.shareTimes,s.backTimes,s.pv,s.uv,s.ip,s.income,DATE_FORMAT(s.createTime,"%Y-%m-%d")as createTime
+        from a_app a,a_article r,a_article_statistics s
+        where s.articleId = r.articleId and r.appId = a.appId and a.userId = #{currentUserId}
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        order by s.createTime desc
+        limit #{num},#{pageSize}
+    </select>
+
+    <!-- 收益列表数量 -->
+    <select id="articleStatisticsListNum" parameterType="java.util.Map" resultType="java.lang.Integer">
+        select count(0)
+        from a_app a,a_article r,a_article_statistics s
+        where s.articleId = r.articleId and r.appId = a.appId and a.userId = #{currentUserId}
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+    </select>
+
+    <!--倒出Excel-->
+    <select id="excel" parameterType="java.util.Map" resultType="com.news.entity.article.ArticleStatisticsVo">
+        select r.articleId,r.articleName,s.shareUser,s.shareTimes,s.backTimes,s.pv,s.uv,s.ip,s.income,DATE_FORMAT(s.createTime,"%Y-%m-%d")as createTime
+        from a_app a,a_article r,a_article_statistics s
+        where s.articleId = r.articleId and r.appId = a.appId and a.userId = #{currentUserId}
+        <if test="startTime != null and startTime !=''">
+            and TO_DAYS(s.createTime) >= TO_DAYS(#{startTime})
+        </if>
+        <if test="endTime != null and endTime !=''">
+            and TO_DAYS(#{endTime}) >= TO_DAYS(s.createTime)
+        </if>
+        order by s.createTime desc
+    </select>
+
+</mapper>
